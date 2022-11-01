@@ -1,2 +1,2 @@
-# agendaza-front
+# agendaza-frontend
 Sistema de gestion de reservas y eventos
