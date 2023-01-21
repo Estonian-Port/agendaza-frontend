@@ -1,0 +1,35 @@
+<div class="contenedor_login">
+    <div class="titulo">
+        <strong>Hola Mundo!</strong>
+    </div>
+
+    <div class="contenedor_form">
+        <label for="Usuario">Usuario</label>
+        <div class="contenedor_form_input">
+            <i class="fa fa-user icon-login" aria-hidden="true"></i>
+            <input class="input-login" name="Usuario" type="text" placeholder="Usuario"
+                [(ngModel)]='usuarioLogin.username' [attr.data-testid]="'loginUsuario'">
+        </div>
+    </div>
+
+    <div class="contenedor_form">
+        <label for="Contraseña">Contraseña</label>
+        <div class="contenedor_form_input">
+            <i class="fa fa-key icon-login" aria-hidden="true"></i>
+            <input class="input-login" name="Contraseña" type="password" placeholder="Contraseña"
+                [(ngModel)]='usuarioLogin.password' [attr.data-testid]="'loginContraseña'">
+        </div>
+    </div>
+
+    <div class="contenedor_login_boton">
+        <button class="login_boton" (click)="ingresar()" [attr.data-testid]="'ingresar'">Ingresar</button>
+    </div>
+
+    <div *ngIf='errorUsuario.condicional' class="alert">
+        {{errorUsuario.mensaje}}
+    </div>
+
+    <div *ngIf='errorContrasena.condicional' class="alert">
+        {{errorContrasena.mensaje}}
+    </div>
+</div>

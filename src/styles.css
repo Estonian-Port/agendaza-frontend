@@ -1,1 +1,409 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: white;
+  text-decoration: none;
+}
+
+:root {
+  --color-primario: royalblue;
+  --color-secundario: dodgerblue;
+  --color-terciario: lightgray;
+  --color-cuaternario: #696969;
+  --color-quinario: white;
+  --espacio-separacion: 0.5rem;
+  --sombra: 0 0.35rem 0.35rem var(--color-terciario);
+}
+
+html {
+  font-size: 12px;
+}
+
+.base {
+  background-color: var(--color-terciario);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+}
+app-login {
+  background-color: var(--color-primario);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+app-mis-itinerarios, app-perfil-usuario, app-buscar-itinerarios, app-busqueda-actividades {
+  width: 100%;
+  height: 100%;
+}
+app-card-vehiculo, app-index, app-card-itinerario-actividad  {
+  width: 100%;
+}
+
+app-agregar-vehiculo, app-ver-itinerario{
+    width: 60%;
+}
+
+.altura-maxima{
+    max-height: 60vh;
+}
+@media (max-width : 768px) {
+    
+  app-agregar-vehiculo {
+      width: 95%;
+  }
+}
+.boton_primario,
+.boton_secundario,
+.boton_terceario {
+  background-color: var(--color-primario);
+  color: white;
+  min-height: 3rem;
+  min-width: 6rem;
+  padding: 5px;
+  margin: 3px;
+  text-align: center;
+  border-radius: 1rem;
+}
+
+.boton_primario {
+  border: none;
+}
+
+.boton_secundario {
+  background-color: var(--color-terciario);
+  color: var(--color-secundario);
+  border-color: var(--color-secundario);
+}
+
+.boton_terceario {
+  background-color: white;
+  color: var(--color-secundario);
+  border-color: var(--color-secundario);
+}
+
+.contenedor_form {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+}
+
+.contenedor_form_input {
+  margin-top: var(--espacio-separacion);
+  display: flex;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color-secundario);
+}
+
+.footer_contenedor {
+  background-color: black;
+  font-size: larger;
+  color: white;
+  min-height: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer_facebook_icon {
+  padding-left: var(--espacio-separacion);
+  padding-right: var(--espacio-separacion);
+}
+
+.botonera-doble,
+.botonera-derecha,
+.botonera-izquierda {
+  width: 100%;
+  display: flex;
+}
+
+.botonera-izquierda {
+  justify-content: flex-start;
+}
+
+.botonera-derecha {
+  justify-content: flex-end;
+}
+
+.scroll {
+  overflow-y: scroll;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  border-radius: 5px;
+}
+
+/*debe existir un contenedor entre header y footer para que footer siempre se ubique
+    abajo de todo*/
+.grid_header_custom_footer {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.contenedor-principal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 65rem;
+  min-width: 30rem;
+  width: 60%;
+}
+
+.ancho-componente {
+  width: 100%;
+}
+
+/*itinerarios--------------------------------------------*/
+
+
+.contenedor-actividades {
+  min-width: 18rem;
+  width: 100%;
+}
+
+.contenedor-barra-secundaria {
+  background-color: var(--color-primario);
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contenedor-dias {
+  display: flex;
+  width: 100%;
+  min-width: 20rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dia {
+  background-color: white;
+  margin-bottom: 0.5rem;
+  display: flex;
+  border: 1px solid var(--color-cuaternario);
+  border-radius: 5px;
+}
+
+.numero-dia {
+  background-color: var(--color-cuaternario);
+  color: white;
+  min-width: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.boton_primario {
+  align-self: end;
+}
+
+.actividades {
+  background-color: white;
+  display: flex;
+  border: 1px solid var(--color-primario);
+  margin: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  min-width: -webkit-fill-available;
+  border-radius: 5px;
+  min-height: 6rem;
+}
+
+.sin-actividad {
+  display: flex;
+  border: none;
+  margin: 1rem;
+  justify-content: flex-start;
+  border-radius: 3%;
+}
+
+.titulo {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+.descripcion {
+  width: 40%;
+  text-align: center;
+  border-left: 1px solid var(--color-primario);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.detalle {
+  border-bottom: 1px solid black;
+  padding: 0.5rem;
+}
+
+.calificar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.fa-star {
+  color: darkmagenta;
+  padding: 2px;
+}
+
+h3 {
+  padding: 3px;
+}
+
+.nav_menu {
+  width: 30%;
+  display: flex;
+  font-size: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.precio {
+  font-size: medium;
+  padding: 1rem;
+}
+
+.mapa-color {
+  color: var(--color-primario);
+  padding: 1.5rem;
+}
+
+.busqueda {
+  background-color: white;
+  border: none;
+  width: 35%;
+  height: 90%;
+}
+
+.actividad-y-eliminar {
+  display: inline-grid;
+  grid-template-columns: 10fr 1fr 0.5fr;
+}
+
+.eliminar {
+  padding: 2rem;
+  color: var(--color-primario);
+}
+
+.centrado {
+  align-self: center;
+  justify-content: center;
+}
+
+.detalle-itinerario {
+  padding: 0%;
+}
+
+/*barraDeBusqueda------------------------------------------------------*/
+.buscador_contenedor {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: var(--espacio-separacion);
+  background-color: var(--color-secundario);
+}
+
+.buscardor_barra {
+  box-shadow: var(--color-primario);
+  width: 70%;
+  display: flex;
+  height: 3rem;
+  justify-content: center;
+}
+
+.buscador_input {
+  width: 40rem;
+  border: none;
+  border-radius: 5px 0% 0% 5px;
+  outline: none;
+  padding-left: 6px;
+}
+
+
+.buscador_boton {
+  background-color: var(--color-primario);
+  color: white;
+  width: fit-content;
+  border: none;
+  border-radius: 0% 20% 20% 0%;
+  height: 100%;
+  padding-left: var(--espacio-separacion);
+  padding-right: var(--espacio-separacion);
+}
+
+.resultado_buscador_contenedor {
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  padding: var(--espacio-separacion);
+  height: 2rem;
+}
+
+.resultado_buscador_lupita {
+  padding-right: var(--espacio-separacion);
+}
+
+.alert {
+  padding: var(--espacio-separacion);
+  background-color: #f8d7da;
+  color: Maroon;
+  border: 1px solid #ff9191;
+  border-radius: var(--espacio-separacion);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.success {
+  padding: var(--espacio-separacion);
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: var(--espacio-separacion);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  text-align: center;
+}
+
+.boton-sin-style {
+  all: unset;
+}
+
