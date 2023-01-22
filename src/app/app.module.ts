@@ -9,13 +9,15 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './layout/login/login.component';
 import { PerfilUsuarioComponent } from './layout/perfil-usuario/perfil-usuario.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PerfilUsuarioComponent,
-    NavbarComponent
+    NavbarComponent,
+    SeleccionarAgendaComponent
   ],
   imports: [
     BrowserModule,

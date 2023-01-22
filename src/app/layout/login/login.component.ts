@@ -13,8 +13,7 @@ export class LoginComponent {
 
   usuarioLogin : UsuarioLogin = new UsuarioLogin(0, '', '')
   errors = []
-  errorUsuario : ErrorMensaje = new ErrorMensaje(false, '')
-  errorContrasena :  ErrorMensaje = new ErrorMensaje(false, '')
+  errorLogin : ErrorMensaje = new ErrorMensaje(false, '')
 
   @Output () valorLogin = new EventEmitter<boolean>()
 
@@ -22,21 +21,19 @@ export class LoginComponent {
 
   public async ingresar(){
 
-    this.errorContrasena.condicional = false
-    this.errorUsuario.condicional = false
+    this.errorLogin.condicional = false
 
     try {
       await this.loginService.getByUsernameAndContrasena(this.usuarioLogin)
+      
       if(this.loginService.isUsuarioLogueado()){
-        this.router.navigateByUrl('/buscarItinerarios')
-      }else{
-        this.errorContrasena.condicional = true
-        this.errorContrasena.mensaje = 'Error de contraseña'
+        this.router.navigateByUrl('/seleccionarAgenda')
       }
+
     } catch (error) {
-      this.errorUsuario.condicional = true
+      this.errorLogin.condicional = true
       mostrarErrorConMensaje(this, error)
-      this.errors.forEach(error => { this.errorUsuario.mensaje = error })
+      this.errors.forEach(error => { this.errorLogin.mensaje = error })
     }
   }
 }

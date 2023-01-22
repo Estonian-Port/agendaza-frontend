@@ -1,35 +1,33 @@
-<div class="contenedor_login">
-    <div class="titulo">
-        <strong>Hola Mundo!</strong>
-    </div>
-
-    <div class="contenedor_form">
-        <label for="Usuario">Usuario</label>
-        <div class="contenedor_form_input">
-            <i class="fa fa-user icon-login" aria-hidden="true"></i>
-            <input class="input-login" name="Usuario" type="text" placeholder="Usuario"
-                [(ngModel)]='usuarioLogin.username' [attr.data-testid]="'loginUsuario'">
+<section class="m-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 text-center m-4">
+                <h2>GESERVAPP</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-4">
+                <div class="card border-light shadow p-4 p-md-5">
+                    <div class="card-title icon d-flex align-items-center justify-content-center">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="mt-2">
+                        <input class="p-2 form-control rounded-left mh-100" name="Usuario" type="text" placeholder="Usuario"
+                            [(ngModel)]='usuarioLogin.username' [attr.data-testid]="'loginUsuario'">
+                    </div>
+                    <div class="mt-2">
+                        <input class="p-2 form-control rounded-left mh-100" name="Contraseña" type="password" placeholder="Contraseña"
+                            [(ngModel)]='usuarioLogin.password' [attr.data-testid]="'loginContraseña'">
+                    </div>
+                    <div class="mt-2">
+                        <button class="p-2 btn btn-primary w-100 mh-100" (click)="ingresar()" [attr.data-testid]="'ingresar'">Ingresar</button>
+                    </div>
+                    <div *ngIf='errorLogin.condicional' class="mt-2 alert alert-danger text-center">
+                        <strong> {{errorLogin.mensaje}} </strong> 
+                        <p>intente nuevamente.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="contenedor_form">
-        <label for="Contraseña">Contraseña</label>
-        <div class="contenedor_form_input">
-            <i class="fa fa-key icon-login" aria-hidden="true"></i>
-            <input class="input-login" name="Contraseña" type="password" placeholder="Contraseña"
-                [(ngModel)]='usuarioLogin.password' [attr.data-testid]="'loginContraseña'">
-        </div>
-    </div>
-
-    <div class="contenedor_login_boton">
-        <button class="login_boton" (click)="ingresar()" [attr.data-testid]="'ingresar'">Ingresar</button>
-    </div>
-
-    <div *ngIf='errorUsuario.condicional' class="alert">
-        {{errorUsuario.mensaje}}
-    </div>
-
-    <div *ngIf='errorContrasena.condicional' class="alert">
-        {{errorContrasena.mensaje}}
-    </div>
-</div>
+</section>
