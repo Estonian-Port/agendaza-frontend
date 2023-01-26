@@ -10,6 +10,7 @@ import { LoginComponent } from './layout/login/login.component';
 import { PerfilUsuarioComponent } from './layout/perfil-usuario/perfil-usuario.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
+import { CardAgendaComponent } from './components/card-agenda/card-agenda.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccio
     LoginComponent,
     PerfilUsuarioComponent,
     NavbarComponent,
-    SeleccionarAgendaComponent
+    SeleccionarAgendaComponent,
+    CardAgendaComponent
   ],
   imports: [
     BrowserModule,

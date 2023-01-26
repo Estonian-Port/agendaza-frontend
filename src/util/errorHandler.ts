@@ -14,7 +14,7 @@ export class SuccessMensaje {
 export function mostrarError(component: any, error: any): void {
   let errorMessage = ''
   if (error.status === 0) {
-    errorMessage = 'No hay conexión con el backend, revise si el servidor remoto está levantado.'
+    errorMessage = 'Error al conectar con el servidor. Sistema en mantenimiento.'
   } else if (error.status === 500) {
     errorMessage = 'Hubo un error al realizar la operación. Consulte al administrador del sistema.'
     console.error(error)
@@ -26,6 +26,6 @@ export function mostrarError(component: any, error: any): void {
 }
 
 export function mostrarErrorConMensaje(component: any, error: any): void {
-  const errorMessage = (error.status === 0) ? 'No hay conexión con el backend, revise si el servidor remoto está levantado.' : error.error ? error.error.message : error.message
+  const errorMessage = (error.status === 0) ? 'Error al conectar con el servidor. Sistema en mantenimiento.' : error.error ? error.error.message : error.message
   component.errors.push(errorMessage)
 }
