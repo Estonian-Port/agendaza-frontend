@@ -4,16 +4,15 @@ import * as _ from 'lodash'
 import { Entidad } from './Entidad'
 
 export type UsuarioLoginJSON = {
-  id: number,
   username: string, 
   password: string
 }
 
 export class UsuarioLogin {
-  constructor(public id: number, public username: string, public password: string) {}
+  constructor( public username: string, public password: string) {}
       
   static fromJson(usuarioLoginJSON: UsuarioLoginJSON): any {
-     return new UsuarioLogin(usuarioLoginJSON.id, usuarioLoginJSON.username, usuarioLoginJSON.password)
+     return new UsuarioLogin(usuarioLoginJSON.username, usuarioLoginJSON.password)
     }
 }
 

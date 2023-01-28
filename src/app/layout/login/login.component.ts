@@ -11,7 +11,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler'
 })
 export class LoginComponent {
 
-  usuarioLogin : UsuarioLogin = new UsuarioLogin(0, '', '')
+  usuarioLogin : UsuarioLogin = new UsuarioLogin('', '')
   errors = []
   errorLogin : ErrorMensaje = new ErrorMensaje(false, '')
 
@@ -24,11 +24,11 @@ export class LoginComponent {
     this.errorLogin.condicional = false
 
     try {
-      await this.loginService.getByUsernameAndContrasena(this.usuarioLogin)
-      
-      if(this.loginService.isUsuarioLogueado()){
-        this.router.navigateByUrl('/seleccionarAgenda')
-      }
+      (await this.loginService.login(this.usuarioLogin)).subscribe(
+        response =>{
+          this.router.navigateByUrl('/')
+        }
+      )
 
     } catch (error) {
       this.errorLogin.condicional = true
@@ -37,3 +37,7 @@ export class LoginComponent {
     }
   }
 }
+function subscribe() {
+  throw new Error('Function not implemented.')
+}
+

@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { lastValueFrom } from 'rxjs'
+import { lastValueFrom, map } from 'rxjs'
 import { Usuario, UsuarioJSON, UsuarioLoginJSON } from '../model/Usuario'
 import { REST_SERVER_URL } from 'src/util/configuration'
 
@@ -9,26 +9,42 @@ import { REST_SERVER_URL } from 'src/util/configuration'
   providedIn: 'root'
 })
 export class LoginService {
-  logOut() {
-    this.idUsuarioLogueado = undefined
-  }
 
   constructor(private httpClient: HttpClient) {}
 
-  idUsuarioLogueado! : number | undefined
+  async login(usuarioLoginJson: UsuarioLoginJSON) {
+    const credentials = this.httpClient.post(REST_SERVER_URL + '/login', usuarioLoginJson, {
+      observe: 'response'
+    }).pipe(map((response: HttpResponse<any>) => {
+      const body = response.body
+      const headers = response.headers
 
+      const bearerToken = headers.get("Authorization")!
+      const token = bearerToken.replace('Bearer ', '')
 
-  public getIdUsuarioLogueado() : number | undefined {
-    return this.idUsuarioLogueado
+      localStorage.setItem('token', token)
+      return body    
+    }))
+    
+    this.getUsuarioIdByUsername(usuarioLoginJson)
+    
+    return credentials
+    
   }
 
-  isUsuarioLogueado(){
-    return !!this.idUsuarioLogueado
+  getToken(){
+    return localStorage.getItem('token')
   }
 
-  async getByUsernameAndContrasena(usuarioLoginJson: UsuarioLoginJSON) {
-    const usuario$ = this.httpClient.put<number>(REST_SERVER_URL + '/getUsuarioByUsernameAndContrasena', usuarioLoginJson)
-    this.idUsuarioLogueado = await lastValueFrom(usuario$)
+  async getUsuarioIdByUsername(usuarioLoginJson: UsuarioLoginJSON) {
+    const usuario$ = this.httpClient.put<number>(REST_SERVER_URL + '/getUsuarioIdByUsername', usuarioLoginJson)
+    const idUsuarioLogueado = await lastValueFrom(usuario$)
+    localStorage.setItem('idUsuarioLogueado', idUsuarioLogueado.toLocaleString())
+
+  }
+
+  getIdUsuarioLogueado(){
+    return Number(localStorage.getItem('idUsuarioLogueado'))
   }
 
   async getUsuarioLogueado() {
