@@ -17,7 +17,7 @@ export class SeleccionarAgendaComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.listaAgenda = await this.agendaService.getListaAgendaByUsuarioId(this.logInService.getIdUsuarioLogueado()!)
+      this.listaAgenda = await this.agendaService.getListaAgendaByUsuarioId(await this.logInService.getUsuarioId())
     } catch (error) {
       mostrarErrorConMensaje(this, error)
     }

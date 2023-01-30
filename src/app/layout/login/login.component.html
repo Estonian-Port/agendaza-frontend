@@ -23,7 +23,8 @@
                         <button class="p-2 btn btn-primary w-100 mh-100" (click)="ingresar()" [attr.data-testid]="'ingresar'">Ingresar</button>
                     </div>
                     <div *ngIf='errorLogin.condicional' class="mt-2 alert alert-danger text-center">
-                        <strong> {{errorLogin.mensaje}} </strong> 
+                        <strong> {{errorLogin.mensaje}} </strong>
+                        <strong>Usuario o contraseña incorrecta</strong>
                         <p>intente nuevamente.</p>
                     </div>
                 </div>

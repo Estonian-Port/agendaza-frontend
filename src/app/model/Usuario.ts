@@ -9,7 +9,7 @@ export type UsuarioLoginJSON = {
 }
 
 export class UsuarioLogin {
-  constructor( public username: string, public password: string) {}
+  constructor(public username: string, public password: string) {}
       
   static fromJson(usuarioLoginJSON: UsuarioLoginJSON): any {
      return new UsuarioLogin(usuarioLoginJSON.username, usuarioLoginJSON.password)

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { lastValueFrom, map } from 'rxjs'
 import { Usuario, UsuarioJSON, UsuarioLoginJSON } from '../model/Usuario'
 import { REST_SERVER_URL } from 'src/util/configuration'
+import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 
 
 @Injectable({
@@ -13,42 +14,43 @@ export class LoginService {
   constructor(private httpClient: HttpClient) {}
 
   async login(usuarioLoginJson: UsuarioLoginJSON) {
+
     const credentials = this.httpClient.post(REST_SERVER_URL + '/login', usuarioLoginJson, {
       observe: 'response'
     }).pipe(map((response: HttpResponse<any>) => {
-      const body = response.body
       const headers = response.headers
+
+      const encodedData = CryptoJsImpl.encryptData(usuarioLoginJson.username)
+      localStorage.setItem('session', encodedData)
 
       const bearerToken = headers.get("Authorization")!
       const token = bearerToken.replace('Bearer ', '')
 
       localStorage.setItem('token', token)
-      return body    
     }))
-    
-    this.getUsuarioIdByUsername(usuarioLoginJson)
-    
+        
     return credentials
     
   }
 
-  getToken(){
+  logout(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('session')
+  }
+
+  static getToken(){
     return localStorage.getItem('token')
   }
 
-  async getUsuarioIdByUsername(usuarioLoginJson: UsuarioLoginJSON) {
-    const usuario$ = this.httpClient.put<number>(REST_SERVER_URL + '/getUsuarioIdByUsername', usuarioLoginJson)
-    const idUsuarioLogueado = await lastValueFrom(usuario$)
-    localStorage.setItem('idUsuarioLogueado', idUsuarioLogueado.toLocaleString())
-
+  async getUsuarioId() {
+    const username = CryptoJsImpl.decryptData(localStorage.getItem('session'))
+    const usuario$ = this.httpClient.put<number>(REST_SERVER_URL + '/getUsuarioIdByUsername', username)
+    return await lastValueFrom(usuario$)
   }
 
-  getIdUsuarioLogueado(){
-    return Number(localStorage.getItem('idUsuarioLogueado'))
-  }
 
   async getUsuarioLogueado() {
-    const usuario$ = this.httpClient.get<UsuarioJSON>(REST_SERVER_URL + '/getUsuario/' + this.getIdUsuarioLogueado())
+    const usuario$ = this.httpClient.get<UsuarioJSON>(REST_SERVER_URL + '/getUsuario/' + this.getUsuarioId())
     return Usuario.fromJson(await lastValueFrom(usuario$))
   }
 }

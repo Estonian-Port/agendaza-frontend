@@ -12,10 +12,10 @@ import { clone } from 'lodash';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private loginService : LoginService) {}
+  constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.loginService.getToken()
+    const token = LoginService.getToken()
 
     if(token){
       const cloned = request.clone({
