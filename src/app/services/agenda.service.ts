@@ -33,7 +33,10 @@ export class AgendaService {
   }
 
   getAgendaId(){
-    return CryptoJsImpl.decryptData(localStorage.getItem('agenda'))
+    if(localStorage.getItem('agenda') != null){
+      return CryptoJsImpl.decryptData(localStorage.getItem('agenda'))
+    }
+    return ""
   }
 
   removeAgendaId(){

@@ -9,14 +9,15 @@ import { LoginService } from '../services/login.service';
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private router : Router
+    private router : Router,
+    private loginService : LoginService
   ){}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    if(LoginService.getToken()){
+    if(this.loginService.getToken()){
       return true
     }
     

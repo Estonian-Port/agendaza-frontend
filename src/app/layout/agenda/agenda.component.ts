@@ -34,8 +34,7 @@ export class AgendaComponent implements OnInit {
     },
     initialView: 'dayGridMonth',
     locale: 'es',
-    locales : [esLocale],
-    initialEvents: []
+    locales : [esLocale]
   }
 
   async ngOnInit() {
@@ -43,16 +42,11 @@ export class AgendaComponent implements OnInit {
       this.eventos = await this.agendaService.getAllEventosByEmpresaId(this.agendaService.getAgendaId())
       console.log(this.eventos)
       
-      this.calendarOptions.initialEvents = this.eventos
+      this.calendarOptions.events = this.eventos
 
     } catch (error) {
       mostrarErrorConMensaje(this, error)
     }
   }
-  
-  cargarEventos() {
-    console.log("eaaa")
-    console.log( this.eventos)
-    this.calendarOptions.initialEvents = this.eventos
-  }
+
 }

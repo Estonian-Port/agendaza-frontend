@@ -41,8 +41,12 @@ export class LoginComponent {
       this.errors.forEach(error => { this.errorLogin.mensaje = error })
     }
   }
+
+  isLogueado(): boolean {
+    return this.loginService.getToken() != ""
+  }
+
 }
-function subscribe() {
-  throw new Error('Function not implemented.')
-}
+
+
 

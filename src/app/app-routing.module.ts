@@ -4,6 +4,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
     children: [
       { path : '', component: SeleccionarAgendaComponent },
       { path : 'agenda', component: AgendaComponent },
+      { path : 'nuevoEvento', component: NuevoEventoComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

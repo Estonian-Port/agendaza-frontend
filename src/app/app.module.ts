@@ -14,6 +14,8 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
+import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { AgendaComponent } from './layout/agenda/agenda.component';
     SeleccionarAgendaComponent,
     CardAgendaComponent,
     NotFoundComponent,
-    AgendaComponent
+    AgendaComponent,
+    NuevoEventoComponent
   ],
   imports: [
     BrowserModule,

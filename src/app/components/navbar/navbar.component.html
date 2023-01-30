@@ -1,9 +1,13 @@
-<nav class="navbar navbar-expand navbar-light bg-light">
+<nav class="navbar-light bg-light p-2">
 
-    <a class="navbar-brand" href="#">
+    <div class="d-flex justify-content-between align-items-center">
+    
         <img src="https://logosandtypes.com/wp-content/uploads/2020/12/alegria.svg" width="30" height="30"/>
-    </a>
 
-    <a (click)="logout()"><i class="fas fa-sign-out-alt"></i></a>
+        <a *ngIf="isAgenda()" (click)="nuevoEvento()" ><i class="fa fa-plus fa-lg mx-2"></i></a>
 
+        <a *ngIf="isAgenda()" (click)="volverAgendas()"><i class="fas fa-book fa-lg mx-2"> </i></a>
+
+        <a *ngIf="isLogin()" (click)="logout()"><i class="fas fa-sign-out-alt fa-lg mx-2"></i></a>
+    </div>
 </nav>

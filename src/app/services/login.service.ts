@@ -34,8 +34,11 @@ export class LoginService {
   }
 
   logout(){
-    localStorage.removeItem('token')
-    localStorage.removeItem('session')
+    localStorage.clear()
+  }
+
+  getToken(){
+      return localStorage.getItem('token')
   }
 
   static getToken(){

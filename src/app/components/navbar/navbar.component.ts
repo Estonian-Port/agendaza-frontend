@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AgendaService } from 'src/app/services/agenda.service';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private loginService: LoginService, private router : Router) { }
+  constructor(private loginService: LoginService, private router : Router, private agendaService : AgendaService) { }
 
   ngOnInit(): void {
   }
@@ -18,4 +19,22 @@ export class NavbarComponent implements OnInit {
     this.loginService.logout()
     this.router.navigateByUrl('/login')
   }
+
+  nuevoEvento(){
+    this.router.navigateByUrl('/nuevoEvento')
+  }
+
+  volverAgendas(){
+    this.agendaService.removeAgendaId()
+    this.router.navigateByUrl('/')
+  }
+
+  isAgenda(): boolean {
+    return this.agendaService.getAgendaId() != ""
+  }
+
+  isLogin(): boolean{
+    return this.loginService.getToken() != null
+  }
+
 }

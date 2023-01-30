@@ -1,11 +1,11 @@
 import * as CryptoJS from 'crypto-js';
 import { LoginService } from 'src/app/services/login.service';
 
+
 export class CryptoJsImpl{
 
 
     static encryptData(data : any) {
-
         try {
             return CryptoJS.AES.encrypt(JSON.stringify(data), LoginService.getToken.toString()).toString();
         } catch (e) {
