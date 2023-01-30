@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './helpers/auth.guard';
+import { AgendaComponent } from './layout/agenda/agenda.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
     canActivate:[AuthGuard], 
     children: [
       { path : '', component: SeleccionarAgendaComponent },
+      { path : 'agenda', component: AgendaComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

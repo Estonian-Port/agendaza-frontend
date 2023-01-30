@@ -20,8 +20,8 @@ export class LoginService {
     }).pipe(map((response: HttpResponse<any>) => {
       const headers = response.headers
 
-      const encodedData = CryptoJsImpl.encryptData(usuarioLoginJson.username)
-      localStorage.setItem('session', encodedData)
+      const username = CryptoJsImpl.encryptData(usuarioLoginJson.username)
+      localStorage.setItem('session', username)
 
       const bearerToken = headers.get("Authorization")!
       const token = bearerToken.replace('Bearer ', '')
