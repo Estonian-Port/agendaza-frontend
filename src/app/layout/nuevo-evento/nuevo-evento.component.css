@@ -19,7 +19,7 @@
     justify-content: flex-end;
 }
 
-.reference-step-box{
+.step-box{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,5 +27,5 @@
     padding: 1em;
     border-radius: 10px;
     background-color: whitesmoke;
+    margin-bottom: 5px;
 }
-

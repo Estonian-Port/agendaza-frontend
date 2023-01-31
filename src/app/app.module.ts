@@ -16,6 +16,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StepBoxComponent } from './components/step-box/step-box.component';
+import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CardAgendaComponent,
     NotFoundComponent,
     AgendaComponent,
-    NuevoEventoComponent
+    NuevoEventoComponent,
+    StepBoxComponent,
+    ConfiguracionComponent
   ],
   imports: [
     BrowserModule,

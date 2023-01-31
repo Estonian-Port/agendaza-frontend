@@ -2,11 +2,9 @@
     <!--===============================================================================================-->
     <div>
         <div class="row justify-content-evenly">
-            <p [ngStyle]="{'color': (isStep(1)) ? 'green' : '' }" class="col-md-2 reference-step-box"> <strong>1</strong> - Tipo de evento</p>
-            <p [ngStyle]="{'color': (isStep(2)) ? 'green' : '' }" class="col-md-2 reference-step-box"> <strong>2</strong> - Datos del evento</p>
-            <p [ngStyle]="{'color': (isStep(3)) ? 'green' : '' }" class="col-md-2 reference-step-box"> <strong>3</strong> - Cotizacion</p>
-            <p [ngStyle]="{'color': (isStep(4)) ? 'green' : '' }" class="col-md-2 reference-step-box"> <strong>4</strong> - Catering</p>
-            <p [ngStyle]="{'color': (isStep(5)) ? 'green' : '' }" class="col-md-2 reference-step-box"> <strong>5</strong> - Datos de contacto</p>
+            <div *ngFor="let stepBox of listaStepBox" class="col-md-2 step-box">
+                <app-step-box [stepBox]="stepBox" [currentStep]="step"></app-step-box>
+            </div>
         </div>
 
         <div *ngIf="isStep(1)">
