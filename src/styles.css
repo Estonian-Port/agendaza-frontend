@@ -25,7 +25,3 @@ a:active {
   --espacio-separacion: 0.5rem;
   --sombra: 0 0.35rem 0.35rem var(--color-terciario);
 }
-
-html {
-  font-size: 12px;
-}

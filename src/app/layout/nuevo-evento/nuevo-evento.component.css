@@ -1,7 +1,31 @@
-.mat-stepper-horizontal {
-    margin-top: 8px;
-  }
-  
-  .mat-mdc-form-field {
-    margin-top: 16px;
-  }
+.nuevo-evento{
+    margin: 1rem;
+    height: 87vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: auto;
+}
+
+.nuevo-evento-step{
+    padding: 1em;
+    border-radius: 10px;
+    background-color: whitesmoke;
+}
+
+.botones-nuevo-evento{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.reference-step-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    padding: 1em;
+    border-radius: 10px;
+    background-color: whitesmoke;
+}
+

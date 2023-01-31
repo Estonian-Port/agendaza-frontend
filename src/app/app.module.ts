@@ -15,7 +15,7 @@ import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,11 +30,12 @@ import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.compone
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    FullCalendarModule
+    FullCalendarModule,
   ],
   providers: [
     {
