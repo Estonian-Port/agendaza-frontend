@@ -37,12 +37,20 @@ export class NavbarComponent implements OnInit {
     return this.loginService.getToken() != null
   }
 
+  isInAgenda(): boolean{
+    return this.agendaService.getAgendaId() != ""
+  }
+
   isNuevoEvento() : boolean{
     return "/nuevoEvento" == this.location.path()
   }
 
   isConfiguracion() : boolean{
     return "/configuracion" == this.location.path()
+  }
+
+  isAbm() : boolean{
+    return "/Abm/**" == this.location.path()
   }
 
   volverCalendario(){
