@@ -8,7 +8,7 @@
 
         <div class="row">
             <div id="usuario" class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()" >
+                <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()">
                     <div class="col-9 text-start">
                         <h5>Usuarios</h5>
                         <span>{{configuracion.cantUsuarios}} usuarios</span>
@@ -78,7 +78,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" th:href="@{/buscarAllEvento}">
+                <a type="button" class="btn btn-primary d-flex" (click)="abmEvento()">
                     <div class="col-9 text-start">
                         <h5>Buscar Evento</h5>
                         <span>{{configuracion.cantEventos}} eventos</span>

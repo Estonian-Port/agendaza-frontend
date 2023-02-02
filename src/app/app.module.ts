@@ -18,9 +18,12 @@ import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepBoxComponent } from './components/step-box/step-box.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
-import { AbmUsuarioComponent } from './layout/abm-usuario/abm-usuario.component';
+import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbm } from './pipes/orderAbm.pipe';
+import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
+import { AbmDataTableComponent } from './components/abm-data-table/abm-data-table.component';
+import { AbmDataTableHeaderComponent } from './components/abm-data-table-header/abm-data-table-header.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { OrderAbm } from './pipes/orderAbm.pipe';
     ConfiguracionComponent,
     AbmUsuarioComponent,
     FilterAbm,
-    OrderAbm
+    OrderAbm,
+    AbmEventoComponent,
+    AbmDataTableComponent,
+    AbmDataTableHeaderComponent
   ],
   imports: [
     BrowserModule,
