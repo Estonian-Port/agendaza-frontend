@@ -1,7 +1,5 @@
 
-import { format, getYear, isBefore, isSameDay } from 'date-fns'
 import * as _ from 'lodash'
-import { Entidad } from './Entidad'
 
 export type UsuarioLoginJSON = {
   username: string, 
@@ -21,81 +19,33 @@ export type UsuarioJSON = {
   nombre : string,
   apellido : string
 	username: string,
-	fechaAlta: string,
-  imagen: string,
 }
 
-export type PerfilDeUsuarioJSON = {
-  usuario :UsuarioJSON 
-}
+export class Usuario {
 
+  constructor(public id: number, public nombre: string, public apellido: string, public username: string) {}
 
-
-export class PerfilUsuario {
-  constructor(
-     public usuario : Usuario
-      ){}
-
-      static fromJson(perfilDeUsuarioJSON: PerfilDeUsuarioJSON) : PerfilUsuario {
-        return new PerfilUsuario(
-          Usuario.fromJson(perfilDeUsuarioJSON.usuario)
-          )
-      }
-
-
-      toJSON() : PerfilDeUsuarioJSON{
-        return {
-          usuario : this.usuario.toJSON()
-        }
-      }
-
-  }
-
-
-export class Usuario implements Entidad{
-  
-  id!: number
-  imagen!: string
-  fechaAlta! : Date
-
-  constructor(public nombre: string ="", public apellido: string="", public username: string="", public paisResidencia: string="", public  diasParaViajar = 0) {}
-
-  static fromJson(usuarioJson : UsuarioJSON | Usuario) : Usuario{ 
-    return  Object.assign(new Usuario() ,usuarioJson , {fechaAlta : new Date(usuarioJson.fechaAlta),
-    } ) 
-  }
-
-  antiguedad(): number {
-    return getYear(Date.now()) - getYear(this.fechaAlta)
+  static fromJson(usuarioJson : UsuarioJSON) : Usuario{ 
+    return  Object.assign(new Usuario(usuarioJson.id, usuarioJson.nombre, usuarioJson.apellido, usuarioJson.username))
   }
 
   esValido(): boolean {
     return (this.nombre!=='' && this.apellido!=='' && this.username!=='')
   }
 
-  esValidaFechaAlta(){
-    return isBefore(Date.now(), this.fechaAlta) || isSameDay(Date.now(), this.fechaAlta)
+  contiene(palabra: string): boolean {
+    return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase()) 
+    || (this.apellido.toUpperCase() || '').includes(palabra.toUpperCase())
+    || (this.username.toUpperCase() || '').includes(palabra.toUpperCase())
   }
 
-  toJSON(): UsuarioJSON {
 
+  toJSON(): UsuarioJSON {
     return {
       id: this.id,
       nombre : this.nombre,
       apellido : this.apellido,
       username: this.username,
-      fechaAlta: this.deDateAStringFormateado(),
-      imagen : this.imagen,
     }
-}
-
-  deDateAStringFormateado(){
-    return  format(this.fechaAlta, 'yyyy-MM-dd')
   }
 }
-
-
-
-
-
-

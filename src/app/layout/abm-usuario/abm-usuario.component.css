@@ -1,0 +1,17 @@
+.main{
+    margin: 1rem;
+    height: 87vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: auto;
+}
+
+.bottom{
+    display: flex;
+    justify-content: space-between;
+}
+
+.spacio{
+    width: 20%;
+}

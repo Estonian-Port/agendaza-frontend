@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './helpers/auth.guard';
+import { AbmUsuarioComponent } from './layout/abm-usuario/abm-usuario.component';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
 import { LoginComponent } from './layout/login/login.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path : 'agenda', component: AgendaComponent },
       { path : 'nuevoEvento', component: NuevoEventoComponent },
       { path : 'configuracion', component: ConfiguracionComponent },
+      { path : 'AbmUsuario', component: AbmUsuarioComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

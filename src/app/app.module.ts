@@ -18,6 +18,9 @@ import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepBoxComponent } from './components/step-box/step-box.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
+import { AbmUsuarioComponent } from './layout/abm-usuario/abm-usuario.component';
+import { FilterAbm } from './pipes/filterAbm.pipe';
+import { OrderAbm } from './pipes/orderAbm.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { ConfiguracionComponent } from './layout/configuracion/configuracion.com
     AgendaComponent,
     NuevoEventoComponent,
     StepBoxComponent,
-    ConfiguracionComponent
+    ConfiguracionComponent,
+    AbmUsuarioComponent,
+    FilterAbm,
+    OrderAbm
   ],
   imports: [
     BrowserModule,
@@ -39,7 +45,7 @@ import { ConfiguracionComponent } from './layout/configuracion/configuracion.com
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    FullCalendarModule,
+    FullCalendarModule
   ],
   providers: [
     {
