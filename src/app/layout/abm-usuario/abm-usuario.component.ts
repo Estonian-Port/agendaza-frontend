@@ -11,11 +11,13 @@ export class AbmUsuarioComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-  itemsToDisplay : Array<any> = []
+
   cantidadRegistros : number[] = []
+  currentRegistro : number = 0
+
   cantidadPaginas : number[] = []
-  currentPage : number = 1
-  beginItem : number = 0
+  currentPagina : number = 1
+
   classes : String = ""
 
   constructor(private configuracionService : ConfiguracionService){}
@@ -28,37 +30,33 @@ export class AbmUsuarioComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
-
-    this.actualizarLista()
   }
 
   siguiente(){
-    if(this.currentPage >= 1 && this.currentPage < this.cantidadPaginas.length){
-      this.currentPage = this.currentPage + 1
-      this.classes = "active"
-      this.actualizarLista()
+    if(this.currentRegistro >= 0 && this.currentRegistro < (this.cantidadPaginas.length -1) * 10){
+      this.currentRegistro += 10
+      this.currentPagina += 1
     }
   }
 
   atras(){
-    if(this.currentPage > 1 && this.currentPage <= this.cantidadPaginas.length){
-      this.currentPage = this.currentPage - 1
-      this.actualizarLista()
+    if(this.currentRegistro > 0 && this.currentRegistro <= (this.cantidadPaginas.length -1) * 10){
+      this.currentRegistro -= 10
+      this.currentPagina -= 1
     }
   }
 
-  irPagina(pagina : number, event : Event){
-    this.currentPage = pagina
-    this.actualizarLista()
+  irPagina(pagina : number){
+    this.currentRegistro = (pagina - 1 ) * 10
+    this.currentPagina = pagina
   }
 
-  actualizarLista(){
-    if(this.currentPage == 1){
-      this.beginItem = 0
-    }else{
-      this.beginItem = (this.currentPage * 10) - 10
-    }
-
-    this.itemsToDisplay = this.listaItems.slice(this.beginItem, this.currentPage * 10)
+  actualizarCantidadPaginas(){
+    this.currentPagina = 1
+    this.currentRegistro = 0
+    this.cantidadPaginas = new Array<number>(
+      Math.trunc(
+        this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
   }
+
 }

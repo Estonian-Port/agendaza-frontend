@@ -5,8 +5,13 @@ import { PipeTransform, Pipe } from '@angular/core'
 })
 export class FilterAbm implements PipeTransform {
 
-  transform(any : any[], palabra: string): any[] {
-    return any.filter(it => it.contiene(palabra))
+  transform(any : any[], currentRegistros: number = 0, search: string = ''): any[] {
+
+    if(search.length != 0){
+      return any.filter(it => it.contiene(search)).slice(currentRegistros, currentRegistros + 10)
+      
+    }
+    return any.slice(currentRegistros, currentRegistros + 10)
   }
 
 }
