@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NuevoEventoComponent } from 'src/app/layout/nuevo-evento/nuevo-evento.component';
+import { GenericItem } from 'src/app/model/GenericItem';
 import { StepBox } from 'src/app/model/StepBox';
 
 @Component({
@@ -10,7 +11,7 @@ import { StepBox } from 'src/app/model/StepBox';
 export class StepBoxComponent implements OnInit {
 
   @Input()
-  stepBox! : StepBox
+  stepBox! : GenericItem
   
   @Input()
   currentStep!: number; 

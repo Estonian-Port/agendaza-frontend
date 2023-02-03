@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { List } from 'lodash';
-import { StepBox } from 'src/app/model/StepBox';
+import { GenericItem } from 'src/app/model/GenericItem';
 
 
 @Component({
@@ -11,26 +10,26 @@ import { StepBox } from 'src/app/model/StepBox';
 export class NuevoEventoComponent implements OnInit {
   
   step : number = 1
-  listaStepBox : Array<StepBox> = [
+  listaStepBox : Array<GenericItem> = [
     {
         id : 1,
-        titulo : "Tipo de evento"
+        nombre : "Tipo de evento"
     },
     {
         id : 2,
-        titulo : "Datos del evento"
+        nombre : "Datos del evento"
     },
     {
         id : 3,
-        titulo : "Cotizacion"
+        nombre : "Cotizacion"
     },
     {
         id : 4,
-        titulo : "Catering"
+        nombre : "Catering"
     },
     {
         id : 5,
-        titulo : "Datos de contacto"
+        nombre : "Datos de contacto"
     },
 ]
 
