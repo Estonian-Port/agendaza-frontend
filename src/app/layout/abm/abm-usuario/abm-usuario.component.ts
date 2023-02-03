@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-abm-usuario',
@@ -20,11 +21,11 @@ export class AbmUsuarioComponent implements OnInit {
 
   classes : String = ""
 
-  constructor(private configuracionService : ConfiguracionService){}
+  constructor(private usuarioService : UsuarioService){}
   
   async ngOnInit() {
 
-    this.listaItems = await this.configuracionService.getAllEmpleadosByEmpresaId()
+    this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId()
     
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 

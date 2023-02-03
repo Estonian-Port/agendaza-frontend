@@ -1,0 +1,19 @@
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-condensed example-animate-container">
+        <thead>
+            <tr>
+                <th *ngFor="let item of listaHeader">{{item}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar">
+                <td>{{item.id}}</td>
+                <td>{{item.nombre}}</td>
+                <td>{{item.codigo}}</td>
+                <td>{{item.inicio}}</td>
+                <td>{{item.fin}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

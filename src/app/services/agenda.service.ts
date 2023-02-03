@@ -15,15 +15,14 @@ export class AgendaService {
   constructor(private httpClient: HttpClient) {}
 
   async getListaAgendaByUsuarioId(usuarioId : number) {
-    const listaAgenda$ = this.httpClient.get<AgendaCardJSON[]>(REST_SERVER_URL + '/getListaAgendaByUsuarioId/' + usuarioId)
-    const listaAgenda = await lastValueFrom(listaAgenda$)
-
-    return listaAgenda.map((agendaCard) => AgendaCard.fromJson(agendaCard))
+    const listaItem$ = this.httpClient.get<AgendaCardJSON[]>(REST_SERVER_URL + '/getListaAgendaByUsuarioId/' + usuarioId)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((agendaCard) => AgendaCard.fromJson(agendaCard))
   }
 
-  async getAllEventosByEmpresaId(agendaId : number) {
-    const eventos$ = this.httpClient.get<EventInput[]>(REST_SERVER_URL + '/getAllEventosByEmpresaId/' + agendaId)
-    return await lastValueFrom(eventos$)
+  async getAllEventosForAgendaByEmpresaId(empresaId : number) {
+    const listaItem$ = this.httpClient.get<EventInput[]>(REST_SERVER_URL + '/getAllEventosForAgendaByEmpresaId/' + empresaId)
+    return await lastValueFrom(listaItem$)
   }
 
   setAgendaId(agendaId : number){

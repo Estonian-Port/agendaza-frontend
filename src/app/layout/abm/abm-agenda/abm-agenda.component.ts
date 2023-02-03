@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { EventoService } from 'src/app/services/evento.service';
+import { ConfiguracionService } from 'src/app/services/configuracion.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-abm-evento',
-  templateUrl: './abm-evento.component.html',
-  styleUrls: ['./abm-evento.component.css']
+  selector: 'app-abm-agenda',
+  templateUrl: './abm-agenda.component.html',
+  styleUrls: ['./abm-agenda.component.css']
 })
-export class AbmEventoComponent implements OnInit {
+export default class AbmAgendaComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
@@ -16,20 +17,20 @@ export class AbmEventoComponent implements OnInit {
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  constructor(private eventoService : EventoService) { }
+  constructor(private usuarioSevice : UsuarioService) { }
 
   async ngOnInit(): Promise<void> {
-    this.listaItems = await this.eventoService.getAllEventoByEmpresaId()
+    //TODO cambiar a getAllAgendaByUsuarioId
+    this.listaItems = await this.usuarioSevice.getAllUsuariosByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
 
     this.listaHeader.push("id")
-    this.listaHeader.push("Titulo")
-    this.listaHeader.push("Codigo")
-    this.listaHeader.push("Inicio")
-    this.listaHeader.push("Fin")
+    this.listaHeader.push("Nombre")
+    this.listaHeader.push("Apellido")
+    this.listaHeader.push("Usuario")
   }
 
   updateCurrentRegistro(registro: number){
@@ -43,5 +44,4 @@ export class AbmEventoComponent implements OnInit {
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
-
 }

@@ -26,4 +26,8 @@ export class ConfiguracionComponent implements OnInit {
   abmEvento() {
      this.router.navigateByUrl('/AbmEvento')
   }
+
+  abmAgenda() {
+    this.router.navigateByUrl('/AbmAgenda')
+ }
 }

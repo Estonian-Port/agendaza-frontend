@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './helpers/auth.guard';
+import AbmAgendaComponent from './layout/abm/abm-agenda/abm-agenda.component';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { AgendaComponent } from './layout/agenda/agenda.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path : 'configuracion', component: ConfiguracionComponent },
       { path : 'AbmUsuario', component: AbmUsuarioComponent },
       { path : 'AbmEvento', component: AbmEventoComponent },
+      { path : 'AbmAgenda', component: AbmAgendaComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

@@ -24,6 +24,8 @@ import { OrderAbm } from './pipes/orderAbm.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmDataTableComponent } from './components/abm-data-table/abm-data-table.component';
 import { AbmDataTableHeaderComponent } from './components/abm-data-table-header/abm-data-table-header.component';
+import AbmAgendaComponent from './layout/abm/abm-agenda/abm-agenda.component';
+import { AbmDataTableEventoComponent } from './components/abm-data-table-evento/abm-data-table-evento.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { AbmDataTableHeaderComponent } from './components/abm-data-table-header/
     OrderAbm,
     AbmEventoComponent,
     AbmDataTableComponent,
-    AbmDataTableHeaderComponent
+    AbmDataTableHeaderComponent,
+    AbmAgendaComponent,
+    AbmDataTableEventoComponent
   ],
   imports: [
     BrowserModule,

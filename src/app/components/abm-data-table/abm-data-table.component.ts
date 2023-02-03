@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table',
@@ -6,21 +6,23 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./abm-data-table.component.css']
 })
 export class AbmDataTableComponent implements OnInit {
-@Input()
-listaItems : Array<any> = []
+  
+  @Input()
+  listaItems : Array<any> = []
 
-@Input()
-listaHeader : Array<String> = []
+  @Input()
+  listaHeader : Array<String> = []
 
-@Input()
-currentRegistro : number = 0
+  @Input()
+  currentRegistro : number = 0
 
-@Input()
-buscar = ''
+  @Input()
+  buscar = ''
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table-header',
@@ -7,31 +7,37 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AbmDataTableHeaderComponent implements OnInit {
 
-  buscar = ''
+  buscar : string = ''
+  currentRegistro : number = 0
+  currentPagina : number = 1
+  classes : String = ""
 
   @Input()
   listaItems : Array<any> = []
-
-  cantidadRegistros : number[] = []
-  currentRegistro : number = 0
-
+  
+  @Input()
   cantidadPaginas : number[] = []
-  currentPagina : number = 1
 
-  classes : String = ""
+  @Input()
+  cantidadRegistros : number[] = []
+
+  @Output() 
+  outputCurrentRegistro = new EventEmitter<number>();
+
+  @Output() 
+  outputBuscar = new EventEmitter<string>();
 
   constructor(){}
   
-  async ngOnInit() {
-    
-    this.cantidadRegistros = new Array<number>(this.listaItems.length)
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
+  ngOnInit() {
+
   }
 
   siguiente(){
     if(this.currentRegistro >= 0 && this.currentRegistro < (this.cantidadPaginas.length -1) * 10){
       this.currentRegistro += 10
       this.currentPagina += 1
+      this.outputRegistro()
     }
   }
 
@@ -39,20 +45,34 @@ export class AbmDataTableHeaderComponent implements OnInit {
     if(this.currentRegistro > 0 && this.currentRegistro <= (this.cantidadPaginas.length -1) * 10){
       this.currentRegistro -= 10
       this.currentPagina -= 1
+      this.outputRegistro()
     }
   }
 
   irPagina(pagina : number){
     this.currentRegistro = (pagina - 1 ) * 10
     this.currentPagina = pagina
+    this.outputRegistro()
   }
 
   actualizarCantidadPaginas(){
     this.currentPagina = 1
     this.currentRegistro = 0
+    
     this.cantidadPaginas = new Array<number>(
       Math.trunc(
         this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
+    
+    this.outputRegistro()
+    this.outputPalabraBuscar()
+  }
+
+  outputRegistro() {
+    this.outputCurrentRegistro.emit(this.currentRegistro);
+  }
+
+  outputPalabraBuscar() {
+    this.outputBuscar.emit(this.buscar);
   }
 
 }
