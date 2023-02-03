@@ -16,7 +16,7 @@ export class ConfiguracionComponent implements OnInit {
   constructor(private configuracionService : ConfiguracionService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
-    this.configuracion = await this.configuracionService.getAllCantidadesConfiguracionByEmpresaId()
+    this.configuracion = await this.configuracionService.getAllCantidadesConfiguracionByUsuarioIdAndEmpresaId()
   }
 
   abmUsuario(){
