@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ConfiguracionService } from 'src/app/services/configuracion.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
-  selector: 'app-abm-agenda',
-  templateUrl: './abm-agenda.component.html',
-  styleUrls: ['./abm-agenda.component.css']
+  selector: 'app-abm-tipo-evento',
+  templateUrl: './abm-tipo-evento.component.html',
+  styleUrls: ['./abm-tipo-evento.component.css']
 })
-export default class AbmAgendaComponent implements OnInit {
+export class AbmTipoEventoComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
@@ -17,20 +16,16 @@ export default class AbmAgendaComponent implements OnInit {
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  constructor(private usuarioSevice : UsuarioService) { }
+  constructor(private tipoEventoService : TipoEventoService) { }
 
   async ngOnInit(): Promise<void> {
-    //TODO cambiar a getAllAgendaByUsuarioId
-    this.listaItems = await this.usuarioSevice.getAllUsuariosByEmpresaId()
+    this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
 
-    this.listaHeader.push("id")
     this.listaHeader.push("Nombre")
-    this.listaHeader.push("Apellido")
-    this.listaHeader.push("Usuario")
   }
 
   updateCurrentRegistro(registro: number){
@@ -44,4 +39,7 @@ export default class AbmAgendaComponent implements OnInit {
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
+
+
+
 }

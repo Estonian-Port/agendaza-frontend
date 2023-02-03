@@ -13,7 +13,7 @@ export class ConfiguracionService {
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
 
   async getAllCantidadesConfiguracionByEmpresaId() : Promise<Configuracion> {
-    const configuracion$ = this.httpClient.get<ConfiguracionJSON>(REST_SERVER_URL + '/getAllCantidadesConfiguracionByEmpresa/' + this.agendaService.getAgendaId())
+    const configuracion$ = this.httpClient.get<ConfiguracionJSON>(REST_SERVER_URL + '/getAllCantidadesConfiguracionByEmpresa/' + this.agendaService.getEmpresaId())
     return Configuracion.fromJson(await lastValueFrom(configuracion$))
   }
 

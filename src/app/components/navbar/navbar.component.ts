@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   volverAgendas(){
-    this.agendaService.removeAgendaId()
+    this.agendaService.removeEmpresaId()
     this.router.navigateByUrl('/')
   }
 
@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
   }
 
   isInAgenda(): boolean{
-    return this.agendaService.getAgendaId() != ""
+    return this.agendaService.getEmpresaId() != ""
   }
 
   isNuevoEvento() : boolean{

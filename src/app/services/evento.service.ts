@@ -13,7 +13,7 @@ export class EventoService {
   constructor(private httpClient : HttpClient, private agendaService : AgendaService) { }
 
   async getAllEventoByEmpresaId() {
-    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getAgendaId())
+    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((evento) => Evento.fromJson(evento))
   }

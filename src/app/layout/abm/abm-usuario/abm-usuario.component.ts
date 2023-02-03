@@ -12,52 +12,35 @@ export class AbmUsuarioComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-
+  listaHeader : Array<any> =[]
   cantidadRegistros : number[] = []
+  cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  cantidadPaginas : number[] = []
-  currentPagina : number = 1
+  constructor(private usuarioService : UsuarioService) { }
 
-  classes : String = ""
-
-  constructor(private usuarioService : UsuarioService){}
-  
-  async ngOnInit() {
-
+  async ngOnInit(): Promise<void> {
     this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId()
-    
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
+
+    this.listaHeader.push("Nombre")
+    this.listaHeader.push("Apellido")
+    this.listaHeader.push("Usuario")
   }
 
-  siguiente(){
-    if(this.currentRegistro >= 0 && this.currentRegistro < (this.cantidadPaginas.length -1) * 10){
-      this.currentRegistro += 10
-      this.currentPagina += 1
-    }
+  updateCurrentRegistro(registro: number){
+    this.currentRegistro = registro
   }
 
-  atras(){
-    if(this.currentRegistro > 0 && this.currentRegistro <= (this.cantidadPaginas.length -1) * 10){
-      this.currentRegistro -= 10
-      this.currentPagina -= 1
-    }
+  updatePalabraBuscar(palabraBuscar: string){
+    this.buscar = palabraBuscar
   }
 
-  irPagina(pagina : number){
-    this.currentRegistro = (pagina - 1 ) * 10
-    this.currentPagina = pagina
-  }
-
-  actualizarCantidadPaginas(){
-    this.currentPagina = 1
-    this.currentRegistro = 0
-    this.cantidadPaginas = new Array<number>(
-      Math.trunc(
-        this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
+  updateCantidadPaginas(cantidadPaginas: number[]){
+    this.cantidadPaginas = cantidadPaginas
   }
 
 }

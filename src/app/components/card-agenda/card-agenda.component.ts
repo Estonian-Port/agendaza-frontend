@@ -18,7 +18,7 @@ export class CardAgendaComponent implements OnInit {
   }
 
   selecionarAgenda(agendaId : number){
-    this.agendaService.setAgendaId(agendaId)
+    this.agendaService.setEmpresaId(agendaId)
     this.router.navigateByUrl('/agenda')
   }
 

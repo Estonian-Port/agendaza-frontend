@@ -1,6 +1,6 @@
 export type StepBoxJSON = {
-    id : number,
-    titulo : String,
+    id : number
+    titulo : String
 }
 
 export class StepBox{

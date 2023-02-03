@@ -22,10 +22,18 @@ import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.compon
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbm } from './pipes/orderAbm.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
-import { AbmDataTableComponent } from './components/abm-data-table/abm-data-table.component';
-import { AbmDataTableHeaderComponent } from './components/abm-data-table-header/abm-data-table-header.component';
-import AbmAgendaComponent from './layout/abm/abm-agenda/abm-agenda.component';
-import { AbmDataTableEventoComponent } from './components/abm-data-table-evento/abm-data-table-evento.component';
+import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
+import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
+import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
+import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
+import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
+import { AbmExtraComponent } from './layout/abm/abm-extra/abm-extra.component';
+import { SeleccionarExtraComponent } from './layout/seleccionar-extra/seleccionar-extra.component';
+import { AbmDataTablePagoComponent } from './components/abm/abm-data-table-pago/abm-data-table-pago.component';
+import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-table.component';
+import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
+import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-evento/abm-data-table-evento.component';
+import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
 
 @NgModule({
   declarations: [
@@ -42,11 +50,19 @@ import { AbmDataTableEventoComponent } from './components/abm-data-table-evento/
     AbmUsuarioComponent,
     FilterAbm,
     OrderAbm,
+    SeleccionarExtraComponent,
     AbmEventoComponent,
     AbmDataTableComponent,
     AbmDataTableHeaderComponent,
-    AbmAgendaComponent,
-    AbmDataTableEventoComponent
+    AbmDataTableEventoComponent,
+    AbmDataTableUsuarioComponent,
+    AbmDataTablePagoComponent,
+    AbmPagoComponent,
+    AbmClienteComponent,
+    AbmTipoEventoComponent,
+    AbmServicioComponent,
+    AbmEmpresaComponent,
+    AbmExtraComponent,
   ],
   imports: [
     BrowserModule,

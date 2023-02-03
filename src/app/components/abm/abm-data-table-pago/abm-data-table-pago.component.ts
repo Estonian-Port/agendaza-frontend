@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-abm-data-table-evento',
-  templateUrl: './abm-data-table-evento.component.html',
-  styleUrls: ['./abm-data-table-evento.component.css']
+  selector: 'app-abm-data-table-pago',
+  templateUrl: './abm-data-table-pago.component.html',
+  styleUrls: ['./abm-data-table-pago.component.css']
 })
-export class AbmDataTableEventoComponent implements OnInit {
+export class AbmDataTablePagoComponent implements OnInit {
 
-  
+
   @Input()
   listaItems : Array<any> = []
 
@@ -24,5 +24,4 @@ export class AbmDataTableEventoComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

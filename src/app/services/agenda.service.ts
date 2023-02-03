@@ -4,7 +4,7 @@ import { EventInput } from '@fullcalendar/core'
 import { lastValueFrom } from 'rxjs'
 import { REST_SERVER_URL } from 'src/util/configuration'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
-import { AgendaCard, AgendaCardJSON, AgendaEvento, AgendaEventoJSON } from '../model/Agenda'
+import { AgendaCard, AgendaCardJSON } from '../model/Agenda'
 
 
 @Injectable({
@@ -25,21 +25,21 @@ export class AgendaService {
     return await lastValueFrom(listaItem$)
   }
 
-  setAgendaId(agendaId : number){
-    const agendaIdEncrypt = CryptoJsImpl.encryptData(agendaId)
+  setEmpresaId(empresaId : number){
+    const empresaIdEncrypt = CryptoJsImpl.encryptData(empresaId)
 
-    localStorage.setItem('agenda', agendaIdEncrypt)
+    localStorage.setItem('empresa', empresaIdEncrypt)
   }
 
-  getAgendaId(){
-    if(localStorage.getItem('agenda') != null){
-      return CryptoJsImpl.decryptData(localStorage.getItem('agenda'))
+  getEmpresaId(){
+    if(localStorage.getItem('empresa') != null){
+      return CryptoJsImpl.decryptData(localStorage.getItem('empresa'))
     }
     return ""
   }
 
-  removeAgendaId(){
-    localStorage.removeItem('agenda')
+  removeEmpresaId(){
+    localStorage.removeItem('empresa')
   }
 
 }

@@ -8,10 +8,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar">
-                    <td>{{item.id}}</td>
                     <td>{{item.nombre}}</td>
-                    <td>{{item.apellido}}</td>
-                    <td>{{item.username}}</td>
                 </tr>
             </tbody>
         </table>

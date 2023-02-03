@@ -1,12 +1,12 @@
 export type ConfiguracionJSON = {
-    cantUsuarios : number,
-    cantEmpresas : number,
-    cantTipoEvento : number,
-    cantExtras : number,
-    cantPagos : number,
-    cantEventos : number,
-    cantCliente : number,
-    cantCatering : number,
+    cantUsuarios : number
+    cantEmpresas : number
+    cantTipoEvento : number
+    cantExtras : number
+    cantPagos : number
+    cantEventos : number
+    cantCliente : number
+    cantCatering : number
     cantServicios : number
 }
 

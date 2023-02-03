@@ -15,7 +15,7 @@ export class AgendaCard {
 }
 
 export type AgendaEventoJSON = {
-    id : number,
+    id : number
     title : String
     start : Date
     end : Date

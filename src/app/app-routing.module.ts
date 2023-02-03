@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './helpers/auth.guard';
-import AbmAgendaComponent from './layout/abm/abm-agenda/abm-agenda.component';
+import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
+import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
+import { AbmExtraComponent } from './layout/abm/abm-extra/abm-extra.component';
+import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
+import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
+import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
@@ -24,9 +29,14 @@ const routes: Routes = [
       { path : 'agenda', component: AgendaComponent },
       { path : 'nuevoEvento', component: NuevoEventoComponent },
       { path : 'configuracion', component: ConfiguracionComponent },
-      { path : 'AbmUsuario', component: AbmUsuarioComponent },
-      { path : 'AbmEvento', component: AbmEventoComponent },
-      { path : 'AbmAgenda', component: AbmAgendaComponent },
+      { path : 'abmUsuario', component: AbmUsuarioComponent },
+      { path : 'abmEvento', component: AbmEventoComponent },
+      { path : 'abmTipoEvento', component: AbmTipoEventoComponent },
+      { path : 'abmServicio', component: AbmServicioComponent },
+      { path : 'abmExtra', component: AbmExtraComponent },
+      { path : 'abmCliente', component: AbmClienteComponent },
+      { path : 'abmPago', component: AbmPagoComponent },
+      { path : 'abmEmpresa', component: AbmEmpresaComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

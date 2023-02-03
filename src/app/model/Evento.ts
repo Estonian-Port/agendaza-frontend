@@ -1,8 +1,8 @@
 export type EventoJSON = {
-    id: number, 
-    nombre: String, 
-    codigo : String, 
-    inicio : Date, 
+    id: number
+    nombre: String
+    codigo : String
+    inicio : Date
     fin : Date
 }
 

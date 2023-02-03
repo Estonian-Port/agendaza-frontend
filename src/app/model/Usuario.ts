@@ -2,7 +2,7 @@
 import * as _ from 'lodash'
 
 export type UsuarioLoginJSON = {
-  username: string, 
+  username: string
   password: string
 }
 
@@ -16,9 +16,9 @@ export class UsuarioLogin {
 
 export type UsuarioJSON = {
   id: number
-  nombre : string,
+  nombre : string
   apellido : string
-	username: string,
+	username: string
 }
 
 export class Usuario {

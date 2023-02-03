@@ -39,7 +39,7 @@ export class AgendaComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.eventos = await this.agendaService.getAllEventosForAgendaByEmpresaId(this.agendaService.getAgendaId())
+      this.eventos = await this.agendaService.getAllEventosForAgendaByEmpresaId(this.agendaService.getEmpresaId())
       console.log(this.eventos)
       
       this.calendarOptions.events = this.eventos

@@ -20,14 +20,34 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   abmUsuario(){
-    this.router.navigateByUrl('/AbmUsuario')
+    this.router.navigateByUrl('/abmUsuario')
   }
 
   abmEvento() {
-     this.router.navigateByUrl('/AbmEvento')
+     this.router.navigateByUrl('/abmEvento')
   }
 
-  abmAgenda() {
-    this.router.navigateByUrl('/AbmAgenda')
- }
+  abmExtra() {
+    this.router.navigateByUrl('/abmExtra')
+  }
+
+  abmServicio() {
+    this.router.navigateByUrl('/abmServicio')
+  }
+
+  abmEmpresa() {
+    this.router.navigateByUrl('/abmEmpresa')
+  }
+
+  abmTipoEvento() {
+    this.router.navigateByUrl('/abmTipoEvento')
+  }
+
+  abmPago() {
+    this.router.navigateByUrl('/abmPago')
+  }
+
+  abmCliente() {
+    this.router.navigateByUrl('/abmCliente')
+  }
 }
