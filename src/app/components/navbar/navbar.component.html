@@ -10,6 +10,8 @@
 
         <a *ngIf="isAgenda()" (click)="nuevoEvento()" ><i class="fa fa-plus fa-lg mx-2"></i></a>
 
+        <a *ngIf="isAbm()" (click)="nuevoAbm()" ><i class="fa fa-plus fa-lg mx-2"></i></a>
+
         <a *ngIf="isInAgenda() && !isConfiguracion()" (click)="configuracion()"><i class="fa fa-cog fa-lg mx-2"></i></a>
 
         <a *ngIf="isLogin()" (click)="logout()"><i class="fas fa-sign-out-alt fa-lg mx-2"></i></a>

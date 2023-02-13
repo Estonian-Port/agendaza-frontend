@@ -50,7 +50,11 @@ export class NavbarComponent implements OnInit {
   }
 
   isAbm() : boolean{
-    return "/Abm/**" == this.location.path()
+    return "/abm" == this.location.path().substring(0,4)
+  }
+
+  nuevoAbm(){
+    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
   }
 
   volverCalendario(){

@@ -14,6 +14,14 @@ import { ConfiguracionComponent } from './layout/configuracion/configuracion.com
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
+import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
+import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
+import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
+import { SaveExtraComponent } from './layout/save/save-extra/save-extra.component';
+import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
+import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
+import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
+import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 
 const routes: Routes = [
@@ -37,6 +45,14 @@ const routes: Routes = [
       { path : 'abmCliente', component: AbmClienteComponent },
       { path : 'abmPago', component: AbmPagoComponent },
       { path : 'abmEmpresa', component: AbmEmpresaComponent },
+      { path : 'saveUsuario', component: SaveUsuarioComponent },
+      { path : 'saveEvento', component: SaveEventoComponent },
+      { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
+      { path : 'saveServicio', component: SaveServicioComponent },
+      { path : 'saveExtra', component: SaveExtraComponent },
+      { path : 'saveCliente', component: SaveClienteComponent },
+      { path : 'savePago', component: SavePagoComponent },
+      { path : 'saveEmpresa', component: SaveEmpresaComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

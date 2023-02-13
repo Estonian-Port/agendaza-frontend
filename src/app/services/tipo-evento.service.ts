@@ -11,7 +11,7 @@ import { AgendaService } from './agenda.service';
 export class TipoEventoService {
   
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
-
+  
   async getAllTipoEventoByEmpresaId() {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)

@@ -34,6 +34,17 @@ import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-
 import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
 import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-evento/abm-data-table-evento.component';
 import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
+import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
+import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
+import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
+import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
+import { SaveExtraComponent } from './layout/save/save-extra/save-extra.component';
+import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
+import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
+import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
+import { SaveItemComponent } from './components/save/save-item/save-item.component';
+import { SaveItemConAsignacionComponent } from './components/save/save-item-con-asignacion/save-item-con-asignacion.component';
+import { CheckboxLabelComponent } from './components/checkbox-label/checkbox-label.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +74,17 @@ import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-us
     AbmServicioComponent,
     AbmEmpresaComponent,
     AbmExtraComponent,
+    SaveUsuarioComponent,
+    SaveEmpresaComponent,
+    SaveClienteComponent,
+    SaveEventoComponent,
+    SaveExtraComponent,
+    SavePagoComponent,
+    SaveServicioComponent,
+    SaveTipoEventoComponent,
+    SaveItemComponent,
+    SaveItemConAsignacionComponent,
+    CheckboxLabelComponent,
   ],
   imports: [
     BrowserModule,
