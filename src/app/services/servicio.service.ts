@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON } from '../model/GenericItem';
 import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
-import { GenericItemEmpresaTipoEvento } from '../model/GenericItemEmpresaTipoEvento';
+import { GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON } from '../model/GenericItemEmpresaTipoEvento';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
@@ -12,7 +12,15 @@ import { AgendaService } from './agenda.service';
 })
 export class ServicioService {
 
+  servicioId : number = 0
+
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
+
+  async getServicio(id : number) {
+    const item$ = this.httpClient.get<GenericItemEmpresaTipoEventoJSON>(REST_SERVER_URL + '/getServicio/' + id)
+    const item = await lastValueFrom(item$)
+    return GenericItemEmpresaTipoEvento.fromJson(item)
+  }
 
   async getAllServicioByEmpresaId() {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioByEmpresaId/' + this.agendaService.getEmpresaId())
@@ -20,9 +28,15 @@ export class ServicioService {
     return listaItem.map((servicio) => GenericItem.fromJson(servicio))
   }
 
-  async saveServicio(genericItem : GenericItemEmpresaTipoEvento) {
+  async save(genericItem : GenericItemEmpresaTipoEvento) {
     const genericItemEmpresaTipoEvento = new GenericItemEmpresaTipoEvento(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId(), genericItem.listaTipoEventoId)
     const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', genericItemEmpresaTipoEvento)
+    const item = await lastValueFrom(item$)
+    return item
+  }
+
+  async delete(id : number) {
+    const item$ = this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
     const item = await lastValueFrom(item$)
     return item
   }

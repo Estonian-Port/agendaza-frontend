@@ -9,6 +9,9 @@
     </app-abm-data-table-header>
 
     <app-abm-data-table
+        [mostrarPrecio]="false"
+        (outputEditar)="editar($event)"
+        (outputEliminar)="eliminar($event)"
         [listaItems]="listaItems"
         [listaHeader]="listaHeader"
         [currentRegistro]="currentRegistro"

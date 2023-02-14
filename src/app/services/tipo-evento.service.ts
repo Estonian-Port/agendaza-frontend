@@ -20,9 +20,9 @@ export class TipoEventoService {
   }
 
   async saveTipoEvento(genericItem : GenericItem) {
-    const genericItemEmpresa = new GenericItemEmpresa(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId())
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', genericItemEmpresa)
-    const item = await lastValueFrom(item$)
-    return item
+    //const genericItemEmpresa = new GenericItemEmpresa(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId())
+    //const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', genericItemEmpresa)
+    //const item = await lastValueFrom(item$)
+    //return item
   }
 }

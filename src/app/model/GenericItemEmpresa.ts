@@ -6,9 +6,9 @@ export type GenericItemEmpresaJSON = {
 
 export class GenericItemEmpresa{
 
-    constructor(public id : number, public nombre: string, public empresaId: number){}
+    constructor(public id : number, public nombre : string, public empresaId: number){}
     
     static fromJson(genericItemEmpresaJSON: GenericItemEmpresaJSON): any {
-        return new GenericItemEmpresa(genericItemEmpresaJSON.id, genericItemEmpresaJSON.nombre, genericItemEmpresaJSON.empresaId)
+        return new GenericItemEmpresa(genericItemEmpresaJSON.id, genericItemEmpresaJSON.nombre,  genericItemEmpresaJSON.empresaId)
        }
 }

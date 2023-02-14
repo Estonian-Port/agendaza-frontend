@@ -9,7 +9,7 @@ export type GenericItemEmpresaTipoEventoJSON = {
 
 export class GenericItemEmpresaTipoEvento{
 
-    constructor(public id : number, public nombre: string, public empresaId: number, public listaTipoEventoId : Array<number>){}
+    constructor(public id : number, public nombre: string, public empresaId: number, public listaTipoEventoId : Array<number>  = []){}
     
     static fromJson(genericItemEmpresaTipoEventoJSON: GenericItemEmpresaTipoEventoJSON): any {
         return new GenericItemEmpresaTipoEvento(genericItemEmpresaTipoEventoJSON.id, genericItemEmpresaTipoEventoJSON.nombre, 

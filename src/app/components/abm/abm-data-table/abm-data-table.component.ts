@@ -19,10 +19,33 @@ export class AbmDataTableComponent implements OnInit {
   @Input()
   buscar = ''
 
+  @Input()
+  mostrarPrecio : boolean = true
+
+  @Output() 
+  outputPrecio = new EventEmitter<number>();
+
+  @Output() 
+  outputEditar = new EventEmitter<number>();
+
+  @Output() 
+  outputEliminar = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  precio(id : number){
+    this.outputPrecio.emit(id);
+  }
+
+  editar(id : number){
+    this.outputEditar.emit(id);
+  }
+
+  eliminar(id : number){
+    this.outputEliminar.emit(id);
+  }
 
 }
