@@ -41,7 +41,6 @@ import { SaveExtraComponent } from './layout/save/save-extra/save-extra.componen
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
-import { DynamicFormFieldComponent } from './components/dynamic/dynamic-form-field/dynamic-form-field.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +77,6 @@ import { DynamicFormFieldComponent } from './components/dynamic/dynamic-form-fie
     SavePagoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
-    DynamicFormFieldComponent,
   ],
   imports: [
     BrowserModule,

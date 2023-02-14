@@ -11,7 +11,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class SaveUsuarioComponent implements OnInit {
 
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","")
+  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","", true)
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
 
@@ -33,5 +33,13 @@ export class SaveUsuarioComponent implements OnInit {
   
   changeRol(event: any){
     this.usuario.rol = event.target.value
+  }
+
+  onCheckboxChange(event: any){
+    this.usuario.habilitado = event.target.checked
+  }
+
+  isChecked(){
+    return this.usuario.habilitado
   }
 }
