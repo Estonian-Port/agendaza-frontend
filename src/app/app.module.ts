@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,14 +37,11 @@ import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-us
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
-import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { SaveExtraComponent } from './layout/save/save-extra/save-extra.component';
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
-import { SaveItemComponent } from './components/save/save-item/save-item.component';
-import { SaveItemConAsignacionComponent } from './components/save/save-item-con-asignacion/save-item-con-asignacion.component';
-import { CheckboxLabelComponent } from './components/checkbox-label/checkbox-label.component';
+import { DynamicFormFieldComponent } from './components/dynamic/dynamic-form-field/dynamic-form-field.component';
 
 @NgModule({
   declarations: [
@@ -77,14 +74,11 @@ import { CheckboxLabelComponent } from './components/checkbox-label/checkbox-lab
     SaveUsuarioComponent,
     SaveEmpresaComponent,
     SaveClienteComponent,
-    SaveEventoComponent,
     SaveExtraComponent,
     SavePagoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
-    SaveItemComponent,
-    SaveItemConAsignacionComponent,
-    CheckboxLabelComponent,
+    DynamicFormFieldComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +87,8 @@ import { CheckboxLabelComponent } from './components/checkbox-label/checkbox-lab
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    FullCalendarModule
+    FullCalendarModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
