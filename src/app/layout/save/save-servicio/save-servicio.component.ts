@@ -40,7 +40,6 @@ export class SaveServicioComponent implements OnInit {
   }
 
   isChecked(id : number){
-    console.log(this.genericItem)
     if(this.genericItem.listaTipoEventoId != undefined){
       return this.genericItem.listaTipoEventoId.find(it => it == id)
     }

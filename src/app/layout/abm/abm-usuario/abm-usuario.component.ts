@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-abm-usuario',
@@ -16,8 +17,8 @@ export class AbmUsuarioComponent implements OnInit {
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  constructor(private usuarioService : UsuarioService) { }
-
+  constructor(private usuarioService : UsuarioService, private router : Router, private location : Location) { }
+  
   async ngOnInit(): Promise<void> {
     this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
@@ -36,6 +37,15 @@ export class AbmUsuarioComponent implements OnInit {
 
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
+  }
+
+  editar(id : number){
+    this.usuarioService.usuarioId = id
+    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+  }
+
+  eliminar(id : number){
+    this.usuarioService.delete(id)
   }
 
 }

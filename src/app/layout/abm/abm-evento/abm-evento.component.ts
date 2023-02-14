@@ -24,12 +24,6 @@ export class AbmEventoComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
-
-    this.listaHeader.push("id")
-    this.listaHeader.push("Codigo")
-    this.listaHeader.push("Nombre")
-    this.listaHeader.push("Inicio")
-    this.listaHeader.push("Fin")
   }
 
   updateCurrentRegistro(registro: number){

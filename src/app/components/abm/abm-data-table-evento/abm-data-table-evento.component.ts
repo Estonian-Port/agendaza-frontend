@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table-evento',
@@ -19,9 +19,29 @@ export class AbmDataTableEventoComponent implements OnInit {
   @Input()
   buscar = ''
 
+  @Output() 
+  outputPrecio = new EventEmitter<number>();
+
+  @Output() 
+  outputEditar = new EventEmitter<number>();
+
+  @Output() 
+  outputEliminar = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  precio(id : number){
+    this.outputPrecio.emit(id);
+  }
+
+  editar(id : number){
+    this.outputEditar.emit(id);
+  }
+
+  eliminar(id : number){
+    this.outputEliminar.emit(id);
+  }
 }

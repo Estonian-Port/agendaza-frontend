@@ -11,7 +11,7 @@ import { ConfiguracionService } from 'src/app/services/configuracion.service';
 export class ConfiguracionComponent implements OnInit {
 
 
-  configuracion! : Configuracion
+  configuracion = new Configuracion(0,0,0,0,0,0,0,0,0)
 
   constructor(private configuracionService : ConfiguracionService, private router : Router) { }
 

@@ -9,6 +9,8 @@
     </app-abm-data-table-header>
 
     <app-abm-data-table-usuario
+        (outputEditar)="editar($event)"
+        (outputEliminar)="eliminar($event)"
         [listaItems]="listaItems"
         [currentRegistro]="currentRegistro"
         [buscar]="buscar">
