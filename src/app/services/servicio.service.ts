@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON } from '../model/GenericItem';
 import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
+import { GenericItemEmpresaTipoEvento } from '../model/GenericItemEmpresaTipoEvento';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
@@ -19,12 +20,11 @@ export class ServicioService {
     return listaItem.map((servicio) => GenericItem.fromJson(servicio))
   }
 
-  async saveServicio(genericItem : GenericItem) {
-    const genericItemEmpresa = new GenericItemEmpresa(this.agendaService.getEmpresaId(), genericItem)
-    const listaItem$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', genericItemEmpresa)
-    const listaItem = await lastValueFrom(listaItem$)
-
-    return ""
+  async saveServicio(genericItem : GenericItemEmpresaTipoEvento) {
+    const genericItemEmpresaTipoEvento = new GenericItemEmpresaTipoEvento(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId(), genericItem.listaTipoEventoId)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', genericItemEmpresaTipoEvento)
+    const item = await lastValueFrom(item$)
+    return item
   }
 
 }

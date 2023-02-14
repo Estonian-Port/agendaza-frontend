@@ -1,15 +1,14 @@
-import { GenericItem } from "./GenericItem"
-
-export type GenericItemJSON = {
+export type GenericItemEmpresaJSON = {
     id : number
-    nombre : String
+    nombre : string
+    empresaId : number
 }
 
 export class GenericItemEmpresa{
 
-    constructor(public empresaId: number, public genericItemDto: GenericItem){}
+    constructor(public id : number, public nombre: string, public empresaId: number){}
     
-    static fromJson(GenericItemJSON: GenericItemJSON): any {
-        return new GenericItem(GenericItemJSON.id, GenericItemJSON.nombre)
+    static fromJson(genericItemEmpresaJSON: GenericItemEmpresaJSON): any {
+        return new GenericItemEmpresa(genericItemEmpresaJSON.id, genericItemEmpresaJSON.nombre, genericItemEmpresaJSON.empresaId)
        }
 }

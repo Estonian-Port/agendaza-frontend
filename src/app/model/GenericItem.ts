@@ -1,13 +1,13 @@
 export type GenericItemJSON = {
     id : number
-    nombre : String
+    nombre : string,
 }
 
 export class GenericItem{
 
-    constructor(public id: number, public nombre: String){}
+    constructor(public id: number, public nombre: string){}
     
-    static fromJson(GenericItemJSON: GenericItemJSON): any {
-        return new GenericItem(GenericItemJSON.id, GenericItemJSON.nombre)
-       }
+    static fromJson(genericItemJSON: GenericItemJSON): any {
+        return new GenericItem(genericItemJSON.id, genericItemJSON.nombre)
+    }
 }

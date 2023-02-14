@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { DynamicFormFieldModel } from 'src/app/model/DynamicFormFieldModel';
+import { Router } from '@angular/router';
+import { GenericItem } from 'src/app/model/GenericItem';
+import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
   selector: 'app-save-tipo-evento',
@@ -8,9 +9,21 @@ import { DynamicFormFieldModel } from 'src/app/model/DynamicFormFieldModel';
   styleUrls: ['./save-tipo-evento.component.css']
 })
 export class SaveTipoEventoComponent implements OnInit {
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  
+  genericItem : GenericItem = new GenericItem(0, "")
+
+
+  constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
+  
+  
+  ngOnInit() {
   }
+
+  async save(){
+    const item = await this.tipoEventoService.saveTipoEvento(this.genericItem)
+    this.router.navigateByUrl('/abmTipoEvento')
+  }
+
 
 
 
