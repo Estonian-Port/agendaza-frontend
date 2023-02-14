@@ -11,9 +11,6 @@ export class AbmDataTableComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
-  listaHeader : Array<String> = []
-
-  @Input()
   currentRegistro : number = 0
 
   @Input()

@@ -12,7 +12,6 @@ export class AbmUsuarioComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-  listaHeader : Array<any> =[]
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
@@ -25,10 +24,6 @@ export class AbmUsuarioComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
-
-    this.listaHeader.push("Nombre")
-    this.listaHeader.push("Apellido")
-    this.listaHeader.push("Usuario")
   }
 
   updateCurrentRegistro(registro: number){

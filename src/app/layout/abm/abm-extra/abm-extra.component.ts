@@ -11,7 +11,6 @@ export class AbmExtraComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-  listaHeader : Array<any> =[]
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
@@ -25,7 +24,6 @@ export class AbmExtraComponent implements OnInit {
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
 
-    this.listaHeader.push("Nombre")
   }
 
   updateCurrentRegistro(registro: number){
@@ -39,7 +37,5 @@ export class AbmExtraComponent implements OnInit {
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
-
-
 
 }
