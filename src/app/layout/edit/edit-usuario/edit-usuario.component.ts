@@ -13,40 +13,20 @@ export class EditUsuarioComponent implements OnInit {
   usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","", true)
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
-  sexoValor : string = ""
-  rolValor : string = ""
 
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
     this.usuario = await this.usuarioService.getUsuario(this.usuarioService.usuarioId)
     this.usuario.rol = await this.usuarioService.getUsuarioRolByEmpresaId(this.usuarioService.usuarioId)
+    
     this.listaRol = await this.usuarioService.getAllRol()
     this.listaSexo = await this.usuarioService.getAllSexo()
-    
-    this.sexoValor = this.usuario.sexo
-    this.rolValor = this.usuario.rol
   }
 
   async save(){
     const item = await this.usuarioService.save(this.usuario)
     this.router.navigateByUrl('/abmUsuario')
-  }
-
-  changeSexo(event: any){
-    this.usuario.sexo = event.target.value
-  }
-  
-  changeRol(event: any){
-    this.usuario.rol = event.target.value
-  }
-
-  onCheckboxChange(event: any){
-    this.usuario.habilitado = event.target.checked
-  }
-
-  isChecked(){
-    return this.usuario.habilitado
   }
 
 }
