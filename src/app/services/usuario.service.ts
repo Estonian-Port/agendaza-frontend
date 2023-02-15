@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Usuario, UsuarioJSON, UsuarioSave } from '../model/Usuario';
-import { UsuarioEmpresa } from '../model/UsuarioEmpresa';
+import { Usuario, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
@@ -44,6 +43,11 @@ export class UsuarioService {
     return item
   }
 
+  async editPassword(usuarioEditPassword : UsuarioEditPassword) {
+    const listaItem$ = this.httpClient.post<Usuario>(REST_SERVER_URL + '/editPassword', usuarioEditPassword)
+    return await lastValueFrom(listaItem$)
+  }
+
   async getAllRol() {
     const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllRol')
     return await lastValueFrom(listaItem$)
@@ -53,5 +57,7 @@ export class UsuarioService {
     const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllSexo')
     return await lastValueFrom(listaItem$)
   }
+
+
 
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Configuracion, ConfiguracionJSON } from '../model/Configuracion';
-import { UsuarioEmpresa } from '../model/UsuarioEmpresa';
+import { UsuarioEmpresa } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
 import { LoginService } from './login.service';
 

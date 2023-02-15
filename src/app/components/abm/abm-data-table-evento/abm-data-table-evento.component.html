@@ -5,8 +5,10 @@
             <tr>
                 <th>Nombre</th>
                 <th>Codigo</th>
-                <th>inicio</th>
+                <th>Fecha</th>
+                <th>Inicio</th>
                 <th>Fin</th>
+                <th>Tipo Evento</th>
                 <th class="d-flex justify-content-center">Acciones</th>
             </tr>
         </thead>
@@ -15,7 +17,9 @@
                 <td>{{item.codigo}}</td>
                 <td>{{item.nombre}}</td>
                 <td>{{item.inicio}}</td>
+                <td>{{item.inicio}}</td>
                 <td>{{item.fin}}</td>
+                <td>{{item.tipoEvento}}</td>
                 <td class="d-flex justify-content-center">
                     <a (click)="precio(item.id)" class="mx-2"><i class="fas fa-dollar-sign text-success fa-lg"></i></a>
                     <a (click)="precio(item.id)" class="mx-2"><i class="fas fa-asterisk text-warning fa-lg"></i></a>

@@ -12,9 +12,6 @@ export class AbmDataTablePagoComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
-  listaHeader : Array<String> = []
-
-  @Input()
   currentRegistro : number = 0
 
   @Input()
@@ -23,5 +20,9 @@ export class AbmDataTablePagoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  eliminar(id : number){
+
   }
 }

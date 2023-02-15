@@ -71,3 +71,23 @@ export class UsuarioSave {
   constructor(public usuario: Usuario, public empresaId : number, public rol : string ) {}
 
 }
+
+export class UsuarioEditPassword {
+
+  constructor(public id: number, public password: string){}
+
+}
+
+export type UsuarioEmpresaJSON = {
+  usuarioId : number
+  empresaId : number
+}
+
+export class UsuarioEmpresa{
+
+  constructor(public usuarioId: number, public empresaId: number){}
+  
+  static fromJson(UsuarioEmpresaJSON: UsuarioEmpresaJSON): any {
+      return new UsuarioEmpresa(UsuarioEmpresaJSON.usuarioId, UsuarioEmpresaJSON.empresaId)
+     }
+}

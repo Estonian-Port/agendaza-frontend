@@ -9,10 +9,8 @@ import { PagoService } from 'src/app/services/pago.service';
 })
 export class AbmPagoComponent implements OnInit {
 
-
   buscar = ''
   listaItems : Array<any> = []
-  listaHeader : Array<any> =[]
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
@@ -25,11 +23,6 @@ export class AbmPagoComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
-
-    this.listaHeader.push("Pago")
-    this.listaHeader.push("Codigo")
-    this.listaHeader.push("Evento")
-    this.listaHeader.push("Fecha de pago")
 
   }
 
@@ -44,7 +37,5 @@ export class AbmPagoComponent implements OnInit {
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
-
-
 
 }

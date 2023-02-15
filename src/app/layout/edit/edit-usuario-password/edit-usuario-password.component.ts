@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario } from 'src/app/model/Usuario';
+import { Usuario, UsuarioEditPassword } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -10,11 +10,17 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class EditUsuarioPasswordComponent implements OnInit {
 
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","", true)
+  usuarioEditPassword = new UsuarioEditPassword(0, "")
 
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   ngOnInit(): void {
+    this.usuarioEditPassword.id = this.usuarioService.usuarioId
+  }
+
+  async editPassword(){
+    const item = await this.usuarioService.editPassword(this.usuarioEditPassword)
+    this.router.navigateByUrl('/abmUsuario')
   }
 
 }
