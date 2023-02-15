@@ -11,6 +11,8 @@ import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-ev
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
+import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
+import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
@@ -51,6 +53,8 @@ const routes: Routes = [
       { path : 'saveCliente', component: SaveClienteComponent },
       { path : 'savePago', component: SavePagoComponent },
       { path : 'saveEmpresa', component: SaveEmpresaComponent },
+      { path : 'editUsuario', component: EditUsuarioComponent },
+      { path : 'editUsuarioPassword', component: EditUsuarioPasswordComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

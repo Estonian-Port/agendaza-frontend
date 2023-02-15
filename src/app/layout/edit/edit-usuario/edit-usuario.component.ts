@@ -1,25 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { format } from 'date-fns';
 import { Usuario } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-save-usuario',
-  templateUrl: './save-usuario.component.html',
-  styleUrls: ['./save-usuario.component.css']
+  selector: 'app-edit-usuario',
+  templateUrl: './edit-usuario.component.html',
+  styleUrls: ['./edit-usuario.component.css']
 })
-export class SaveUsuarioComponent implements OnInit {
+export class EditUsuarioComponent implements OnInit {
 
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO","ADMIN", "", true)
+  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","", true)
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
+  sexoValor : string = ""
+  rolValor : string = ""
 
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
+    this.usuario = await this.usuarioService.getUsuario(this.usuarioService.usuarioId)
+    this.usuario.rol = await this.usuarioService.getUsuarioRolByEmpresaId(this.usuarioService.usuarioId)
     this.listaRol = await this.usuarioService.getAllRol()
     this.listaSexo = await this.usuarioService.getAllSexo()
+    
+    this.sexoValor = this.usuario.sexo
+    this.rolValor = this.usuario.rol
   }
 
   async save(){
@@ -42,4 +48,5 @@ export class SaveUsuarioComponent implements OnInit {
   isChecked(){
     return this.usuario.habilitado
   }
+
 }

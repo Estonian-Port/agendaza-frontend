@@ -24,7 +24,7 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   outputEditar = new EventEmitter<number>();
 
   @Output() 
-  outputEliminar = new EventEmitter<number>();
+  outputEditarPassword = new EventEmitter<number>();
 
   constructor() { }
 
@@ -35,7 +35,7 @@ export class AbmDataTableUsuarioComponent implements OnInit {
     this.outputEditar.emit(id);
   }
 
-  eliminar(id : number){
-    this.outputEliminar.emit(id);
+  editarPassword(id : number){
+    this.outputEditarPassword.emit(id);
   }
 }

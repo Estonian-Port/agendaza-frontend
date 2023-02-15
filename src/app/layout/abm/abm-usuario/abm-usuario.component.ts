@@ -41,11 +41,12 @@ export class AbmUsuarioComponent implements OnInit {
 
   editar(id : number){
     this.usuarioService.usuarioId = id
-    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigateByUrl('/editUsuario')
   }
 
-  eliminar(id : number){
-    this.usuarioService.delete(id)
+  cambiarPassword(id : number){
+    this.usuarioService.usuarioId = id
+    this.router.navigateByUrl('/editUsuarioPassword')
   }
 
 }

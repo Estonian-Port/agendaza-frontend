@@ -41,6 +41,8 @@ import { SaveExtraComponent } from './layout/save/save-extra/save-extra.componen
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
+import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
+import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tip
     SavePagoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
+    EditUsuarioComponent,
+    EditUsuarioPasswordComponent,
   ],
   imports: [
     BrowserModule,
