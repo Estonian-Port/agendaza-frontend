@@ -1,1 +1,59 @@
-<p>save-pago works!</p>
+<div class="container">
+    <br>
+    <h2>Agregar pago</h2>
+    <form>
+
+        <div class="form-group">
+            <label for="codigo">Codigo del evento</label>
+            <div class="row">
+                <div class="col-6">
+                    <input type="text" class="form-control" name="codigoEvento" [(ngModel)]='codigo'/>
+                </div>
+                <div class="col-6">
+                    <button type="submit" (click)="buscar()" class="btn btn-primary">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf='errorUsuario.condicional' class="alert alert-danger">
+            {{errorUsuario.mensaje}}
+        </div>
+
+        <div *ngIf="pago.codigo != ''">
+            <div class="form-group">
+                <label for="evento">Evento</label> 
+                <input type="text" class="form-control" name="evento" [(ngModel)]='pago.nombreEvento' disabled/>
+            </div>
+            <div class="form-group">
+                <label for="codigo">Codigo</label> 
+                <input type="text" class="form-control" name="codigo" [(ngModel)]='pago.codigo' disabled/>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Dia evento</label> 
+                <input type="text" class="form-control" name="fecha" [(ngModel)]='pago.fecha' disabled/>
+            </div>
+            <div class="form-group">
+                <label for="monto">Monto</label> 
+                <input type="number" class="form-control" name="monto" [(ngModel)]='pago.monto'>
+            </div>
+
+            <div class="form-group">
+                <label for="rol">Medio de Pago</label> 
+                <select class="form-select" [(ngModel)]="pago.medioDePago" name="medioDePago">
+                    <option *ngFor="let medioDePago of listaMedioDePago" [value]="medioDePago">{{medioDePago}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="container mt-3">
+            <div class="gap-2 d-flex justify-content-end">
+                <div>
+                    <a th:href="@{${volver}}" class="btn btn-primary">Volver</a>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -26,6 +26,6 @@ export function mostrarError(component: any, error: any): void {
 }
 
 export function mostrarErrorConMensaje(component: any, error: any): void {
-  const errorMessage = (error.status === 0) ? 'Error al conectar con el servidor. Sistema en mantenimiento.' : error.error ? error.error.message : error.message
+  const errorMessage = (error.status === 0) ? 'Error al conectar con el servidor. Sistema en mantenimiento.' : error.error ? error.error : error.message
   component.errors.push(errorMessage)
 }

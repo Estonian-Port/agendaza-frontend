@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { format } from 'date-fns';
 import { Usuario } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -27,19 +26,4 @@ export class SaveUsuarioComponent implements OnInit {
     this.router.navigateByUrl('/abmUsuario')
   }
 
-  changeSexo(event: any){
-    this.usuario.sexo = event.target.value
-  }
-  
-  changeRol(event: any){
-    this.usuario.rol = event.target.value
-  }
-
-  onCheckboxChange(event: any){
-    this.usuario.habilitado = event.target.checked
-  }
-
-  isChecked(){
-    return this.usuario.habilitado
-  }
 }

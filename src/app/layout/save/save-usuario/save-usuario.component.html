@@ -49,7 +49,7 @@
 
         <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" id="checkbox" 
-            [checked]="isChecked()" (change)="onCheckboxChange($event)">
+            [(ngModel)]="usuario.habilitado" name="habilitado">
             <label for="checkbox">Habilitado</label>
         </div>
 

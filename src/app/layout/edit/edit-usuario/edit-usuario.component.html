@@ -28,7 +28,6 @@
         <div class="form-group">
             <label for="rol">Sexo</label> 
             <select class="form-select" [(ngModel)]="usuario.sexo" name="sexo">
-                <option value="0">Selecciona una opción</option>
                 <option *ngFor="let sexo of listaSexo" [value]="sexo">{{sexo}}</option>
             </select>
         </div>
@@ -36,7 +35,6 @@
         <div class="form-group">
             <label for="rol">Rol</label> 
             <select class="form-select" [(ngModel)]="usuario.rol" name="rol">
-                <option value="0">Selecciona una opción</option>
                 <option *ngFor="let rol of listaRol" [value]="rol">{{rol}}</option>
             </select>
         </div>
