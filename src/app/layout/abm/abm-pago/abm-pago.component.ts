@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { PagoService } from 'src/app/services/pago.service';
 
@@ -14,6 +15,8 @@ export class AbmPagoComponent implements OnInit {
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
+  modal = false
+  id = 0
 
   constructor(private pagoService : PagoService) { }
 
@@ -23,7 +26,6 @@ export class AbmPagoComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
-
   }
 
   updateCurrentRegistro(registro: number){
@@ -38,4 +40,16 @@ export class AbmPagoComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
+  async eliminar(id : number){
+    this.modal = true
+    this.id = id 
+  }
+
+  changeModal(){
+    this.modal = this.modal!
+  }
+
+  eliminarPosta(){
+    this.pagoService.delete(this.id)
+  }
 }

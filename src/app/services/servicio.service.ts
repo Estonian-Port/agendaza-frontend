@@ -31,14 +31,12 @@ export class ServicioService {
   async save(genericItem : GenericItemEmpresaTipoEvento) {
     const genericItemEmpresaTipoEvento = new GenericItemEmpresaTipoEvento(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId(), genericItem.listaTipoEventoId)
     const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', genericItemEmpresaTipoEvento)
-    const item = await lastValueFrom(item$)
-    return item
+    return await lastValueFrom(item$)
   }
 
   async delete(id : number) {
     const item$ = this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
-    const item = await lastValueFrom(item$)
-    return item
+    return await lastValueFrom(item$)
   }
 
 }

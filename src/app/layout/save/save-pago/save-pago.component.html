@@ -15,18 +15,14 @@
             </div>
         </div>
 
-        <div *ngIf='errorUsuario.condicional' class="alert alert-danger">
-            {{errorUsuario.mensaje}}
+        <div *ngIf='error.condicional' class="alert alert-danger">
+            {{error.mensaje}}
         </div>
 
         <div *ngIf="pago.codigo != ''">
             <div class="form-group">
                 <label for="evento">Evento</label> 
                 <input type="text" class="form-control" name="evento" [(ngModel)]='pago.nombreEvento' disabled/>
-            </div>
-            <div class="form-group">
-                <label for="codigo">Codigo</label> 
-                <input type="text" class="form-control" name="codigo" [(ngModel)]='pago.codigo' disabled/>
             </div>
             <div class="form-group">
                 <label for="fecha">Dia evento</label> 
@@ -51,7 +47,7 @@
                     <a th:href="@{${volver}}" class="btn btn-primary">Volver</a>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" (click)="save()" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>

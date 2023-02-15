@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table-pago',
@@ -17,12 +17,15 @@ export class AbmDataTablePagoComponent implements OnInit {
   @Input()
   buscar = ''
 
+  @Output() 
+  outputEliminar = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
   eliminar(id : number){
-
+    this.outputEliminar.emit(id);
   }
 }

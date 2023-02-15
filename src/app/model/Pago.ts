@@ -21,5 +21,8 @@ export class Pago{
 
 export class CodigoEmpresaId{
     constructor(public codigo : string, public empresaId : number){}
-    
+}
+
+export class PagoEmpresaEncargado{
+    constructor(public pago : Pago, public empresaId : number, public usuarioId : number){}
 }
