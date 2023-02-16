@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class AbmDataTablePagoComponent implements OnInit {
 
-
   @Input()
   listaItems : Array<any> = []
 
@@ -20,12 +19,31 @@ export class AbmDataTablePagoComponent implements OnInit {
   @Output() 
   outputEliminar = new EventEmitter<number>();
 
+  modal = false
+  idEliminar = 0
+  cuerpoModal = ""
+  tituloModal = ""
+  botonModal = ""
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  eliminar(id : number){
-    this.outputEliminar.emit(id);
+  modalParaEliminar(id : number, evento : string){
+    this.idEliminar = id
+    this.tituloModal = "Eliminar Pago"
+    this.cuerpoModal = "Quiere eliminar el pago del evento: " + evento
+    this.botonModal = "Eliminar"
+    this.setModal(!this.modal)
   }
+
+  setModal(modal : boolean){
+    this.modal = modal
+  }
+
+  eliminar(id : number){
+    this.outputEliminar.emit(this.idEliminar);
+  }
+
 }

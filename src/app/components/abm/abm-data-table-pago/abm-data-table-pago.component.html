@@ -16,9 +16,18 @@
                 <td>{{item.codigo}}</td>
                 <td>{{item.fecha}}</td>
                 <td class="d-flex justify-content-center">
-                    <a (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></a>
+                    <a (click)="modalParaEliminar(item.id, item.nombreEvento)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></a>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+<app-modal
+    (outputAceptar)="eliminar($event)"
+    (outputChangeModal)="setModal($event)"
+    [modal]="modal"
+    [titulo]="tituloModal"
+    [cuerpo]="cuerpoModal"
+    [boton]="botonModal">
+</app-modal>

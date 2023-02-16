@@ -43,6 +43,7 @@ import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-passwor
     SaveTipoEventoComponent,
     EditUsuarioComponent,
     EditUsuarioPasswordComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

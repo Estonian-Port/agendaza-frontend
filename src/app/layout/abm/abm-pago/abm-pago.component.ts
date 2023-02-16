@@ -15,8 +15,6 @@ export class AbmPagoComponent implements OnInit {
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
-  modal = false
-  id = 0
 
   constructor(private pagoService : PagoService) { }
 
@@ -40,16 +38,7 @@ export class AbmPagoComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
-  async eliminar(id : number){
-    this.modal = true
-    this.id = id 
-  }
-
-  changeModal(){
-    this.modal = this.modal!
-  }
-
-  eliminarPosta(){
-    this.pagoService.delete(this.id)
+  eliminar(id : number){
+    this.pagoService.delete(id)
   }
 }
