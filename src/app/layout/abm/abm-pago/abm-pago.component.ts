@@ -19,13 +19,17 @@ export class AbmPagoComponent implements OnInit {
   constructor(private pagoService : PagoService) { }
 
   async ngOnInit(): Promise<void> {
+    this.inicializarListaItems()
+  }
+
+  async inicializarListaItems(){
     this.listaItems = await this.pagoService.getAllPagoByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
   }
-
+  
   updateCurrentRegistro(registro: number){
     this.currentRegistro = registro
   }
@@ -39,10 +43,10 @@ export class AbmPagoComponent implements OnInit {
   }
 
   async eliminar(id : number){
-    (await this.pagoService.delete(id)).subscribe(
-      async response =>{
-        this.ngOnInit()
+    (await this.pagoService.delete(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
       }
-    )
+    })
   }
 }

@@ -30,10 +30,10 @@ export class AbmDataTablePagoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  modalParaEliminar(id : number, evento : string){
+  modalParaEliminar(id : number, nombre : string){
     this.idEliminar = id
     this.tituloModal = "Eliminar Pago"
-    this.cuerpoModal = "Quiere eliminar el pago del evento: " + evento
+    this.cuerpoModal = "Quiere eliminar el pago del evento: " + nombre
     this.botonModal = "Eliminar"
     this.setModal(!this.modal)
   }

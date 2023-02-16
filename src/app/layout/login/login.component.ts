@@ -24,17 +24,16 @@ export class LoginComponent {
     this.errorLogin.condicional = false
 
     try {
-      (await this.loginService.login(this.usuarioLogin)).subscribe(
-        response =>{
-          this.router.navigateByUrl('/')
-        },
-        err => {
-          this.errorLogin.condicional = true
-          mostrarErrorConMensaje(this, "")
-          this.errors.forEach(error => { this.errorLogin.mensaje = error })
-        }
-      )
-            
+      (await this.loginService.login(this.usuarioLogin)).subscribe({
+          error: (err: any) => { 
+            this.errorLogin.condicional = true
+            mostrarErrorConMensaje(this, "")
+            this.errors.forEach(error => { this.errorLogin.mensaje = error })
+          },
+          complete: () => {
+            this.router.navigateByUrl('/')
+          }
+        })
     } catch (error) {
       this.errorLogin.condicional = true
       mostrarErrorConMensaje(this, error)

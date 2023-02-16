@@ -28,9 +28,27 @@ export class AbmDataTableComponent implements OnInit {
   @Output() 
   outputEliminar = new EventEmitter<number>();
 
+  modal = false
+  idEliminar = 0
+  cuerpoModal = ""
+  tituloModal = ""
+  botonModal = ""
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  modalParaEliminar(id : number, nombre : string){
+    this.idEliminar = id
+    this.tituloModal = "Eliminar Servicio"
+    this.cuerpoModal = "Quiere eliminar el servicio: " + nombre
+    this.botonModal = "Eliminar"
+    this.setModal(!this.modal)
+  }
+
+  setModal(modal : boolean){
+    this.modal = modal
   }
 
   precio(id : number){
@@ -42,7 +60,7 @@ export class AbmDataTableComponent implements OnInit {
   }
 
   eliminar(id : number){
-    this.outputEliminar.emit(id);
+    this.outputEliminar.emit(this.idEliminar);
   }
 
 }

@@ -22,12 +22,15 @@ export class AbmServicioComponent implements OnInit {
   constructor(private servicioService : ServicioService, private router : Router, private location : Location) { }
 
   async ngOnInit(): Promise<void> {
+    this.inicializarListaItems()
+  }
+
+  async inicializarListaItems(){
     this.listaItems = await this.servicioService.getAllServicioByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
-
   }
 
   updateCurrentRegistro(registro: number){
@@ -47,8 +50,12 @@ export class AbmServicioComponent implements OnInit {
     this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
   }
 
-  eliminar(id : number){
-    this.servicioService.delete(id)
+  async eliminar(id : number){
+    (await this.servicioService.delete(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
+      }
+    })
   }
 
 }

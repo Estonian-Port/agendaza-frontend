@@ -35,8 +35,7 @@ export class ServicioService {
   }
 
   async delete(id : number) {
-    const item$ = this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
-    return await lastValueFrom(item$)
+    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
   }
 
 }
