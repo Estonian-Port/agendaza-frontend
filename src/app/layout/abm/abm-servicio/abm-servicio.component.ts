@@ -18,6 +18,9 @@ export class AbmServicioComponent implements OnInit {
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
+  nombreItemModal = ""
+  tituloModal = ""
+  botonModal = ""
 
   constructor(private servicioService : ServicioService, private router : Router, private location : Location) { }
 
@@ -31,6 +34,10 @@ export class AbmServicioComponent implements OnInit {
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    
+    this.tituloModal = "Eliminar Servicio"
+    this.nombreItemModal = "servicio"
+    this.botonModal = "Eliminar"
   }
 
   updateCurrentRegistro(registro: number){

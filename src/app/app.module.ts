@@ -35,7 +35,6 @@ import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-hea
 import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-evento/abm-data-table-evento.component';
 import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
-import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
 import { SaveExtraComponent } from './layout/save/save-extra/save-extra.component';
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
@@ -44,6 +43,7 @@ import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tip
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,6 @@ import { ModalComponent } from './components/modal/modal.component';
     AbmEmpresaComponent,
     AbmExtraComponent,
     SaveUsuarioComponent,
-    SaveEmpresaComponent,
     SaveClienteComponent,
     SaveExtraComponent,
     SavePagoComponent,
@@ -83,6 +82,7 @@ import { ModalComponent } from './components/modal/modal.component';
     EditUsuarioComponent,
     EditUsuarioPasswordComponent,
     ModalComponent,
+    EditEmpresaComponent,
   ],
   imports: [
     BrowserModule,
