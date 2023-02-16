@@ -11,26 +11,11 @@ export class NuevoEventoComponent implements OnInit {
   
   step : number = 1
   listaStepBox : Array<GenericItem> = [
-    {
-        id : 1,
-        nombre : "Tipo de evento"
-    },
-    {
-        id : 2,
-        nombre : "Datos del evento"
-    },
-    {
-        id : 3,
-        nombre : "Cotizacion"
-    },
-    {
-        id : 4,
-        nombre : "Catering"
-    },
-    {
-        id : 5,
-        nombre : "Datos de contacto"
-    },
+    new GenericItem(1, "Tipo de evento"),
+    new GenericItem(2, "Datos del evento"),
+    new GenericItem(3, "Cotizacion"),
+    new GenericItem(4, "Catering"),
+    new GenericItem(5, "Datos de contacto")
 ]
 
   ngOnInit(): void {

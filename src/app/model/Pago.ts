@@ -17,6 +17,14 @@ export class Pago{
         return new Pago(PagoJSON.id, PagoJSON.monto, PagoJSON.codigo, 
             PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fecha)
        }
+    
+       // Se usa en el filtro de header
+    contiene(palabra: string): boolean {
+        return (this.monto.toString() || '').includes(palabra.toUpperCase())
+        || (this.codigo.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.nombreEvento.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.medioDePago.toUpperCase() || '').includes(palabra.toUpperCase())
+    }
 }
 
 export class CodigoEmpresaId{

@@ -23,7 +23,7 @@ export class AbmEventoComponent implements OnInit {
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
+    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
   }
 
   updateCurrentRegistro(registro: number){

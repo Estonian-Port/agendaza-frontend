@@ -38,8 +38,7 @@ export class PagoService {
   }
 
   async delete(id : number) {
-    const item$ = this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id)
-    return await lastValueFrom(item$)
+    return this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id)
   }
 
 }

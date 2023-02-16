@@ -43,6 +43,7 @@ export class Usuario {
     return (this.nombre!=='' && this.apellido!=='' && this.username!=='')
   }
 
+  // Se usa en el filtro de header
   contiene(palabra: string): boolean {
     return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase()) 
     || (this.apellido.toUpperCase() || '').includes(palabra.toUpperCase())

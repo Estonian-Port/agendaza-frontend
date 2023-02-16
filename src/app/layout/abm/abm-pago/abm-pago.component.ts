@@ -23,7 +23,7 @@ export class AbmPagoComponent implements OnInit {
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 10) + 1)
+    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
   }
 
   updateCurrentRegistro(registro: number){
@@ -38,7 +38,11 @@ export class AbmPagoComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
-  eliminar(id : number){
-    this.pagoService.delete(id)
+  async eliminar(id : number){
+    (await this.pagoService.delete(id)).subscribe(
+      async response =>{
+        this.ngOnInit()
+      }
+    )
   }
 }
