@@ -10,10 +10,8 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 })
 export class AbmEmpresaComponent implements OnInit {
 
-
   buscar = ''
   listaItems : Array<any> = []
-  listaHeader : Array<any> =[]
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0

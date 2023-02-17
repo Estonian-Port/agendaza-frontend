@@ -16,6 +16,15 @@ a:active {
   text-decoration: none;
 }
 
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: orange 5px auto;
+}
+
 :root {
   --color-primario: royalblue;
   --color-secundario: dodgerblue;
@@ -29,4 +38,9 @@ a:active {
 .abm{
   margin-top: 1rem;
   height: 87vh;
+}
+
+.center-items-abm{
+  display: flex;
+  justify-content: center;
 }

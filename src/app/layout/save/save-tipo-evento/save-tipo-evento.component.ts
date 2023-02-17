@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GenericItem } from 'src/app/model/GenericItem';
+import { Capacidad } from 'src/app/model/Capacidad';
+import { TipoEvento } from 'src/app/model/TipoEvento';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
@@ -10,17 +11,18 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 })
 export class SaveTipoEventoComponent implements OnInit {
   
-  genericItem : GenericItem = new GenericItem(0, "")
-
+  tipoEvento : TipoEvento = new TipoEvento(0,"",0,"CORTO",new Capacidad(0,0,0), 0)
+  listaDuracion : Array<string> = []
 
   constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
   
-  
-  ngOnInit() {
+  async ngOnInit() {
+    this.listaDuracion = await this.tipoEventoService.getAllDuracion()
+
   }
 
   async save(){
-    const item = await this.tipoEventoService.saveTipoEvento(this.genericItem)
+    const item = await this.tipoEventoService.save(this.tipoEvento)
     this.router.navigateByUrl('/abmTipoEvento')
   }
 

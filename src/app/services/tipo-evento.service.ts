@@ -4,12 +4,15 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON} from '../model/GenericItem';
 import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
+import { TipoEvento } from '../model/TipoEvento';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoEventoService {
+  
+  tipoEventoId : number = 0
   
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
   
@@ -19,10 +22,19 @@ export class TipoEventoService {
     return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
   }
 
-  async saveTipoEvento(genericItem : GenericItem) {
-    //const genericItemEmpresa = new GenericItemEmpresa(genericItem.id, genericItem.nombre, this.agendaService.getEmpresaId())
-    //const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', genericItemEmpresa)
-    //const item = await lastValueFrom(item$)
-    //return item
+  async getAllDuracion() {
+    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllDuracion')
+    return await lastValueFrom(listaItem$)
   }
+
+  async save(tipoEvento : TipoEvento) {
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', tipoEvento)
+    return await lastValueFrom(item$)
+  }
+
+  async delete(id : number) {
+    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
+  }
+
+
 }
