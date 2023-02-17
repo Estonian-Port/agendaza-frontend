@@ -28,12 +28,12 @@ export class TipoEventoService {
   }
 
   async save(tipoEvento : TipoEvento) {
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', tipoEvento)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', tipoEvento)
     return await lastValueFrom(item$)
   }
 
   async delete(id : number) {
-    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
+    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteTipoEvento/' + id)
   }
 
 
