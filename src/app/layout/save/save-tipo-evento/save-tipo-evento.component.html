@@ -12,10 +12,12 @@
                 <option *ngFor="let duracion of listaDuracion" [value]="duracion">{{duracion}}</option>
             </select>
         </div>
+        
         <div class="form-group">
             <label for="nombre">Tiempo de duracion</label> 
-            <input type="text" [(ngModel)]='tipoEvento.cantidadDuracion' class="form-control" name="cantidadDuracion">
+            <input type="time" [(ngModel)]='tipoEvento.cantidadDuracion' class="form-control" name="cantidadDuracion"> 
         </div>
+
         <div class="form-group">
             <label for="nombre">Capacidad para Adultos</label> 
             <input type="text" [(ngModel)]='tipoEvento.capacidad.capacidadAdultos' class="form-control" name="capacidadAdultos">

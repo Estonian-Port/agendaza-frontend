@@ -11,17 +11,18 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 })
 export class SaveTipoEventoComponent implements OnInit {
   
-  tipoEvento : TipoEvento = new TipoEvento(0,"",0,"CORTO",new Capacidad(0,0,0), 0)
+  tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",new Capacidad(0,0,0), 0)
   listaDuracion : Array<string> = []
 
   constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit() {
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
-
   }
 
   async save(){
+    console.log(this.tipoEvento)
+    console.log(this.tipoEvento.toJSON())
     const item = await this.tipoEventoService.save(this.tipoEvento)
     this.router.navigateByUrl('/abmTipoEvento')
   }

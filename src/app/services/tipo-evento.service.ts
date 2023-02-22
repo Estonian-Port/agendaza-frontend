@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON} from '../model/GenericItem';
-import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
 import { TipoEvento } from '../model/TipoEvento';
 import { AgendaService } from './agenda.service';
 
@@ -28,7 +27,8 @@ export class TipoEventoService {
   }
 
   async save(tipoEvento : TipoEvento) {
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', tipoEvento)
+    tipoEvento.empresaId = this.agendaService.getEmpresaId()
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', tipoEvento.toJSON())
     return await lastValueFrom(item$)
   }
 
