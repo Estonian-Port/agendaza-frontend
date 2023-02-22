@@ -1,4 +1,5 @@
 import { Capacidad } from "./Capacidad"
+import { GenericItem } from "./GenericItem"
 import { Time } from "./Time"
 
 export type TipoEventoJSON = {
@@ -16,7 +17,7 @@ export type TipoEventoEditJSON = {
     cantidadDuracion: string
     duracion: string
     capacidad : Capacidad
-    empresaId : number
+    empresa : GenericItem
 }
 
 export class TipoEvento{
@@ -27,7 +28,7 @@ export class TipoEvento{
     static fromJson(tipoEventoEditJSON: TipoEventoEditJSON): any {
         return new TipoEvento(tipoEventoEditJSON.id, tipoEventoEditJSON.nombre, 
             tipoEventoEditJSON.cantidadDuracion.slice(0, 2) + ":" +  tipoEventoEditJSON.cantidadDuracion.slice(3, 5), 
-            tipoEventoEditJSON.duracion, tipoEventoEditJSON.capacidad, tipoEventoEditJSON.empresaId)
+            tipoEventoEditJSON.duracion, tipoEventoEditJSON.capacidad, tipoEventoEditJSON.empresa.id)
     }
 
     // Se usa en el filtro de header
