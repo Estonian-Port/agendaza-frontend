@@ -10,15 +10,24 @@ export type TipoEventoJSON = {
     empresaId : number
 }
 
+export type TipoEventoEditJSON = {
+    id : number
+    nombre : string,
+    cantidadDuracion: string
+    duracion: string
+    capacidad : Capacidad
+    empresaId : number
+}
+
 export class TipoEvento{
 
     constructor(public id: number, public nombre: string, public cantidadDuracion: string, 
         public duracion: string, public capacidad : Capacidad, public empresaId : number){}
     
-    static fromJson(tipoEventoJSON: TipoEventoJSON): any {
-        return new TipoEvento(tipoEventoJSON.id, tipoEventoJSON.nombre, 
-            tipoEventoJSON.cantidadDuracion.hour + ":" +  tipoEventoJSON.cantidadDuracion.minute, 
-            tipoEventoJSON.duracion, tipoEventoJSON.capacidad, tipoEventoJSON.empresaId)
+    static fromJson(tipoEventoEditJSON: TipoEventoEditJSON): any {
+        return new TipoEvento(tipoEventoEditJSON.id, tipoEventoEditJSON.nombre, 
+            tipoEventoEditJSON.cantidadDuracion.slice(0, 2) + ":" +  tipoEventoEditJSON.cantidadDuracion.slice(3, 5), 
+            tipoEventoEditJSON.duracion, tipoEventoEditJSON.capacidad, tipoEventoEditJSON.empresaId)
     }
 
     // Se usa en el filtro de header

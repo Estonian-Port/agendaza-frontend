@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON} from '../model/GenericItem';
-import { TipoEvento } from '../model/TipoEvento';
+import { TipoEvento, TipoEventoEditJSON, TipoEventoJSON } from '../model/TipoEvento';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
@@ -15,6 +15,14 @@ export class TipoEventoService {
   
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
   
+  async getTipoEvento(id : number) {
+    const item$ = this.httpClient.get<TipoEventoEditJSON>(REST_SERVER_URL + '/getTipoEvento/' + id)
+    const item = await lastValueFrom(item$)
+    console.log(item)
+
+    return TipoEvento.fromJson(item)
+  }
+
   async getAllTipoEventoByEmpresaId() {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)

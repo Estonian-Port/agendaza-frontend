@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { co } from '@fullcalendar/core/internal-common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
@@ -17,6 +18,11 @@ export class SaveTipoEventoComponent implements OnInit {
   constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit() {
+    if(this.tipoEventoService.tipoEventoId){
+      this.tipoEvento = await this.tipoEventoService.getTipoEvento(this.tipoEventoService.tipoEventoId)
+      console.log(this.tipoEvento)
+    }
+
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
   }
 
