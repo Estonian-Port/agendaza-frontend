@@ -37,6 +37,8 @@ export class TipoEvento{
     }
 
     toJSON(): TipoEventoJSON {
+        this.capacidad.id = 0
+        
         return {
           id: this.id,
           nombre : this.nombre,
