@@ -34,7 +34,6 @@ export class TipoEventoService {
 
   async save(tipoEvento : TipoEvento) {
     tipoEvento.empresaId = this.agendaService.getEmpresaId()
-    console.log(tipoEvento)
     const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEvento', tipoEvento.toJSON())
     return await lastValueFrom(item$)
   }

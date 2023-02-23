@@ -3,11 +3,11 @@ import * as _ from 'lodash';
 import { ExtraService } from 'src/app/services/extra.service';
 
 @Component({
-  selector: 'app-abm-extra',
-  templateUrl: './abm-extra.component.html',
-  styleUrls: ['./abm-extra.component.css']
+  selector: 'app-abm-extra-evento',
+  templateUrl: './abm-extra-evento.component.html',
+  styleUrls: ['./abm-extra-evento.component.css']
 })
-export class AbmExtraComponent implements OnInit {
+export class AbmExtraEventoComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
@@ -18,7 +18,7 @@ export class AbmExtraComponent implements OnInit {
   constructor(private extraService : ExtraService) { }
 
   async ngOnInit(): Promise<void> {
-    this.listaItems = await this.extraService.getAllExtraByEmpresaId()
+    this.listaItems = await this.extraService.getAllExtraTipoEventoByEmpresaId()
     this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)

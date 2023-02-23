@@ -25,7 +25,7 @@ export class UsuarioService {
   }
 
   async getAllUsuariosByEmpresaId() {
-    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuariosByEmpresaId/' + this.agendaService.getEmpresaId())
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuarioByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((usuario) => Usuario.fromJson(usuario))
   }

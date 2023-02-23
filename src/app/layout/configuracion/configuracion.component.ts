@@ -28,7 +28,11 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   abmExtra() {
-    this.router.navigateByUrl('/abmExtra')
+    this.router.navigateByUrl('/abmExtraEvento')
+  }
+
+  abmCatering() {
+    this.router.navigateByUrl('/abmExtraCatering')
   }
 
   abmServicio() {

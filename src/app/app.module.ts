@@ -27,7 +27,7 @@ import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.compon
 import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
 import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
 import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
-import { AbmExtraComponent } from './layout/abm/abm-extra/abm-extra.component';
+import { AbmExtraEventoComponent } from './layout/abm/abm-extra-evento/abm-extra-evento.component';
 import { SeleccionarExtraComponent } from './layout/seleccionar-extra/seleccionar-extra.component';
 import { AbmDataTablePagoComponent } from './components/abm/abm-data-table-pago/abm-data-table-pago.component';
 import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-table.component';
@@ -36,7 +36,6 @@ import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-eve
 import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
-import { SaveExtraComponent } from './layout/save/save-extra/save-extra.component';
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
@@ -44,6 +43,10 @@ import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.co
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
+import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
+import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
+import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
+import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
 
 @NgModule({
   declarations: [
@@ -72,10 +75,9 @@ import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.co
     AbmTipoEventoComponent,
     AbmServicioComponent,
     AbmEmpresaComponent,
-    AbmExtraComponent,
+    AbmExtraEventoComponent,
     SaveUsuarioComponent,
     SaveClienteComponent,
-    SaveExtraComponent,
     SavePagoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
@@ -83,6 +85,10 @@ import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.co
     EditUsuarioPasswordComponent,
     ModalComponent,
     EditEmpresaComponent,
+    SaveEmpresaComponent,
+    AbmExtraCateringComponent,
+    SaveExtraCateringComponent,
+    SaveExtraEventoComponent,
   ],
   imports: [
     BrowserModule,

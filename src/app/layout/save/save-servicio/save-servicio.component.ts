@@ -14,16 +14,16 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 export class SaveServicioComponent implements OnInit {
   
   genericItem : GenericItemEmpresaTipoEvento = new GenericItemEmpresaTipoEvento(0, "", 0, [])
-  listaItems : Array<GenericItem> = []
+  listaTipoEvento : Array<GenericItem> = []
 
   constructor(private servicioService : ServicioService, private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit(): Promise<void> {
     if(this.servicioService.servicioId){
       this.genericItem = await this.servicioService.getServicio(this.servicioService.servicioId)
+      this.servicioService.servicioId = 0
     }
-
-    this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
+    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
   }
 
   async save(){

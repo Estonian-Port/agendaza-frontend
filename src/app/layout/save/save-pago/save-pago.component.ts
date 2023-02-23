@@ -18,7 +18,7 @@ export class SavePagoComponent implements OnInit {
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
 
-  constructor(private pagoService : PagoService, private empresaService : EmpresaService, private router : Router) { }
+  constructor(private pagoService : PagoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
     this.listaMedioDePago = await this.pagoService.getAllMedioDePago()

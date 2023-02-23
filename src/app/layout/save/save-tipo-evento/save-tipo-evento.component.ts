@@ -19,10 +19,8 @@ export class SaveTipoEventoComponent implements OnInit {
   async ngOnInit() {
     if(this.tipoEventoService.tipoEventoId){
       this.tipoEvento = await this.tipoEventoService.getTipoEvento(this.tipoEventoService.tipoEventoId)
-      console.log(this.tipoEvento)
-
+      this.tipoEventoService.tipoEventoId = 0
     }
-
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
   }
 
@@ -30,43 +28,5 @@ export class SaveTipoEventoComponent implements OnInit {
     const item = await this.tipoEventoService.save(this.tipoEvento)
     this.router.navigateByUrl('/abmTipoEvento')
   }
-
-
-
-
-
-
-
-
-
-  //TODO intento de form dinamico
-  // myForm!: FormGroup
-  // dynamicFormFields!: DynamicFormFieldModel[]
-
-  // constructor(private fb: FormBuilder) {}
-
-  // ngOnInit() {
-
-  //   this.myForm = this.fb.group({})
-
-  //   this.dynamicFormFields = [
-  //     {
-  //       id: 'nombre',
-  //       label: 'Nombre',
-  //       type: 'text'
-  //     },      
-  //     {
-  //       id: 'duracion',
-  //       label: 'Duracion',
-  //       type: 'select'
-  //     },
-  //   ]
-
-
-  //   this.dynamicFormFields.forEach(formItem => {
-  //     this.myForm.addControl(formItem.id, this.fb.control(null))
-  //   })
-
-  // }
 
 }
