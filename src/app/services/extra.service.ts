@@ -51,4 +51,8 @@ export class ExtraService {
     return await lastValueFrom(item$)
   }
 
+  delete(id: number) {
+    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteExtra/' + id)
+  }
+
 }

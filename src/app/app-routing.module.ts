@@ -26,6 +26,7 @@ import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
+import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
 
 const routes: Routes = [
   {
@@ -53,7 +54,7 @@ const routes: Routes = [
       { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
       { path : 'saveServicio', component: SaveServicioComponent },
       { path : 'saveExtraEvento', component: SaveExtraEventoComponent },
-      { path : 'saveExtraCatering', component: SaveExtraEventoComponent },
+      { path : 'saveExtraCatering', component: SaveExtraCateringComponent },
       { path : 'saveCliente', component: SaveClienteComponent },
       { path : 'savePago', component: SavePagoComponent },
       { path : 'saveEmpresa', component: SaveEmpresaComponent },
