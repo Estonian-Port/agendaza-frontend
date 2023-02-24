@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
@@ -25,7 +24,6 @@ export class AbmEmpresaComponent implements OnInit {
   async inicializarListaItems(){
 
     this.listaItems = await this.empresaService.getAllEmpresaByUsuarioId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

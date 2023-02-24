@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { Location } from '@angular/common';
 
@@ -28,7 +27,6 @@ export class AbmTipoEventoComponent implements OnInit {
 
   async inicializarListaItems(){
     this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

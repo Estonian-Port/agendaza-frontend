@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Location } from '@angular/common';
 
@@ -28,7 +27,6 @@ export class AbmExtraEventoComponent implements OnInit {
 
   async inicializarListaItems(){
     this.listaItems = await this.extraService.getAllExtraTipoEventoByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

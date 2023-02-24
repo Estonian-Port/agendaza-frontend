@@ -28,7 +28,6 @@ import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-ev
 import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
 import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
 import { AbmExtraEventoComponent } from './layout/abm/abm-extra-evento/abm-extra-evento.component';
-import { SeleccionarExtraComponent } from './layout/seleccionar-extra/seleccionar-extra.component';
 import { AbmDataTablePagoComponent } from './components/abm/abm-data-table-pago/abm-data-table-pago.component';
 import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-table.component';
 import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
@@ -63,7 +62,6 @@ import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-e
     AbmUsuarioComponent,
     FilterAbm,
     OrderAbm,
-    SeleccionarExtraComponent,
     AbmEventoComponent,
     AbmDataTableComponent,
     AbmDataTableHeaderComponent,

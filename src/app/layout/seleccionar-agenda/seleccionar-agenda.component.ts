@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
 import { AgendaCard } from 'src/app/model/Agenda';
 import { AgendaService } from 'src/app/services/agenda.service';
 import { LoginService } from 'src/app/services/login.service';
@@ -18,6 +19,7 @@ export class SeleccionarAgendaComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       this.listaAgenda = await this.agendaService.getListaAgendaByUsuarioId(await this.logInService.getUsuarioId())
+
     } catch (error) {
       mostrarErrorConMensaje(this, error)
     }

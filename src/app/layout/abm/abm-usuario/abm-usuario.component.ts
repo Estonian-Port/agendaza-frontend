@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Location } from '@angular/common';
 
@@ -21,7 +20,6 @@ export class AbmUsuarioComponent implements OnInit {
   
   async ngOnInit(): Promise<void> {
     this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

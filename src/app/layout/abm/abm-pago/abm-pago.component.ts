@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { PagoService } from 'src/app/services/pago.service';
 
 @Component({
@@ -24,7 +22,6 @@ export class AbmPagoComponent implements OnInit {
 
   async inicializarListaItems(){
     this.listaItems = await this.pagoService.getAllPagoByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

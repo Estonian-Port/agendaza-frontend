@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class AbmEventoComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.listaItems = await this.eventoService.getAllEventoByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

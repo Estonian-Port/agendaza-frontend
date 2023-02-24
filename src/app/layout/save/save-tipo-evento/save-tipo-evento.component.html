@@ -9,7 +9,7 @@
         <div class="form-group">
             <label for="rol">Tipo de duracion</label> 
             <select class="form-select" [(ngModel)]="tipoEvento.duracion" name="duracion">
-                <option *ngFor="let duracion of listaDuracion" [value]="duracion">{{duracion}}</option>
+                <option *ngFor="let duracion of listaDuracion | orderAbm" [value]="duracion">{{duracion}}</option>
             </select>
         </div>
         
