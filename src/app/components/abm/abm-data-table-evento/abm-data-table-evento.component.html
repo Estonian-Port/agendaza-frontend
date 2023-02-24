@@ -21,12 +21,12 @@
                 <td>{{item.fin}}</td>
                 <td>{{item.tipoEvento}}</td>
                 <td class="d-flex justify-content-center">
-                    <a (click)="precio(item.id)" class="mx-2"><i class="fas fa-dollar-sign text-success fa-lg"></i></a>
-                    <a (click)="precio(item.id)" class="mx-2"><i class="fas fa-asterisk text-warning fa-lg"></i></a>
-                    <a (click)="precio(item.id)" class="mx-2"><i class="fas fa-utensils text-warning fa-lg"></i></a>
-                    <a (click)="editar(item.id)" class="mx-2"><i class="fas fa-clock text-primary fa-lg"></i></a>
-                    <a (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-eye text-primary fa-lg"></i></a>
-                    <a (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></a>
+                    <button (click)="precio(item.id)" class="mx-2"><i class="fas fa-dollar-sign text-success fa-lg"></i></button>
+                    <button (click)="precio(item.id)" class="mx-2"><i class="fas fa-asterisk text-warning fa-lg"></i></button>
+                    <button (click)="precio(item.id)" class="mx-2"><i class="fas fa-utensils text-warning fa-lg"></i></button>
+                    <button (click)="editar(item.id)" class="mx-2"><i class="fas fa-clock text-primary fa-lg"></i></button>
+                    <button (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-eye text-primary fa-lg"></i></button>
+                    <button (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></button>
                 </td>
             </tr>
         </tbody>

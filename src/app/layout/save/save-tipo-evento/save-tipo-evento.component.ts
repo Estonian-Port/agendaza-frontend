@@ -10,14 +10,14 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
   styleUrls: ['./save-tipo-evento.component.css']
 })
 export class SaveTipoEventoComponent implements OnInit {
-  
+
   tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",new Capacidad(0,0,0), 0)
   listaDuracion : Array<string> = []
 
   constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit() {
-    if(this.tipoEventoService.tipoEventoId){
+    if(this.tipoEventoService.tipoEventoId != 0){
       this.tipoEvento = await this.tipoEventoService.getTipoEvento(this.tipoEventoService.tipoEventoId)
       this.tipoEventoService.tipoEventoId = 0
     }

@@ -48,6 +48,11 @@ export class AbmExtraCateringComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
+  precio(id : number){
+    this.extraService.extraId = id
+    this.router.navigateByUrl('/precioExtra')
+  }
+
   editar(id : number){
     this.extraService.extraId = id
     this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))

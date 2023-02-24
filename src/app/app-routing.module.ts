@@ -27,6 +27,8 @@ import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tip
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
+import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
+import { PrecioTipoEventoComponent } from './layout/precio/precio-tipo-evento/precio-tipo-evento.component';
 
 const routes: Routes = [
   {
@@ -61,6 +63,9 @@ const routes: Routes = [
       { path : 'editUsuario', component: EditUsuarioComponent },
       { path : 'editUsuarioPassword', component: EditUsuarioPasswordComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
+      { path : 'editEmpresa', component: EditEmpresaComponent },
+      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
+      { path : 'precioExtra', component: PrecioExtraComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

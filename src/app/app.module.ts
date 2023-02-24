@@ -46,6 +46,8 @@ import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.co
 import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
 import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
+import { PrecioTipoEventoComponent } from './layout/precio/precio-tipo-evento/precio-tipo-evento.component';
+import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +89,8 @@ import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-e
     AbmExtraCateringComponent,
     SaveExtraCateringComponent,
     SaveExtraEventoComponent,
+    PrecioTipoEventoComponent,
+    PrecioExtraComponent,
   ],
   imports: [
     BrowserModule,

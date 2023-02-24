@@ -48,6 +48,11 @@ export class AbmTipoEventoComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
+  precio(id : number){
+    this.tipoEventoService.tipoEventoId = id
+    this.router.navigateByUrl('/precio' + this.location.path().substring(4, this.location.path().length + 1))
+  }
+
   editar(id : number){
     this.tipoEventoService.tipoEventoId = id
     this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))

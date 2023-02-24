@@ -9,6 +9,7 @@
     </app-abm-data-table-header>
 
     <app-abm-data-table
+        (outputPrecio)="precio($event)"
         (outputEditar)="editar($event)"
         (outputEliminar)="eliminar($event)"
         [nombreItemModal] = "nombreItemModal"

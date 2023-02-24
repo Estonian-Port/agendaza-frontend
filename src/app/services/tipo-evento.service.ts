@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON} from '../model/GenericItem';
+import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { TipoEvento, TipoEventoEditJSON, TipoEventoJSON } from '../model/TipoEvento';
 import { AgendaService } from './agenda.service';
 
@@ -42,5 +43,16 @@ export class TipoEventoService {
     return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteTipoEvento/' + id)
   }
 
+  async getPrecioOfTipoEvento(tipoEventoId: number) {
+    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getPrecioOfTipoEvento/' + tipoEventoId)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((precio) => Precio.fromJson(precio))
+  }
+
+  async savePrecio(listaPrecioForm : PrecioForm[]) {
+    const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.tipoEventoId))
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEventoPrecio', listaPrecio)
+    return await lastValueFrom(item$)
+  }
 
 }

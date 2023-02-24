@@ -44,6 +44,6 @@ export class AbmDataTableUsuarioComponent implements OnInit {
 
   isUsuarioEditable(item : any){
     // El usuarioId == item.id no anda, seria para editar el usuario que es uno mismo
-    return item.username != '' || item.id == this.usuarioId
+    return item.username != '' || item.id === this.usuarioId
   }
 }
