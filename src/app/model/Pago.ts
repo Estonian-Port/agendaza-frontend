@@ -1,5 +1,4 @@
 export type PagoJSON = {
-    fromJson(Pago: PagoJSON): any
     id : number
     monto : number
     codigo : string

@@ -1,5 +1,3 @@
-import { GenericItem } from "./GenericItem"
-
 export type GenericItemEmpresaTipoEventoJSON = {
     id : number
     nombre : string
