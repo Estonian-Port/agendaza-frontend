@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Location } from '@angular/common';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-abm-usuario',
@@ -16,7 +17,7 @@ export class AbmUsuarioComponent implements OnInit {
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  constructor(private usuarioService : UsuarioService, private router : Router, private location : Location) { }
+  constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router, private location : Location) { }
   
   async ngOnInit(): Promise<void> {
     this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId()

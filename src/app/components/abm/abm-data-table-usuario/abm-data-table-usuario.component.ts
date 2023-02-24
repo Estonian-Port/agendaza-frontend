@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-abm-data-table-usuario',
@@ -7,7 +8,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class AbmDataTableUsuarioComponent implements OnInit {
 
-  
+  usuarioId : number = 0
+
   @Input()
   listaItems : Array<any> = []
 
@@ -26,9 +28,10 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   @Output() 
   outputEditarPassword = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(private loginService : LoginService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.usuarioId = await this.loginService.getUsuarioId()
   }
 
   editar(id : number){
@@ -37,5 +40,10 @@ export class AbmDataTableUsuarioComponent implements OnInit {
 
   editarPassword(id : number){
     this.outputEditarPassword.emit(id);
+  }
+
+  isUsuarioEditable(item : any){
+    // El usuarioId == item.id no anda, seria para editar el usuario que es uno mismo
+    return item.username != '' || item.id == this.usuarioId
   }
 }

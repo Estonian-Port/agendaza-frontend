@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ExtraService } from 'src/app/services/extra.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-extra-abm-catering',
@@ -13,16 +15,25 @@ export class AbmExtraCateringComponent implements OnInit {
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
+  nombreItemModal = ""
+  tituloModal = ""
+  botonModal = ""
 
-  constructor(private extraService : ExtraService) { }
+  constructor(private extraService : ExtraService, private router : Router, private location : Location) { }
 
   async ngOnInit(): Promise<void> {
+    this.inicializarListaItems()
+  }
+
+  async inicializarListaItems(){
     this.listaItems = await this.extraService.getAllExtraCateringByEmpresaId()
-    this.listaItems = _.sortBy(this.listaItems, ["id","weight"]);
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
-
+    
+    this.tituloModal = "Eliminar Extra"
+    this.nombreItemModal = "extra"
+    this.botonModal = "Eliminar"
   }
 
   updateCurrentRegistro(registro: number){
@@ -35,6 +46,19 @@ export class AbmExtraCateringComponent implements OnInit {
 
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
+  }
+
+  editar(id : number){
+    this.extraService.extraId = id
+    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+  }
+
+  async eliminar(id : number){
+    (await this.extraService.delete(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
+      }
+    })
   }
 
 }

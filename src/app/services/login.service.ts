@@ -17,7 +17,7 @@ export class LoginService {
 
     const credentials = this.httpClient.post(REST_SERVER_URL + '/login', usuarioLoginJson, {
       observe: 'response'
-    }).pipe(map((response: HttpResponse<any>) => {
+    }).pipe(map(async (response: HttpResponse<any>) => {
       const headers = response.headers
 
       const username = CryptoJsImpl.encryptData(usuarioLoginJson.username)
@@ -28,9 +28,7 @@ export class LoginService {
 
       localStorage.setItem('token', token)
     }))
-        
     return credentials
-    
   }
 
   logout(){
