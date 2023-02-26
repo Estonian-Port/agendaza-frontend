@@ -50,6 +50,7 @@ export class AbmExtraCateringComponent implements OnInit {
 
   precio(id : number){
     this.extraService.extraId = id
+    this.extraService.extraVolver = this.location.path()
     this.router.navigateByUrl('/precioExtra')
   }
 

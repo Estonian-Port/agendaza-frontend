@@ -21,6 +21,7 @@ import { ConfiguracionComponent } from './layout/configuracion/configuracion.com
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbm } from './pipes/orderAbm.pipe';
+import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDescePrecio.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
@@ -64,6 +65,7 @@ import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.
     AbmUsuarioComponent,
     FilterAbm,
     OrderAbm,
+    OrderByFechaDesdePrecio,
     AbmEventoComponent,
     AbmDataTableComponent,
     AbmDataTableHeaderComponent,

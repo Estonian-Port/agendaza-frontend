@@ -1,1 +1,67 @@
-<p>precio-extra works!</p>
+<div class="container">
+    
+    <div class="row mt-3">
+        <h2 class="col-8">Precio</h2>
+
+        <div class="col-4">
+            <button type="submit" class="btn btn-primary" (click)="agregarPrecio()">Agregar</button>
+        </div>
+    </div>
+    
+    <form>
+
+        <div class="border-top my-3"></div>
+
+        <div *ngFor="let precio of listaPrecio; let i=index " class="row text-center col-9">
+
+            <div class="form-group col-2">
+                <label for="">Año</label> 
+                <select class="form-select" name="year{{i}}" [(ngModel)]="precio.year">
+                    <option *ngFor="let year of listaYear | orderAbm" [value]="year">{{year}}</option>
+                </select>
+            </div>
+            <div class="form-group col-10">
+                <div class="row col-11">
+                    <div class="form-group col-3">
+                        <label for="">Precio base</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">$</div>
+                            </div>
+                            <input type="text" class="form-control" name="precio{{i}}" [(ngModel)]="precio.precio">
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="desde">Desde</label> 
+                        <select class="form-select" name="desde{{i}}" [(ngModel)]="precio.desde">
+                            <option *ngFor="let mes of listaMes | orderAbm" [value]="mes.id">{{mes.nombre}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-4">
+                        <label for="hasta">Hasta</label> 
+                        <select class="form-select" name="hasta{{i}}" [(ngModel)]="precio.hasta">
+                            <option *ngFor="let mes of listaMes | orderAbm" [value]="mes.id">{{mes.nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-1">
+                        <button type="submit" (click)="quitarPrecio(precio)"><i class="fas fa-trash text-danger fa-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="container mt-3">
+            <div class="gap-2 d-flex justify-content-end">
+                <div>
+                    <button type="submit" class="btn btn-primary" (click)="volver()">Volver</button>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

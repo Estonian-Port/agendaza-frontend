@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ListaMes, Mes } from 'src/app/model/Mes';
-import { Precio, PrecioForm } from 'src/app/model/Precio';
+import { PrecioForm } from 'src/app/model/Precio';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
@@ -12,8 +12,8 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 })
 export class PrecioTipoEventoComponent implements OnInit {
 
-  id = 0
-  listaPrecio : Array<PrecioForm> = [new PrecioForm(this.id,0,0,0,0)]
+  id : number = 0
+  listaPrecio : Array<PrecioForm> = []
   listaMes : Array<Mes> = ListaMes
   currentYear = new Date().getFullYear();
   listaYear : Array<number> = [this.currentYear, this.currentYear + 1]
@@ -21,8 +21,11 @@ export class PrecioTipoEventoComponent implements OnInit {
   constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
-      //this.listaPrecio = await this.tipoEventoService.getPrecioOfTipoEvento(this.tipoEventoService.tipoEventoId)
-      //this.tipoEventoService.tipoEventoId = 0
+      const listaPrecio = await this.tipoEventoService.getAllPrecioConFechaByTipoEventoId(this.tipoEventoService.tipoEventoId)
+      
+      if(listaPrecio.length != 0){
+        this.listaPrecio = listaPrecio
+      }
   }
 
   volver(){
@@ -35,8 +38,9 @@ export class PrecioTipoEventoComponent implements OnInit {
   }
 
   agregarPrecio(){
-    this.id += 1
+    this.id -=1
     this.listaPrecio.push(new PrecioForm(this.id,0,0,0,0))
+    console.log
   }
 
   quitarPrecio(precioSeleccionado : PrecioForm){

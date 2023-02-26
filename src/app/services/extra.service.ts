@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Extra, ExtraJSON } from '../model/Extra';
 import { GenericItem } from '../model/GenericItem';
+import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
@@ -11,7 +12,9 @@ import { AgendaService } from './agenda.service';
 })
 export class ExtraService {
 
+
   extraId : number = 0
+  extraVolver: string = "";
 
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
 
@@ -53,6 +56,19 @@ export class ExtraService {
 
   delete(id: number) {
     return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteExtra/' + id)
+  }
+
+  async getAllPrecioConFechaByExtraId(extraId: number) {
+    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByExtraId/' + extraId)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
+  }
+
+  async savePrecio(listaPrecioForm : PrecioForm[]) {
+    const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.extraId))
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio', listaPrecio)
+    this.extraId = 0
+    return await lastValueFrom(item$)
   }
 
 }
