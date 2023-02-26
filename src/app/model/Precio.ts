@@ -20,7 +20,7 @@ export class Precio{
     static fromForm(precioForm : PrecioForm, empresaId : number, itemId : number){
         // Nuevo Precio
         if(precioForm.id < 0){
-            return new Precio(0, new Date(precioForm.year, precioForm.desde), new Date(precioForm.year,precioForm.hasta), precioForm.precio, empresaId, itemId)
+            return new Precio(0, new Date(precioForm.year, precioForm.desde, 1,0,0,0), new Date(precioForm.year,precioForm.hasta), precioForm.precio, empresaId, itemId)
         }
         
         //Precio ya cargado en la base de datos

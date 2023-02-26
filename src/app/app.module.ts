@@ -49,6 +49,7 @@ import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/sa
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
 import { PrecioTipoEventoComponent } from './layout/precio/precio-tipo-evento/precio-tipo-evento.component';
 import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
+import { PrecioFormComponent } from './components/precio-form/precio-form.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.
     SaveExtraEventoComponent,
     PrecioTipoEventoComponent,
     PrecioExtraComponent,
+    PrecioFormComponent,
   ],
   imports: [
     BrowserModule,
