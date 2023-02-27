@@ -66,15 +66,32 @@
                         <p>Cree el nuevo evento a realizar en {{empresa.nombre}}</p>
             
                         <div class="fieldset-content">
-                            
-                            <div class="form-group">
-                                <label for="nombre" class="form-label">Nombre del evento</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{evento.nombre}" required>
+
+                            <div class="form-group col-6">
+                                <label for="precio_plato_adulto">Nombre del evento</label> 
+                                <input type="number" class="form-control" [(ngModel)]='evento.nombre' name="nombre">
                             </div>
 
                             <div class="form-group">
-                                <label for="date" class="form-label w-100">Fecha de evento</label> 
-                                <input type="text" id="date" data-format="DD-MM-YYYY" data-template="D MMM YYYY" th:field="*{fecha}"/>
+                                <label for="date" class="form-label w-100">Fecha de evento</label>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <select class="form-select" name="dia" [(ngModel)]="fechaEvento.dia">
+                                            <option *ngFor="let dia of listaDia | orderAbm" [value]="dia">{{dia}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-select" name="mes" [(ngModel)]="fechaEvento.mes" (click)="getAllDaysOfMonth(fechaEvento.year, fechaEvento.mes)">
+                                            <option *ngFor="let mes of listaMes | orderAbm" [value]="mes.id">{{mes.nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-select" name="year" [(ngModel)]="fechaEvento.year" (click)="getAllDaysOfMonth(fechaEvento.year, fechaEvento.mes)">
+                                            <option *ngFor="let year of listaYear | orderAbm" [value]="year">{{year}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div>

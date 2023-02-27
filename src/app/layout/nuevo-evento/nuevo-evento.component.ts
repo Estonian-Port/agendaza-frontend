@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { co } from '@fullcalendar/core/internal-common';
 import { Capacidad } from 'src/app/model/Capacidad';
+import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
+import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { AgendaService } from 'src/app/services/agenda.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
@@ -30,6 +33,12 @@ export class NuevoEventoComponent implements OnInit {
   listaServicio : Array<GenericItem> = []
   empresa : GenericItem = new GenericItem(0,"")
 
+  listaDia : Array<number> = []
+  listaMes : Array<Mes> = DateUtil.ListaMes
+  currentYear = new Date().getFullYear()
+  listaYear : Array<number> = [this.currentYear, this.currentYear + 1]
+  fechaEvento : FechaForm = new FechaForm(this.currentYear,0,1)
+
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, public empresaService : EmpresaService) { }
 
   async ngOnInit(): Promise<void> {
@@ -37,8 +46,16 @@ export class NuevoEventoComponent implements OnInit {
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
     this.listaServicio = await this.servicioSerice.getAllServicioByEmpresaId()
     this.empresa = await this.empresaService.getEmpresa()
+
+    this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
+    
   }
-  
+
+  getAllDaysOfMonth(year : number, mes: number){
+    this.listaDia = DateUtil.getAllDaysOfMonth(year, mes)
+  }
+
+
   isStep(step : number) : boolean{
     return this.step == step
   }

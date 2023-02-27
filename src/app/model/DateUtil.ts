@@ -4,6 +4,18 @@ export type Mes = {
 }
 
 export class DateUtil{
+    
+    static getAllDaysOfMonth(year : number, mes: number){
+        mes = Number(mes) + Number(1)
+        const ultimoDiaMes = new Date(year, mes, 0).getDate()
+        const listaDia = []
+
+        for (let i = 1; i < ultimoDiaMes + 1; i++) {
+          listaDia.push(i)
+        }
+
+        return listaDia
+    }
 
     static ListaMes : Array<Mes> = [
         { "id": 0, "nombre": "Enero" },
