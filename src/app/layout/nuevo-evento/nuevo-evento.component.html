@@ -15,19 +15,19 @@
                             <h2>Selecciones tipo de evento</h2>
                             <p>El tipo de evento a seleccionar cambiara la cantidad de horas de duracion y presupuesto base.</p>
                         </div>
+
                         <div class="col-md-10">
-                            <label for="tipoEvento" class="form-label">Tipo Evento</label>
-                            <select class="form-select" id="tipoEvento" name="tipoEvento">
-                                <option selected hidden th:value="0">Tipo Evento</option>
-                                <option th:each="subTipoEvento : ${listaSubTipoEvento}" th:class="${subTipoEvento.tipoEvento.nombre}" th:text="${subTipoEvento.tipoEvento.nombre}" th:value="${subTipoEvento.tipoEvento.id}"></option>
+                            <label for="rol">Duracion</label>
+                            <select class="form-select" name="duracion">
+                                <option *ngFor="let duracion of listaDuracion | orderAbm" [value]="duracion">{{duracion}}</option>
                             </select>
                         </div>
 
-                        <div class="col-md-10 mt-3">
-                            <label for="tipoEvento" class="form-label">Subtipo Evento</label>
-                            <select class="form-select" id="subTipoEvento" name="subTipoEvento" th:field="*{evento.subTipoEvento.id}">
-                                <option selected hidden th:value="0">Subtipo Evento</option>
-                                <option th:each="subTipoEvento : ${listaSubTipoEvento}" th:classappend="${subTipoEvento.nombre} + ' ' + ${subTipoEvento.tipoEvento.nombre}" th:text="${subTipoEvento.nombre}" th:value="${subTipoEvento.id}"></option>
+                        <div class="col-md-10">
+                            <label for="rol">Tipo Evento</label>
+                            <select class="form-select" [(ngModel)]="evento.tipoEventoId" name="tipoEvento">
+                                <option [value]="0" hidden>Seleccione Tipo Evento</option>
+                                <option *ngFor="let tipoEvento of listaTipoEvento | orderAbm" [value]="tipoEvento.id">{{tipoEvento.nombre}}</option>
                             </select>
                         </div>
                         
@@ -36,11 +36,11 @@
                             <div class="row mt-3">
                                 <div class="form-group col-6">
                                     <label for="cantidad_plato_adulto">Cantidad Adultos</label>
-                                    <input type="number" class="form-control" id="cantidad_plato_adulto" th:field="*{evento.capacidad.capacidadAdultos}" onChange="setCantidadAdultos();">
+                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadAdultos' name="capacidadAdultos">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="precio_plato_adulto">Cantidad Niños</label> 
-                                    <input type="number" class="form-control" id="cantidad_plato_nino" th:field="*{evento.capacidad.capacidadNinos}">
+                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadNinos' name="capacidadNinos">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="servicio" class="form-label">Incluye los siguiente servicios</label> 
-                            <div id="listaServicio"> </div>
+                            <div id="listaServicio" *ngFor="let servicio of listaServicio | orderAbm">{{servicio.nombre}}</div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <h2>Agregar nuevo evento</h2>
-                        <p th:text="'Cree el nuevo evento a realizar en ' + ${salon.nombre}"></p>
+                        <p>Cree el nuevo evento a realizar en {{empresa.nombre}}</p>
             
                         <div class="fieldset-content">
                             

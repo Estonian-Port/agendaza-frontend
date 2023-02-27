@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ListaMes, Mes } from 'src/app/model/Mes';
 import { PrecioForm } from 'src/app/model/Precio';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Location } from '@angular/common';

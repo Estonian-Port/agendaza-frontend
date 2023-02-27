@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ListaMes, Mes } from 'src/app/model/Mes';
 import { PrecioForm } from 'src/app/model/Precio';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 

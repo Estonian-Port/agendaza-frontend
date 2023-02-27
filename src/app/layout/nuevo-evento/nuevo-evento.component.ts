@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Capacidad } from 'src/app/model/Capacidad';
+import { Evento } from 'src/app/model/Evento';
 import { GenericItem } from 'src/app/model/GenericItem';
+import { AgendaService } from 'src/app/services/agenda.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { ServicioService } from 'src/app/services/servicio.service';
+import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 
 @Component({
@@ -18,11 +24,19 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(5, "Datos de contacto")
   ]
 
+  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0)
+  listaDuracion : Array<string> = []
+  listaTipoEvento : Array<GenericItem> = []
+  listaServicio : Array<GenericItem> = []
+  empresa : GenericItem = new GenericItem(0,"")
 
+  constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, public empresaService : EmpresaService) { }
 
-  ngOnInit(): void {
-
-
+  async ngOnInit(): Promise<void> {
+    this.listaDuracion = await this.tipoEventoService.getAllDuracion()
+    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
+    this.listaServicio = await this.servicioSerice.getAllServicioByEmpresaId()
+    this.empresa = await this.empresaService.getEmpresa()
   }
   
   isStep(step : number) : boolean{

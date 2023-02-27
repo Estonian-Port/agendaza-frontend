@@ -16,6 +16,11 @@ export class EmpresaService {
 
   constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService) {}
 
+  async getEmpresa(){
+    const item$ = this.httpClient.get<GenericItem>(REST_SERVER_URL + '/getEmpresa/' + await this.agendaService.getEmpresaId())
+    return await lastValueFrom(item$)
+  }
+
   async getAllEmpresaByUsuarioId() {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllEmpresaByUsuarioId/' + await this.loginService.getUsuarioId())
     const listaItem = await lastValueFrom(listaItem$)

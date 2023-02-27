@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ListaMes, Mes } from 'src/app/model/Mes';
+import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { PrecioForm } from 'src/app/model/Precio';
 
 @Component({
@@ -20,7 +20,7 @@ export class PrecioFormComponent implements OnInit {
   
   currentYear = new Date().getFullYear()
   listaYear : Array<number> = [this.currentYear, this.currentYear + 1]
-  listaMes : Array<Mes> = ListaMes
+  listaMes : Array<Mes> = DateUtil.ListaMes
 
   constructor() { }
 
