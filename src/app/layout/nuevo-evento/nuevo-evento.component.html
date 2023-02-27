@@ -1,12 +1,12 @@
 <div class="nuevo-evento">
-    <!--===============================================================================================-->
     <div>
-        <div class="row justify-content-evenly">
-            <div *ngFor="let stepBox of listaStepBox" class="col-md-2 step-box">
+        <div class="row justify-content-evenly hide-on-phone">
+            <div *ngFor="let stepBox of listaStepBox" class="col-md-2">
                 <app-step-box [stepBox]="stepBox" [currentStep]="step"></app-step-box>
             </div>
         </div>
 
+        <!--===============================================================================================-->
         <div *ngIf="isStep(1)">
             <section class="nuevo-evento-step">
                 <div class="row">
@@ -196,10 +196,10 @@
                 </div> 
             </section>
         </div>
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
     
-    <!--===============================================================================================-->
-    <div *ngIf="isStep(4)">
+        <!--===============================================================================================-->
+        <div *ngIf="isStep(4)">
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-6">
@@ -259,10 +259,10 @@
                 </div>
             </section>
         </div>
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
 
-    <!--===============================================================================================-->
-    <div *ngIf="isStep(5)" @fadeAnimation>
+        <!--===============================================================================================-->
+        <div *ngIf="isStep(5)" @fadeAnimation>
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-4">
@@ -323,9 +323,13 @@
                 </div>
             </section>
         </div>
+        <!--===============================================================================================-->
+
     </div>
-    <div class="botones-nuevo-evento">
-        <button (click)="atras()" type="button" class="btn btn-primary mx-2">Atras</button>
-        <button (click)="siguiente()" type="button" class="btn btn-primary">Siguiente</button>
-    </div>
+
+</div>
+
+<div class="botones-nuevo-evento">
+    <button (click)="atras()" type="button" class="btn btn-primary mx-2">Atras</button>
+    <button (click)="siguiente()" type="button" class="btn btn-primary">Siguiente</button>
 </div>

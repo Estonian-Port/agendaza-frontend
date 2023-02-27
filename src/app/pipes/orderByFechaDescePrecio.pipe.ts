@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { PrecioForm } from '../model/Precio'
 
 @Pipe({
   name: 'orderByFechaDescePrecio',
@@ -8,17 +7,7 @@ import { PrecioForm } from '../model/Precio'
 export class OrderByFechaDesdePrecio implements PipeTransform {
 
   transform(any: any[]): any[] {
-    //   return any.sort(
-    //     function (item, otroItem) {
-    //       const  n = item.year - otroItem.year;
-    //       if (n !== 0) {
-    //           return n;
-    //       }
-    //       return item.desde - item.desde;
-    //     }
-    //  }
-    // return any.sort((item, otroItem) => item.year - otroItem.year || item.desde - otroItem.desde)
-    return any.sort((item, otroItem) => item.year - otroItem.year)
+    return any.sort((item, otroItem) => item.desde - otroItem.desde)
   }
 
 }

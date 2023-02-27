@@ -16,10 +16,13 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(3, "Cotizacion"),
     new GenericItem(4, "Catering"),
     new GenericItem(5, "Datos de contacto")
-]
+  ]
+
+
 
   ngOnInit(): void {
-    this.step = 1
+
+
   }
   
   isStep(step : number) : boolean{
