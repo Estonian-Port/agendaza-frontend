@@ -28,16 +28,22 @@ export class NuevoEventoComponent implements OnInit {
   ]
 
   evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0)
+
+  // Tipo de evento
   listaDuracion : Array<string> = []
   listaTipoEvento : Array<GenericItem> = []
   listaServicio : Array<GenericItem> = []
-  empresa : GenericItem = new GenericItem(0,"")
 
+  // Datos del evento
+  empresa : GenericItem = new GenericItem(0,"")
   listaDia : Array<number> = []
   listaMes : Array<Mes> = DateUtil.ListaMes
   currentYear = new Date().getFullYear()
   listaYear : Array<number> = [this.currentYear, this.currentYear + 1]
   fechaEvento : FechaForm = new FechaForm(this.currentYear,0,1)
+  listaHora : Array<number> = DateUtil.ListaHora
+  listaMinuto : Array<number> = DateUtil.ListaMinuto
+
 
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, public empresaService : EmpresaService) { }
 
