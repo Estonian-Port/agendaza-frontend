@@ -184,10 +184,18 @@
                     </div>
                     <div class="col-md-6" >
                         <div class="row mt-2">
+
                             <div class="form-group col-6">
                                 <label for="rol">Extra otro</label> 
-                                <input type="number" class="form-control" id="extraOtro" th:field="*{evento.extraOtro}" onChange="sumarPresupuesto();">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">$</div>
+                                    </div>
+                                    <input type="number" class="form-control" id="presupuesto" th:field="*{evento.presupuesto}" readonly/>
+                                </div>
                             </div>
+
+
                             <div class="form-group col-6">
                                 <label for="rol">Descuento</label>
                                 <div class="input-group mb-2">
@@ -205,7 +213,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" class="form-control" id="presupuesto" th:field="*{evento.presupuesto}" readonly/>
+                                    <input type="number" class="form-control" id="presupuesto" disabled/>
                                 </div>
                             </div>
                         </div>
@@ -223,24 +231,29 @@
                         <h2>Seleccione opciones de catering</h2>
                         <p>Puede agregar un servicio de catering al evento</p>
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="checkbox" id="catering_checkbox" >
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="agregarCatering">
                             <label class="form-check-label">Agregar servicio de catering</label>
                         </div>
                     </div>
 
-                    <div id="catering_otro" class="col-6">
+                    <div *ngIf="agregarCatering" class="col-6">
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="checkbox" value="" id="catering_otro_checkbox">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="cateringOtro">
                             <label class="form-check-label" for="catering_otro_checkbox"> Catering Otro </label>
                             <small class="form-text text-muted">(Permite ingresar un precio personalizado de plato)</small>
                         </div>
-                        <div id="catering_otro_precio" class="form-group col-6">
+                        <div *ngIf="cateringOtro" id="catering_otro_precio" class="form-group col-6">
                             <label for="precio_plato_adulto" class="form-label">Precio del plato</label> 
-                            <input type="number" class="form-control" id="precio_plato_adulto" th:field="*{evento.catering.canteringOtro}" onChange="sumarPresupuestoCatering();">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">$</div>
+                                </div>
+                                <input type="number" class="form-control" name="cateringOtroPrecio"/>
+                            </div>
                         </div>
                     </div>
                 </div>					
-                <div id="catering">
+                <div *ngIf="agregarCatering">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
@@ -266,7 +279,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">$</div>
                                         </div>
-                                        <input type="number" class="form-control" id="presupuesto_catering" th:field="*{evento.catering.presupuesto}" readonly/>
+                                        <input type="number" class="form-control" id="presupuesto_catering" disabled/>
                                     </div>
                                 </div>
             
@@ -297,38 +310,38 @@
                 <div>
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="cuil">CUIT/CUIL</label>
-                            <input type="number" class="form-control" id="cuil" th:field="*{cliente.cuil}" name="cuil" required>	
+                            <label for="dni">DNI</label>
+                            <input type="number" class="form-control" name="dni" [(ngModel)]="evento.cliente.dni" required>	
                         </div>
                     </div>
 
                     <div class="row  mt-2">
                         <div class="col-md-4">
                             <label for="nombreCliente">Nombre</label>
-                            <input type="text" class="form-control" id="nombreCliente" th:field="*{cliente.nombre}" name="nombre" required readonly>
+                            <input type="text" class="form-control" name="nombreCliente" [(ngModel)]="evento.cliente.nombre">
                         </div>
                         <div class="col-md-4">
                             <label for="apellido">Apellido</label>
-                            <input type="text" class="form-control" id="apellido" th:field="*{cliente.apellido}" name="apellido" required readonly>
+                            <input type="text" class="form-control" name="apellidoCliente" [(ngModel)]="evento.cliente.apellido">
                         </div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="form-group col-md-4">
                             <label for="email">E-mail</label>
-                            <input type="text" class="form-control email" id="email" th:field="*{cliente.email}" name="email" required readonly>
+                            <input type="text" class="form-control email" name="email" [(ngModel)]="evento.cliente.email">
                         </div>
 
                         <div class="form-group col-md-4">
                             <label for="celular">Celular</label>
-                            <input type="number" class="form-control" id="celular" th:field="*{cliente.celular}" name="celular" required readonly>
+                            <input type="number" class="form-control"name="celular" [(ngModel)]="evento.cliente.celular">
                         </div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="form-group col-md-4">
                             <label for="sexo">Sexo</label>
-                            <select class="form-select" id="sexo" th:field="*{cliente.sexo}">
+                            <select class="form-select" id="sexo" [(ngModel)]="evento.cliente.sexo">
                                 <option *ngFor="let sexo of listaSexo | orderAbm" [value]="sexo">{{sexo}}</option>
                             </select>
                         </div>

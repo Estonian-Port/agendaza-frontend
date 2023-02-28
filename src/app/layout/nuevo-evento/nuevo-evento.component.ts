@@ -56,6 +56,8 @@ export class NuevoEventoComponent implements OnInit {
   // Catering
   listaExtraTipoCatering : Array<GenericItem> = []
   listaExtraCateringVariable : Array<GenericItem> = []
+  agregarCatering : boolean = false
+  cateringOtro : boolean = false
 
   // Datos del contacto
   listaSexo : Array<string> = []
