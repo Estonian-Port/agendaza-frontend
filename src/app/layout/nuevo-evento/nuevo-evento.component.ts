@@ -67,7 +67,7 @@ export class NuevoEventoComponent implements OnInit {
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
     this.empresa = await this.empresaService.getEmpresa()
     this.filterTipoEventoByDuracion()
-    
+
     // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
 
@@ -78,7 +78,16 @@ export class NuevoEventoComponent implements OnInit {
   async filterTipoEventoByDuracion(){
     // Tipo de evento
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
-  
+    
+    this.listaServicio =[]
+
+    // Cotizacion
+    this.listaExtra = []
+    this.listaExtraVariable = []
+    // Catering
+    this.listaExtraTipoCatering = []
+    this.listaExtraCateringVariable = []
+
   }
 
   async inicializarByTipoEventoId(){
