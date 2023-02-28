@@ -13,7 +13,7 @@ export type EventoJSON = {
     fin : Date
     tipoEventoId : number
     empresaId : number
-    listaExtraTipoCatering : Array<Entidad>
+    listaExtraTipoCatering : Array<number>
     listaExtraCateringVariable : Array<ExtraVariable>
     cliente : Cliente
     agregados : Agregados
@@ -23,7 +23,7 @@ export class Evento {
     constructor(public id : number, public nombre : string, public codigo : string, public inicio : Date, 
         public fin : Date, public tipoEventoId : number, public capacidad : Capacidad, public empresaId : number,
         public agregados : Agregados,
-        public listaExtraTipoCatering : Array<Entidad>, public listaExtraCateringVariable : Array<ExtraVariable>,
+        public listaExtraTipoCatering : Array<number>, public listaExtraCateringVariable : Array<ExtraVariable>,
         public cliente : Cliente) {}
     
     

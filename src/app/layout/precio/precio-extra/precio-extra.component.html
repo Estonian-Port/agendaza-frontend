@@ -14,7 +14,7 @@
     
     <div class="border-top my-3"></div>
 
-    <div *ngFor="let precio of listaPrecioCurrent  | orderByFechaDescePrecio; let i=index ">
+    <div *ngFor="let precio of listaPrecioCurrent  | orderByFechaDescePrecio; let i=index">
         <app-precio-form 
             (outputQuitarPrecio)="quitarPrecio($event)"
             [precio]="precio"

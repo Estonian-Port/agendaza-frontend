@@ -7,7 +7,7 @@
         </div>
 
         <!--===============================================================================================-->
-        <div *ngIf="isStep(1)">
+        <div [ngStyle]="{'display': (isStep(1)) ? 'block' : 'none' }">
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-md-6">
@@ -58,7 +58,7 @@
         <!--===============================================================================================-->
 
         <!--===============================================================================================-->
-        <div *ngIf="isStep(2)">
+        <div [ngStyle]="{'display': (isStep(2)) ? 'block' : 'none' }">
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-md-5">
@@ -165,7 +165,7 @@
         <!--===============================================================================================-->
 
         <!--===============================================================================================-->
-        <div *ngIf="isStep(3)">
+        <div [ngStyle]="{'display': (isStep(3)) ? 'block' : 'none' }">
             <section class="nuevo-evento-step">
                 <h2>Presupuesto</h2>
                 <p>Puede agregar extras que cambiaran el precio final</p>
@@ -174,13 +174,23 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-12 form-group">
                                 <h4>Extras fijos</h4> 
-                                <div id="listaExtra" *ngFor="let extra of listaExtra | orderAbm">{{extra.nombre}}</div>
-                                <!-- evento.agregados.listaExtra -->
+                                <div id="listaExtra" *ngFor="let extra of listaExtra | orderAbm; let i=index">
+                                    <app-extra-checkbox 
+                                        [listaExtra]="evento.agregados.listaExtra"
+                                        [i]="i"
+                                        [extra]="extra"
+                                    ></app-extra-checkbox>
+                                </div>
                             </div>
                             <div class="col-lg-8 col-md-12 form-group">
                                 <h4>Extras variables</h4> 
-                                <div id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbm">{{extraVariable.nombre}}</div>
-                                <!-- evento.agregados.listaExtraVariable -->
+                                <div id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbm; let i=index">
+                                    <app-extra-variable-checkbox
+                                        [listaExtra]="evento.agregados.listaExtraVariable"
+                                        [i]="i"
+                                        [extra]="extraVariable">
+                                    </app-extra-variable-checkbox>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -226,7 +236,7 @@
         <!--===============================================================================================-->
     
         <!--===============================================================================================-->
-        <div *ngIf="isStep(4)">
+        <div [ngStyle]="{'display': (isStep(4)) ? 'block' : 'none' }">
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-6">
@@ -261,12 +271,24 @@
                             <div class="row">
                                 <div class="col-lg-4 col-md-12">
                                     <h4>Tipos de catering</h4>
-                                    <div id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbm">{{tipoCatering.nombre}}</div>
+                                    <div id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbm; let i = index">
+                                        <app-extra-checkbox 
+                                            [listaExtra]="evento.listaExtraTipoCatering"
+                                            [i]="i"
+                                            [extra]="tipoCatering"
+                                        ></app-extra-checkbox>
+                                    </div>
                                 </div>
             
                                 <div class="col-lg-8 col-md-12">
                                     <h4>Extras de catering</h4>
-                                    <div id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbm">{{cateringVariable.nombre}}</div>
+                                    <div id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbm; let i = index">      
+                                        <app-extra-variable-checkbox
+                                            [listaExtra]="evento.listaExtraCateringVariable"
+                                            [i]="i"
+                                            [extra]="cateringVariable">
+                                        </app-extra-variable-checkbox>
+                                    </div>
                                 </div>
                             </div>       
                         </div>
@@ -294,7 +316,7 @@
         <!--===============================================================================================-->
 
         <!--===============================================================================================-->
-        <div *ngIf="isStep(5)">
+        <div [ngStyle]="{'display': (isStep(5)) ? 'block' : 'none' }">
             <section class="nuevo-evento-step">
                 <div class="row">
                     <div class="col-4">

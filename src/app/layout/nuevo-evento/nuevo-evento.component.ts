@@ -78,6 +78,8 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   async filterTipoEventoByDuracion(){
+    console.log(this.evento)
+
     // Tipo de evento
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
     
@@ -86,13 +88,20 @@ export class NuevoEventoComponent implements OnInit {
     // Cotizacion
     this.listaExtra = []
     this.listaExtraVariable = []
+    
     // Catering
     this.listaExtraTipoCatering = []
     this.listaExtraCateringVariable = []
 
+    // Limpia las listas de evento
+    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 0, this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), [], [], this.evento.cliente)
+
   }
 
   async inicializarByTipoEventoId(){
+    // Limpia las listas de evento
+    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), [], [], this.evento.cliente)
+
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
@@ -103,6 +112,8 @@ export class NuevoEventoComponent implements OnInit {
     // Catering
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
+  
+
   }
 
   getAllDaysOfMonth(year : number, mes: number){

@@ -11,7 +11,6 @@ import { Location } from '@angular/common';
 })
 export class PrecioExtraComponent implements OnInit {
 
-
   id : number = 0
   listaPrecio : Array<PrecioForm> = []
   listaPrecioCurrent : Array<PrecioForm> = []

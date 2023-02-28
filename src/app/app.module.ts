@@ -50,6 +50,8 @@ import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-e
 import { PrecioTipoEventoComponent } from './layout/precio/precio-tipo-evento/precio-tipo-evento.component';
 import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
 import { PrecioFormComponent } from './components/precio-form/precio-form.component';
+import { ExtraCheckboxComponent } from './components/extra-checkbox/extra-checkbox.component';
+import { ExtraVariableCheckboxComponent } from './components/extra-variable-checkbox/extra-variable-checkbox.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +97,8 @@ import { PrecioFormComponent } from './components/precio-form/precio-form.compon
     PrecioTipoEventoComponent,
     PrecioExtraComponent,
     PrecioFormComponent,
+    ExtraCheckboxComponent,
+    ExtraVariableCheckboxComponent,
   ],
   imports: [
     BrowserModule,
