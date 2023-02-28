@@ -91,3 +91,9 @@ export class UsuarioEmpresa{
       return new UsuarioEmpresa(UsuarioEmpresaJSON.usuarioId, UsuarioEmpresaJSON.empresaId)
      }
 }
+
+export class Cliente{
+
+  constructor(public id: number, public dni : number, public nombre: string, public apellido: string, public sexo : string, 
+    public rol : string, public email : string, public celular : number) {}
+}

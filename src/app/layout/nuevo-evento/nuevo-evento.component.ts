@@ -2,13 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { co } from '@fullcalendar/core/internal-common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
+import { Entidad } from 'src/app/model/Entidad';
 import { Evento } from 'src/app/model/Evento';
+import { ExtraVariable } from 'src/app/model/ExtraVariable';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
+import { Cliente } from 'src/app/model/Usuario';
 import { AgendaService } from 'src/app/services/agenda.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { ExtraService } from 'src/app/services/extra.service';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 @Component({
@@ -27,7 +32,7 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(5, "Datos de contacto")
   ]
 
-  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0)
+  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, [], [], [], [], new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -44,17 +49,41 @@ export class NuevoEventoComponent implements OnInit {
   listaHora : Array<number> = DateUtil.ListaHora
   listaMinuto : Array<number> = DateUtil.ListaMinuto
 
+  // Cotizacion
+  listaExtra : Array<GenericItem> = []
+  listaExtraVariable : Array<GenericItem> = []
 
-  constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, public empresaService : EmpresaService) { }
+  // Catering
+  listaExtraTipoCatering : Array<GenericItem> = []
+  listaExtraCateringVariable : Array<GenericItem> = []
+
+  // Datos del contacto
+  listaSexo : Array<string> = []
+
+  constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
+    public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService) { }
 
   async ngOnInit(): Promise<void> {
+    // Tipo de evento
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
     this.listaServicio = await this.servicioSerice.getAllServicioByEmpresaId()
     this.empresa = await this.empresaService.getEmpresa()
 
+    // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
     
+    // Cotizacion
+    this.listaExtra = await this.extraService.getAllExtraTipoEventoByEmpresaId()
+    this.listaExtraVariable = await this.extraService.getAllExtraTipoEventoByEmpresaId()
+
+    // Catering
+    this.listaExtraTipoCatering = await this.extraService.getAllExtraCateringByEmpresaId()
+    this.listaExtraCateringVariable = await this.extraService.getAllExtraCateringByEmpresaId()
+
+    // Datos del contacto
+    this.listaSexo = await this.usuarioService.getAllSexo()
+
   }
 
   getAllDaysOfMonth(year : number, mes: number){
