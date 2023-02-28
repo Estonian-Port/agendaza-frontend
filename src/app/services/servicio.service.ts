@@ -12,6 +12,7 @@ import { AgendaService } from './agenda.service';
 })
 export class ServicioService {
 
+
   servicioId : number = 0
 
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
@@ -24,6 +25,12 @@ export class ServicioService {
 
   async getAllServicioByEmpresaId() {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioByEmpresaId/' + this.agendaService.getEmpresaId())
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((servicio) => GenericItem.fromJson(servicio))
+  }
+
+  async getAllServicioByTipoEventoId(tipoEventoId: number) {
+    const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioByTipoEventoId/' + tipoEventoId)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((servicio) => GenericItem.fromJson(servicio))
   }

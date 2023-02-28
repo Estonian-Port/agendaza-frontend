@@ -25,7 +25,7 @@
 
                         <div class="col-md-10">
                             <label for="rol">Tipo Evento</label>
-                            <select class="form-select" [(ngModel)]="evento.tipoEventoId" name="tipoEvento">
+                            <select class="form-select" [(ngModel)]="evento.tipoEventoId" name="tipoEvento" (change)="inicializarByTipoEventoId()">
                                 <option [value]="0" hidden>Seleccione Tipo Evento</option>
                                 <option *ngFor="let tipoEvento of listaTipoEvento | orderAbm" [value]="tipoEvento.id">{{tipoEvento.nombre}}</option>
                             </select>

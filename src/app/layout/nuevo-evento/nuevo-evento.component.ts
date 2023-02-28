@@ -69,23 +69,27 @@ export class NuevoEventoComponent implements OnInit {
     // Tipo de evento
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
-    this.listaServicio = await this.servicioSerice.getAllServicioByEmpresaId()
     this.empresa = await this.empresaService.getEmpresa()
 
     // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
-    
-    // Cotizacion
-    this.listaExtra = await this.extraService.getAllExtraTipoEventoByEmpresaId()
-    this.listaExtraVariable = await this.extraService.getAllExtraTipoEventoByEmpresaId()
-
-    // Catering
-    this.listaExtraTipoCatering = await this.extraService.getAllExtraCateringByEmpresaId()
-    this.listaExtraCateringVariable = await this.extraService.getAllExtraCateringByEmpresaId()
 
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
 
+  }
+
+  async inicializarByTipoEventoId(){
+    // Tipo de evento
+    this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
+
+    // Cotizacion
+    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoId(this.evento.tipoEventoId)
+    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoId(this.evento.tipoEventoId)
+
+    // Catering
+    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
+    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
   }
 
   getAllDaysOfMonth(year : number, mes: number){

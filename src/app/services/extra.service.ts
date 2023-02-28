@@ -71,4 +71,24 @@ export class ExtraService {
     return await lastValueFrom(item$)
   }
 
+  async getAllExtraEventoByTipoEventoId(id : number) {
+    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoId/' + id)
+    return await lastValueFrom(listaItem$)
+  }
+
+  async getAllExtraEventoVariableByTipoEventoId(id : number) {
+    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoId/' + id)
+    return await lastValueFrom(listaItem$)
+  }
+
+  async getAllTipoCateringByTipoEventoId(id : number) {
+    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoId/' + id)
+    return await lastValueFrom(listaItem$)
+  }
+
+  async getAllCateringExtraByTipoEventoId(id : number) {
+    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoId/' + id)
+    return await lastValueFrom(listaItem$)
+  }
+
 }
