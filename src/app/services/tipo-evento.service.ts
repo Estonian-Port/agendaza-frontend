@@ -23,7 +23,7 @@ export class TipoEventoService {
   }
 
   async getAllTipoEventoByEmpresaId() {
-    const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaId/' + this.agendaService.getEmpresaId())
+    const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
   }
@@ -56,4 +56,9 @@ export class TipoEventoService {
     return await lastValueFrom(item$)
   }
 
+  async getAllTipoEventoByDuracion(duracionSeleccionada: string) {
+    const listaItem$ = this.httpClient.put<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaIdAndDuracion/' + + this.agendaService.getEmpresaId(), duracionSeleccionada)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
+  }
 }

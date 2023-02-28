@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { co } from '@fullcalendar/core/internal-common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
-import { Entidad } from 'src/app/model/Entidad';
 import { Evento } from 'src/app/model/Evento';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
+import { TipoEvento } from 'src/app/model/TipoEvento';
 import { Cliente } from 'src/app/model/Usuario';
-import { AgendaService } from 'src/app/services/agenda.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { ExtraService } from 'src/app/services/extra.service';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-
 
 @Component({
   selector: 'app-nuevo-evento',
@@ -36,8 +32,9 @@ export class NuevoEventoComponent implements OnInit {
 
   // Tipo de evento
   listaDuracion : Array<string> = []
-  listaTipoEvento : Array<GenericItem> = []
+  listaTipoEvento : Array<TipoEvento> = []
   listaServicio : Array<GenericItem> = []
+  duracionSeleccionada : string = "CORTO"
 
   // Datos del evento
   empresa : GenericItem = new GenericItem(0,"")
@@ -68,15 +65,20 @@ export class NuevoEventoComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // Tipo de evento
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
-    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
     this.empresa = await this.empresaService.getEmpresa()
-
+    this.filterTipoEventoByDuracion()
+    
     // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
 
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
+  }
 
+  async filterTipoEventoByDuracion(){
+    // Tipo de evento
+    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
+  
   }
 
   async inicializarByTipoEventoId(){
