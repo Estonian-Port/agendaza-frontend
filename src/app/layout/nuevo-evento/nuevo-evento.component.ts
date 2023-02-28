@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AgendaCard } from 'src/app/model/Agenda';
+import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
@@ -28,7 +30,7 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(5, "Datos de contacto")
   ]
 
-  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, [], [], [], [], new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
+  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, new Agregados(0,0,0,[],[]), [], [], new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
 
   // Tipo de evento
   listaDuracion : Array<string> = []

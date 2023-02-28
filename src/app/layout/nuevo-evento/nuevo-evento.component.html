@@ -174,11 +174,13 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-12 form-group">
                                 <h4>Extras fijos</h4> 
-                                <div id="listaServicio" *ngFor="let extra of listaExtra | orderAbm">{{extra.nombre}}</div>
+                                <div id="listaExtra" *ngFor="let extra of listaExtra | orderAbm">{{extra.nombre}}</div>
+                                <!-- evento.agregados.listaExtra -->
                             </div>
                             <div class="col-lg-8 col-md-12 form-group">
                                 <h4>Extras variables</h4> 
-                                <div id="listaServicio" *ngFor="let extraVariable of listaExtraVariable | orderAbm">{{extraVariable.nombre}}</div>
+                                <div id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbm">{{extraVariable.nombre}}</div>
+                                <!-- evento.agregados.listaExtraVariable -->
                             </div>
                         </div>
                     </div>
@@ -191,7 +193,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" class="form-control" id="presupuesto" th:field="*{evento.presupuesto}" readonly/>
+                                    <input type="number" class="form-control" id="extraOtro" [(ngModel)]="evento.agregados.extraOtro"/>
                                 </div>
                             </div>
 
@@ -199,7 +201,7 @@
                             <div class="form-group col-6">
                                 <label for="rol">Descuento</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" id="descuento" th:field="*{evento.descuento}" onChange="sumarPresupuesto();">
+                                    <input type="number" class="form-control" id="descuento" [(ngModel)]="evento.agregados.descuento">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
