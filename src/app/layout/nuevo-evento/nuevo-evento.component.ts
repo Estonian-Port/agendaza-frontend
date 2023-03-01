@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgendaCard } from 'src/app/model/Agenda';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
+import { CateringEvento } from 'src/app/model/CateringEvento';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
 import { FechaForm } from 'src/app/model/FechaForm';
@@ -30,7 +31,9 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(5, "Datos de contacto")
   ]
 
-  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, new Agregados(0,0,0,[],[]), [], [], new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
+  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, 
+    new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
+    new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -93,14 +96,11 @@ export class NuevoEventoComponent implements OnInit {
     this.listaExtraTipoCatering = []
     this.listaExtraCateringVariable = []
 
-    // Limpia las listas de evento
-    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 0, this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), [], [], this.evento.cliente)
-
+    this.cleanEvento()
   }
 
   async inicializarByTipoEventoId(){
-    // Limpia las listas de evento
-    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), [], [], this.evento.cliente)
+    this.cleanEvento()
 
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
@@ -112,8 +112,11 @@ export class NuevoEventoComponent implements OnInit {
     // Catering
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
-  
+  }
 
+  cleanEvento(){
+    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, 
+      this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente)
   }
 
   getAllDaysOfMonth(year : number, mes: number){
