@@ -10,10 +10,12 @@ import { GenericItem } from 'src/app/model/GenericItem';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { Cliente } from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { EventoService } from 'src/app/services/evento.service';
 import { ExtraService } from 'src/app/services/extra.service';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-nuevo-evento',
@@ -33,7 +35,7 @@ export class NuevoEventoComponent implements OnInit {
 
   evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, 
     new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
-    new Cliente(0,0,"","","MASCULINO","CLIENTE","",0))
+    new Cliente(0,0,"","","CLIENTE","",0), 0)
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -64,8 +66,14 @@ export class NuevoEventoComponent implements OnInit {
   // Datos del contacto
   listaSexo : Array<string> = []
 
+  // Errors
+  errors = []
+  error : ErrorMensaje = new ErrorMensaje(false, '')
+  usuarioCondicional : boolean = false
+
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
-    public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService) { }
+    public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
+    public eventoService : EventoService) { }
 
   async ngOnInit(): Promise<void> {
     // Tipo de evento
@@ -116,13 +124,59 @@ export class NuevoEventoComponent implements OnInit {
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, 
-      this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente)
+      this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
   }
 
   getAllDaysOfMonth(year : number, mes: number){
     this.listaDia = DateUtil.getAllDaysOfMonth(year, mes)
   }
 
+  async buscarClientePorDni(){
+    try {
+      this.evento.cliente = await this.eventoService.buscarClientePorDni(this.evento.cliente.dni)
+      this.usuarioEncontrado()
+    } catch (error) {
+      this.evento.cliente = new Cliente(0, this.evento.cliente.dni, 
+        "", "", "CLIENTE", "", 0)
+        this.usuarioNoEncontrado(error)
+    }
+  }
+
+ async buscarClientePorEmail(){
+    try {
+      this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.evento.cliente.email)
+      this.usuarioEncontrado()
+    } catch (error) {
+      this.evento.cliente = new Cliente(0, 0, 
+        "", "", "CLIENTE", this.evento.cliente.email, 0)
+        this.usuarioNoEncontrado(error)
+    }
+  }
+
+  async buscarClientePorCelular(){
+    try {
+      this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.evento.cliente.celular)
+      this.usuarioEncontrado()
+    } catch (error) {
+      this.evento.cliente = new Cliente(0, 0, 
+        "", "", "CLIENTE", "", this.evento.cliente.celular)
+      this.usuarioNoEncontrado(error)
+
+    }
+  }
+
+  usuarioEncontrado(){
+    this.error.condicional = false
+    this.usuarioCondicional = true
+  }
+  
+  usuarioNoEncontrado(error : any){
+    this.error.condicional = true
+    this.usuarioCondicional = false
+
+    mostrarErrorConMensaje(this, error)
+    this.errors.forEach(error => { this.error.mensaje = error })
+  }
 
   isStep(step : number) : boolean{
     return this.step == step

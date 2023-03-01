@@ -53,4 +53,5 @@ export class LoginService {
     const usuario$ = this.httpClient.get<UsuarioJSON>(REST_SERVER_URL + '/getUsuario/' + this.getUsuarioId())
     return Usuario.fromJson(await lastValueFrom(usuario$))
   }
+
 }

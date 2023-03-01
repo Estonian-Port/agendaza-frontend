@@ -223,7 +223,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" class="form-control" id="presupuesto" disabled/>
+                                    <input type="number" class="form-control" id="presupuesto"[(ngModel)]="evento.presupuesto" disabled/>
                                 </div>
                             </div>
                         </div>
@@ -327,10 +327,10 @@
                         <h2>Finalizar reserva</h2>
                         <p>Complete con los datos del cliente</p>
                     </div>
-                    <div id="clienteNoEncontrado" class="col-4 d-none">
-                        <div class="alert alert-danger" role="alert">Cliente no encontrado </div>
+                    <div *ngIf='error.condicional' class="col-4">
+                        <div class="alert alert-danger">{{error.mensaje}}</div>
                     </div>
-                    <div id="clienteEncontrado" class="col-4 d-none">
+                    <div *ngIf='usuarioCondicional' id="clienteEncontrado" class="col-4">
                         <div class="alert alert-success" role="alert">Cliente encontrado </div>
                     </div>
                 </div>
@@ -338,7 +338,11 @@
                 <div>
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="dni" class="form-label">DNI <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search fa-xs"></i></button></label>
+                            <label for="dni" class="form-label">DNI 
+                                <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorDni()">
+                                    <i class="fas fa-search fa-xs"></i>
+                                </button>
+                            </label>
                             <input type="number" class="form-control" name="dni" [(ngModel)]="evento.cliente.dni" required>	
                         </div>
                     </div>
@@ -356,12 +360,20 @@
 
                     <div class="row mt-2">
                         <div class="form-group col-md-4">
-                            <label for="email" class="form-label">E-mail <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search fa-xs"></i></button></label>
-                            <input type="text" class="form-control email" name="email" [(ngModel)]="evento.cliente.email">
+                            <label for="email" class="form-label">E-mail 
+                                <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorEmail()">
+                                    <i class="fas fa-search fa-xs"></i>
+                                </button>
+                            </label>
+                            <input type="text" class="form-control email" name="email"  [(ngModel)]="evento.cliente.email">
                         </div>
 
                         <div class="form-group col-md-4">
-                            <label for="celular" class="form-label">Celular <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search fa-xs"></i></button></label>
+                            <label for="celular" class="form-label">Celular 
+                                <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorCelular()">
+                                    <i class="fas fa-search fa-xs"></i>
+                                </button>
+                            </label>
                             <input type="number" class="form-control"name="celular" [(ngModel)]="evento.cliente.celular">
                         </div>
                     </div>
