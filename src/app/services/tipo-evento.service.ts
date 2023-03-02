@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
+import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { Time } from '../model/Time';
@@ -48,6 +49,11 @@ export class TipoEventoService {
     const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByTipoEventoId/' + tipoEventoId)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
+  }
+
+  async getPrecioByTipoEventoIdAndFecha(tipoEventoId: number, fechaInicio : FechaForm) {
+    const precio$ = this.httpClient.put<number>(REST_SERVER_URL + '/getPrecioByTipoEventoIdAndFecha/' + tipoEventoId, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    return await lastValueFrom(precio$)
   }
 
   async savePrecio(listaPrecioForm : PrecioForm[]) {

@@ -61,6 +61,7 @@ export class NuevoEventoComponent implements OnInit {
   // Cotizacion
   listaExtra : Array<GenericItem> = []
   listaExtraVariable : Array<GenericItem> = []
+  precioTipoEvento : number = 0
 
   // Catering
   listaExtraTipoCatering : Array<GenericItem> = []
@@ -116,7 +117,7 @@ export class NuevoEventoComponent implements OnInit {
     // Datos del evento
     this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
     this.changeTime()
-
+    this.changeDate()
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
@@ -127,6 +128,12 @@ export class NuevoEventoComponent implements OnInit {
     // Catering
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
+  
+  }
+
+  async changeDate(){
+    this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    console.log(this.precioTipoEvento)
   }
 
   async changeTime(){
@@ -136,7 +143,11 @@ export class NuevoEventoComponent implements OnInit {
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, 
-      this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
+    this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
+  }
+
+  sumPresupuesto(){
+    this.evento.presupuesto = this.precioTipoEvento
   }
 
   getAllDaysOfMonth(year : number, mes: number){
