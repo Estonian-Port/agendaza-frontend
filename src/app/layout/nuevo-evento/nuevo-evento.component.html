@@ -19,7 +19,7 @@
                         <div class="col-md-10">
                             <label for="duracion" class="form-label">Duracion</label>
                             <select class="form-select" name="duracion" [(ngModel)]="duracionSeleccionada" (change)="filterTipoEventoByDuracion()">
-                                <option *ngFor="let duracion of listaDuracion | orderAbm" [value]="duracion">{{duracion}}</option>
+                                <option *ngFor="let duracion of listaDuracion | orderAbm; let i = index" [value]="duracion">{{duracion}}</option>
                             </select>
                         </div>
 
@@ -99,8 +99,8 @@
                                 <div class="d-inline-flex flex-row">
                                     <div>
                                         <div class="form-group">
-                                            <select class="form-control" name="time_start_hour">
-                                                <option *ngFor="let hora of listaHora | orderAbm" [value]="hora">{{hora | number: '2.0-0'}}</option>
+                                            <select class="form-control" name="time_start_hour" [(ngModel)]="inicioTime.hour" (change)="changeTime()">
+                                                <option *ngFor="let hora of listaHora | orderAbm" [value]="hora">{{hora}}</option>
                                             </select>
                                         </div>       
                                     </div>
@@ -109,8 +109,8 @@
                                     </div>
                                     <div>
                                         <div class="form-group">
-                                            <select class="form-control" name="time_start_minute">
-                                                <option *ngFor="let minuto of listaMinuto| orderAbm" [value]="minuto">{{minuto | number: '2.0-0'}}</option>
+                                            <select class="form-control" name="time_start_minute" [(ngModel)]="inicioTime.minute" (change)="changeTime()">
+                                                <option *ngFor="let minuto of listaMinuto| orderAbm" [value]="minuto">{{minuto}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -122,8 +122,8 @@
                                 <div class="d-inline-flex flex-row">
                                     <div>
                                         <div class="form-group">
-                                            <select class="form-control" name="time_end_hour">
-                                                <option *ngFor="let hora of listaHora | orderAbm" [value]="hora">{{hora | number: '2.0-0'}}</option>
+                                            <select class="form-control" name="time_end_hour" [(ngModel)]="finalTime.hour">
+                                                <option *ngFor="let hora of listaHora | orderAbm" [value]="hora">{{hora}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -132,8 +132,8 @@
                                     </div>
                                     <div>
                                         <div class="form-group">
-                                            <select class="form-control" name="time_end_minute">
-                                                <option *ngFor="let minuto of listaMinuto| orderAbm" [value]="minuto">{{minuto | number: '2.0-0'}}</option>
+                                            <select class="form-control" name="time_end_minute"  [(ngModel)]="finalTime.minute" >
+                                                <option *ngFor="let minuto of listaMinuto| orderAbm" [value]="minuto">{{minuto}}</option>
                                             </select>
                                         </div> 
                                     </div>
@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="form-group mt-2" id="hastaElOtroDia">
-                                <input class="form-check-input" type="checkbox" name="hastaElOtroDiaCheckbox">
+                                <input class="form-check-input" type="checkbox" name="hastaElOtroDiaCheckbox" [(ngModel)]="hastaElOtroDiaCheckbox">
                                 <label class="form-check-label" for="hastaElOtroDiaCheckbox"> Dura hasta el otro dia </label>
                             </div>
                         </div>				                

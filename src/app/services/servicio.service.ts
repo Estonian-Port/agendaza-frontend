@@ -5,13 +5,13 @@ import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemJSON } from '../model/GenericItem';
 import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
 import { GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON } from '../model/GenericItemEmpresaTipoEvento';
+import { Time } from '../model/Time';
 import { AgendaService } from './agenda.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioService {
-
 
   servicioId : number = 0
 

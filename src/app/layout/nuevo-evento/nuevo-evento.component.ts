@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AgendaCard } from 'src/app/model/Agenda';
+import { end } from '@popperjs/core';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { CateringEvento } from 'src/app/model/CateringEvento';
@@ -7,6 +7,7 @@ import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
+import { Time } from 'src/app/model/Time';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { Cliente } from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
@@ -50,8 +51,12 @@ export class NuevoEventoComponent implements OnInit {
   currentYear = new Date().getFullYear()
   listaYear : Array<number> = [this.currentYear, this.currentYear + 1]
   fechaEvento : FechaForm = new FechaForm(this.currentYear,0,1)
-  listaHora : Array<number> = DateUtil.ListaHora
-  listaMinuto : Array<number> = DateUtil.ListaMinuto
+  listaHora : Array<string> = DateUtil.ListaHora
+  listaMinuto : Array<string> = DateUtil.ListaMinuto
+  inicioTime : Time = new Time("00","00")
+  finalTime : Time = new Time("00","00")
+  duracionTipoEvento : Time = new Time("00","00")
+  hastaElOtroDiaCheckbox : boolean = false
 
   // Cotizacion
   listaExtra : Array<GenericItem> = []
@@ -89,8 +94,6 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   async filterTipoEventoByDuracion(){
-    console.log(this.evento)
-
     // Tipo de evento
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
     
@@ -110,6 +113,10 @@ export class NuevoEventoComponent implements OnInit {
   async inicializarByTipoEventoId(){
     this.cleanEvento()
 
+    // Datos del evento
+    this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
+    this.changeTime()
+
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
@@ -120,6 +127,11 @@ export class NuevoEventoComponent implements OnInit {
     // Catering
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
+  }
+
+  async changeTime(){
+    this.finalTime = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.evento.tipoEventoId, this.inicioTime)
+    this.hastaElOtroDiaCheckbox = Number(this.finalTime.hour) < Number(this.inicioTime.hour)
   }
 
   cleanEvento(){
@@ -136,9 +148,8 @@ export class NuevoEventoComponent implements OnInit {
       this.evento.cliente = await this.eventoService.buscarClientePorDni(this.evento.cliente.dni)
       this.usuarioEncontrado()
     } catch (error) {
-      this.evento.cliente = new Cliente(0, this.evento.cliente.dni, 
-        "", "", "CLIENTE", "", 0)
-        this.usuarioNoEncontrado(error)
+      this.evento.cliente = new Cliente(0, this.evento.cliente.dni, "", "", "CLIENTE", "", 0)
+      this.usuarioNoEncontrado(error)
     }
   }
 
@@ -147,9 +158,8 @@ export class NuevoEventoComponent implements OnInit {
       this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.evento.cliente.email)
       this.usuarioEncontrado()
     } catch (error) {
-      this.evento.cliente = new Cliente(0, 0, 
-        "", "", "CLIENTE", this.evento.cliente.email, 0)
-        this.usuarioNoEncontrado(error)
+      this.evento.cliente = new Cliente(0, 0, "", "", "CLIENTE", this.evento.cliente.email, 0)
+      this.usuarioNoEncontrado(error)
     }
   }
 
@@ -158,8 +168,7 @@ export class NuevoEventoComponent implements OnInit {
       this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.evento.cliente.celular)
       this.usuarioEncontrado()
     } catch (error) {
-      this.evento.cliente = new Cliente(0, 0, 
-        "", "", "CLIENTE", "", this.evento.cliente.celular)
+      this.evento.cliente = new Cliente(0, 0, "", "", "CLIENTE", "", this.evento.cliente.celular)
       this.usuarioNoEncontrado(error)
 
     }

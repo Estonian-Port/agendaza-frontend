@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { GenericItem, GenericItemJSON} from '../model/GenericItem';
+import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
+import { Time } from '../model/Time';
 import { TipoEvento, TipoEventoEditJSON, TipoEventoJSON } from '../model/TipoEvento';
 import { AgendaService } from './agenda.service';
 
@@ -60,5 +61,17 @@ export class TipoEventoService {
     const listaItem$ = this.httpClient.put<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaIdAndDuracion/' + + this.agendaService.getEmpresaId(), duracionSeleccionada)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
+  }
+
+  async getDuracionByTipoEventoId(tipoEventoId: number) {
+    const time$ = this.httpClient.get<string>(REST_SERVER_URL + '/getDuracionByTipoEventoId/' + tipoEventoId)
+    const time = await lastValueFrom(time$)
+    return new Time(time.substring(0,2), time.substring(3,5))
+  }
+
+  async getTimeEndByTipoEventoIdAndTimeStart(tipoEventoId: number, timeStart : Time) {
+    const time$ = this.httpClient.put<string>(REST_SERVER_URL + '/getTimeEndByTipoEventoIdAndTimeStart/' + tipoEventoId, timeStart)
+    const time = await lastValueFrom(time$)
+    return new Time(time.substring(0,2), time.substring(3,5))
   }
 }
