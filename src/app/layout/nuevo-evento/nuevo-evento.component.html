@@ -36,11 +36,11 @@
                             <div class="row mt-3">
                                 <div class="form-group col-6">
                                     <label for="capacidadAdultos" class="form-label">Cantidad Adultos</label>
-                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadAdultos' name="capacidadAdultos">
+                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadAdultos' min="0" oninput="this.value = Math.abs(this.value)" name="capacidadAdultos">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="capacidadNinos" class="form-label">Cantidad Niños</label> 
-                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadNinos' name="capacidadNinos">
+                                    <input type="number" class="form-control" [(ngModel)]='evento.capacidad.capacidadNinos' min="0" oninput="this.value = Math.abs(this.value)" name="capacidadNinos">
                                 </div>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" class="form-control" name="extraOtro" [(ngModel)]="evento.agregados.extraOtro"/>
+                                    <input type="number" class="form-control" name="extraOtro" [(ngModel)]="evento.agregados.extraOtro" min="0" oninput="this.value = Math.abs(this.value)" (change)="sumPresupuesto()">
                                 </div>
                             </div>
 
@@ -211,7 +211,7 @@
                             <div class="form-group col-6">
                                 <label class="form-label" for="descuento">Descuento</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" name="descuento" [(ngModel)]="evento.agregados.descuento">
+                                    <input type="number" class="form-control" name="descuento" [(ngModel)]="evento.agregados.descuento" min="0" oninput="this.value = Math.abs(this.value)" (change)="sumPresupuesto()">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">%</div>
                                     </div>
@@ -261,7 +261,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" class="form-control" [(ngModel)]="evento.catering.cateringOtro" name="cateringOtroPrecio"/>
+                                    <input type="number" class="form-control" [(ngModel)]="evento.catering.cateringOtro" min="0" oninput="this.value = Math.abs(this.value)" (change)="sumCateringPresupuesto()" name="cateringOtroPrecio"/>
                                 </div>
                             </div>
                             <div class="col-9">
@@ -279,7 +279,7 @@
                                     <h4>Tipos de catering</h4>
                                     <div id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbm; let i = index">
                                         <app-extra-checkbox 
-                                            (outputExtraPresupuesto)="sumCateringPresupuesto($event)"
+                                            (outputExtraPresupuesto)="sumExtraTipoCatering($event)"
                                             [listaExtra]="evento.catering.listaExtraTipoCatering"
                                             [i]="i"
                                             [extra]="tipoCatering"
@@ -291,7 +291,7 @@
                                     <h4>Extras de catering</h4>
                                     <div id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbm; let i = index">      
                                         <app-extra-variable-checkbox
-                                            (outputExtraPresupuesto)="sumCateringPresupuesto($event)"
+                                            (outputExtraPresupuesto)="sumExtraCatering($event)"
                                             [listaExtra]="evento.catering.listaExtraCateringVariable"
                                             [i]="i"
                                             [extra]="cateringVariable">
@@ -302,7 +302,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="col-12">
-                                <h4 id="titulo_cantidad_adultos"></h4>
+                                <h4>La cantidad de adultos del evento es: {{evento.capacidad.capacidadAdultos}}</h4>
                             </div>
                             <div class="col-12">
                                 <div class="form-group col-md-8">
@@ -314,7 +314,6 @@
                                         <input type="number" class="form-control" [(ngModel)]="evento.catering.presupuesto" name="presupuestoCatering" disabled/>
                                     </div>
                                 </div>
-            
                             </div>
                         </div>
                     </div>

@@ -72,6 +72,8 @@ export class NuevoEventoComponent implements OnInit {
   listaExtraCateringVariable : Array<ExtraVariable> = []
   agregarCatering : boolean = false
   cateringOtro : boolean = false
+  extraTipoCateringPresupuesto : number = 0
+  extraCateringPresupuesto : number = 0
 
   // Datos del contacto
   listaSexo : Array<string> = []
@@ -159,14 +161,23 @@ export class NuevoEventoComponent implements OnInit {
   sumPresupuesto(){
     if(this.evento.agregados.descuento == 0){
       this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
-
     }else{
       this.evento.presupuesto = (this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro) * (this.evento.agregados.descuento / 100)
     }
   }
 
-  sumCateringPresupuesto(extraPrecio : number){
-    this.evento.catering.presupuesto += extraPrecio
+  sumExtraTipoCatering(extraPrecio : number){
+    this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidad.capacidadAdultos
+    this.sumCateringPresupuesto()
+  }
+
+  sumExtraCatering(extraPrecio : number){
+    this.extraCateringPresupuesto += extraPrecio
+    this.sumCateringPresupuesto()
+  }
+
+  sumCateringPresupuesto(){
+    this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
   }
 
   getAllDaysOfMonth(year : number, mes: number){

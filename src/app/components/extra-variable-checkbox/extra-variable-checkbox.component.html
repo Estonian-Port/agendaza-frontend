@@ -5,6 +5,6 @@
         <label class="form-check-label">{{extra.nombre}} ${{extra.precio}}</label>
     </div>
     <div class="col-3">
-        <input type="number" name="extraVariable{{extra.nombre}}{{i}}" (change)="onChangeCantidad()" [(ngModel)]="extra.cantidad" class="form-control" [disabled]="input">
+        <input type="number" name="extraVariable{{extra.nombre}}{{i}}" min="0" oninput="this.value = Math.abs(this.value)" (change)="onChangeCantidad()" [(ngModel)]="extra.cantidad" class="form-control" [disabled]="input">
     </div>
 </div>
