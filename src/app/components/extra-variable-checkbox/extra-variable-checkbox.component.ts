@@ -20,6 +20,8 @@ export class ExtraVariableCheckboxComponent implements OnInit {
 
   input : boolean = true
 
+  precioExtraPasado : number= 0
+
   @Output()
   outputExtraPresupuesto = new EventEmitter<number>();
   
@@ -42,11 +44,19 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   }
 
   onChangeCantidad(){
+    if(this.precioExtraPasado != 0){
+      this.onChangeCantidadCheckbox()
+    }
     this.outputExtraPresupuesto.emit(this.extra.precio * this.extra.cantidad)
+    this.precioExtraPasado = this.extra.precio * this.extra.cantidad
   }
 
   onNotCheckbox(){
     this.outputExtraPresupuesto.emit(-this.extra.precio * this.extra.cantidad)
+  }
+
+  onChangeCantidadCheckbox(){
+    this.outputExtraPresupuesto.emit(-this.precioExtraPasado)
   }
 
 }
