@@ -37,7 +37,6 @@ export class ExtraVariableCheckboxComponent implements OnInit {
       this.input = false
     } else {
       this.onNotCheckbox()
-      this.extra.cantidad = 0
       _.pull(this.listaExtra, this.extra)
       this.input = true
     }
@@ -53,6 +52,8 @@ export class ExtraVariableCheckboxComponent implements OnInit {
 
   onNotCheckbox(){
     this.outputExtraPresupuesto.emit(-this.extra.precio * this.extra.cantidad)
+    this.precioExtraPasado = 0
+    this.extra.cantidad = 0
   }
 
   onChangeCantidadCheckbox(){

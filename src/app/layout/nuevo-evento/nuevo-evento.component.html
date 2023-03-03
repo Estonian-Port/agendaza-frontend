@@ -279,6 +279,7 @@
                                     <h4>Tipos de catering</h4>
                                     <div id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbm; let i = index">
                                         <app-extra-checkbox 
+                                            (outputExtraPresupuesto)="sumCateringPresupuesto($event)"
                                             [listaExtra]="evento.catering.listaExtraTipoCatering"
                                             [i]="i"
                                             [extra]="tipoCatering"
@@ -290,6 +291,7 @@
                                     <h4>Extras de catering</h4>
                                     <div id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbm; let i = index">      
                                         <app-extra-variable-checkbox
+                                            (outputExtraPresupuesto)="sumCateringPresupuesto($event)"
                                             [listaExtra]="evento.catering.listaExtraCateringVariable"
                                             [i]="i"
                                             [extra]="cateringVariable">
