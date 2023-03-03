@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { end } from '@popperjs/core';
+import { sum } from 'lodash';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { CateringEvento } from 'src/app/model/CateringEvento';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
+import { Extra } from 'src/app/model/Extra';
+import { ExtraVariable } from 'src/app/model/ExtraVariable';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
@@ -59,13 +62,14 @@ export class NuevoEventoComponent implements OnInit {
   hastaElOtroDiaCheckbox : boolean = false
 
   // Cotizacion
-  listaExtra : Array<GenericItem> = []
-  listaExtraVariable : Array<GenericItem> = []
+  listaExtra : Array<Extra> = []
+  listaExtraVariable : Array<ExtraVariable> = []
   precioTipoEvento : number = 0
+  extraPresupuesto : number = 0
 
   // Catering
-  listaExtraTipoCatering : Array<GenericItem> = []
-  listaExtraCateringVariable : Array<GenericItem> = []
+  listaExtraTipoCatering : Array<Extra> = []
+  listaExtraCateringVariable : Array<ExtraVariable> = []
   agregarCatering : boolean = false
   cateringOtro : boolean = false
 
@@ -112,28 +116,29 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   async inicializarByTipoEventoId(){
-    this.cleanEvento()
 
     // Datos del evento
+    this.cleanEvento()
     this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
     this.changeTime()
     this.changeDate()
+
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
     // Cotizacion
-    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoId(this.evento.tipoEventoId)
-    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoId(this.evento.tipoEventoId)
+    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
 
     // Catering
-    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoId(this.evento.tipoEventoId)
-    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoId(this.evento.tipoEventoId)
+    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
   
   }
 
   async changeDate(){
     this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-    console.log(this.precioTipoEvento)
+    this.sumPresupuesto()
   }
 
   async changeTime(){
@@ -146,8 +151,14 @@ export class NuevoEventoComponent implements OnInit {
     this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
   }
 
+  sumExtraPresupuesto(extraPrecio : number){
+    this.extraPresupuesto += extraPrecio
+    this.sumPresupuesto()
+  }
+
   sumPresupuesto(){
-    this.evento.presupuesto = this.precioTipoEvento
+    console.log(this.extraPresupuesto)
+    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto
   }
 
   getAllDaysOfMonth(year : number, mes: number){

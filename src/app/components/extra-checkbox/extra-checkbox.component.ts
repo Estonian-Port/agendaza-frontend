@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
+import { Extra } from 'src/app/model/Extra';
 import { GenericItem } from 'src/app/model/GenericItem';
 
 @Component({
@@ -13,10 +14,13 @@ export class ExtraCheckboxComponent implements OnInit {
   i! : number
 
   @Input()
-  extra! : GenericItem
+  extra! : Extra
 
   @Input()
   listaExtra! : Array<number>
+
+  @Output()
+  outputExtraPresupuesto = new EventEmitter<number>();
 
   constructor() { }
 
@@ -25,9 +29,12 @@ export class ExtraCheckboxComponent implements OnInit {
 
   onCheckboxChange(event: any){
     if (event.target.checked) {
-      this.listaExtra.push( Number(event.target.value))
+      this.listaExtra.push(Number(event.target.value))
+      this.outputExtraPresupuesto.emit(this.extra.precio)
+
     } else {
       _.pull(this.listaExtra, Number(event.target.value))
+      this.outputExtraPresupuesto.emit(- this.extra.precio)
     }
   }
 }

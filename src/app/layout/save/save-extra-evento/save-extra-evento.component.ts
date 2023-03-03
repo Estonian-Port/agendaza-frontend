@@ -14,7 +14,7 @@ import { ErrorMensaje } from 'src/util/errorHandler';
 })
 export class SaveExtraEventoComponent implements OnInit {
 
-  extra = new Extra(0, "", "EVENTO", 0)
+  extra = new Extra(0, "", "EVENTO", 0,[],0)
   listaTipoExtra : Array<string> = []
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')

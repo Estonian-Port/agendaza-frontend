@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
 
@@ -19,6 +19,9 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   listaExtra! : Array<ExtraVariable>
 
   input : boolean = true
+
+  @Output()
+  outputExtraPresupuesto = new EventEmitter<number>();
   
   constructor() { }
 
@@ -31,10 +34,19 @@ export class ExtraVariableCheckboxComponent implements OnInit {
       this.listaExtra.push(this.extra)
       this.input = false
     } else {
+      this.onNotCheckbox()
       this.extra.cantidad = 0
       _.pull(this.listaExtra, this.extra)
       this.input = true
     }
+  }
+
+  onChangeCantidad(){
+    this.outputExtraPresupuesto.emit(this.extra.precio * this.extra.cantidad)
+  }
+
+  onNotCheckbox(){
+    this.outputExtraPresupuesto.emit(-this.extra.precio * this.extra.cantidad)
   }
 
 }

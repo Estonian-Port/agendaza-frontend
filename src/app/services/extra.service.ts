@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Extra, ExtraJSON } from '../model/Extra';
+import { ExtraVariable } from '../model/ExtraVariable';
+import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { AgendaService } from './agenda.service';
@@ -71,23 +73,23 @@ export class ExtraService {
     return await lastValueFrom(item$)
   }
 
-  async getAllExtraEventoByTipoEventoId(id : number) {
-    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoId/' + id)
+  async getAllExtraEventoByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
+    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllExtraEventoVariableByTipoEventoId(id : number) {
-    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoId/' + id)
+  async getAllExtraEventoVariableByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
+    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllTipoCateringByTipoEventoId(id : number) {
-    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoId/' + id)
+  async getAllTipoCateringByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
+    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllCateringExtraByTipoEventoId(id : number) {
-    const listaItem$ = this.httpClient.get<GenericItem[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoId/' + id)
+  async getAllCateringExtraByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
+    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
