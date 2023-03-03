@@ -158,7 +158,12 @@ export class NuevoEventoComponent implements OnInit {
 
   sumPresupuesto(){
     console.log(this.extraPresupuesto)
-    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto
+    if(this.evento.agregados.descuento == 0){
+      this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
+
+    }else{
+      this.evento.presupuesto = (this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro) * (this.evento.agregados.descuento / 100)
+    }
   }
 
   getAllDaysOfMonth(year : number, mes: number){
