@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
+import { Capacidad } from '../model/Capacidad';
 import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
@@ -73,6 +74,11 @@ export class TipoEventoService {
     const time$ = this.httpClient.get<string>(REST_SERVER_URL + '/getDuracionByTipoEventoId/' + tipoEventoId)
     const time = await lastValueFrom(time$)
     return new Time(time.substring(0,2), time.substring(3,5))
+  }
+
+  async getCapacidadByTipoEventoId(tipoEventoId: number) {
+    const capacidad$ = this.httpClient.get<Capacidad>(REST_SERVER_URL + '/getCapacidadByTipoEventoId/' + tipoEventoId)
+    return await lastValueFrom(capacidad$)
   }
 
   async getTimeEndByTipoEventoIdAndTimeStart(tipoEventoId: number, timeStart : Time) {

@@ -7,7 +7,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbm">
+            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbmByNombre">
                 <td>{{item.nombre}}</td>
                 <td class="d-flex justify-content-center">
                     <button *ngIf="mostrarPrecio" (click)="precio(item.id)" class="mx-2"><i class="fas fa-dollar-sign text-success fa-lg"></i></button>

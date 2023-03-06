@@ -36,14 +36,14 @@
         <div class="form-group">
             <label for="rol">Sexo</label>
             <select class="form-select" [(ngModel)]="usuario.sexo" name="sexo">
-                <option *ngFor="let sexo of listaSexo | orderAbm" [value]="sexo">{{sexo}}</option>
+                <option *ngFor="let sexo of listaSexo | orderAbmById" [value]="sexo">{{sexo}}</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="rol">Rol</label>
             <select class="form-select" [(ngModel)]="usuario.rol" name="rol">
-                <option *ngFor="let rol of listaRol | orderAbm" [value]="rol">{{rol}}</option>
+                <option *ngFor="let rol of listaRol | orderAbmById" [value]="rol">{{rol}}</option>
             </select>
         </div>
 

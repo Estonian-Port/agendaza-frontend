@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbm">
+            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbmByNombre">
                 <td>{{item.nombre}}</td>
                 <td>{{item.apellido}}</td>
                 

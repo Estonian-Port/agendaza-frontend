@@ -22,6 +22,9 @@ export class ExtraCheckboxComponent implements OnInit {
   @Output()
   outputExtraPresupuesto = new EventEmitter<number>();
 
+  @Output()
+  outputExtraOtro = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
@@ -31,10 +34,14 @@ export class ExtraCheckboxComponent implements OnInit {
     if (event.target.checked) {
       this.listaExtra.push(Number(event.target.value))
       this.outputExtraPresupuesto.emit(this.extra.precio)
-
+      this.outputExtraOtro.emit()
     } else {
       _.pull(this.listaExtra, Number(event.target.value))
       this.outputExtraPresupuesto.emit(- this.extra.precio)
     }
+  }
+
+  isChecked(id : number){
+    return this.listaExtra.indexOf(id) > -1
   }
 }

@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'orderAbm'
+  name: 'orderAbmById'
 })
-export class OrderAbm implements PipeTransform {
+export class OrderAbmById implements PipeTransform {
 
   transform(any: any[]): any[] {
     return any.sort((item, otroItem) => item.id - otroItem.id)

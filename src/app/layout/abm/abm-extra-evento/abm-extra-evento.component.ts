@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Location } from '@angular/common';
+import { Extra } from 'src/app/model/Extra';
 
 @Component({
   selector: 'app-abm-extra-evento',
@@ -11,7 +12,7 @@ import { Location } from '@angular/common';
 export class AbmExtraEventoComponent implements OnInit {
 
   buscar = ''
-  listaItems : Array<any> = []
+  listaItems : Array<Extra> = []
   cantidadRegistros : number[] = []
   cantidadPaginas : number[] = []
   currentRegistro : number = 0

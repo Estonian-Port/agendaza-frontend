@@ -20,8 +20,9 @@ import { StepBoxComponent } from './components/step-box/step-box.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { FilterAbm } from './pipes/filterAbm.pipe';
-import { OrderAbm } from './pipes/orderAbm.pipe';
+import { OrderAbmById } from './pipes/orderAbmById.pipe';
 import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDescePrecio.pipe';
+import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
@@ -67,8 +68,9 @@ import { ExtraVariableCheckboxComponent } from './components/extra-variable-chec
     ConfiguracionComponent,
     AbmUsuarioComponent,
     FilterAbm,
-    OrderAbm,
+    OrderAbmById,
     OrderByFechaDesdePrecio,
+    OrderAbmByNombre,
     AbmEventoComponent,
     AbmDataTableComponent,
     AbmDataTableHeaderComponent,

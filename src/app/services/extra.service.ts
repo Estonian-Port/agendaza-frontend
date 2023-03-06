@@ -50,8 +50,6 @@ export class ExtraService {
 
   async save(extra : Extra) {
     extra.empresaId = this.agendaService.getEmpresaId()
-    console.log(extra)
-
     const item$ = this.httpClient.post<Extra>(REST_SERVER_URL + '/saveExtra', extra)
     return await lastValueFrom(item$)
   }

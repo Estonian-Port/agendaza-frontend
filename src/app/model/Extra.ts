@@ -13,5 +13,10 @@ export class Extra{
     
     static fromJson(ExtraJSON: ExtraJSON): any {
         return new Extra(ExtraJSON.id, ExtraJSON.nombre, ExtraJSON.tipoExtra, ExtraJSON.empresaId, ExtraJSON.listaTipoEventoId, ExtraJSON.precio)
-       }
+    }
+
+    // Se usa en el filtro de header
+    contiene(palabra: string): boolean {
+        return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase())
+    }
 }

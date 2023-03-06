@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { end } from '@popperjs/core';
-import { sum } from 'lodash';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { CateringEvento } from 'src/app/model/CateringEvento';
@@ -58,13 +56,16 @@ export class NuevoEventoComponent implements OnInit {
   listaMinuto : Array<string> = DateUtil.ListaMinuto
   inicioTime : Time = new Time("00","00")
   finalTime : Time = new Time("00","00")
-  duracionTipoEvento : Time = new Time("00","00")
   hastaElOtroDiaCheckbox : boolean = false
+
+  // -- Reemplazar por TipoEventoForm
+  precioTipoEvento : number = 0
+  duracionTipoEvento : Time = new Time("00","00")
+  capacidadTipoEvento : Capacidad = new Capacidad(0,0,0)
 
   // Cotizacion
   listaExtra : Array<Extra> = []
   listaExtraVariable : Array<ExtraVariable> = []
-  precioTipoEvento : number = 0
   extraPresupuesto : number = 0
 
   // Catering
@@ -83,6 +84,8 @@ export class NuevoEventoComponent implements OnInit {
   error : ErrorMensaje = new ErrorMensaje(false, '')
   usuarioCondicional : boolean = false
 
+  // -------------------------- Inicializacion --------------------------------
+
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
     public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
     public eventoService : EventoService) { }
@@ -99,6 +102,10 @@ export class NuevoEventoComponent implements OnInit {
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
   }
+
+  // ---------------------------------------------------------------------------
+
+  // ------------------------ Datos del Evento ---------------------------------
 
   async filterTipoEventoByDuracion(){
     // Tipo de evento
@@ -122,24 +129,23 @@ export class NuevoEventoComponent implements OnInit {
     // Datos del evento
     this.cleanEvento()
     this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
+    this.capacidadTipoEvento = await this.tipoEventoService.getCapacidadByTipoEventoId(this.evento.tipoEventoId)
     this.changeTime()
     this.changeDate()
 
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
-    // Cotizacion
-    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.setListasExtra()
+  }
 
-    // Catering
-    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-  
+  getAllDaysOfMonth(year : number, mes: number){
+    this.listaDia = DateUtil.getAllDaysOfMonth(year, mes)
   }
 
   async changeDate(){
     this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.setListasExtra()
     this.sumPresupuesto()
   }
 
@@ -151,6 +157,43 @@ export class NuevoEventoComponent implements OnInit {
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, 
     this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
+  }
+
+  changeCapacidadAdultos(){
+    this.sumCateringPresupuesto()
+    // Extra camarera
+    const capacidad = this.evento.capacidad.capacidadAdultos - this.capacidadTipoEvento.capacidadAdultos
+    
+    // Por cada 10 adultos de mas se agrega una camarera
+    if(capacidad >= 10){
+      console.log("Extra camarera")
+    }
+
+  }
+
+  changeCapacidadNinos(){
+    // Extra Ninos
+    const capacidad = this.evento.capacidad.capacidadNinos - this.capacidadTipoEvento.capacidadNinos
+
+    // Por cada nino de mas se agrega un extra nino
+    if(capacidad >= 1){
+      console.log("Extra nino")
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  
+  // --------------------------- Cotizacion ----------------------------------
+
+  async setListasExtra(){
+
+    // Cotizacion
+    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+
+    // Catering
+    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
   }
 
   sumExtraPresupuesto(extraPrecio : number){
@@ -166,8 +209,27 @@ export class NuevoEventoComponent implements OnInit {
     }
   }
 
+  // ---------------------------------------------------------------------------
+
+  // ----------------------------- Catering ---------------------------------
+
   sumExtraTipoCatering(extraPrecio : number){
     this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidad.capacidadAdultos
+    this.sumCateringPresupuesto()
+  }
+
+  cleanTipoCateringForCateringOtro(){
+    if(this.cateringOtro){
+      this.evento.catering.listaExtraTipoCatering.splice(0)
+      this.extraTipoCateringPresupuesto = 0
+      this.sumExtraTipoCatering(0)
+    }
+  }
+
+  cleanExtraOtroCheckbox(){
+    this.cateringOtro = false
+    this.evento.catering.cateringOtro = 0
+    this.evento.catering.descripcion = ""
     this.sumCateringPresupuesto()
   }
 
@@ -177,12 +239,16 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   sumCateringPresupuesto(){
-    this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
+    if(this.cateringOtro){
+      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.evento.catering.cateringOtro * this.evento.capacidad.capacidadAdultos
+    }else{
+      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
+    }
   }
 
-  getAllDaysOfMonth(year : number, mes: number){
-    this.listaDia = DateUtil.getAllDaysOfMonth(year, mes)
-  }
+  // ---------------------------------------------------------------------------
+
+  // --------------------------- Datos de contacto -----------------------------
 
   async buscarClientePorDni(){
     try {
@@ -194,7 +260,7 @@ export class NuevoEventoComponent implements OnInit {
     }
   }
 
- async buscarClientePorEmail(){
+  async buscarClientePorEmail(){
     try {
       this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.evento.cliente.email)
       this.usuarioEncontrado()
@@ -228,6 +294,10 @@ export class NuevoEventoComponent implements OnInit {
     this.errors.forEach(error => { this.error.mensaje = error })
   }
 
+  // --------------------------------------------------------------------------
+
+  // --------------------------- Stepper functions ----------------------------
+
   isStep(step : number) : boolean{
     return this.step == step
   }
@@ -247,5 +317,7 @@ export class NuevoEventoComponent implements OnInit {
       this.step = this.step - 1
     }
   }
+
+  // ---------------------------------------------------------------------------
 
 }
