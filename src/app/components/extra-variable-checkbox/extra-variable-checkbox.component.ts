@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { C } from '@fullcalendar/core/internal-common';
 import * as _ from 'lodash';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
 
@@ -18,9 +19,7 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   @Input()
   listaExtra! : Array<ExtraVariable>
 
-  input : boolean = true
-
-  precioExtraPasado : number= 0
+  precioExtraPasado : number = 0
 
   @Output()
   outputExtraPresupuesto = new EventEmitter<number>();
@@ -28,17 +27,17 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.extra.cantidad = 0
+    if(this.extra.cantidad == null){
+      this.extra.cantidad = 0
+    }
   }
 
   onCheckboxChange(event: any){
     if (event.target.checked) {
       this.listaExtra.push(this.extra)
-      this.input = false
     } else {
       this.onNotCheckbox()
       _.pull(this.listaExtra, this.extra)
-      this.input = true
     }
   }
 
@@ -58,6 +57,10 @@ export class ExtraVariableCheckboxComponent implements OnInit {
 
   onChangeCantidadCheckbox(){
     this.outputExtraPresupuesto.emit(-this.precioExtraPasado)
+  }
+
+  isChecked(){
+    return this.listaExtra.indexOf(this.extra) > -1
   }
 
 }

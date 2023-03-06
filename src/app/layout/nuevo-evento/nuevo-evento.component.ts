@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { CateringEvento } from 'src/app/model/CateringEvento';
@@ -67,6 +68,8 @@ export class NuevoEventoComponent implements OnInit {
   listaExtra : Array<Extra> = []
   listaExtraVariable : Array<ExtraVariable> = []
   extraPresupuesto : number = 0
+  extraCamarera : ExtraVariable = new ExtraVariable(0,"",0,0)
+  extraNino : ExtraVariable = new ExtraVariable(0,"",0,0)
 
   // Catering
   listaExtraTipoCatering : Array<Extra> = []
@@ -130,6 +133,11 @@ export class NuevoEventoComponent implements OnInit {
     this.cleanEvento()
     this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
     this.capacidadTipoEvento = await this.tipoEventoService.getCapacidadByTipoEventoId(this.evento.tipoEventoId)
+    
+    // Cotizacion
+    this.extraCamarera = await this.tipoEventoService.findExtraCamareraByTipoEventoId(this.evento.tipoEventoId)
+    this.extraNino = await this.tipoEventoService.findExtraNinoByTipoEventoId(this.evento.tipoEventoId)
+
     this.changeTime()
     this.changeDate()
 
@@ -137,6 +145,9 @@ export class NuevoEventoComponent implements OnInit {
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
     this.setListasExtra()
+
+    this.changeCapacidadAdultos()
+    this.changeCapacidadNinos()
   }
 
   getAllDaysOfMonth(year : number, mes: number){
@@ -159,25 +170,60 @@ export class NuevoEventoComponent implements OnInit {
     this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
   }
 
-  changeCapacidadAdultos(){
+  async changeCapacidadAdultos(){
     this.sumCateringPresupuesto()
-    // Extra camarera
+
+    // Extra Camarera
     const capacidad = this.evento.capacidad.capacidadAdultos - this.capacidadTipoEvento.capacidadAdultos
     
+    const extraCamareraInAgregados = this.evento.agregados.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
+    const extraCamareraInLista = this.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
+
     // Por cada 10 adultos de mas se agrega una camarera
     if(capacidad >= 10){
-      console.log("Extra camarera")
+
+      const cantidadCamareras = Math.trunc(capacidad / 10)
+      
+      // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
+      if(extraCamareraInAgregados == null){
+        extraCamareraInLista!!.cantidad = cantidadCamareras
+        this.evento.agregados.listaExtraVariable.push(extraCamareraInLista!!)
+      }else{
+        const index = this.evento.agregados.listaExtraVariable.indexOf(extraCamareraInAgregados)
+        this.evento.agregados.listaExtraVariable[index].cantidad = cantidadCamareras
+      }
+    }else{
+      if(extraCamareraInAgregados != null){
+        extraCamareraInAgregados.cantidad = 0
+        _.pull(this.evento.agregados.listaExtraVariable, extraCamareraInAgregados)
+      }
     }
 
   }
 
-  changeCapacidadNinos(){
+  async changeCapacidadNinos(){
     // Extra Ninos
     const capacidad = this.evento.capacidad.capacidadNinos - this.capacidadTipoEvento.capacidadNinos
 
+    const extraNinoInAgregados = this.evento.agregados.listaExtraVariable.find(i => i.id === this.extraNino.id)
+    const extraNinoInLista = this.listaExtraVariable.find(i => i.id === this.extraNino.id)
+
     // Por cada nino de mas se agrega un extra nino
     if(capacidad >= 1){
-      console.log("Extra nino")
+
+      // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
+      if(extraNinoInAgregados == null){
+        extraNinoInLista!!.cantidad = capacidad
+        this.evento.agregados.listaExtraVariable.push(extraNinoInLista!!)
+      }else{
+        const index = this.evento.agregados.listaExtraVariable.indexOf(extraNinoInAgregados)
+        this.evento.agregados.listaExtraVariable[index].cantidad = capacidad
+      }
+    }else{
+      if(extraNinoInAgregados != null){
+        extraNinoInAgregados!!.cantidad = 0
+        _.pull(this.evento.agregados.listaExtraVariable, extraNinoInAgregados)
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Capacidad } from '../model/Capacidad';
+import { ExtraVariable } from '../model/ExtraVariable';
 import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
@@ -85,5 +86,15 @@ export class TipoEventoService {
     const time$ = this.httpClient.put<string>(REST_SERVER_URL + '/getTimeEndByTipoEventoIdAndTimeStart/' + tipoEventoId, timeStart)
     const time = await lastValueFrom(time$)
     return new Time(time.substring(0,2), time.substring(3,5))
+  }
+
+  async findExtraNinoByTipoEventoId(tipoEventoId: number) {
+    const extra$ = this.httpClient.get<ExtraVariable>(REST_SERVER_URL + '/findExtraNinoByTipoEventoId/' + tipoEventoId)
+    return await lastValueFrom(extra$);
+  }
+
+  async findExtraCamareraByTipoEventoId(tipoEventoId: number) {
+    const extra$ = this.httpClient.get<ExtraVariable>(REST_SERVER_URL + '/findExtraCamareraByTipoEventoId/' + tipoEventoId)
+    return await lastValueFrom(extra$)
   }
 }
