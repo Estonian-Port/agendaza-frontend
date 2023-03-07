@@ -33,4 +33,15 @@ export class EventoService {
     const usuario$ = this.httpClient.put<Cliente>(REST_SERVER_URL + '/getUsuarioByCelular', celular)
     return await lastValueFrom(usuario$)
   }
+
+  async save(evento: Evento) {
+    evento.empresaId = this.agendaService.getEmpresaId()
+    const item$ = this.httpClient.post<Evento>(REST_SERVER_URL + '/saveEvento', evento)
+    return await lastValueFrom(item$)
+  }
+
+  async getAllEstado() {
+    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEstado')
+    return await lastValueFrom(listaItem$)
+  }
 }

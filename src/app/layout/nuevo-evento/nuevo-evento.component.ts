@@ -12,9 +12,11 @@ import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { Cliente } from 'src/app/model/Usuario';
+import { AgendaService } from 'src/app/services/agenda.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { ExtraService } from 'src/app/services/extra.service';
+import { LoginService } from 'src/app/services/login.service';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -35,10 +37,11 @@ export class NuevoEventoComponent implements OnInit {
     new GenericItem(4, "Catering"),
     new GenericItem(5, "Datos de contacto")
   ]
+  botonSiguienteFinalizado : string = "Siguiente"
 
-  evento : Evento = new Evento(0,"","", new Date(), new Date(), 0, new Capacidad(0,0,0), 0, 
+  evento : Evento = new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
     new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
-    new Cliente(0,0,"","","CLIENTE","",0), 0)
+    new Cliente(0,0,"","","CLIENTE","",0), 0, 0, "COTIZADO")
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -81,6 +84,7 @@ export class NuevoEventoComponent implements OnInit {
 
   // Datos del contacto
   listaSexo : Array<string> = []
+  listaEstadoEvento : Array<string> = []
 
   // Errors
   errors = []
@@ -91,7 +95,7 @@ export class NuevoEventoComponent implements OnInit {
 
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
     public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
-    public eventoService : EventoService) { }
+    public eventoService : EventoService, public loginService : LoginService, public agendaService : AgendaService) { }
 
   async ngOnInit(): Promise<void> {
     // Tipo de evento
@@ -104,6 +108,10 @@ export class NuevoEventoComponent implements OnInit {
 
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
+    this.listaEstadoEvento = await this.eventoService.getAllEstado()
+
+    this.evento.encargadoId = await this.loginService.getUsuarioId()
+    this.evento.empresaId = this.agendaService.getEmpresaId()
   }
 
   // ---------------------------------------------------------------------------
@@ -166,8 +174,9 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   cleanEvento(){
-    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, this.evento.tipoEventoId, 
-    this.evento.capacidad, 0, new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0)
+    this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
+      this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId, new Agregados(0,0,0,[],[]), 
+      new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0, this.evento.encargadoId, "COTIZADO")
   }
 
   async changeCapacidadAdultos(){
@@ -248,11 +257,12 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   sumPresupuesto(){
-    if(this.evento.agregados.descuento == 0){
-      this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
-    }else{
-      this.evento.presupuesto = (this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro) * (this.evento.agregados.descuento / 100)
+    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
+
+    if(this.evento.agregados.descuento != 0){
+      this.evento.presupuesto -= this.evento.presupuesto * (this.evento.agregados.descuento / 100)
     }
+    
   }
 
   // ---------------------------------------------------------------------------
@@ -353,12 +363,38 @@ export class NuevoEventoComponent implements OnInit {
   }
 
   siguiente(){
+
+    if(this.step == 4 || this.step == 5){
+      this.botonSiguienteFinalizado = "Finalizar"
+    }else{
+      this.botonSiguienteFinalizado = "Siguiente"
+    }
+
+    if(this.step == 5){
+
+      // Setea la fecha
+      
+      this.evento.inicio =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.inicioTime.hour) - 3), Number(this.inicioTime.minute)).toISOString()
+      var fechaFinal =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.finalTime.hour) - 3), Number(this.finalTime.minute))
+
+      if(this.hastaElOtroDiaCheckbox){
+        fechaFinal.setDate(fechaFinal.getDate() + 1)
+      }
+
+      this.evento.fin = fechaFinal.toISOString()
+
+      this.eventoService.save(this.evento)
+    }
+
     if(this.step >= 1 && this.step < 5){
       this.step = this.step + 1
     }
+
   }
 
   atras(){
+    this.botonSiguienteFinalizado = "Siguiente"
+
     if(this.step > 1 && this.step <= 5){
       this.step = this.step - 1
     }
