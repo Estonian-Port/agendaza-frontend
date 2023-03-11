@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
@@ -15,15 +16,19 @@ export class AbmEventoComponent implements OnInit {
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
 
-  constructor(private eventoService : EventoService) { }
+  constructor(private eventoService : EventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
+    this.inicializarListaItems()
+  }
+
+  async inicializarListaItems(){
     this.listaItems = await this.eventoService.getAllEventoByEmpresaId()
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
   }
-
+  
   updateCurrentRegistro(registro: number){
     this.currentRegistro = registro
   }
@@ -34,6 +39,34 @@ export class AbmEventoComponent implements OnInit {
 
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
+  }
+
+  pagos(id : number){
+    this.router.navigateByUrl('/editEventoPagos')
+  }
+
+  extras(id : number){
+    this.router.navigateByUrl('/editEventoExtras')
+  }
+
+  catering(id : number){
+    this.router.navigateByUrl('/editEventoCatering')
+  }
+
+  hora(id : number){
+    this.router.navigateByUrl('/editEventoHora')
+  }
+  
+  ver(id : number){
+    this.router.navigateByUrl('/editEventoVer')
+  }
+
+  async eliminar(id : number){
+    (await this.eventoService.delete(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
+      }
+    })
   }
 
 }

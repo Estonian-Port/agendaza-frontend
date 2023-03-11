@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
@@ -95,7 +96,8 @@ export class NuevoEventoComponent implements OnInit {
 
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
     public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
-    public eventoService : EventoService, public loginService : LoginService, public agendaService : AgendaService) { }
+    public eventoService : EventoService, public loginService : LoginService, public agendaService : AgendaService,
+    public router : Router) { }
 
   async ngOnInit(): Promise<void> {
     // Tipo de evento
@@ -109,9 +111,6 @@ export class NuevoEventoComponent implements OnInit {
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
     this.listaEstadoEvento = await this.eventoService.getAllEstado()
-
-    this.evento.encargadoId = await this.loginService.getUsuarioId()
-    this.evento.empresaId = this.agendaService.getEmpresaId()
   }
 
   // ---------------------------------------------------------------------------
@@ -383,7 +382,14 @@ export class NuevoEventoComponent implements OnInit {
 
       this.evento.fin = fechaFinal.toISOString()
 
-      this.eventoService.save(this.evento)
+      try{
+        this.eventoService.save(this.evento)
+        this.router.navigateByUrl('/agenda')
+      }catch(error){
+        console.log(error)
+      }
+
+
     }
 
     if(this.step >= 1 && this.step < 5){

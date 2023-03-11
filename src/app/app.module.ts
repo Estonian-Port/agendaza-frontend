@@ -53,6 +53,11 @@ import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.
 import { PrecioFormComponent } from './components/precio-form/precio-form.component';
 import { ExtraCheckboxComponent } from './components/extra-checkbox/extra-checkbox.component';
 import { ExtraVariableCheckboxComponent } from './components/extra-variable-checkbox/extra-variable-checkbox.component';
+import { EditEventoPagosComponent } from './layout/edit/edit-evento/edit-evento-pagos/edit-evento-pagos.component';
+import { EditEventoExtrasComponent } from './layout/edit/edit-evento/edit-evento-extras/edit-evento-extras.component';
+import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-evento-catering/edit-evento-catering.component';
+import { EditEventoVerComponent } from './layout/edit/edit-evento/edit-evento-ver/edit-evento-ver.component';
+import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +106,11 @@ import { ExtraVariableCheckboxComponent } from './components/extra-variable-chec
     PrecioFormComponent,
     ExtraCheckboxComponent,
     ExtraVariableCheckboxComponent,
+    EditEventoPagosComponent,
+    EditEventoExtrasComponent,
+    EditEventoCateringComponent,
+    EditEventoVerComponent,
+    EditEventoHoraComponent,
   ],
   imports: [
     BrowserModule,

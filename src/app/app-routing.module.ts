@@ -29,6 +29,11 @@ import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccio
 import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
 import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
 import { PrecioTipoEventoComponent } from './layout/precio/precio-tipo-evento/precio-tipo-evento.component';
+import { EditEventoPagosComponent } from './layout/edit/edit-evento/edit-evento-pagos/edit-evento-pagos.component';
+import { EditEventoExtrasComponent } from './layout/edit/edit-evento/edit-evento-extras/edit-evento-extras.component';
+import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-evento-catering/edit-evento-catering.component';
+import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
+import { EditEventoVerComponent } from './layout/edit/edit-evento/edit-evento-ver/edit-evento-ver.component';
 
 const routes: Routes = [
   {
@@ -65,7 +70,11 @@ const routes: Routes = [
       { path : 'editEmpresa', component: EditEmpresaComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
       { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
-      { path : 'precioExtra', component: PrecioExtraComponent },
+      { path : 'editEventoPagos', component: EditEventoPagosComponent },
+      { path : 'editEventoExtras', component: EditEventoExtrasComponent },
+      { path : 'editEventoCatering', component: EditEventoCateringComponent },
+      { path : 'editEventoHora', component: EditEventoHoraComponent },
+      { path : 'editEventoVer', component: EditEventoVerComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

@@ -20,10 +20,19 @@ export class AbmDataTableEventoComponent implements OnInit {
   buscar = ''
 
   @Output() 
-  outputPrecio = new EventEmitter<number>();
+  outputPagos = new EventEmitter<number>();
 
   @Output() 
-  outputEditar = new EventEmitter<number>();
+  outputExtra = new EventEmitter<number>();
+
+  @Output() 
+  outputCatering = new EventEmitter<number>();
+
+  @Output() 
+  outputHora = new EventEmitter<number>();
+
+  @Output() 
+  outputVer = new EventEmitter<number>();
 
   @Output() 
   outputEliminar = new EventEmitter<number>();
@@ -33,12 +42,24 @@ export class AbmDataTableEventoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  precio(id : number){
-    this.outputPrecio.emit(id);
+  pagos(id : number){
+    this.outputPagos.emit(id);
   }
 
-  editar(id : number){
-    this.outputEditar.emit(id);
+  extras(id : number){
+    this.outputExtra.emit(id);
+  }
+
+  catering(id : number){
+    this.outputCatering.emit(id);
+  }
+
+  hora(id : number){
+    this.outputHora.emit(id);
+  }
+  
+  ver(id : number){
+    this.outputVer.emit(id);
   }
 
   eliminar(id : number){
