@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Evento, EventoJSON, EventoPago } from '../model/Evento';
+import { Evento, EventoCatering, EventoExtra, EventoJSON, EventoPago } from '../model/Evento';
 import { GenericItem } from '../model/GenericItem';
 import { Cliente, Usuario, UsuarioJSON } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
@@ -58,4 +58,15 @@ export class EventoService {
     const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoPago/' + this.eventoId)
     return await lastValueFrom(evento$)
   }
+
+  async getEventoExtra() {
+    const evento$ = this.httpClient.get<EventoExtra>(REST_SERVER_URL + '/getEventoExtra/' + this.eventoId)
+    return await lastValueFrom(evento$)
+  }
+
+  async getEventoCatering() {
+    const evento$ = this.httpClient.get<EventoCatering>(REST_SERVER_URL + '/getEventoCatering/' + this.eventoId)
+    return await lastValueFrom(evento$)
+  }
+
 }

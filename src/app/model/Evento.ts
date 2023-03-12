@@ -1,6 +1,8 @@
-import { Agregados } from "./Agregados"
+import { Agregados, AgregadosEdit } from "./Agregados"
 import { Capacidad } from "./Capacidad"
-import { CateringEvento } from "./CateringEvento"
+import { CateringEvento, CateringEventoEdit } from "./CateringEvento"
+import { Extra } from "./Extra"
+import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
 import { Cliente } from "./Usuario"
 
@@ -40,4 +42,14 @@ export class Evento {
 export class EventoPago{
     constructor(public id : number, public nombre : string, public codigo : string, 
         public precioTotal : number, public listaPagos : Array<Pago>){}
+}
+
+export class EventoExtra{
+    constructor(public id : number, public nombre : string, public codigo : string, 
+        public presupuesto : number, public agregados : AgregadosEdit){}
+}
+
+export class EventoCatering{
+    constructor(public id : number, public nombre : string, public codigo : string, 
+        public catering : CateringEventoEdit){}
 }

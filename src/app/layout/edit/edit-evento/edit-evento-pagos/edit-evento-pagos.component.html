@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <h5>Lista de pagos</h5>
                     <div *ngFor="let pago of eventoPago.listaPagos">
-                        <p>{{pago.fecha | date: "dd/MM/yy"}} {{pago.monto}} {{pago.medioDePago}} </p>
+                        <p>{{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}} </p>
                     </div>
                 </div>
             </div>
