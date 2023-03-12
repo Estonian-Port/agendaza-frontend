@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
   selector: 'app-abm-data-table-evento',
@@ -37,32 +38,42 @@ export class AbmDataTableEventoComponent implements OnInit {
   @Output() 
   outputEliminar = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(private eventoService : EventoService) { }
 
   ngOnInit(): void {
   }
 
   pagos(id : number){
+    this.setEventoId(id)
     this.outputPagos.emit(id);
   }
 
   extras(id : number){
+    this.setEventoId(id)
     this.outputExtra.emit(id);
   }
 
   catering(id : number){
+    this.setEventoId(id)
     this.outputCatering.emit(id);
   }
 
   hora(id : number){
+    this.setEventoId(id)
     this.outputHora.emit(id);
   }
   
   ver(id : number){
+    this.setEventoId(id)
     this.outputVer.emit(id);
   }
 
   eliminar(id : number){
+    this.setEventoId(id)
     this.outputEliminar.emit(id);
+  }
+
+  setEventoId(id : number){
+    this.eventoService.eventoId = id
   }
 }

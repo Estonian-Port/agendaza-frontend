@@ -1,6 +1,7 @@
 import { Agregados } from "./Agregados"
 import { Capacidad } from "./Capacidad"
 import { CateringEvento } from "./CateringEvento"
+import { Pago } from "./Pago"
 import { Cliente } from "./Usuario"
 
 export type EventoJSON = {
@@ -34,4 +35,9 @@ export class Evento {
             eventoJSON.encargadoId, eventoJSON.estado)
     }
 
+}
+
+export class EventoPago{
+    constructor(public id : number, public nombre : string, public codigo : string, 
+        public precioTotal : number, public listaPagos : Array<Pago>){}
 }
