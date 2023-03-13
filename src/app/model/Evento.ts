@@ -1,8 +1,6 @@
 import { Agregados, AgregadosEdit } from "./Agregados"
 import { Capacidad } from "./Capacidad"
 import { CateringEvento, CateringEventoEdit } from "./CateringEvento"
-import { Extra } from "./Extra"
-import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
 import { Cliente } from "./Usuario"
 
@@ -52,4 +50,16 @@ export class EventoExtra{
 export class EventoCatering{
     constructor(public id : number, public nombre : string, public codigo : string, 
         public catering : CateringEventoEdit){}
+}
+
+export class EventoHora{
+    constructor(public id : number, public nombre : string, public codigo : string, 
+        public inicio : string, public fin : string){}
+}
+
+export class EventoVer{
+    constructor(public id : number, public nombre : string, public codigo : string, public inicio : string, 
+        public fin : string, public tipoEvento : string, public capacidad : Capacidad, public agregados : AgregadosEdit, 
+        public catering : CateringEventoEdit, public cliente : Cliente, public presupuesto : number,  
+        public estado : string, public empresa : string){}
 }

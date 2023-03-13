@@ -388,8 +388,6 @@ export class NuevoEventoComponent implements OnInit {
       }catch(error){
         console.log(error)
       }
-
-
     }
 
     if(this.step >= 1 && this.step < 5){

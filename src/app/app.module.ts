@@ -23,6 +23,7 @@ import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbmById } from './pipes/orderAbmById.pipe';
 import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDescePrecio.pipe';
 import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
+import { siNo } from './pipes/siNo.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
@@ -73,6 +74,7 @@ import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-h
     ConfiguracionComponent,
     AbmUsuarioComponent,
     FilterAbm,
+    siNo,
     OrderAbmById,
     OrderByFechaDesdePrecio,
     OrderAbmByNombre,
