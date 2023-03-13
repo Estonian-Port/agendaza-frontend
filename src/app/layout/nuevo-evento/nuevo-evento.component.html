@@ -76,7 +76,7 @@
                                 <label for="date" class="form-label w-100">Fecha de evento</label>
                                 <div class="row">
                                     <div class="col-2">
-                                        <select class="form-select" name="dia" [(ngModel)]="fechaEvento.dia">
+                                        <select class="form-select" name="dia" [(ngModel)]="fechaEvento.dia" (change)="changeDay()">
                                             <option *ngFor="let dia of listaDia | orderAbmById" [value]="dia">{{dia}}</option>
                                         </select>
                                     </div>
@@ -147,15 +147,15 @@
                         </div>				                
                     </div> 
                     <div class="col-md-7">
-                        <div id="fechaNoDisponible">
+                        <div *ngIf="!horarioDisponible">
                             <div class="alert alert-danger" role="alert">
                                 <strong>Fecha no disponible,</strong> <p>Tenga en cuenta que entre evento y evento calcula 1 hora de margen.</p>
                             </div>
                         </div>
-                        <div id="fechaDisponible" class="col-md-8">
+                        <div *ngIf="horarioDisponible" class="col-md-8">
                             <div class="alert alert-success" role="alert"><strong>Fecha disponible</strong></div>
                         </div>
-                        <div id="listaEvento"></div>
+                        <div *ngFor="let evento of listaEvento"><p> - {{evento}}</p></div>
                     </div>
                 </div>
             </section>

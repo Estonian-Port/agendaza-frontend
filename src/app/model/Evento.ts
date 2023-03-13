@@ -63,3 +63,7 @@ export class EventoVer{
         public catering : CateringEventoEdit, public cliente : Cliente, public presupuesto : number,  
         public estado : string, public empresa : string){}
 }
+
+export class EventoBuscarFecha{
+    constructor(public empresaId : number, public desde : Date, public hasta : Date){}
+}

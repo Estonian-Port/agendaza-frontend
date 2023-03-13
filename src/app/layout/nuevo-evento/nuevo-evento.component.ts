@@ -62,6 +62,8 @@ export class NuevoEventoComponent implements OnInit {
   inicioTime : Time = new Time("00","00")
   finalTime : Time = new Time("00","00")
   hastaElOtroDiaCheckbox : boolean = false
+  listaEvento : Array<string> = []
+  horarioDisponible : boolean = true
 
   // -- Reemplazar por TipoEventoForm
   precioTipoEvento : number = 0
@@ -165,11 +167,33 @@ export class NuevoEventoComponent implements OnInit {
     this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
     this.setListasExtra()
     this.sumPresupuesto()
+    this.buscarListaEventoByDiaAndEmpresaId()
+  }
+
+  async changeDay(){
+    this.buscarListaEventoByDiaAndEmpresaId()
+  }
+
+  async buscarListaEventoByDiaAndEmpresaId(){
+    this.setFechaInicioAndFin()
+    this.horarioDisponible = await this.eventoService.horarioDisponible(this.evento)
+    this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.fechaEvento)
   }
 
   async changeTime(){
     this.finalTime = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.evento.tipoEventoId, this.inicioTime)
     this.hastaElOtroDiaCheckbox = Number(this.finalTime.hour) < Number(this.inicioTime.hour)
+  }
+
+  setFechaInicioAndFin(){
+    this.evento.inicio =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.inicioTime.hour) - 3), Number(this.inicioTime.minute)).toISOString()
+    var fechaFinal =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.finalTime.hour) - 3), Number(this.finalTime.minute))
+
+    if(this.hastaElOtroDiaCheckbox){
+      fechaFinal.setDate(fechaFinal.getDate() + 1)
+    }
+
+    this.evento.fin = fechaFinal.toISOString()
   }
 
   cleanEvento(){
@@ -373,14 +397,7 @@ export class NuevoEventoComponent implements OnInit {
 
       // Setea la fecha
       
-      this.evento.inicio =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.inicioTime.hour) - 3), Number(this.inicioTime.minute)).toISOString()
-      var fechaFinal =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.finalTime.hour) - 3), Number(this.finalTime.minute))
-
-      if(this.hastaElOtroDiaCheckbox){
-        fechaFinal.setDate(fechaFinal.getDate() + 1)
-      }
-
-      this.evento.fin = fechaFinal.toISOString()
+      this.setFechaInicioAndFin()
 
       try{
         this.eventoService.save(this.evento)
