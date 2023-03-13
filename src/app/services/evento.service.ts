@@ -79,4 +79,9 @@ export class EventoService {
     return await lastValueFrom(evento$)
   }
 
+  async editEventoHora(eventoHora : EventoHora) {
+    const item$ = this.httpClient.post<EventoHora>(REST_SERVER_URL + '/editEventoHora', eventoHora)
+    return await lastValueFrom(item$)
+  }
+
 }

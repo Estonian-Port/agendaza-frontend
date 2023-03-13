@@ -19,7 +19,9 @@
                 <td>{{item.inicio | date: "dd/MM/yy"}}</td>
                 <td>{{item.inicio | date: "HH:mm"}}</td>
                 <td>{{item.fin | date: "HH:mm"}}</td>
+
                 <td>{{item.tipoEvento}}</td>
+
                 <td class="d-flex justify-content-center">
                     <button (click)="pagos(item.id)" class="mx-2"><i class="fas fa-file-invoice-dollar text-success fa-lg"></i></button>
                     <button (click)="extras(item.id)" class="mx-2"><i class="fas fa-asterisk text-warning fa-lg"></i></button>
