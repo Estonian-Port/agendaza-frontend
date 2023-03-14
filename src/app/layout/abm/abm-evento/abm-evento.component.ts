@@ -23,7 +23,11 @@ export class AbmEventoComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.eventoService.getAllEventoByEmpresaId()
+    if(this.eventoService.fechaFiltroForAbmEvento == ""){
+      this.listaItems = await this.eventoService.getAllEventoByEmpresaId()
+    }else{
+      this.listaItems = await this.eventoService.getAllEventoByEmpresaIdAndFechaFiltro()
+    }
 
     this.cantidadRegistros = new Array<number>(this.listaItems.length)
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)

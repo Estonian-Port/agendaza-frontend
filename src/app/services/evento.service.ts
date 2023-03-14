@@ -15,11 +15,19 @@ import { LoginService } from './login.service';
 export class EventoService {
 
   eventoId : number = 0
+  fechaFiltroForAbmEvento : string = ""
 
   constructor(private httpClient : HttpClient, private agendaService : AgendaService, private loginService : LoginService) { }
 
-  async getAllEventoByEmpresaId() {
+  async getAllEventoByEmpresaId(){
     const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getEmpresaId())
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((evento) => Evento.fromJson(evento))
+  }
+
+  async getAllEventoByEmpresaIdAndFechaFiltro(){
+    console.log(new Date(this.fechaFiltroForAbmEvento))
+    const listaItem$ = this.httpClient.put<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaIdAndFechaFiltro/' + this.agendaService.getEmpresaId(), new Date(this.fechaFiltroForAbmEvento))
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((evento) => Evento.fromJson(evento))
   }

@@ -94,7 +94,7 @@ export class SaveEventoComponent implements OnInit {
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
   usuarioCondicional : boolean = false
-  eventoSaveError : ErrorMensaje = new ErrorMensaje(false, 'Error al crear evento, revise los campos cargados')
+  eventoSaveError : ErrorMensaje = new ErrorMensaje(false, 'Error al crear el Evento, revise los campos cargados')
 
   // -------------------------- Inicializacion --------------------------------
 
@@ -416,8 +416,14 @@ export class SaveEventoComponent implements OnInit {
       this.step = this.step + 1
     }
 
+    document.getElementById("elBoton")!!.click()
+
   }
 
+  asd(){
+    console.log("HASDIJHDSA")
+  }
+  
   atras(){
     this.botonSiguienteFinalizado = "Siguiente"
     this.eventoSaveError.condicional = false

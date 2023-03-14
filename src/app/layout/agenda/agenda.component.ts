@@ -7,6 +7,9 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import esLocale from '@fullcalendar/core/locales/es';
 import { mostrarErrorConMensaje } from 'src/util/errorHandler';
 import { AgendaService } from 'src/app/services/agenda.service';
+import interactionPlugin from '@fullcalendar/interaction';
+import { Router } from '@angular/router';
+import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
   selector: 'app-agenda',
@@ -15,7 +18,7 @@ import { AgendaService } from 'src/app/services/agenda.service';
 })
 export class AgendaComponent implements OnInit {
 
-  constructor(private agendaService : AgendaService) { }
+  constructor(private agendaService : AgendaService, private router : Router, private eventoService : EventoService) { }
 
   eventos: EventInput[] = []
 
@@ -24,8 +27,10 @@ export class AgendaComponent implements OnInit {
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
-      bootstrap5Plugin 
+      bootstrap5Plugin,
+      interactionPlugin
     ],
+    dateClick: this.handleDateClick.bind(this),
     themeSystem: 'bootstrap5',
     headerToolbar: {
       left: 'prev,next today',
@@ -34,7 +39,8 @@ export class AgendaComponent implements OnInit {
     },
     initialView: 'dayGridMonth',
     locale: 'es',
-    locales : [esLocale]
+    locales : [esLocale],
+
   }
 
   async ngOnInit() {
@@ -46,6 +52,11 @@ export class AgendaComponent implements OnInit {
     } catch (error) {
       mostrarErrorConMensaje(this, error)
     }
+  }
+
+  handleDateClick(arg: { dateStr: string; }) {
+    this.eventoService.fechaFiltroForAbmEvento = arg.dateStr
+    this.router.navigateByUrl("/abmEvento")
   }
 
 }
