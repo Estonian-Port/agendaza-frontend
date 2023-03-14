@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="col-4">
                                         <select class="form-select" name="mes" [(ngModel)]="fechaEvento.mes" (click)="getAllDaysOfMonth(fechaEvento.year, fechaEvento.mes)" (change)="changeDate()">
-                                            <option *ngFor="let mes of listaMes | orderAbmById" [value]="mes.id">{{mes.nombre}}</option>
+                                            <option *ngFor="let mes of listaMes | orderAbmByIdDesc" [value]="mes.id">{{mes.nombre}}</option>
                                         </select>
                                     </div>
                                     <div class="col-4">

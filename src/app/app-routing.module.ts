@@ -70,6 +70,7 @@ const routes: Routes = [
       { path : 'editEmpresa', component: EditEmpresaComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
       { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
+      { path : 'precioExtra', component: PrecioExtraComponent },
       { path : 'editEventoPagos', component: EditEventoPagosComponent },
       { path : 'editEventoExtras', component: EditEventoExtrasComponent },
       { path : 'editEventoCatering', component: EditEventoCateringComponent },

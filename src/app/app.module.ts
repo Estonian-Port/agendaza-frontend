@@ -20,6 +20,7 @@ import { ConfiguracionComponent } from './layout/configuracion/configuracion.com
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbmById } from './pipes/orderAbmById.pipe';
+import { OrderAbmByIdDesc } from './pipes/orderAbmByIdDesc.pipe';
 import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDescePrecio.pipe';
 import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { siNo } from './pipes/siNo.pipe';
@@ -76,6 +77,7 @@ import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-h
     FilterAbm,
     siNo,
     OrderAbmById,
+    OrderAbmByIdDesc,
     OrderByFechaDesdePrecio,
     OrderAbmByNombre,
     AbmEventoComponent,
