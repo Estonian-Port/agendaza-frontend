@@ -4,11 +4,11 @@
     
         <img src="https://logosandtypes.com/wp-content/uploads/2020/12/alegria.svg" width="30" height="30"/>
 
-        <a *ngIf="isAgenda() || isNuevoEvento()" (click)="volverAgendas()"><i class="fas fa-book fa-lg mx-2"> </i></a>
+        <a *ngIf="isAgenda() || isSaveEvento()" (click)="volverAgendas()"><i class="fas fa-book fa-lg mx-2"> </i></a>
 
-        <a *ngIf="isNuevoEvento() || isConfiguracion()" (click)="volverCalendario()" ><i class="fa fa-calendar fa-lg mx-2"></i></a>
+        <a *ngIf="isSaveEvento() || isConfiguracion()" (click)="volverCalendario()" ><i class="fa fa-calendar fa-lg mx-2"></i></a>
 
-        <a *ngIf="isAgenda()" (click)="nuevoEvento()" ><i class="fa fa-plus fa-lg mx-2"></i></a>
+        <a *ngIf="isAgenda()" (click)="saveEvento()" ><i class="fa fa-plus fa-lg mx-2"></i></a>
 
         <a *ngIf="isAbm()" (click)="nuevoAbm()" ><i class="fas fa-plus-circle fa-lg"></i></a>
 

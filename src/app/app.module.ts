@@ -14,7 +14,6 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
-import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepBoxComponent } from './components/step-box/step-box.component';
 import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
@@ -41,6 +40,7 @@ import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.co
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
+import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 import { ModalComponent } from './components/modal/modal.component';
@@ -69,7 +69,7 @@ import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-h
     CardAgendaComponent,
     NotFoundComponent,
     AgendaComponent,
-    NuevoEventoComponent,
+    SaveEventoComponent,
     StepBoxComponent,
     ConfiguracionComponent,
     AbmUsuarioComponent,

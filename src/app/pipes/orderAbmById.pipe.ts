@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 export class OrderAbmById implements PipeTransform {
 
   transform(any: any[]): any[] {
-    return any.sort((item, otroItem) => item.id - otroItem.id)
+    return any.sort((item, otroItem) => otroItem.id - item.id)
   }
 
 }

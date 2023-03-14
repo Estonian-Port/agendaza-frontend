@@ -20,8 +20,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/login')
   }
 
-  nuevoEvento(){
-    this.router.navigateByUrl('/nuevoEvento')
+  saveEvento(){
+    this.router.navigateByUrl('/saveEvento')
   }
 
   volverAgendas(){
@@ -41,8 +41,8 @@ export class NavbarComponent implements OnInit {
     return this.agendaService.getEmpresaId() != ""
   }
 
-  isNuevoEvento() : boolean{
-    return "/nuevoEvento" == this.location.path()
+  isSaveEvento() : boolean{
+    return "/saveEvento" == this.location.path()
   }
 
   isConfiguracion() : boolean{

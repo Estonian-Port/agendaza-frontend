@@ -17,7 +17,7 @@ import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-passwor
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
-import { NuevoEventoComponent } from './layout/nuevo-evento/nuevo-evento.component';
+import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
 import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
@@ -46,7 +46,6 @@ const routes: Routes = [
     children: [
       { path : '', component: SeleccionarAgendaComponent },
       { path : 'agenda', component: AgendaComponent },
-      { path : 'nuevoEvento', component: NuevoEventoComponent },
       { path : 'configuracion', component: ConfiguracionComponent },
       { path : 'abmUsuario', component: AbmUsuarioComponent },
       { path : 'abmEvento', component: AbmEventoComponent },
@@ -57,6 +56,7 @@ const routes: Routes = [
       { path : 'abmCliente', component: AbmClienteComponent },
       { path : 'abmPago', component: AbmPagoComponent },
       { path : 'abmEmpresa', component: AbmEmpresaComponent },
+      { path : 'saveEvento', component: SaveEventoComponent },
       { path : 'saveUsuario', component: SaveUsuarioComponent },
       { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
       { path : 'saveServicio', component: SaveServicioComponent },

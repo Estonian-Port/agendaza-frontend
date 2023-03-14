@@ -24,11 +24,11 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
-  selector: 'app-nuevo-evento',
-  templateUrl: './nuevo-evento.component.html',
-  styleUrls: ['./nuevo-evento.component.css']
+  selector: 'app-save-evento',
+  templateUrl: './save-evento.component.html',
+  styleUrls: ['./save-evento.component.css']
 })
-export class NuevoEventoComponent implements OnInit {
+export class SaveEventoComponent implements OnInit {
   
   step : number = 1
   listaStepBox : Array<GenericItem> = [
