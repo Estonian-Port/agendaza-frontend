@@ -6,10 +6,10 @@
         <div class="form-group">
             <label for="codigo">Codigo del evento</label>
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <input type="text" class="form-control" name="codigoEvento" [(ngModel)]='codigo'/>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <button type="submit" (click)="buscar()" class="btn btn-primary">Buscar</button>
                 </div>
             </div>
@@ -20,20 +20,25 @@
         </div>
 
         <div *ngIf="pago.codigo != ''">
-            <div class="form-group">
+            <div class="form-group col-3">
                 <label for="evento">Evento</label> 
-                <input type="text" class="form-control" name="evento" [(ngModel)]='pago.nombreEvento' disabled/>
+                <input type="text" class="form-control" name="evento" [value]='pago.nombreEvento' disabled/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-3">
                 <label for="fecha">Dia evento</label> 
                 <input type="text" class="form-control" name="fecha" [value]="pago.fecha | date: 'dd/MM/yy HH:mm'" disabled/>
             </div>
-            <div class="form-group">
-                <label for="monto">Monto</label> 
-                <input type="number" class="form-control" name="monto" [(ngModel)]='pago.monto'>
+            <div class="form-group col-3">
+                <label for="monto">Monto</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="number" class="form-control" name="monto" [(ngModel)]='pago.monto'>
+                </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-3">
                 <label for="rol">Medio de Pago</label> 
                 <select class="form-select" [(ngModel)]="pago.medioDePago" name="medioDePago">
                     <option *ngFor="let medioDePago of listaMedioDePago | orderAbmById" [value]="medioDePago">{{medioDePago}}</option>
@@ -44,7 +49,7 @@
         <div class="container mt-3">
             <div class="gap-2 d-flex justify-content-end">
                 <div>
-                    <a th:href="@{${volver}}" class="btn btn-primary">Volver</a>
+                    <button (click)="volver()" class="btn btn-primary">Volver</button>
                 </div>
                 <div>
                     <button type="submit" (click)="save()" class="btn btn-success">Guardar</button>

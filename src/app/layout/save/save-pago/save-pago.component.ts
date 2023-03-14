@@ -42,4 +42,8 @@ export class SavePagoComponent implements OnInit {
     const item = await this.pagoService.save(this.pago)
     this.router.navigateByUrl('/abmPago')
   }
+
+  volver(){
+    this.router.navigateByUrl('/abmPago')
+  }
 }
