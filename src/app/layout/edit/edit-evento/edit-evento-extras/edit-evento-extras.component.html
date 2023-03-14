@@ -5,26 +5,38 @@
         <div class="col-md-6">
             <div class="form-group col-8 mb-3">
                 <h5>Evento</h5>
-                <input type="text" class="form-control" id="evento" [value]='eventoExtra.nombre' disabled>
+                <input type="text" class="form-control" id="evento" [value]='evento.nombre' disabled>
             </div>
             <div class="form-group col-8 mb-3">
                 <h5>Codigo</h5>
-                <input type="text" class="form-control" id="evento" [value]='eventoExtra.codigo' disabled>
+                <input type="text" class="form-control" id="evento" [value]='evento.codigo' disabled>
             </div>
             
             <div class="form-group col-8 mb-3">
                 <h5>Extras fijos</h5> 
-                <div *ngFor="let extra of eventoExtra.agregados.listaExtra">
-                    <p>{{extra.nombre}}</p>
+                <div id="listaExtra" *ngFor="let extra of listaExtra | orderAbmByNombre; let i=index">
+                    <app-extra-checkbox 
+                        (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
+                        [listaExtra]="evento.agregados.listaExtra"
+                        [i]="i"
+                        [extra]="extra"
+                    ></app-extra-checkbox>
                 </div>
             </div>
 
             <div class="form-group col-8">
                 <h5>Extras variables</h5> 
-                <div *ngFor="let extra of eventoExtra.agregados.listaExtraVariable">
-                    <p>{{extra.nombre}}</p>
-                </div>   
+                <div id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbmByNombre; let i=index">
+                    <app-extra-variable-checkbox
+                        (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
+                        [listaExtra]="evento.agregados.listaExtraVariable"
+                        [i]="i"
+                        [extra]="extraVariable">
+                    </app-extra-variable-checkbox>
+                </div>
             </div>
+
+
         </div>
         
         <div class="col-md-6">
@@ -36,7 +48,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
                             </div>
-                            <input type="number" class="form-control" id="extraOtro" [(ngModel)]="eventoExtra.agregados.extraOtro">
+                            <input type="number" class="form-control" id="extraOtro" [(ngModel)]="evento.agregados.extraOtro">
                         </div>
                     </div>
                 </div>
@@ -44,7 +56,7 @@
                     <div class="form-group">
                         <h5 for="rol">Descuento</h5>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="descuento" [(ngModel)]="eventoExtra.agregados.descuento">
+                            <input type="number" class="form-control" id="descuento" [(ngModel)]="evento.agregados.descuento">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
@@ -59,7 +71,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">$</div>
                     </div>
-                    <input type="number" class="form-control" id="presupuesto" [(ngModel)]="eventoExtra.presupuesto" disabled/>
+                    <input type="number" class="form-control" id="presupuesto" [(ngModel)]="evento.presupuesto" disabled/>
                 </div>
             </div>
             <div class="col-12">

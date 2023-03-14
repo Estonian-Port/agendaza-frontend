@@ -71,6 +71,7 @@ export class ExtraService {
     return await lastValueFrom(item$)
   }
 
+  // TODO Reemplazar fechaForm en getAllTipo...
   async getAllExtraEventoByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
     const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
@@ -81,6 +82,7 @@ export class ExtraService {
     return await lastValueFrom(listaItem$)
   }
 
+  // TODO Reemplazar fechaForm en getAllTipo...
   async getAllTipoCateringByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
     const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)

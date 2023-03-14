@@ -416,12 +416,6 @@ export class SaveEventoComponent implements OnInit {
       this.step = this.step + 1
     }
 
-    document.getElementById("elBoton")!!.click()
-
-  }
-
-  asd(){
-    console.log("HASDIJHDSA")
   }
   
   atras(){

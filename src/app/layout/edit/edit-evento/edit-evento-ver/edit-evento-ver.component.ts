@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Agregados, AgregadosEdit } from 'src/app/model/Agregados';
+import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
-import { CateringEvento, CateringEventoEdit } from 'src/app/model/CateringEvento';
+import { CateringEvento } from 'src/app/model/CateringEvento';
 import { EventoVer } from 'src/app/model/Evento';
 import { Time } from 'src/app/model/Time';
 import { Cliente } from 'src/app/model/Usuario';
@@ -17,7 +17,7 @@ import { EventoService } from 'src/app/services/evento.service';
 export class EditEventoVerComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0), 
-    new AgregadosEdit(0,0,0,[],[]),new CateringEventoEdit(0,0,0,"",[],[]), new Cliente(0,0,"","","","",0),0,"","")
+    new Agregados(0,0,0,[],[]),new CateringEvento(0,0,0,"",[],[]), new Cliente(0,0,"","","","",0),0,"","")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")

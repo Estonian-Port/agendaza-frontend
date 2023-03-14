@@ -27,6 +27,7 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.extra.cantidad)
     if(this.extra.cantidad == null){
       this.extra.cantidad = 0
     }
@@ -60,7 +61,7 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   }
 
   isChecked(){
-    return this.listaExtra.indexOf(this.extra) > -1
+    return this.listaExtra.find(it => { return it.id === this.extra.id }) != undefined
   }
 
 }

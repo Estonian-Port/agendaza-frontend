@@ -1,6 +1,7 @@
-import { Agregados, AgregadosEdit } from "./Agregados"
+import { Agregados } from "./Agregados"
 import { Capacidad } from "./Capacidad"
-import { CateringEvento, CateringEventoEdit } from "./CateringEvento"
+import { CateringEvento } from "./CateringEvento"
+import { FechaForm } from "./FechaForm"
 import { Pago } from "./Pago"
 import { Cliente } from "./Usuario"
 
@@ -44,12 +45,14 @@ export class EventoPago{
 
 export class EventoExtra{
     constructor(public id : number, public nombre : string, public codigo : string, 
-        public presupuesto : number, public agregados : AgregadosEdit){}
+        public presupuesto : number, public agregados : Agregados, public tipoEventoId : number,
+        public fechaEvento : string){}
 }
 
 export class EventoCatering{
     constructor(public id : number, public nombre : string, public codigo : string, 
-        public catering : CateringEventoEdit){}
+        public catering : CateringEvento, public tipoEventoId : number, public fechaEvento : string,
+        public capacidad : Capacidad){}
 }
 
 export class EventoHora{
@@ -59,8 +62,8 @@ export class EventoHora{
 
 export class EventoVer{
     constructor(public id : number, public nombre : string, public codigo : string, public inicio : string, 
-        public fin : string, public tipoEvento : string, public capacidad : Capacidad, public agregados : AgregadosEdit, 
-        public catering : CateringEventoEdit, public cliente : Cliente, public presupuesto : number,  
+        public fin : string, public tipoEvento : string, public capacidad : Capacidad, public agregados : Agregados, 
+        public catering : CateringEvento, public cliente : Cliente, public presupuesto : number,  
         public estado : string, public empresa : string){}
 }
 

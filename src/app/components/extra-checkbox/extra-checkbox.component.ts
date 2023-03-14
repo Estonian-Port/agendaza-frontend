@@ -17,7 +17,7 @@ export class ExtraCheckboxComponent implements OnInit {
   extra! : Extra
 
   @Input()
-  listaExtra! : Array<number>
+  listaExtra! : Array<Extra>
 
   @Output()
   outputExtraPresupuesto = new EventEmitter<number>();
@@ -32,16 +32,16 @@ export class ExtraCheckboxComponent implements OnInit {
 
   onCheckboxChange(event: any){
     if (event.target.checked) {
-      this.listaExtra.push(Number(event.target.value))
+      this.listaExtra.push(this.extra)
       this.outputExtraPresupuesto.emit(this.extra.precio)
       this.outputExtraOtro.emit()
     } else {
-      _.pull(this.listaExtra, Number(event.target.value))
+      _.pull(this.listaExtra, this.extra)
       this.outputExtraPresupuesto.emit(- this.extra.precio)
     }
   }
 
   isChecked(id : number){
-    return this.listaExtra.indexOf(id) > -1
+    return this.listaExtra.find(it => { return it.id === this.extra.id }) != undefined
   }
 }
