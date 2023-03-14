@@ -26,9 +26,9 @@ export class EventoService {
   }
 
   async getAllEventoByEmpresaIdAndFechaFiltro(){
-    console.log(new Date(this.fechaFiltroForAbmEvento))
     const listaItem$ = this.httpClient.put<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaIdAndFechaFiltro/' + this.agendaService.getEmpresaId(), new Date(this.fechaFiltroForAbmEvento))
     const listaItem = await lastValueFrom(listaItem$)
+    this.fechaFiltroForAbmEvento = ""
     return listaItem.map((evento) => Evento.fromJson(evento))
   }
 
@@ -93,8 +93,18 @@ export class EventoService {
     return await lastValueFrom(evento$)
   }
 
-  async editEventoHora(eventoHora : EventoHora) {
-    const item$ = this.httpClient.post<EventoHora>(REST_SERVER_URL + '/editEventoHora', eventoHora)
+  async editEventoHora(evento : EventoHora) {
+    const item$ = this.httpClient.post<EventoHora>(REST_SERVER_URL + '/editEventoHora', evento)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoExtra(evento : EventoExtra) {
+    const item$ = this.httpClient.post<EventoExtra>(REST_SERVER_URL + '/editEventoExtra', evento)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoCatering(evento : EventoCatering) {
+    const item$ = this.httpClient.post<EventoCatering>(REST_SERVER_URL + '/editEventoCatering', evento)
     return await lastValueFrom(item$)
   }
 

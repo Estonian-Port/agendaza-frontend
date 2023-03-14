@@ -40,7 +40,7 @@ export class ExtraVariableCheckboxComponent implements OnInit {
       this.listaExtra.push(this.extra)
     } else {
       this.onNotCheckbox()
-      _.pull(this.listaExtra, this.extra)
+      _.pull(this.listaExtra, this.listaExtra.find(it => { return it.id === this.extra.id }))
     }
   }
 
@@ -65,5 +65,4 @@ export class ExtraVariableCheckboxComponent implements OnInit {
   isChecked(){
     return this.listaExtra.find(it => { return it.id === this.extra.id }) != undefined
   }
-
 }

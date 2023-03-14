@@ -36,7 +36,9 @@ export class ExtraCheckboxComponent implements OnInit {
       this.outputExtraPresupuesto.emit(this.extra.precio)
       this.outputExtraOtro.emit()
     } else {
-      _.pull(this.listaExtra, this.extra)
+      console.log(this.listaExtra)
+      _.pull(this.listaExtra, this.listaExtra.find(it => { return it.id === this.extra.id }))
+      console.log(this.listaExtra)
       this.outputExtraPresupuesto.emit(- this.extra.precio)
     }
   }

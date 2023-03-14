@@ -96,7 +96,7 @@
                         <input type="text" class="form-control" id="cliente" [value]="evento.cliente.apellido + ', ' + evento.cliente.nombre" disabled>
                     </div>
                     <div class="form-group col-7">
-                        <button (click)="verCliente()" class="btn btn-primary">Ver eventos del cliente</button>
+                        <button (click)="verCliente()" class="btn btn-secondary" disabled>Ver eventos del cliente</button>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                 <button (click)="volver()" class="btn btn-primary">Volver</button>
             </div>
             <div>
-                <button (click)="descargarComprobante()" class="btn btn-primary">Descargar Comprobante</button>
+                <button (click)="descargarComprobante()" class="btn btn-secondary" disabled>Descargar Comprobante</button>
             </div>
             <div>
                 <button (click)="reenviarMail()" class="btn btn-success"><i class="fa fa-envelope"></i> Reenviar Mail</button>

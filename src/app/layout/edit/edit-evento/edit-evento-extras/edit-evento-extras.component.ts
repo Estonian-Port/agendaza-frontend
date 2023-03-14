@@ -37,6 +37,11 @@ export class EditEventoExtrasComponent implements OnInit {
     this.router.navigateByUrl("/abmEvento")
   }
 
+  save(){
+    this.eventoService.editEventoExtra(this.evento)
+    this.router.navigateByUrl("/abmEvento")
+  }
+
   sumExtraPresupuesto(extraPrecio : number){
     this.extraPresupuesto += extraPrecio
     this.sumPresupuesto()
@@ -48,6 +53,5 @@ export class EditEventoExtrasComponent implements OnInit {
     if(this.evento.agregados.descuento != 0){
       this.evento.presupuesto -= this.evento.presupuesto * (this.evento.agregados.descuento / 100)
     }
-    
   }
 }

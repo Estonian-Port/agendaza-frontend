@@ -33,14 +33,18 @@ export class EditEventoCateringComponent implements OnInit {
     // TODO Reemplazar fechaForm en getAllTipo...
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-
-
     
   }
 
   volver(){
     this.router.navigateByUrl("/abmEvento")
   }
+
+  save(){
+    this.eventoService.editEventoCatering(this.evento)
+    this.router.navigateByUrl("/abmEvento")
+  }
+
 
   sumExtraTipoCatering(extraPrecio : number){
     this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidad.capacidadAdultos
@@ -66,5 +70,4 @@ export class EditEventoCateringComponent implements OnInit {
       this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
     }
   }
-
 }
