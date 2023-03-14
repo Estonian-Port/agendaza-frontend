@@ -176,13 +176,14 @@ export class NuevoEventoComponent implements OnInit {
 
   async buscarListaEventoByDiaAndEmpresaId(){
     this.setFechaInicioAndFin()
-    this.horarioDisponible = await this.eventoService.horarioDisponible(this.evento)
+    this.horarioDisponible = await this.eventoService.getHorarioDisponible(this.evento)
     this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.fechaEvento)
   }
 
   async changeTime(){
     this.finalTime = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.evento.tipoEventoId, this.inicioTime)
     this.hastaElOtroDiaCheckbox = Number(this.finalTime.hour) < Number(this.inicioTime.hour)
+    this.buscarListaEventoByDiaAndEmpresaId()
   }
 
   setFechaInicioAndFin(){
