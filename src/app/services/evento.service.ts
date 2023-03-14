@@ -54,6 +54,11 @@ export class EventoService {
     const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEstado')
     return await lastValueFrom(listaItem$)
   }
+  
+  async getAllEstadoForSaveEvento() {
+    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEstadoForSaveEvento')
+    return await lastValueFrom(listaItem$)
+  }
 
   async getEventoPago() {
     const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoPago/' + this.eventoId)

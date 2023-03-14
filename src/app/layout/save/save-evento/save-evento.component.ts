@@ -39,6 +39,7 @@ export class SaveEventoComponent implements OnInit {
     new GenericItem(5, "Datos de contacto")
   ]
   botonSiguienteFinalizado : string = "Siguiente"
+  botonAtrasDisabled = true
 
   evento : Evento = new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
     new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
@@ -93,6 +94,7 @@ export class SaveEventoComponent implements OnInit {
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
   usuarioCondicional : boolean = false
+  eventoSaveError : ErrorMensaje = new ErrorMensaje(false, 'Error al crear evento, revise los campos cargados')
 
   // -------------------------- Inicializacion --------------------------------
 
@@ -112,7 +114,7 @@ export class SaveEventoComponent implements OnInit {
 
     // Datos del contacto
     this.listaSexo = await this.usuarioService.getAllSexo()
-    this.listaEstadoEvento = await this.eventoService.getAllEstado()
+    this.listaEstadoEvento = await this.eventoService.getAllEstadoForSaveEvento()
   }
 
   // ---------------------------------------------------------------------------
@@ -386,7 +388,9 @@ export class SaveEventoComponent implements OnInit {
     return this.isStep.bind(this);
   }
 
-  siguiente(){
+  async siguiente(){
+
+    this.botonAtrasDisabled= false
 
     if(this.step == 4 || this.step == 5){
       this.botonSiguienteFinalizado = "Finalizar"
@@ -395,16 +399,16 @@ export class SaveEventoComponent implements OnInit {
     }
 
     if(this.step == 5){
+      this.eventoSaveError.condicional = false
 
       // Setea la fecha
-      
       this.setFechaInicioAndFin()
 
       try{
-        this.eventoService.save(this.evento)
+        await this.eventoService.save(this.evento)
         this.router.navigateByUrl('/agenda')
       }catch(error){
-        console.log(error)
+        this.eventoSaveError.condicional = true
       }
     }
 
@@ -416,9 +420,14 @@ export class SaveEventoComponent implements OnInit {
 
   atras(){
     this.botonSiguienteFinalizado = "Siguiente"
+    this.eventoSaveError.condicional = false
 
     if(this.step > 1 && this.step <= 5){
       this.step = this.step - 1
+    }
+
+    if(this.step == 1){
+      this.botonAtrasDisabled = true
     }
   }
 
