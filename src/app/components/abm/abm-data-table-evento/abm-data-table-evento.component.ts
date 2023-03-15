@@ -20,6 +20,16 @@ export class AbmDataTableEventoComponent implements OnInit {
   @Input()
   buscar = ''
 
+  modal = false
+
+  idEliminar = 0
+
+  cuerpoModal = ""
+
+  tituloModal = "Eliminar Modal"
+
+  botonModal = "Eliminar"
+
   @Output() 
   outputPagos = new EventEmitter<number>();
 
@@ -37,6 +47,7 @@ export class AbmDataTableEventoComponent implements OnInit {
 
   @Output() 
   outputEliminar = new EventEmitter<number>();
+
 
   constructor(private eventoService : EventoService) { }
 
@@ -68,12 +79,22 @@ export class AbmDataTableEventoComponent implements OnInit {
     this.outputVer.emit(id);
   }
 
-  eliminar(id : number){
-    this.setEventoId(id)
-    this.outputEliminar.emit(id);
+  eliminar(){
+    this.setEventoId(this.idEliminar)
+    this.outputEliminar.emit(this.idEliminar);
   }
 
   setEventoId(id : number){
     this.eventoService.eventoId = id
+  }
+
+  modalParaEliminar(id : number, nombre : string){
+    this.idEliminar = id
+    this.cuerpoModal = "Quiere eliminar el Evento: " + nombre
+    this.setModal(!this.modal)
+  }
+
+  setModal(modal : boolean){
+    this.modal = modal
   }
 }

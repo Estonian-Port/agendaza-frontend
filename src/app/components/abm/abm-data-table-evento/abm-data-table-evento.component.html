@@ -28,9 +28,18 @@
                     <button (click)="catering(item.id)" class="mx-2"><i class="fas fa-utensils text-warning fa-lg"></i></button>
                     <button (click)="hora(item.id)" class="mx-2"><i class="fas fa-clock text-primary fa-lg"></i></button>
                     <button (click)="ver(item.id)" class="mx-2"><i class="fas fa-eye text-primary fa-lg"></i></button>
-                    <button (click)="eliminar(item.id)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></button>
+                    <button (click)="modalParaEliminar(item.id, item.nombre)" class="mx-2"><i class="fas fa-trash text-danger fa-lg"></i></button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+<app-modal
+    (outputAceptar)="eliminar()"
+    (outputChangeModal)="setModal($event)"
+    [modal]="modal"
+    [titulo]="tituloModal"
+    [cuerpo]="cuerpoModal"
+    [boton]="botonModal">
+</app-modal>

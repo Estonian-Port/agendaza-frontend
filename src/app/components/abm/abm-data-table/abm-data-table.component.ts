@@ -70,7 +70,7 @@ export class AbmDataTableComponent implements OnInit {
     this.outputEditar.emit(id);
   }
 
-  eliminar(id : number){
+  eliminar(){
     this.outputEliminar.emit(this.idEliminar);
   }
 
