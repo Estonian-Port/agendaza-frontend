@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pago } from 'src/app/model/Pago';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
@@ -17,14 +18,23 @@ export class SavePagoComponent implements OnInit {
   listaMedioDePago : Array<string> = []
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
+  botonBuscarDisabled : boolean = false 
 
-  constructor(private pagoService : PagoService, private router : Router) { }
+  constructor(private pagoService : PagoService, private eventoService : EventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
     this.listaMedioDePago = await this.pagoService.getAllMedioDePago()
+
+    if(this.eventoService.eventoCodigo != ""){
+      this.codigo = this.eventoService.eventoCodigo
+      this.eventoService.eventoCodigo = ""
+      this.buscar()
+      this.botonBuscarDisabled = true
+    }
   }
 
   async buscar(){
+
     try {
       this.pago = await this.pagoService.getEventoForPago(this.codigo)
       this.pago.medioDePago = "TRANSFERENCIA"

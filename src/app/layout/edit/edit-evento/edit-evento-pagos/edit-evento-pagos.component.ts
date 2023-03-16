@@ -26,7 +26,8 @@ export class EditEventoPagosComponent implements OnInit {
 
   }
 
-  savePago(){
+  agregarPago(){
+    this.eventoService.eventoCodigo = this.eventoPago.codigo
     this.router.navigateByUrl("/savePago")
   }
 

@@ -7,10 +7,10 @@
             <label for="codigo">Codigo del evento</label>
             <div class="row">
                 <div class="col-4">
-                    <input type="text" class="form-control" name="codigoEvento" [(ngModel)]='codigo'/>
+                    <input type="text" class="form-control" name="codigoEvento" [(ngModel)]='codigo' [disabled]="botonBuscarDisabled"/>
                 </div>
                 <div class="col-4">
-                    <button type="submit" (click)="buscar()" class="btn btn-primary">Buscar</button>
+                    <button type="submit" (click)="buscar()" [disabled]="botonBuscarDisabled" type="button" [ngClass]="botonBuscarDisabled ? 'btn btn-secondary' : 'btn btn-primary'">Buscar</button>
                 </div>
             </div>
         </div>

@@ -15,6 +15,7 @@ import { LoginService } from './login.service';
 export class EventoService {
 
   eventoId : number = 0
+  eventoCodigo : string = ""
   fechaFiltroForAbmEvento : string = ""
 
   constructor(private httpClient : HttpClient, private agendaService : AgendaService, private loginService : LoginService) { }
