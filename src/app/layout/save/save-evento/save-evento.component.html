@@ -344,21 +344,21 @@
 
                         <div class="row mt-2">
                             <div class="form-group col-md-6">
-                                <label for="email" class="form-label">E-mail 
-                                    <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorEmail()">
-                                        <i class="fas fa-search fa-xs"></i>
-                                    </button>
-                                </label>
-                                <input type="email" class="form-control email" name="email"  [(ngModel)]="evento.cliente.email">
-                            </div>
-
-                            <div class="form-group col-md-6">
                                 <label for="celular" class="form-label">Celular 
                                     <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorCelular()">
                                         <i class="fas fa-search fa-xs"></i>
                                     </button>
                                 </label>
                                 <input type="number" class="form-control"name="celular" [(ngModel)]="evento.cliente.celular">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="email" class="form-label">E-mail 
+                                    <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorEmail()">
+                                        <i class="fas fa-search fa-xs"></i>
+                                    </button>
+                                </label>
+                                <input type="email" class="form-control email" name="email"  [(ngModel)]="evento.cliente.email">
                             </div>
                         </div>
 

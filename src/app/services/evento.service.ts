@@ -32,11 +32,6 @@ export class EventoService {
     return listaItem.map((evento) => Evento.fromJson(evento))
   }
 
-  async buscarClientePorDni(dni : number){
-    const usuario$ = this.httpClient.put<Cliente>(REST_SERVER_URL + '/getUsuarioByDni', dni)
-    return await lastValueFrom(usuario$)
-  }
-
   async buscarClientePorEmail(email : string){
     const usuario$ = this.httpClient.put<Cliente>(REST_SERVER_URL + '/getUsuarioByEmail', email)
     return await lastValueFrom(usuario$)

@@ -17,7 +17,7 @@ import { EventoService } from 'src/app/services/evento.service';
 export class EditEventoVerComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0), 
-    new Agregados(0,0,0,[],[]),new CateringEvento(0,0,0,"",[],[]), new Cliente(0,0,"","","","",0),0,"","")
+    new Agregados(0,0,0,[],[]),new CateringEvento(0,0,0,"",[],[]), new Cliente(0,"","","","",0),0,"","")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")

@@ -43,7 +43,7 @@ export class SaveEventoComponent implements OnInit {
 
   evento : Evento = new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
     new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
-    new Cliente(0,0,"","","CLIENTE","",0), 0, 0, "COTIZADO")
+    new Cliente(0,"","","CLIENTE","",0), 0, 0, "COTIZADO")
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -332,22 +332,12 @@ export class SaveEventoComponent implements OnInit {
 
   // --------------------------- Datos de contacto -----------------------------
 
-  async buscarClientePorDni(){
-    try {
-      this.evento.cliente = await this.eventoService.buscarClientePorDni(this.evento.cliente.dni)
-      this.usuarioEncontrado()
-    } catch (error) {
-      this.evento.cliente = new Cliente(0, this.evento.cliente.dni, "", "", "CLIENTE", "", 0)
-      this.usuarioNoEncontrado(error)
-    }
-  }
-
   async buscarClientePorEmail(){
     try {
       this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.evento.cliente.email)
       this.usuarioEncontrado()
     } catch (error) {
-      this.evento.cliente = new Cliente(0, 0, "", "", "CLIENTE", this.evento.cliente.email, 0)
+      this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.evento.cliente.email, 0)
       this.usuarioNoEncontrado(error)
     }
   }
@@ -357,7 +347,7 @@ export class SaveEventoComponent implements OnInit {
       this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.evento.cliente.celular)
       this.usuarioEncontrado()
     } catch (error) {
-      this.evento.cliente = new Cliente(0, 0, "", "", "CLIENTE", "", this.evento.cliente.celular)
+      this.evento.cliente = new Cliente(0, "", "", "CLIENTE", "", this.evento.cliente.celular)
       this.usuarioNoEncontrado(error)
 
     }
