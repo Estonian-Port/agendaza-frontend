@@ -113,6 +113,12 @@ export class EventoService {
   async getHorarioDisponible(evento : Evento){
     const eventoBuscarFecha = new EventoBuscarFecha(this.agendaService.getEmpresaId(), new Date(evento.inicio), new Date(evento.fin))
     const item$ = this.httpClient.put<boolean>(REST_SERVER_URL + '/horarioDisponible', eventoBuscarFecha)
-    return await lastValueFrom(item$)  }
+    return await lastValueFrom(item$)
+  }
+
+  async reenviarMail(eventoId: number) {
+    const item$ = this.httpClient.put<boolean>(REST_SERVER_URL + '/reenviarMail/' + eventoId, this.agendaService.getEmpresaId())
+    return await lastValueFrom(item$)
+  }
 
 }

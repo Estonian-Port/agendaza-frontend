@@ -6,7 +6,6 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-edit-usuario-password',
   templateUrl: './edit-usuario-password.component.html',
-  styleUrls: ['./edit-usuario-password.component.css']
 })
 export class EditUsuarioPasswordComponent implements OnInit {
 

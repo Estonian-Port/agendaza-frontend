@@ -5,7 +5,6 @@ import { EventoService } from 'src/app/services/evento.service';
 @Component({
   selector: 'app-abm-evento',
   templateUrl: './abm-evento.component.html',
-  styleUrls: ['./abm-evento.component.css']
 })
 export class AbmEventoComponent implements OnInit {
 
@@ -62,7 +61,7 @@ export class AbmEventoComponent implements OnInit {
   }
   
   ver(id : number){
-    this.router.navigateByUrl('/editEventoVer')
+    this.router.navigateByUrl('/verEvento')
   }
 
   async eliminar(id : number){

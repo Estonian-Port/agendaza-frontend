@@ -16,7 +16,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepBoxComponent } from './components/step-box/step-box.component';
-import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
+import { PanelAdminComponent } from './layout/panel-admin/panel-admin.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbmById } from './pipes/orderAbmById.pipe';
@@ -58,8 +58,9 @@ import { ExtraVariableCheckboxComponent } from './components/extra-variable-chec
 import { EditEventoPagosComponent } from './layout/edit/edit-evento/edit-evento-pagos/edit-evento-pagos.component';
 import { EditEventoExtrasComponent } from './layout/edit/edit-evento/edit-evento-extras/edit-evento-extras.component';
 import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-evento-catering/edit-evento-catering.component';
-import { EditEventoVerComponent } from './layout/edit/edit-evento/edit-evento-ver/edit-evento-ver.component';
+import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component';
 import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
+import { VerListaEventoClienteComponent } from './layout/ver/ver-lista-evento-cliente/ver-lista-evento-cliente.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-h
     AgendaComponent,
     SaveEventoComponent,
     StepBoxComponent,
-    ConfiguracionComponent,
+    PanelAdminComponent,
     AbmUsuarioComponent,
     FilterAbm,
     siNo,
@@ -113,8 +114,9 @@ import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-h
     EditEventoPagosComponent,
     EditEventoExtrasComponent,
     EditEventoCateringComponent,
-    EditEventoVerComponent,
+    VerEventoComponent,
     EditEventoHoraComponent,
+    VerListaEventoClienteComponent,
   ],
   imports: [
     BrowserModule,

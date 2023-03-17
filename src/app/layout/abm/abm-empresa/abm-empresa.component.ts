@@ -5,7 +5,6 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 @Component({
   selector: 'app-abm-empresa',
   templateUrl: './abm-empresa.component.html',
-  styleUrls: ['./abm-empresa.component.css']
 })
 export class AbmEmpresaComponent implements OnInit {
 

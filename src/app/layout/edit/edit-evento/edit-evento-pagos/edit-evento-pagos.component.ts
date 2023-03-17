@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
-import { Pago } from 'src/app/model/Pago';
 import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
   selector: 'app-edit-evento-pagos',
   templateUrl: './edit-evento-pagos.component.html',
-  styleUrls: ['./edit-evento-pagos.component.css']
 })
 export class EditEventoPagosComponent implements OnInit {
 

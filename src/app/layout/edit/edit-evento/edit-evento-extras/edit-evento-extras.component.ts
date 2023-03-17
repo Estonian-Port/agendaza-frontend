@@ -11,7 +11,6 @@ import { ExtraService } from 'src/app/services/extra.service';
 @Component({
   selector: 'app-edit-evento-extras',
   templateUrl: './edit-evento-extras.component.html',
-  styleUrls: ['./edit-evento-extras.component.css']
 })
 export class EditEventoExtrasComponent implements OnInit {
 

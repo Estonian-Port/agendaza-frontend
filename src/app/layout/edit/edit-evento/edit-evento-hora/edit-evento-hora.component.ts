@@ -8,7 +8,6 @@ import { EventoService } from 'src/app/services/evento.service';
 @Component({
   selector: 'app-edit-evento-hora',
   templateUrl: './edit-evento-hora.component.html',
-  styleUrls: ['./edit-evento-hora.component.css']
 })
 export class EditEventoHoraComponent implements OnInit {
 

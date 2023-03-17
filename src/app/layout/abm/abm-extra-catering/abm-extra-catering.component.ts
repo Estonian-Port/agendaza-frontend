@@ -7,7 +7,6 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-extra-abm-catering',
   templateUrl: './abm-extra-catering.component.html',
-  styleUrls: ['./abm-extra-catering.component.css']
 })
 export class AbmExtraCateringComponent implements OnInit {
   buscar = ''

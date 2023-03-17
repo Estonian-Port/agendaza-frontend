@@ -6,7 +6,6 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-save-usuario',
   templateUrl: './save-usuario.component.html',
-  styleUrls: ['./save-usuario.component.css']
 })
 export class SaveUsuarioComponent implements OnInit {
 

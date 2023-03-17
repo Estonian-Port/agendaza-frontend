@@ -11,7 +11,7 @@ import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.com
 import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
 import { AgendaComponent } from './layout/agenda/agenda.component';
-import { ConfiguracionComponent } from './layout/configuracion/configuracion.component';
+import { PanelAdminComponent } from './layout/panel-admin/panel-admin.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
@@ -33,7 +33,7 @@ import { EditEventoPagosComponent } from './layout/edit/edit-evento/edit-evento-
 import { EditEventoExtrasComponent } from './layout/edit/edit-evento/edit-evento-extras/edit-evento-extras.component';
 import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-evento-catering/edit-evento-catering.component';
 import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
-import { EditEventoVerComponent } from './layout/edit/edit-evento/edit-evento-ver/edit-evento-ver.component';
+import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component';
 
 const routes: Routes = [
   {
@@ -46,7 +46,7 @@ const routes: Routes = [
     children: [
       { path : '', component: SeleccionarAgendaComponent },
       { path : 'agenda', component: AgendaComponent },
-      { path : 'configuracion', component: ConfiguracionComponent },
+      { path : 'panelAdmin', component: PanelAdminComponent },
       { path : 'abmUsuario', component: AbmUsuarioComponent },
       { path : 'abmEvento', component: AbmEventoComponent },
       { path : 'abmTipoEvento', component: AbmTipoEventoComponent },
@@ -75,7 +75,7 @@ const routes: Routes = [
       { path : 'editEventoExtras', component: EditEventoExtrasComponent },
       { path : 'editEventoCatering', component: EditEventoCateringComponent },
       { path : 'editEventoHora', component: EditEventoHoraComponent },
-      { path : 'editEventoVer', component: EditEventoVerComponent },
+      { path : 'verEvento', component: VerEventoComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }

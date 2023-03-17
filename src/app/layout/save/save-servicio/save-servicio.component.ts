@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { GenericItem } from 'src/app/model/GenericItem';
-import { GenericItemEmpresaTipoEvento } from 'src/app/model/GenericItemEmpresaTipoEvento';
+import { GenericItem, GenericItemEmpresaTipoEvento } from 'src/app/model/GenericItem';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
   selector: 'app-save-servicio',
   templateUrl: './save-servicio.component.html',
-  styleUrls: ['./save-servicio.component.css']
 })
 export class SaveServicioComponent implements OnInit {
   

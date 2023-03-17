@@ -2,10 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { GenericItem, GenericItemJSON } from '../model/GenericItem';
-import { GenericItemEmpresa } from '../model/GenericItemEmpresa';
-import { GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON } from '../model/GenericItemEmpresaTipoEvento';
-import { Time } from '../model/Time';
+import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON, GenericItemJSON } from '../model/GenericItem';
 import { AgendaService } from './agenda.service';
 
 @Injectable({

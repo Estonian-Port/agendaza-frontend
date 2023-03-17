@@ -45,8 +45,8 @@ export class NavbarComponent implements OnInit {
     return "/saveEvento" == this.location.path()
   }
 
-  isConfiguracion() : boolean{
-    return "/configuracion" == this.location.path()
+  isPanelAdmin() : boolean{
+    return "/panelAdmin" == this.location.path()
   }
 
   isAbm() : boolean{
@@ -61,7 +61,7 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/agenda')
   }
 
-  configuracion(){
-    this.router.navigateByUrl('/configuracion')
+  panelAdmin(){
+    this.router.navigateByUrl('/panelAdmin')
   }
 }

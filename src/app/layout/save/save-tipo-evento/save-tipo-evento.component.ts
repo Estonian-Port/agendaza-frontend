@@ -7,7 +7,6 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 @Component({
   selector: 'app-save-tipo-evento',
   templateUrl: './save-tipo-evento.component.html',
-  styleUrls: ['./save-tipo-evento.component.css']
 })
 export class SaveTipoEventoComponent implements OnInit {
 

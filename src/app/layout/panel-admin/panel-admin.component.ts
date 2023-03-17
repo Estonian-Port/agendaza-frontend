@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Configuracion } from 'src/app/model/Configuracion';
+import { PanelAdmin as PanelAdmin } from 'src/app/model/Configuracion';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 
 @Component({
-  selector: 'app-configuracion',
-  templateUrl: './configuracion.component.html',
-  styleUrls: ['./configuracion.component.css']
+  selector: 'app-panel-admin',
+  templateUrl: './panel-admin.component.html',
 })
-export class ConfiguracionComponent implements OnInit {
+export class PanelAdminComponent implements OnInit {
 
-
-  configuracion = new Configuracion(0,0,0,0,0,0,0,0,0)
+  configuracion = new PanelAdmin(0,0,0,0,0,0,0,0,0)
 
   constructor(private configuracionService : ConfiguracionService, private router : Router) { }
 

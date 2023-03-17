@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { er } from '@fullcalendar/core/internal-common';
 import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { CateringEvento } from 'src/app/model/CateringEvento';
@@ -8,13 +9,13 @@ import { Time } from 'src/app/model/Time';
 import { Cliente } from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
+import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
-  selector: 'app-edit-evento-ver',
-  templateUrl: './edit-evento-ver.component.html',
-  styleUrls: ['./edit-evento-ver.component.css']
+  selector: 'app-edit-evento',
+  templateUrl: './ver-evento.component.html',
 })
-export class EditEventoVerComponent implements OnInit {
+export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0), 
     new Agregados(0,0,0,[],[]),new CateringEvento(0,0,0,"",[],[]), new Cliente(0,"","","","",0),0,"","")
@@ -26,6 +27,10 @@ export class EditEventoVerComponent implements OnInit {
   extrasVariables : boolean = false
   extraCatering : boolean = false
   tipoCatering : boolean = false
+
+  eventoReenviarMail : boolean = false
+  eventoErrorReenviarMail = new ErrorMensaje(false, '')
+  errors = []
 
   constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
 
@@ -59,9 +64,15 @@ export class EditEventoVerComponent implements OnInit {
     console.log("TODO")
   }
 
-  reenviarMail(){
-    console.log("TODO")
+  async reenviarMail(){
+    try{
+      this.eventoReenviarMail = await this.eventoService.reenviarMail(this.evento.id)
+      this.eventoErrorReenviarMail.condicional = false
+    }catch(error: any){
+      this.eventoErrorReenviarMail.condicional = true
+      this.eventoReenviarMail = false
+      this.eventoErrorReenviarMail.mensaje = getErrorConMensaje(error)
+    }
   }
-
 
 }

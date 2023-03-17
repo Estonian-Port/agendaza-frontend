@@ -8,7 +8,6 @@ import { mostrarErrorConMensaje } from 'src/util/errorHandler';
 @Component({
   selector: 'app-seleccionar-agenda',
   templateUrl: './seleccionar-agenda.component.html',
-  styleUrls: ['./seleccionar-agenda.component.css']
 })
 export class SeleccionarAgendaComponent implements OnInit {
 

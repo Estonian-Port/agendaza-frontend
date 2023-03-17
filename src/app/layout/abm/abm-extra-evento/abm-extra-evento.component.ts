@@ -7,7 +7,6 @@ import { Extra } from 'src/app/model/Extra';
 @Component({
   selector: 'app-abm-extra-evento',
   templateUrl: './abm-extra-evento.component.html',
-  styleUrls: ['./abm-extra-evento.component.css']
 })
 export class AbmExtraEventoComponent implements OnInit {
 

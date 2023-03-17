@@ -7,7 +7,6 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 @Component({
   selector: 'app-precio-tipo-evento',
   templateUrl: './precio-tipo-evento.component.html',
-  styleUrls: ['./precio-tipo-evento.component.css']
 })
 export class PrecioTipoEventoComponent implements OnInit {
 

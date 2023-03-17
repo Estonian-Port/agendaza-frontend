@@ -6,7 +6,6 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-abm-tipo-evento',
   templateUrl: './abm-tipo-evento.component.html',
-  styleUrls: ['./abm-tipo-evento.component.css']
 })
 export class AbmTipoEventoComponent implements OnInit {
 

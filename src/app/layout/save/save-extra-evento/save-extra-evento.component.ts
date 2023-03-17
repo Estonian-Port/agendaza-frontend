@@ -10,7 +10,6 @@ import { ErrorMensaje } from 'src/util/errorHandler';
 @Component({
   selector: 'app-save-extra-evento',
   templateUrl: './save-extra-evento.component.html',
-  styleUrls: ['./save-extra-evento.component.css']
 })
 export class SaveExtraEventoComponent implements OnInit {
 

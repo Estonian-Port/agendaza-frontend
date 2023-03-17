@@ -7,7 +7,6 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-abm-servicio',
   templateUrl: './abm-servicio.component.html',
-  styleUrls: ['./abm-servicio.component.css']
 })
 export class AbmServicioComponent implements OnInit {
 

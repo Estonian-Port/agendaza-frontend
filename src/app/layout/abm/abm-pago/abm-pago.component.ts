@@ -4,7 +4,6 @@ import { PagoService } from 'src/app/services/pago.service';
 @Component({
   selector: 'app-abm-pago',
   templateUrl: './abm-pago.component.html',
-  styleUrls: ['./abm-pago.component.css']
 })
 export class AbmPagoComponent implements OnInit {
 

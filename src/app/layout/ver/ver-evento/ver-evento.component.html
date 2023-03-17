@@ -1,6 +1,17 @@
 <div class="container">
     <br>
-    <h2>Ver Evento</h2>
+    <div class="d-flex justify-content-between">
+        <div>
+            <h2>Ver Evento</h2>
+        </div>
+        <div *ngIf='eventoReenviarMail' class="col-4">
+            <div class="alert alert-success">Mail Enviado exitosamente</div>
+        </div>
+        <div *ngIf='eventoErrorReenviarMail.condicional' class="col-4">
+            <div class="alert alert-danger">{{eventoErrorReenviarMail.mensaje}}</div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-3">
             <div class="form-group col-9 mb-4">
@@ -154,17 +165,6 @@
                             <small>{{extra.nombre}}</small>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div>
-                <div id="MailNoEnviado" class="d-none">
-                    <div class="alert alert-danger" role="alert">
-                        <p><strong>Mail no enviado,</strong> Surgio un error a la hora del envio del mail.</p>
-                    </div>
-                </div>
-                <div id="MailEnviado" class="d-none">
-                    <div class="alert alert-success" role="alert"><strong>Mail Enviado</strong></div>
                 </div>
             </div>
         </div>
