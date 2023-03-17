@@ -28,6 +28,9 @@ export class ExtraCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    if(this.isChecked()){
+      this.outputExtraPresupuesto.emit(this.extra.precio)
+    }
   }
 
   onCheckboxChange(event: any){
@@ -36,14 +39,12 @@ export class ExtraCheckboxComponent implements OnInit {
       this.outputExtraPresupuesto.emit(this.extra.precio)
       this.outputExtraOtro.emit()
     } else {
-      console.log(this.listaExtra)
       _.pull(this.listaExtra, this.listaExtra.find(it => { return it.id === this.extra.id }))
-      console.log(this.listaExtra)
       this.outputExtraPresupuesto.emit(- this.extra.precio)
     }
   }
 
-  isChecked(id : number){
+  isChecked(){
     return this.listaExtra.find(it => { return it.id === this.extra.id }) != undefined
   }
 }

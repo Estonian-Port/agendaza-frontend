@@ -21,6 +21,7 @@ export class EditEventoCateringComponent implements OnInit {
   extraTipoCateringPresupuesto : number = 0
   extraCateringPresupuesto : number = 0
   cateringOtro : boolean = false
+  agregarCatering : boolean = true
 
   constructor(private eventoService : EventoService, private router : Router, private extraService : ExtraService) { }
 
@@ -44,10 +45,17 @@ export class EditEventoCateringComponent implements OnInit {
     this.router.navigateByUrl("/abmEvento")
   }
 
-
   sumExtraTipoCatering(extraPrecio : number){
     this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidad.capacidadAdultos
     this.sumCateringPresupuesto()
+  }
+
+  cleanTipoCateringForCateringOtro(){
+    if(this.cateringOtro){
+      this.evento.catering.listaExtraTipoCatering.splice(0)
+      this.extraTipoCateringPresupuesto = 0
+      this.sumExtraTipoCatering(0)
+    }
   }
 
   cleanExtraOtroCheckbox(){
@@ -63,6 +71,7 @@ export class EditEventoCateringComponent implements OnInit {
   }
 
   sumCateringPresupuesto(){
+    console.log(this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto)
     if(this.cateringOtro){
       this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.evento.catering.cateringOtro * this.evento.capacidad.capacidadAdultos
     }else{
