@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
-import { CateringEvento } from 'src/app/model/CateringEvento';
 import { EventoCatering } from 'src/app/model/Evento';
 import { Extra } from 'src/app/model/Extra';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
@@ -15,7 +14,7 @@ import { ExtraService } from 'src/app/services/extra.service';
 })
 export class EditEventoCateringComponent implements OnInit {
 
-  evento : EventoCatering = new EventoCatering(0, "","",new CateringEvento(0,0,0,"",[],[]),0,"", new Capacidad(0,0,0))
+  evento : EventoCatering = new EventoCatering(0, "","",0,0,"",[],[],0,"", new Capacidad(0,0,0))
   listaExtraTipoCatering : Array<Extra> = []
   listaExtraCateringVariable : Array<ExtraVariable> = []
   extraTipoCateringPresupuesto : number = 0
@@ -52,7 +51,7 @@ export class EditEventoCateringComponent implements OnInit {
 
   cleanTipoCateringForCateringOtro(){
     if(this.cateringOtro){
-      this.evento.catering.listaExtraTipoCatering.splice(0)
+      this.evento.listaExtraTipoCatering.splice(0)
       this.extraTipoCateringPresupuesto = 0
       this.sumExtraTipoCatering(0)
     }
@@ -60,8 +59,8 @@ export class EditEventoCateringComponent implements OnInit {
 
   cleanExtraOtroCheckbox(){
     this.cateringOtro = false
-    this.evento.catering.cateringOtro = 0
-    this.evento.catering.descripcion = ""
+    this.evento.cateringOtro = 0
+    this.evento.cateringOtroDescripcion = ""
     this.sumCateringPresupuesto()
   }
 
@@ -71,11 +70,11 @@ export class EditEventoCateringComponent implements OnInit {
   }
 
   sumCateringPresupuesto(){
-    console.log(this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto)
+    console.log(this.evento.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto)
     if(this.cateringOtro){
-      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.evento.catering.cateringOtro * this.evento.capacidad.capacidadAdultos
+      this.evento.presupuesto = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidad.capacidadAdultos
     }else{
-      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
+      this.evento.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
     }
   }
 }

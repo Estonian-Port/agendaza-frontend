@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
-import { CateringEvento } from 'src/app/model/CateringEvento';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
 import { Extra } from 'src/app/model/Extra';
@@ -41,9 +39,7 @@ export class SaveEventoComponent implements OnInit {
   botonSiguienteFinalizado : string = "Siguiente"
   botonAtrasDisabled = true
 
-  evento : Evento = new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
-    new Agregados(0,0,0,[],[]), new CateringEvento(0,0,0,"",[],[]), 
-    new Cliente(0,"","","CLIENTE","",0), 0, 0, "COTIZADO")
+  evento : Evento = Evento.getEventoVoid()
 
   // Tipo de evento
   listaDuracion : Array<string> = []
@@ -77,6 +73,7 @@ export class SaveEventoComponent implements OnInit {
   extraPresupuesto : number = 0
   extraCamarera : ExtraVariable = new ExtraVariable(0,"",0,0)
   extraNino : ExtraVariable = new ExtraVariable(0,"",0,0)
+  presupuesto : number = 0
 
   // Catering
   listaExtraTipoCatering : Array<Extra> = []
@@ -85,6 +82,7 @@ export class SaveEventoComponent implements OnInit {
   cateringOtro : boolean = false
   extraTipoCateringPresupuesto : number = 0
   extraCateringPresupuesto : number = 0
+  presupuestoCatering : number = 0
 
   // Datos del contacto
   listaSexo : Array<string> = []
@@ -201,8 +199,8 @@ export class SaveEventoComponent implements OnInit {
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
-      this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId, new Agregados(0,0,0,[],[]), 
-      new CateringEvento(0,0,0,"",[],[]), this.evento.cliente, 0, this.evento.encargadoId, "COTIZADO")
+      this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId,0,0,[],[],0,"",[],[], 
+      this.evento.cliente,this.evento.encargadoId, "COTIZADO")
   }
 
   async changeCapacidadAdultos(){
@@ -211,7 +209,7 @@ export class SaveEventoComponent implements OnInit {
     // Extra Camarera
     const capacidad = this.evento.capacidad.capacidadAdultos - this.capacidadTipoEvento.capacidadAdultos
     
-    const extraCamareraInAgregados = this.evento.agregados.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
+    const extraCamareraInAgregados = this.evento.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
     const extraCamareraInLista = this.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
 
     // Por cada 10 adultos de mas se agrega una camarera
@@ -222,15 +220,15 @@ export class SaveEventoComponent implements OnInit {
       // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
       if(extraCamareraInAgregados == null){
         extraCamareraInLista!!.cantidad = cantidadCamareras
-        this.evento.agregados.listaExtraVariable.push(extraCamareraInLista!!)
+        this.evento.listaExtraVariable.push(extraCamareraInLista!!)
       }else{
-        const index = this.evento.agregados.listaExtraVariable.indexOf(extraCamareraInAgregados)
-        this.evento.agregados.listaExtraVariable[index].cantidad = cantidadCamareras
+        const index = this.evento.listaExtraVariable.indexOf(extraCamareraInAgregados)
+        this.evento.listaExtraVariable[index].cantidad = cantidadCamareras
       }
     }else{
       if(extraCamareraInAgregados != null){
         extraCamareraInAgregados.cantidad = 0
-        _.pull(this.evento.agregados.listaExtraVariable, extraCamareraInAgregados)
+        _.pull(this.evento.listaExtraVariable, extraCamareraInAgregados)
       }
     }
 
@@ -240,7 +238,7 @@ export class SaveEventoComponent implements OnInit {
     // Extra Ninos
     const capacidad = this.evento.capacidad.capacidadNinos - this.capacidadTipoEvento.capacidadNinos
 
-    const extraNinoInAgregados = this.evento.agregados.listaExtraVariable.find(i => i.id === this.extraNino.id)
+    const extraNinoInAgregados = this.evento.listaExtraVariable.find(i => i.id === this.extraNino.id)
     const extraNinoInLista = this.listaExtraVariable.find(i => i.id === this.extraNino.id)
 
     // Por cada nino de mas se agrega un extra nino
@@ -249,15 +247,15 @@ export class SaveEventoComponent implements OnInit {
       // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
       if(extraNinoInAgregados == null){
         extraNinoInLista!!.cantidad = capacidad
-        this.evento.agregados.listaExtraVariable.push(extraNinoInLista!!)
+        this.evento.listaExtraVariable.push(extraNinoInLista!!)
       }else{
-        const index = this.evento.agregados.listaExtraVariable.indexOf(extraNinoInAgregados)
-        this.evento.agregados.listaExtraVariable[index].cantidad = capacidad
+        const index = this.evento.listaExtraVariable.indexOf(extraNinoInAgregados)
+        this.evento.listaExtraVariable[index].cantidad = capacidad
       }
     }else{
       if(extraNinoInAgregados != null){
         extraNinoInAgregados!!.cantidad = 0
-        _.pull(this.evento.agregados.listaExtraVariable, extraNinoInAgregados)
+        _.pull(this.evento.listaExtraVariable, extraNinoInAgregados)
       }
     }
   }
@@ -283,12 +281,11 @@ export class SaveEventoComponent implements OnInit {
   }
 
   sumPresupuesto(){
-    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
+    this.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.extraOtro
 
-    if(this.evento.agregados.descuento != 0){
-      this.evento.presupuesto -= this.evento.presupuesto * (this.evento.agregados.descuento / 100)
+    if(this.evento.descuento != 0){
+      this.presupuesto -= this.presupuesto * (this.evento.descuento / 100)
     }
-    
   }
 
   // ---------------------------------------------------------------------------
@@ -302,7 +299,7 @@ export class SaveEventoComponent implements OnInit {
 
   cleanTipoCateringForCateringOtro(){
     if(this.cateringOtro){
-      this.evento.catering.listaExtraTipoCatering.splice(0)
+      this.evento.listaExtraTipoCatering.splice(0)
       this.extraTipoCateringPresupuesto = 0
       this.sumExtraTipoCatering(0)
     }
@@ -310,8 +307,8 @@ export class SaveEventoComponent implements OnInit {
 
   cleanExtraOtroCheckbox(){
     this.cateringOtro = false
-    this.evento.catering.cateringOtro = 0
-    this.evento.catering.descripcion = ""
+    this.evento.cateringOtro = 0
+    this.evento.cateringOtroDescripcion = ""
     this.sumCateringPresupuesto()
   }
 
@@ -322,9 +319,9 @@ export class SaveEventoComponent implements OnInit {
 
   sumCateringPresupuesto(){
     if(this.cateringOtro){
-      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.evento.catering.cateringOtro * this.evento.capacidad.capacidadAdultos
+      this.presupuestoCatering = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidad.capacidadAdultos
     }else{
-      this.evento.catering.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
+      this.presupuestoCatering = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
     }
   }
 

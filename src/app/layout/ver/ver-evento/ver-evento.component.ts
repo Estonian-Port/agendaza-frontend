@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { er } from '@fullcalendar/core/internal-common';
-import { Agregados } from 'src/app/model/Agregados';
 import { Capacidad } from 'src/app/model/Capacidad';
-import { CateringEvento } from 'src/app/model/CateringEvento';
 import { EventoVer } from 'src/app/model/Evento';
 import { Time } from 'src/app/model/Time';
 import { Cliente } from 'src/app/model/Usuario';
@@ -17,8 +14,8 @@ import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/ut
 })
 export class VerEventoComponent implements OnInit {
 
-  evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0), 
-    new Agregados(0,0,0,[],[]),new CateringEvento(0,0,0,"",[],[]), new Cliente(0,"","","","",0),0,"","")
+  evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
+  0,[],[],"",[],[], new Cliente(0,"","","","",0),0,"","")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")
@@ -45,10 +42,10 @@ export class VerEventoComponent implements OnInit {
     this.fin.hour = this.evento.fin.split(":")[0].split("T")[1]
     this.fin.minute = this.evento.fin.split(":")[1]
 
-    this.extras = this.evento.agregados.listaExtra.length > 0
-    this.extrasVariables = this.evento.agregados.listaExtraVariable.length > 0
-    this.extraCatering = this.evento.catering.listaExtraCateringVariable.length > 0
-    this.tipoCatering = this.evento.catering.listaExtraTipoCatering.length > 0
+    this.extras = this.evento.listaExtra.length > 0
+    this.extrasVariables = this.evento.listaExtraVariable.length > 0
+    this.extraCatering = this.evento.listaExtraCateringVariable.length > 0
+    this.tipoCatering = this.evento.listaExtraTipoCatering.length > 0
 
   }
 

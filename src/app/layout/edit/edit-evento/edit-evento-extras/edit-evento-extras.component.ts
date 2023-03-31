@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Agregados } from 'src/app/model/Agregados';
 import { EventoExtra } from 'src/app/model/Evento';
 import { Extra } from 'src/app/model/Extra';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
@@ -14,7 +13,7 @@ import { ExtraService } from 'src/app/services/extra.service';
 })
 export class EditEventoExtrasComponent implements OnInit {
 
-  evento : EventoExtra = new EventoExtra(0, "","",0,new Agregados(0,0,0,[],[]), 0, "")
+  evento : EventoExtra = new EventoExtra(0, "","",0,0,0,[],[], 0, "")
   precioTipoEvento : number = 0
   listaExtra : Array<Extra> = []
   listaExtraVariable : Array<ExtraVariable> = []
@@ -28,8 +27,6 @@ export class EditEventoExtrasComponent implements OnInit {
     const fecha = new Date(this.evento.fechaEvento)
     this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
     this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-
-    console.log(this.evento.agregados)
   }
 
   volver(){
@@ -47,10 +44,10 @@ export class EditEventoExtrasComponent implements OnInit {
   }
 
   sumPresupuesto(){
-    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.agregados.extraOtro
+    this.evento.presupuesto = this.precioTipoEvento + this.extraPresupuesto + this.evento.extraOtro
 
-    if(this.evento.agregados.descuento != 0){
-      this.evento.presupuesto -= this.evento.presupuesto * (this.evento.agregados.descuento / 100)
+    if(this.evento.descuento != 0){
+      this.evento.presupuesto -= this.evento.presupuesto * (this.evento.descuento / 100)
     }
   }
 }
