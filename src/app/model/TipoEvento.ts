@@ -13,11 +13,15 @@ export type TipoEventoJSON = {
 
 export type TipoEventoEditJSON = {
     id : number
-    nombre : string,
+    nombre : string
     cantidadDuracion: string
     duracion: string
     capacidad : Capacidad
     empresa : GenericItem
+}
+
+export class TipoEventoExtra {
+    constructor(public id : number, public nombre : string, public  precio : number){}
 }
 
 export class TipoEvento{

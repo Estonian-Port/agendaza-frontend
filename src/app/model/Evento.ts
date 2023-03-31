@@ -2,6 +2,7 @@ import { Capacidad } from "./Capacidad"
 import { Extra } from "./Extra"
 import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
+import { TipoEventoExtra } from "./TipoEvento"
 import { Cliente } from "./Usuario"
 
 export type EventoJSON = {
@@ -61,14 +62,14 @@ export class EventoPago{
 
 export class EventoExtra{
     constructor(public id : number, public nombre : string, public codigo : string,
-        public presupuesto : number, public extraOtro : number, public descuento : number,
+        public extraOtro : number, public descuento : number,
         public listaExtra : Array<Extra>, public listaExtraVariable : Array<ExtraVariable>,
-        public tipoEventoId : number, public fechaEvento : string){}
+        public tipoEventoExtra : TipoEventoExtra, public fechaEvento : string){}
 }
 
 export class EventoCatering{
     constructor(public id : number, public nombre : string, public codigo : string, 
-        public cateringOtro : number, public presupuesto : number, public cateringOtroDescripcion : string,
+        public cateringOtro : number, public cateringOtroDescripcion : string,
         public listaExtraTipoCatering : Array<Extra>, public listaExtraCateringVariable : Array<ExtraVariable>,
         public tipoEventoId : number, public fechaEvento : string,
         public capacidad : Capacidad){}

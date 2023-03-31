@@ -14,13 +14,14 @@ import { ExtraService } from 'src/app/services/extra.service';
 })
 export class EditEventoCateringComponent implements OnInit {
 
-  evento : EventoCatering = new EventoCatering(0, "","",0,0,"",[],[],0,"", new Capacidad(0,0,0))
+  evento : EventoCatering = new EventoCatering(0, "","",0,"",[],[],0,"", new Capacidad(0,0,0))
   listaExtraTipoCatering : Array<Extra> = []
   listaExtraCateringVariable : Array<ExtraVariable> = []
   extraTipoCateringPresupuesto : number = 0
   extraCateringPresupuesto : number = 0
   cateringOtro : boolean = false
   agregarCatering : boolean = true
+  presupuestoCatering : number = 0
 
   constructor(private eventoService : EventoService, private router : Router, private extraService : ExtraService) { }
 
@@ -33,6 +34,11 @@ export class EditEventoCateringComponent implements OnInit {
     this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
     this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
     
+    if(this.evento.cateringOtro != 0){
+      this.cateringOtro = true
+      this.sumCateringPresupuesto()
+    }
+
   }
 
   volver(){
@@ -70,11 +76,10 @@ export class EditEventoCateringComponent implements OnInit {
   }
 
   sumCateringPresupuesto(){
-    console.log(this.evento.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto)
     if(this.cateringOtro){
-      this.evento.presupuesto = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidad.capacidadAdultos
+      this.presupuestoCatering = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidad.capacidadAdultos
     }else{
-      this.evento.presupuesto = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
+      this.presupuestoCatering = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
     }
   }
 }

@@ -35,12 +35,10 @@
                     </app-extra-variable-checkbox>
                 </div>
             </div>
-
-
         </div>
         
         <div class="col-md-6">
-                <div class="row">
+            <div class="row">
                     <div class="col-md-6">
                     <div class="form-group">
                         <h5 for="rol">Extra otro</h5>
@@ -65,13 +63,38 @@
                 </div>	
             </div>
 
-            <div class="form-group mt-5 col-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <h5 for="rol">Tipo Evento</h5>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">$</div>
+                            </div>
+                            <input type="text" class="form-control" id="nombreTipoEvento" [(ngModel)]="evento.tipoEventoExtra.nombre" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <h5 for="rol">Precio Base</h5>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">$</div>
+                            </div>
+                            <input type="number" class="form-control" id="precioTipoEvento" [(ngModel)]="evento.tipoEventoExtra.precio" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-6">
                 <h5 for="rol">Presupuesto</h5>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
                         <div class="input-group-text">$</div>
                     </div>
-                    <input type="number" class="form-control" id="presupuesto" [(ngModel)]="evento.presupuesto" disabled/>
+                    <input type="number" class="form-control" id="presupuesto" [(ngModel)]="presupuesto" disabled/>
                 </div>
             </div>
             <div class="col-12">

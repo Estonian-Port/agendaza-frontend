@@ -1,5 +1,4 @@
 <div class="container">
-    <br>
     <div class="d-flex justify-content-between">
         <div>
             <h2>Ver Evento</h2>
@@ -97,17 +96,17 @@
                 <h5>Capacidad Ninos</h5>
                 <input type="text" class="form-control" id="capacidad_ninos" [value]="evento.capacidad.capacidadNinos" disabled>
             </div>
-            </div>
+        </div>
 
         <div class="col-md-6">
             <div>
-                <h5>Cliente</h5>
-                <div class="row mb-4">
-                    <div class="form-group col-5">
+                <div class="col-4 d-flex justify-content-between">
+                    <h5>Cliente</h5>
+                    <a (click)="verCliente()" class="inactiveLink"><i class="fas fa-eye text-muted fa-lg"></i></a>
+                </div>
+                <div class="row">
+                    <div class="form-group mb-4 col-5">
                         <input type="text" class="form-control" id="cliente" [value]="evento.cliente.apellido + ', ' + evento.cliente.nombre" disabled>
-                    </div>
-                    <div class="form-group col-7">
-                        <button (click)="verCliente()" class="btn btn-secondary" disabled>Ver eventos del cliente</button>
                     </div>
                 </div>
             </div>
