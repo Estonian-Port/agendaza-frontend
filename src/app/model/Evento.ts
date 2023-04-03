@@ -82,7 +82,7 @@ export class EventoHora{
 
 export class EventoVer{
     constructor(public id : number, public nombre : string, public codigo : string, public inicio : string, 
-        public fin : string, public tipoEvento : string, public capacidad : Capacidad, 
+        public fin : string, public tipoEventoNombre : string, public capacidad : Capacidad, 
         public extraOtro : number, public descuento : number,
         public listaExtra : Array<Extra>, public listaExtraVariable : Array<ExtraVariable>,
         public cateringOtroDescripcion : string, public listaExtraTipoCatering : Array<Extra>,
