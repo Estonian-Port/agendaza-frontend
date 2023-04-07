@@ -28,3 +28,10 @@
     box-shadow: none;
     border: 1px solid #1089ff; 
 }
+
+.main-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}

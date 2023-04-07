@@ -29,12 +29,12 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/')
   }
 
-  isAgenda(): boolean {
-    return "/agenda" == this.location.path()
+  isLogin(): boolean{
+    return "/login" == this.location.path()
   }
 
-  isLogin(): boolean{
-    return this.loginService.getToken() != null
+  isAgenda(): boolean {
+    return "/agenda" == this.location.path()
   }
 
   isInAgenda(): boolean{

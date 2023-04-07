@@ -1,25 +1,25 @@
-<section class="m-4">
+<section class="main-login">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-6 text-center m-4">
-                <h2>AGENDAZA</h2>
+        <div class="row">
+            <div class="col-7 container">
+                <div class="text-center">
+                    <img src="../../../assets/logoS.png" alt="logo" width="80%" height="80%">
+                </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-4">
+            <div class="col-5 container">
                 <div class="card border-light shadow p-4 p-md-5">
-                    <div class="card-title icon d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user" aria-hidden="true"></i>
+                    <div class="text-center m-4">
+                        <h2>AGENDAZA</h2>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                         <input class="p-2 form-control rounded-left mh-100" name="Usuario" type="text" placeholder="Usuario"
                             [(ngModel)]='usuarioLogin.username' [attr.data-testid]="'loginUsuario'">
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                         <input class="p-2 form-control rounded-left mh-100" name="Contraseña" type="password" placeholder="Contraseña"
                             [(ngModel)]='usuarioLogin.password' [attr.data-testid]="'loginContraseña'">
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                         <button class="p-2 btn btn-primary w-100 mh-100" (click)="ingresar()" [attr.data-testid]="'ingresar'">Ingresar</button>
                     </div>
                     <div *ngIf='errorLogin.condicional' class="mt-2 alert alert-danger text-center">
