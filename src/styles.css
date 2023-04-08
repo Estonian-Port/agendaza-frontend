@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: black;
+  text-decoration: none;
+}
+
+.inactiveLink {
+  pointer-events: none;
+  cursor: default;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: orange 5px auto;
+}
+
+:root {
+  --color-primario: royalblue;
+  --color-secundario: dodgerblue;
+  --color-terciario: lightgray;
+  --color-cuaternario: #696969;
+  --color-quinario: white;
+  --espacio-separacion: 0.5rem;
+  --sombra: 0 0.35rem 0.35rem var(--color-terciario);
+}
+
+.abm{
+  margin-top: 1rem;
+  height: 87vh;
+}
+
+.center-items-abm{
+  display: flex;
+  justify-content: center;
+}
