@@ -85,7 +85,6 @@ export class SaveEventoComponent implements OnInit {
   presupuestoCatering : number = 0
 
   // Datos del contacto
-  listaSexo : Array<string> = []
   listaEstadoEvento : Array<string> = []
 
   // Errors
@@ -111,7 +110,6 @@ export class SaveEventoComponent implements OnInit {
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
 
     // Datos del contacto
-    this.listaSexo = await this.usuarioService.getAllSexo()
     this.listaEstadoEvento = await this.eventoService.getAllEstadoForSaveEvento()
   }
 
