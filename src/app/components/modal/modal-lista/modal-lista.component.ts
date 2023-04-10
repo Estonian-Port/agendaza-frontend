@@ -1,30 +1,24 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { GenericItem } from 'src/app/model/GenericItem';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  selector: 'app-modal-lista',
+  templateUrl: './modal-lista.component.html'
 })
-export class ModalComponent implements OnInit {
+export class ModalListaComponent implements OnInit {
 
   @Input()
   modal = false
 
   @Input()
   titulo = ""
-  
-  @Input()
-  cuerpo = ""
-  
-  @Input()
-  boton = ""
 
-  @Output() 
-  outputAceptar = new EventEmitter<number>();
+  @Input()
+  listaGeneric : Array<GenericItem> = []
 
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
-
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -33,11 +27,6 @@ export class ModalComponent implements OnInit {
   changeModal(){
     this.modal = !this.modal
     this.outputChangeModal.emit(this.modal)
-  }
-
-  aceptar(){
-    this.outputAceptar.emit();
-    this.changeModal()
   }
 
 }

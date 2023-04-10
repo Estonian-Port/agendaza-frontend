@@ -29,48 +29,32 @@
             </div>
                         
             <div class="form-group col-9 mb-4">
-                <input id="time_start" type="hidden">
-                <h5 class="form-label w-100">Hora inicio</h5>
-                    <div class="d-inline-flex flex-row">
-                        <div>
-                            <div class="form-group">
-                                <input class="form-control" [value]="inicio.hour" disabled>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="p-1">:</div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <input class="form-control" [value]="inicio.minute" disabled>
-                                </div>
-                            </div>
-                        </div>
+                <h5>Hora inicio</h5>
+                <div class="d-inline-flex flex-row">
+                    <div class="form-group col-3">
+                        <input class="form-control" [value]="inicio.hour" disabled>
                     </div>
+                    <div>
+                        <div class="p-1">:</div>
+                    </div>
+                    <div class="form-group col-3">
+                        <input class="form-control" [value]="inicio.minute" disabled>
+                    </div>
+                </div>
             </div>
                 
-            <div class="form-group col-9 mb-4" id="time_end_div">
-                <input id="time_end" type="hidden">
-                <h5 class="form-label w-100">Hora final</h5>
+            <div class="form-group col-9 mb-4">
+                <h5>Hora final</h5>
                 <div class="d-inline-flex flex-row">
-                    <div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <input class="form-control" [value]="fin.hour" disabled>
-                            </div>
-                        </div>
+                    <div class="form-group col-3">
+                        <input class="form-control" [value]="fin.hour" disabled>
                     </div>
                     <div>
                         <div class="p-1"> : </div>
                     </div>
-                    <div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <input class="form-control" [value]="fin.minute" disabled>
-                            </div>
-                        </div> 
-                    </div>
+                    <div class="form-group col-3">
+                        <input class="form-control" [value]="fin.minute" disabled>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -98,80 +82,74 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-6">
-                    <div class="col-10 d-flex justify-content-between">
-                        <h5>Cliente</h5>
-                        <a (click)="verCliente()" class="inactiveLink"><i class="fas fa-eye text-muted fa-lg"></i></a>
-                    </div>
-                    <div class="form-group mb-4 col-10">
-                        <input type="text" class="form-control" id="cliente" [value]="evento.cliente.apellido + ', ' + evento.cliente.nombre" disabled>
-                    </div>
+        <div class="col-md-3">
+            <div>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Cliente</h5>
+                    <a (click)="verCliente()" class="inactiveLink"><i class="fas fa-eye text-muted fa-lg"></i></a>
                 </div>
-                <div class="col-6">
-                    <div class="d-flex justify-content-between">
-                        <h5>Anotaciones</h5>
-                        <a (click)="editAnotaciones()" class="inactiveLink"><i class="fas fa-edit text-muted fa-lg"></i></a>
-                    </div>
-                    <input type="text" class="form-control" id="anotaciones" [value]="evento.anotaciones" disabled>
-                
+                <div class="form-group mb-4 col-9">
+                    <input type="text" class="form-control" id="cliente" [value]="evento.cliente.apellido + ', ' + evento.cliente.nombre" disabled>
                 </div>
             </div>
-            
+
             <div>
-                <h5>Extras</h5>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Extras</h5>
+                    <button *ngIf="extras" (click)="setListaModal(evento.listaExtra)"><i class="fas fa-eye text-primary fa-lg"></i></button>
+                </div>
                 <div class="row mb-4">
-                    <div class="form-group col-5">
+                    <div class="form-group col-9">
                         <input type="text" class="form-control" name="extras" [value]="extras | siNo" disabled>
                     </div>
-                    <div class="form-group col-7">
-                        <div *ngFor="let extra of evento.listaExtra">
-                            <small>{{extra.nombre}}</small>
-                        </div>   
-                    </div>
                 </div>
             </div>
             
             <div>
-                <h5>Extras Variables</h5>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Extras Variables</h5>
+                    <button *ngIf="extrasVariables" (click)="setListaModal(listaExtraVariableToModal(evento.listaExtraVariable))"><i class="fas fa-eye text-primary fa-lg"></i></button>
+                </div>
                 <div class="row mb-4">
-                    <div class="form-group col-5">
+                    <div class="form-group col-9">
                         <input type="text" class="form-control" name="extrasVariables" [value]="extrasVariables | siNo" disabled>
                     </div>
-                    <div class="form-group col-7">
-                        <div *ngFor="let extra of evento.listaExtraVariable">
-                            <small>{{extra.nombre}}</small>
-                        </div>  
-                    </div>
                 </div>
             </div>
             
             <div>
-                <h5>Extras Catering</h5>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Extras Catering</h5>
+                    <button *ngIf="extraCatering" (click)="setListaModal(listaExtraVariableToModal(evento.listaExtraCateringVariable))"><i class="fas fa-eye text-primary fa-lg"></i></button>
+                </div>
                 <div class="row mb-4">
-                    <div class="form-group col-5">
+                    <div class="form-group col-9">
                         <input type="text" class="form-control" name="extraCatering" [value]="extraCatering | siNo" disabled>
                     </div>
-                    <div class="form-group col-7">
-                        <div *ngFor="let extra of evento.listaExtraCateringVariable">
-                            <small>{{extra.nombre}}</small>
-                        </div>  
-                    </div>
                 </div>
             </div>
             
             <div>
-                <h5>Tipo Catering</h5>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Tipo Catering</h5>
+                    <button *ngIf="tipoCatering" (click)="setListaModal(evento.listaExtraTipoCatering)"><i class="fas fa-eye text-primary fa-lg"></i></button>
+                </div>
                 <div class="row mb-4">
-                    <div class="form-group col-5">
+                    <div class="form-group col-9">
                         <input type="text" class="form-control" name="tipoCatering" [value]="tipoCatering | siNo" disabled>
                     </div>
-                    <div class="form-group col-7">
-                        <div *ngFor="let extra of evento.listaExtraTipoCatering">
-                            <small>{{extra.nombre}}</small>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div>
+                <div class="d-flex justify-content-between col-8">
+                    <h5>Anotaciones</h5>
+                    <button (click)="editAnotacionesModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
+                </div>
+                <div class="col-9">
+                    <input type="text" class="form-control" name="anotaciones" [(ngModel)]="evento.anotaciones" disabled>
                 </div>
             </div>
         </div>
@@ -191,3 +169,18 @@
         </div>
     </div>
 </div>
+
+<app-modal-editar
+    (outputAceptar)="editAnotaciones($event)"
+    (outputChangeModal)="setModalEditar($event)"
+    [modal]="modalEditar"
+    [titulo]="tituloModalEditar"
+    [inputEditar]="evento.anotaciones">
+</app-modal-editar>
+
+<app-modal-lista
+    (outputChangeModal)="setModalListar($event)"
+    [listaGeneric]="listaModal"
+    [modal]="modalListar"
+    [titulo]="tituloModalListar">
+</app-modal-lista>

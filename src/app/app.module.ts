@@ -44,7 +44,7 @@ import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tip
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
-import { ModalComponent } from './components/modal/modal.component';
+import { ModalBasicoComponent } from './components/modal/modal-basico/modal-basico.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
@@ -61,6 +61,8 @@ import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-even
 import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component';
 import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
 import { VerListaEventoClienteComponent } from './layout/ver/ver-lista-evento-cliente/ver-lista-evento-cliente.component';
+import { ModalListaComponent } from './components/modal/modal-lista/modal-lista.component';
+import { ModalEditarComponent } from './components/modal/modal-editar/modal-editar.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,7 @@ import { VerListaEventoClienteComponent } from './layout/ver/ver-lista-evento-cl
     SaveTipoEventoComponent,
     EditUsuarioComponent,
     EditUsuarioPasswordComponent,
-    ModalComponent,
+    ModalBasicoComponent,
     EditEmpresaComponent,
     SaveEmpresaComponent,
     AbmExtraCateringComponent,
@@ -117,6 +119,8 @@ import { VerListaEventoClienteComponent } from './layout/ver/ver-lista-evento-cl
     VerEventoComponent,
     EditEventoHoraComponent,
     VerListaEventoClienteComponent,
+    ModalListaComponent,
+    ModalEditarComponent,
   ],
   imports: [
     BrowserModule,

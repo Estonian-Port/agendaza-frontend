@@ -104,6 +104,11 @@ export class EventoService {
     return await lastValueFrom(item$)
   }
 
+  async editEventoAnotaciones(anotacion : string, eventoId : number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoAnotaciones/' + eventoId, anotacion)
+    return await lastValueFrom(item$)
+  }
+
   async getListaEventoByDiaAndEmpresaId(fecha : FechaForm) {
     const eventoBuscarFecha = new EventoBuscarFecha(this.agendaService.getEmpresaId(), new Date(fecha.year, fecha.mes, fecha.dia), new Date())
     const item$ = this.httpClient.put<Array<string>>(REST_SERVER_URL + '/getListaEventoByDiaAndEmpresaId', eventoBuscarFecha)

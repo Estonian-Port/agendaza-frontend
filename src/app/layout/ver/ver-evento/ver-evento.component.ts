@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
+import { Extra } from 'src/app/model/Extra';
+import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
 import { Cliente } from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
-import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { ErrorMensaje, getErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-edit-evento',
@@ -28,6 +31,13 @@ export class VerEventoComponent implements OnInit {
   eventoReenviarMail : boolean = false
   eventoErrorReenviarMail = new ErrorMensaje(false, '')
   errors = []
+
+  modalEditar = false
+  tituloModalEditar="Editar anotaciones"
+
+  modalListar = false
+  tituloModalListar="Lista de extras"
+  listaModal : Array<GenericItem> = []
 
   constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
 
@@ -53,8 +63,30 @@ export class VerEventoComponent implements OnInit {
     console.log("TODO")
   }
 
-  editAnotaciones(){
-    console.log("TODO")
+  editAnotacionesModal(){
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  setListaModal(lista : Array<GenericItem>){
+    this.listaModal = lista
+    this.setModalListar(!this.modalListar)
+  }
+
+  async editAnotaciones(anotacion : string){
+    this.evento.anotaciones = anotacion
+    await this.eventoService.editEventoAnotaciones(anotacion, this.evento.id)
+  }
+
+  setModalEditar(modal : boolean){
+    this.modalEditar = modal
+  }
+
+  setModalListar(modal : boolean){
+    this.modalListar = modal
+  }
+
+  listaExtraVariableToModal(lista : Array<ExtraVariable>){
+    return lista.map((extraVariable: ExtraVariable) => new GenericItem(extraVariable.id, extraVariable.nombre))
   }
 
   volver(){
