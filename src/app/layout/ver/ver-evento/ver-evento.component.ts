@@ -15,7 +15,7 @@ import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/ut
 export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
-  0,[],[],"",[],[], new Cliente(0,"","","","",0),0,"","")
+  0,[],[],"",[],[], new Cliente(0,"","","","",0),0,"","", "")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")
@@ -50,6 +50,10 @@ export class VerEventoComponent implements OnInit {
   }
 
   verCliente(){
+    console.log("TODO")
+  }
+
+  editAnotaciones(){
     console.log("TODO")
   }
 

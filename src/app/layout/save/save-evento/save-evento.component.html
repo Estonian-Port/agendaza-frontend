@@ -374,13 +374,21 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6 mt-2">
+                            <h3>Estado de reserva</h3> 
+                        </div>
+
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <h3>Estado de reserva</h3> 
-                                <select class="form-select mt-3" [(ngModel)]="evento.estado" name="estado">
+                                <label for="estado" class="form-label">Estado</label>
+                                <select class="form-select" [(ngModel)]="evento.estado" name="estado">
                                     <option [value]="0" hidden>Seleccione el estado del evento</option>
                                     <option *ngFor="let estado of listaEstadoEvento | orderAbmById" [value]="estado">{{estado}}</option>
                                 </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="anotaciones" class="form-label">Anotaciones</label> 
+                                <input type="text" class="form-control" [(ngModel)]='evento.anotaciones' name="anotaciones">
                             </div>
                         </div>
                     </div>

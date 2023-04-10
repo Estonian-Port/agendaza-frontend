@@ -198,7 +198,7 @@ export class SaveEventoComponent implements OnInit {
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
       this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId,0,0,[],[],0,"",[],[], 
-      this.evento.cliente,this.evento.encargadoId, "COTIZADO")
+      this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
   }
 
   async changeCapacidadAdultos(){
