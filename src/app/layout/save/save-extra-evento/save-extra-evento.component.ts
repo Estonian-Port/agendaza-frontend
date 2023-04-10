@@ -36,6 +36,10 @@ export class SaveExtraEventoComponent implements OnInit {
     this.router.navigateByUrl('/abmExtraEvento')
   }
 
+  volver(){
+    this.router.navigateByUrl('/abmExtraEvento')
+  }
+
   onCheckboxChange(event: any){
     if (event.target.checked) {
       this.extra.listaTipoEventoId.push(Number(event.target.value))

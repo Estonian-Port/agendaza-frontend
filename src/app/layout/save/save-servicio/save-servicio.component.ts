@@ -29,6 +29,10 @@ export class SaveServicioComponent implements OnInit {
     this.router.navigateByUrl('/abmServicio')
   }
 
+  volver(){
+    this.router.navigateByUrl('/abmServicio')
+  }
+
   onCheckboxChange(event: any){
     if (event.target.checked) {
       this.genericItem.listaTipoEventoId.push(Number(event.target.value))
