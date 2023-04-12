@@ -33,11 +33,14 @@ export class VerEventoComponent implements OnInit {
   errors = []
 
   modalEditar = false
-  tituloModalEditar="Editar anotaciones"
+  tituloModalEditar=""
+  inputEditar! : any
+  metodoAceptar! : Function
 
   modalListar = false
   tituloModalListar="Lista de extras"
   listaModal : Array<GenericItem> = []
+
 
   constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
 
@@ -63,18 +66,56 @@ export class VerEventoComponent implements OnInit {
     console.log("TODO")
   }
 
-  editAnotacionesModal(){
+  editEventoNombreModal(){
+    this.tituloModalEditar="Editar nombre del evento"
+    this.inputEditar = this.evento.nombre 
     this.setModalEditar(!this.modalEditar)
   }
 
-  setListaModal(lista : Array<GenericItem>){
-    this.listaModal = lista
-    this.setModalListar(!this.modalListar)
+  async editEventoNombre(nombre : string){
+    this.evento.nombre = nombre
+    await this.eventoService.editEventoNombre(nombre, this.evento.id)
   }
 
-  async editAnotaciones(anotacion : string){
-    this.evento.anotaciones = anotacion
-    await this.eventoService.editEventoAnotaciones(anotacion, this.evento.id)
+  editCantAdultosModal(){
+    this.tituloModalEditar ="Editar cantidad de adultos"
+    this.inputEditar = this.evento.capacidad.capacidadAdultos
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editCantAdultos(capacidad : number){
+    this.evento.capacidad.capacidadAdultos = capacidad
+    await this.eventoService.editEventoCantAdultos(capacidad, this.evento.id)
+  }
+
+  editCantNinosModal(){
+    this.tituloModalEditar="Editar cantidad de niños"
+    this.inputEditar = this.evento.capacidad.capacidadNinos
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editNinos(capacidad : number){
+    this.evento.capacidad.capacidadNinos = capacidad
+    await this.eventoService.editEventoCantNinos(capacidad, this.evento.id)
+  }
+
+  editAnotacionesModal(){
+    this.tituloModalEditar="Editar anotaciones"
+    this.inputEditar = this.evento.anotaciones
+    this.metodoAceptar = this.editAnotaciones.bind(this)
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editAnotaciones(){
+    console.log("HAOS")
+    //TODO ahora mejorar logica para que no venga ningun parametro y lo tome de otro lado
+    //this.evento.anotaciones = anotacion
+    //await this.eventoService.editEventoAnotaciones(anotacion, this.evento.id)
+  }
+
+    setListaModal(lista : Array<GenericItem>){
+    this.listaModal = lista
+    this.setModalListar(!this.modalListar)
   }
 
   setModalEditar(modal : boolean){

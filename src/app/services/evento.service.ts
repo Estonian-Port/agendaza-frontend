@@ -104,8 +104,23 @@ export class EventoService {
     return await lastValueFrom(item$)
   }
 
-  async editEventoAnotaciones(anotacion : string, eventoId : number) {
-    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoAnotaciones/' + eventoId, anotacion)
+  async editEventoAnotaciones(anotacion : string, id : number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoAnotaciones/' + id, anotacion)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoCantNinos(capacidad: number, id: number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoCantNinos/' + id, capacidad)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoCantAdultos(capacidad: number, id: number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoCantAdultos/' + id, capacidad)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoNombre(nombre: string, id: number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoNombre/' + id, nombre)
     return await lastValueFrom(item$)
   }
 

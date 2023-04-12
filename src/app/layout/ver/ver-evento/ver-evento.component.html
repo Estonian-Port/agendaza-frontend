@@ -13,9 +13,16 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="form-group col-9 mb-4">
-                <h5>Evento</h5>
-                <input type="text" class="form-control" name="evento" [value]="evento.nombre" disabled>
+            <div class="form-group mb-4">
+                <div>
+                    <div class="d-flex justify-content-between col-8">
+                        <h5>Evento</h5>
+                        <button (click)="editEventoNombreModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" name="evento" [value]="evento.nombre" disabled>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group col-9 mb-4">
@@ -65,20 +72,34 @@
                 <input type="text" class="form-control" id="subTipoEvento" [value]="evento.tipoEventoNombre" disabled>
             </div>
             <div class="form-group col-9 mb-4">
-                <h5>Salon</h5>
+                <h5>Empresa</h5>
                 <input type="text" class="form-control" id="salon" [value]="evento.empresa" disabled/>
             </div>
             <div class="form-group col-9 mb-4">
                 <h5>Prespuesto</h5>
                 <input type="text" class="form-control" id="presupuesto" [value]="evento.presupuesto" disabled>
             </div>
-            <div class="form-group col-9 mb-4">
-                <h5>Capacidad Adultos</h5>
-                <input type="text" class="form-control" id="capacidad_adultos" [value]="evento.capacidad.capacidadAdultos" disabled>
+            <div class="form-group mb-4">
+                <div>
+                    <div class="d-flex justify-content-between col-8">
+                        <h5>Cant. Adultos</h5>
+                        <button (click)="editCantAdultosModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="capacidad_adultos" [value]="evento.capacidad.capacidadAdultos" disabled>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-9 mb-4">
-                <h5>Capacidad Ninos</h5>
-                <input type="text" class="form-control" id="capacidad_ninos" [value]="evento.capacidad.capacidadNinos" disabled>
+            <div class="form-group mb-4">
+                <div>
+                    <div class="d-flex justify-content-between col-8">
+                        <h5>Cant. Niños</h5>
+                        <button (click)="editCantNinosModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="capacidad_ninos" [value]="evento.capacidad.capacidadNinos" disabled>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -171,11 +192,11 @@
 </div>
 
 <app-modal-editar
-    (outputAceptar)="editAnotaciones($event)"
+    [myCallback]="metodoAceptar"
     (outputChangeModal)="setModalEditar($event)"
     [modal]="modalEditar"
     [titulo]="tituloModalEditar"
-    [inputEditar]="evento.anotaciones">
+    [inputEditar]="inputEditar">
 </app-modal-editar>
 
 <app-modal-lista
