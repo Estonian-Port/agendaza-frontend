@@ -3,7 +3,7 @@ import { Extra } from "./Extra"
 import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
 import { TipoEventoExtra } from "./TipoEvento"
-import { Cliente } from "./Usuario"
+import { Cliente, Usuario, UsuarioAbm } from "./Usuario"
 
 export type EventoJSON = {
     id: number
@@ -88,7 +88,7 @@ export class EventoVer{
         public listaExtra : Array<Extra>, public listaExtraVariable : Array<ExtraVariable>,
         public cateringOtroDescripcion : string, public listaExtraTipoCatering : Array<Extra>,
         public listaExtraCateringVariable : Array<ExtraVariable>,
-        public cliente : Cliente, public presupuesto : number,  
+        public cliente : Cliente, public presupuesto : number, public encargado : UsuarioAbm,
         public estado : string, public empresa : string, public anotaciones : string){}
 }
 

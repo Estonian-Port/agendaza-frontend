@@ -16,10 +16,13 @@ export class ModalEditarComponent implements OnInit {
   inputEditar = ""
 
   @Input()
-  public myCallback!: Function
+  myCallback!: Function
 
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
+
+  @Output() 
+  outputAceptar = new EventEmitter<any>();
 
   constructor() { }
 
@@ -32,6 +35,7 @@ export class ModalEditarComponent implements OnInit {
   }
 
   aceptar(){
+    this.outputAceptar.emit(this.inputEditar)
     this.myCallback()
     this.changeModal()
   }
