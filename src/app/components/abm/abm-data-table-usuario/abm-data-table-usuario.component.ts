@@ -3,8 +3,7 @@ import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-abm-data-table-usuario',
-  templateUrl: './abm-data-table-usuario.component.html',
-  styleUrls: ['./abm-data-table-usuario.component.css']
+  templateUrl: './abm-data-table-usuario.component.html'
 })
 export class AbmDataTableUsuarioComponent implements OnInit {
 

@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { Extra } from 'src/app/model/Extra';
-import { GenericItem } from 'src/app/model/GenericItem';
 
 @Component({
   selector: 'app-extra-checkbox',
-  templateUrl: './extra-checkbox.component.html',
-  styleUrls: ['./extra-checkbox.component.css']
+  templateUrl: './extra-checkbox.component.html'
 })
 export class ExtraCheckboxComponent implements OnInit {
 

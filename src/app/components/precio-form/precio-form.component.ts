@@ -4,8 +4,7 @@ import { PrecioForm } from 'src/app/model/Precio';
 
 @Component({
   selector: 'app-precio-form',
-  templateUrl: './precio-form.component.html',
-  styleUrls: ['./precio-form.component.css']
+  templateUrl: './precio-form.component.html'
 })
 export class PrecioFormComponent implements OnInit {
 

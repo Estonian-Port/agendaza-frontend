@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table-pago',
-  templateUrl: './abm-data-table-pago.component.html',
-  styleUrls: ['./abm-data-table-pago.component.css']
+  templateUrl: './abm-data-table-pago.component.html'
 })
 export class AbmDataTablePagoComponent implements OnInit {
 

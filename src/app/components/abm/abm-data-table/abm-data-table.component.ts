@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-abm-data-table',
-  templateUrl: './abm-data-table.component.html',
-  styleUrls: ['./abm-data-table.component.css']
+  templateUrl: './abm-data-table.component.html'
 })
 export class AbmDataTableComponent implements OnInit {
   
