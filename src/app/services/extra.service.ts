@@ -66,7 +66,7 @@ export class ExtraService {
 
   async savePrecio(listaPrecioForm : PrecioForm[]) {
     const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.extraId))
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio', listaPrecio)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.extraId, listaPrecio)
     this.extraId = 0
     return await lastValueFrom(item$)
   }

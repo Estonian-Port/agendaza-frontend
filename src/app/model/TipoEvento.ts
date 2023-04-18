@@ -39,13 +39,13 @@ export class TipoEvento{
         return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase())
     }
 
-    toJSON(): TipoEventoJSON {
+    toJSON(): TipoEventoEditJSON {
         this.capacidad.id = 0
         
         return {
           id: this.id,
           nombre : this.nombre,
-          cantidadDuracion: new Time(this.cantidadDuracion.slice(0, 2), this.cantidadDuracion.slice(3, 5)),
+          cantidadDuracion: this.cantidadDuracion.slice(0, 2) + ":" + this.cantidadDuracion.slice(3, 5),
           duracion: this.duracion,
           capacidad : this.capacidad,
           empresaId : this.empresaId
