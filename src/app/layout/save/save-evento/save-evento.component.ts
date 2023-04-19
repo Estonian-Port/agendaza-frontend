@@ -119,7 +119,7 @@ export class SaveEventoComponent implements OnInit {
 
   async filterTipoEventoByDuracion(){
     // Tipo de evento
-    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
+    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaIdAndDuracion(this.duracionSeleccionada)
     
     this.listaServicio =[]
 

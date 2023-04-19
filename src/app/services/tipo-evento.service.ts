@@ -65,8 +65,8 @@ export class TipoEventoService {
     return await lastValueFrom(item$)
   }
 
-  async getAllTipoEventoByDuracion(duracionSeleccionada: string) {
-    const listaItem$ = this.httpClient.put<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaIdAndDuracion/' + + this.agendaService.getEmpresaId(), duracionSeleccionada)
+  async getAllTipoEventoByEmpresaIdAndDuracion(duracion: string) {
+    const listaItem$ = this.httpClient.put<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaIdAndDuracion/' + this.agendaService.getEmpresaId(), duracion)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
   }
