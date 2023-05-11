@@ -17,7 +17,7 @@ export class Pago{
             PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fecha)
        }
     
-       // Se usa en el filtro de header
+    // Se usa en el filtro de header
     contiene(palabra: string): boolean {
         return (this.monto.toString() || '').includes(palabra.toUpperCase())
         || (this.codigo.toUpperCase() || '').includes(palabra.toUpperCase())

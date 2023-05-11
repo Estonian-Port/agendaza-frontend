@@ -3,7 +3,7 @@ import { Extra } from "./Extra"
 import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
 import { TipoEventoExtra } from "./TipoEvento"
-import { Cliente, Usuario, UsuarioAbm } from "./Usuario"
+import { Cliente, UsuarioAbm } from "./Usuario"
 
 export type EventoJSON = {
     id: number
@@ -52,6 +52,13 @@ export class Evento {
     static getEventoVoid() : Evento{
         return new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
         0,0,[],[], 0,"",[],[], new Cliente(0,"","","CLIENTE","",0),0, "COTIZADO", "")
+    }
+
+    // Se usa en el filtro de header
+    contiene(palabra: string): boolean {
+        return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.codigo.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.inicio || '').includes(palabra.toUpperCase())
     }
 
 }

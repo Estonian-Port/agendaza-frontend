@@ -21,7 +21,8 @@ import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.compon
 import { FilterAbm } from './pipes/filterAbm.pipe';
 import { OrderAbmById } from './pipes/orderAbmById.pipe';
 import { OrderAbmByIdDesc } from './pipes/orderAbmByIdDesc.pipe';
-import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDescePrecio.pipe';
+import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDesdePrecio.pipe';
+import { OrderByFechaInicio } from './pipes/orderByFechaInicio.pipe';
 import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { siNo } from './pipes/siNo.pipe';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
@@ -82,6 +83,7 @@ import { ModalEditarComponent } from './components/modal/modal-editar/modal-edit
     OrderAbmById,
     OrderAbmByIdDesc,
     OrderByFechaDesdePrecio,
+    OrderByFechaInicio,
     OrderAbmByNombre,
     AbmEventoComponent,
     AbmDataTableComponent,
