@@ -3,8 +3,7 @@ import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
   selector: 'app-abm-data-table-evento',
-  templateUrl: './abm-data-table-evento.component.html',
-  styleUrls: ['./abm-data-table-evento.component.css']
+  templateUrl: './abm-data-table-evento.component.html'
 })
 export class AbmDataTableEventoComponent implements OnInit {
   

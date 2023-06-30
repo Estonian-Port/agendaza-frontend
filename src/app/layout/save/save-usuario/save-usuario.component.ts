@@ -25,4 +25,8 @@ export class SaveUsuarioComponent implements OnInit {
     this.router.navigateByUrl('/abmUsuario')
   }
 
+  volver(){
+    this.router.navigateByUrl('/abmUsuario')
+  }
+
 }

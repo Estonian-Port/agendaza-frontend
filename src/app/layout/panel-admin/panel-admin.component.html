@@ -2,7 +2,10 @@
     <div class="container">
         <div class="row">
             <div class="col-6 mb-4">
-                <h2>Administración</h2>
+                <h2>Administración {{empresa.nombre}}</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-primary" (click)="volverCalendario()"><span>Volver</span></a>
             </div>
         </div>
 
@@ -10,7 +13,7 @@
             <div id="usuario" class="col-lg-3 col-md-12 mb-3">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()">
                     <div class="col-9 text-start">
-                        <h5>Usuarios</h5>
+                        <h5>Empleados</h5>
                         <span>{{configuracion.cantUsuarios}} usuarios</span>
                     </div>
                     <div class="col-3 text-center">
@@ -89,7 +92,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmCliente()">
+                <a type="button" class="btn btn-secondary d-flex inactiveLink" (click)="abmCliente()">
                     <div class="col-9 text-start">
                         <h5>Clientes</h5>
                         <span>{{configuracion.cantCliente}} clientes</span>

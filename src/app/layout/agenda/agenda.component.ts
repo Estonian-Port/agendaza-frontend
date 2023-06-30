@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -19,7 +19,7 @@ import { EventoService } from 'src/app/services/evento.service';
 export class AgendaComponent implements OnInit {
 
   constructor(private agendaService : AgendaService, private router : Router, private eventoService : EventoService) { }
-
+  
   eventos: EventInput[] = []
 
   calendarOptions: CalendarOptions = {
@@ -33,14 +33,13 @@ export class AgendaComponent implements OnInit {
     dateClick: this.handleDateClick.bind(this),
     themeSystem: 'bootstrap5',
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,next',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,listWeek'
     },
     initialView: 'dayGridMonth',
     locale: 'es',
     locales : [esLocale],
-
   }
 
   async ngOnInit() {

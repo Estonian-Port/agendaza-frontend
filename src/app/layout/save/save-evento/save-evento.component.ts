@@ -85,7 +85,6 @@ export class SaveEventoComponent implements OnInit {
   presupuestoCatering : number = 0
 
   // Datos del contacto
-  listaSexo : Array<string> = []
   listaEstadoEvento : Array<string> = []
 
   // Errors
@@ -111,7 +110,6 @@ export class SaveEventoComponent implements OnInit {
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
 
     // Datos del contacto
-    this.listaSexo = await this.usuarioService.getAllSexo()
     this.listaEstadoEvento = await this.eventoService.getAllEstadoForSaveEvento()
   }
 
@@ -121,7 +119,7 @@ export class SaveEventoComponent implements OnInit {
 
   async filterTipoEventoByDuracion(){
     // Tipo de evento
-    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByDuracion(this.duracionSeleccionada)
+    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaIdAndDuracion(this.duracionSeleccionada)
     
     this.listaServicio =[]
 
@@ -200,7 +198,7 @@ export class SaveEventoComponent implements OnInit {
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
       this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId,0,0,[],[],0,"",[],[], 
-      this.evento.cliente,this.evento.encargadoId, "COTIZADO")
+      this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
   }
 
   async changeCapacidadAdultos(){

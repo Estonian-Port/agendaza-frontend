@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
+import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
-import { Cliente } from 'src/app/model/Usuario';
+import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
-import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { ErrorMensaje, getErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-edit-evento',
@@ -15,7 +17,7 @@ import { ErrorMensaje, getErrorConMensaje, mostrarErrorConMensaje } from 'src/ut
 export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
-  0,[],[],"",[],[], new Cliente(0,"","","","",0),0,"","")
+  0,[],[],"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")
@@ -28,6 +30,18 @@ export class VerEventoComponent implements OnInit {
   eventoReenviarMail : boolean = false
   eventoErrorReenviarMail = new ErrorMensaje(false, '')
   errors = []
+
+  modalEditar = false
+  tituloModalEditar=""
+  inputEditar! : any
+  metodoAceptar! : Function
+
+  modalListar = false
+  tituloModalListar="Lista de extras"
+  listaModal : Array<GenericItem> = []
+
+  encargadoNombreCompleto : string = ""
+
 
   constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
 
@@ -47,10 +61,83 @@ export class VerEventoComponent implements OnInit {
     this.extraCatering = this.evento.listaExtraCateringVariable.length > 0
     this.tipoCatering = this.evento.listaExtraTipoCatering.length > 0
 
+    this.encargadoNombreCompleto = this.evento.encargado.apellido + ", " + this.evento.encargado.nombre
   }
 
   verCliente(){
     console.log("TODO")
+  }
+
+  editEventoNombreModal(){
+    this.tituloModalEditar="Editar nombre del evento"
+    this.inputEditar = this.evento.nombre
+    this.metodoAceptar = this.editEventoNombre.bind(this)
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editEventoNombre(){
+    this.evento.nombre = this.inputEditar
+    await this.eventoService.editEventoNombre(this.inputEditar, this.evento.id)
+  }
+
+  editCantAdultosModal(){
+    this.tituloModalEditar ="Editar cantidad de adultos"
+    this.inputEditar = this.evento.capacidad.capacidadAdultos
+    this.metodoAceptar = this.editCantAdultos.bind(this)
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editCantAdultos(){
+    this.evento.capacidad.capacidadAdultos = this.inputEditar
+    await this.eventoService.editEventoCantAdultos(this.evento)
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
+  }
+
+  editCantNinosModal(){
+    this.tituloModalEditar="Editar cantidad de niños"
+    this.inputEditar = this.evento.capacidad.capacidadNinos
+    this.metodoAceptar = this.editNinos.bind(this)
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editNinos(){
+    this.evento.capacidad.capacidadNinos = this.inputEditar
+    await this.eventoService.editEventoCantNinos(this.evento)
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
+
+  }
+
+  editAnotacionesModal(){
+    this.tituloModalEditar="Editar anotaciones"
+    this.inputEditar = this.evento.anotaciones
+    this.metodoAceptar = this.editAnotaciones.bind(this)
+    this.setModalEditar(!this.modalEditar)
+  }
+
+  async editAnotaciones(){
+    this.evento.anotaciones = this.inputEditar
+    await this.eventoService.editEventoAnotaciones(this.inputEditar, this.evento.id)
+  }
+
+  setInputEditar(inputEditar : any){
+    this.inputEditar = inputEditar
+  }
+
+  setListaModal(lista : Array<GenericItem>){
+    this.listaModal = lista
+    this.setModalListar(!this.modalListar)
+  }
+
+  setModalEditar(modal : boolean){
+    this.modalEditar = modal
+  }
+
+  setModalListar(modal : boolean){
+    this.modalListar = modal
+  }
+
+  listaExtraVariableToModal(lista : Array<ExtraVariable>){
+    return lista.map((extraVariable: ExtraVariable) => new GenericItem(extraVariable.id, extraVariable.nombre))
   }
 
   volver(){
@@ -73,3 +160,4 @@ export class VerEventoComponent implements OnInit {
   }
 
 }
+

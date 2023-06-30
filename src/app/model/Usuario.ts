@@ -97,3 +97,12 @@ export class Cliente{
   constructor(public id: number, public nombre: string, public apellido: string, 
     public rol : string, public email : string, public celular : number) {}
 }
+
+export class UsuarioAbm{
+
+  constructor(public id: number, public nombre: string, public apellido: string) {}
+  
+  public getNombreCompleto() : string{
+    return this.apellido + ", " + this.nombre.toString()
+  }
+}

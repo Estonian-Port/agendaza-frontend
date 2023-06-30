@@ -35,3 +35,14 @@
     justify-content: center;
     height: 100vh;
 }
+
+.agendaza-tipografia{
+    font-family: 'Bree Serif', serif;
+}
+
+@media (max-width : 768px) {
+    
+    .logo{
+        display: none;
+    }
+}

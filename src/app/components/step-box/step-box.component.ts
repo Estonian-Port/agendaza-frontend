@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SaveEventoComponent } from 'src/app/layout/save/save-evento/save-evento.component';
 import { GenericItem } from 'src/app/model/GenericItem';
-import { StepBox } from 'src/app/model/StepBox';
 
 @Component({
   selector: 'app-step-box',

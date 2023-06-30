@@ -89,6 +89,11 @@ export class EventoService {
     return await lastValueFrom(evento$)
   }
 
+  async getPresupuesto(evento: EventoVer) {
+    const presupuesto$ = this.httpClient.get<number>(REST_SERVER_URL + '/getPresupuesto/' + this.eventoId)
+    return await lastValueFrom(presupuesto$)
+  }
+
   async editEventoHora(evento : EventoHora) {
     const item$ = this.httpClient.post<EventoHora>(REST_SERVER_URL + '/editEventoHora', evento)
     return await lastValueFrom(item$)
@@ -101,6 +106,26 @@ export class EventoService {
 
   async editEventoCatering(evento : EventoCatering) {
     const item$ = this.httpClient.post<EventoCatering>(REST_SERVER_URL + '/editEventoCatering', evento)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoAnotaciones(anotacion : string, id : number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoAnotaciones/' + id, anotacion)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoCantNinos(eventoVer : EventoVer) {
+    const item$ = this.httpClient.post<number>(REST_SERVER_URL + '/editEventoCantidadNinos', eventoVer)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoCantAdultos(eventoVer : EventoVer) {
+    const item$ = this.httpClient.post<number>(REST_SERVER_URL + '/editEventoCantidadAdultos', eventoVer)
+    return await lastValueFrom(item$)
+  }
+
+  async editEventoNombre(nombre: string, id: number) {
+    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoNombre/' + id, nombre)
     return await lastValueFrom(item$)
   }
 

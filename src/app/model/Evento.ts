@@ -3,7 +3,7 @@ import { Extra } from "./Extra"
 import { ExtraVariable } from "./ExtraVariable"
 import { Pago } from "./Pago"
 import { TipoEventoExtra } from "./TipoEvento"
-import { Cliente } from "./Usuario"
+import { Cliente, UsuarioAbm } from "./Usuario"
 
 export type EventoJSON = {
     id: number
@@ -26,6 +26,7 @@ export type EventoJSON = {
     presupuesto : number
     encargadoId : number
     estado : string
+    anotaciones : string
 }
 
 export class Evento {
@@ -36,7 +37,7 @@ export class Evento {
         public cateringOtro : number, public cateringOtroDescripcion : string, 
         public listaExtraTipoCatering : Array<Extra>,
         public listaExtraCateringVariable : Array<ExtraVariable>, public cliente : Cliente, 
-        public encargadoId : number, public estado : string) {}
+        public encargadoId : number, public estado : string, public anotaciones : string) {}
     
     
     static fromJson(eventoJSON: EventoJSON): Evento {
@@ -45,12 +46,19 @@ export class Evento {
             eventoJSON.extraOtro, eventoJSON.descuento, eventoJSON.listaExtra, 
             eventoJSON.listaExtraVariable, eventoJSON.cateringOtro, eventoJSON.cateringOtroDescripcion, 
             eventoJSON.listaExtraTipoCatering, eventoJSON.listaExtraCateringVariable, 
-            eventoJSON.cliente, eventoJSON.encargadoId, eventoJSON.estado)
+            eventoJSON.cliente, eventoJSON.encargadoId, eventoJSON.estado, eventoJSON.anotaciones)
     }
 
     static getEventoVoid() : Evento{
         return new Evento(0,"","", "", "", 0, new Capacidad(0,0,0), 0, 
-        0,0,[],[], 0,"",[],[], new Cliente(0,"","","CLIENTE","",0),0, "COTIZADO")
+        0,0,[],[], 0,"",[],[], new Cliente(0,"","","CLIENTE","",0),0, "COTIZADO", "")
+    }
+
+    // Se usa en el filtro de header
+    contiene(palabra: string): boolean {
+        return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.codigo.toUpperCase() || '').includes(palabra.toUpperCase())
+        || (this.inicio || '').includes(palabra.toUpperCase())
     }
 
 }
@@ -87,8 +95,8 @@ export class EventoVer{
         public listaExtra : Array<Extra>, public listaExtraVariable : Array<ExtraVariable>,
         public cateringOtroDescripcion : string, public listaExtraTipoCatering : Array<Extra>,
         public listaExtraCateringVariable : Array<ExtraVariable>,
-        public cliente : Cliente, public presupuesto : number,  
-        public estado : string, public empresa : string){}
+        public cliente : Cliente, public presupuesto : number, public encargado : UsuarioAbm,
+        public estado : string, public empresa : string, public anotaciones : string){}
 }
 
 export class EventoBuscarFecha{

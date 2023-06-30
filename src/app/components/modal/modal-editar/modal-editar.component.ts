@@ -1,29 +1,28 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  selector: 'app-modal-editar',
+  templateUrl: './modal-editar.component.html'
 })
-export class ModalComponent implements OnInit {
+export class ModalEditarComponent implements OnInit {
 
   @Input()
   modal = false
 
   @Input()
   titulo = ""
-  
-  @Input()
-  cuerpo = ""
-  
-  @Input()
-  boton = ""
 
-  @Output() 
-  outputAceptar = new EventEmitter<number>();
+  @Input()
+  inputEditar = ""
+
+  @Input()
+  myCallback!: Function
 
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
+
+  @Output() 
+  outputAceptar = new EventEmitter<any>();
 
   constructor() { }
 
@@ -36,8 +35,8 @@ export class ModalComponent implements OnInit {
   }
 
   aceptar(){
-    this.outputAceptar.emit();
+    this.outputAceptar.emit(this.inputEditar)
+    this.myCallback()
     this.changeModal()
   }
-
 }

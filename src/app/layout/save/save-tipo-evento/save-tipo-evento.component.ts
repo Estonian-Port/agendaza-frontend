@@ -28,4 +28,8 @@ export class SaveTipoEventoComponent implements OnInit {
     this.router.navigateByUrl('/abmTipoEvento')
   }
 
+  volver(){
+    this.router.navigateByUrl('/abmTipoEvento')
+  }
+
 }

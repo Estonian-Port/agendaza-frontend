@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { C } from '@fullcalendar/core/internal-common';
 import * as _ from 'lodash';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
 
 @Component({
   selector: 'app-extra-variable-checkbox',
-  templateUrl: './extra-variable-checkbox.component.html',
-  styleUrls: ['./extra-variable-checkbox.component.css']
+  templateUrl: './extra-variable-checkbox.component.html'
 })
 export class ExtraVariableCheckboxComponent implements OnInit {
 

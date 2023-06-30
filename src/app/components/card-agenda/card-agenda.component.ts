@@ -5,8 +5,7 @@ import { AgendaService } from 'src/app/services/agenda.service';
 
 @Component({
   selector: 'app-card-agenda',
-  templateUrl: './card-agenda.component.html',
-  styleUrls: ['./card-agenda.component.css']
+  templateUrl: './card-agenda.component.html'
 })
 export class CardAgendaComponent implements OnInit {
 

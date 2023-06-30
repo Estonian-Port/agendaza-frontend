@@ -36,6 +36,10 @@ export class SaveExtraCateringComponent implements OnInit {
     this.router.navigateByUrl('/abmExtraCatering')
   }
 
+  volver(){
+    this.router.navigateByUrl('/abmExtraCatering')
+  }
+
   onCheckboxChange(event: any){
     if (event.target.checked) {
       this.extra.listaTipoEventoId.push(Number(event.target.value))
