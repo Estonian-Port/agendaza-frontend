@@ -1,1 +1,1 @@
-export const REST_SERVER_URL = 'https://agendaza.bsas.com.ar'
+export const REST_SERVER_URL = 'https://localhost:8080'
