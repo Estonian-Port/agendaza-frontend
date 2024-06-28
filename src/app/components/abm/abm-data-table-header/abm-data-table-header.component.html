@@ -1,16 +1,18 @@
-<div class="header_abm">
-    <p>Cantidad de registros: {{cantidadRegistros.length}}</p>
+<div class="table-title m-2 contenedor-header">
+    
+    <h2 class="titulo-header">Administrar <b> {{titulo}}</b></h2>
 
-    <input [(ngModel)]="buscar" class="form-control barra_busqueda" (keyup)="actualizarCantidadPaginas()" placeholder="Buscar">
+    <!-- Barra de busqueda -->
+    <div class="contenedor-barra-busqueda">
+        <input [(ngModel)]="buscar" class="form-control barra-busqueda" placeholder="Buscar...">
+        <button class="lupita" (click)="actualizaBuscar()"><i class="fas fa-search icono"></i></button>
+    </div>
 
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><button class="page-link" (click)="atras()">Atras</button></li>
-            <li class="page-item" *ngFor="let pagina of cantidadPaginas; let i = index">
-                <button class="page-link" [ngClass]="(i + 1 == currentPagina) ? 'active': ''" (click)="irPagina(i + 1)">{{i + 1}}</button>
-            </li>
-            <li class="page-item"><button class="page-link" (click)="siguiente()">Siguiente</button></li>
-        </ul>
-    </nav>
-
+    <div class="botonera">
+        <a class="btn btn-primary mx-2" data-toggle="modal"><span [routerLink]="['/panelAdmin']">Volver</span></a>
+        <a class="btn btn-success agregar-icon" data-toggle="modal">
+            <i class="fas fa-plus-circle mx-1"></i> 
+            <span [routerLink]="getRoute()">Agregar</span>
+        </a>
+    </div>
 </div>

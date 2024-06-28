@@ -11,12 +11,14 @@ export class AbmTipoEventoComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-  cantidadRegistros : number[] = []
+  cantidadRegistros : number = 0
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
+  pageNumber : number = 0
+  primeraBusqueda : Boolean = true
 
   constructor(private tipoEventoService : TipoEventoService, private router : Router, private location : Location) { }
 
@@ -27,12 +29,21 @@ export class AbmTipoEventoComponent implements OnInit {
   async inicializarListaItems(){
     this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
 
-    this.cantidadRegistros = new Array<number>(this.listaItems.length)
+    this.cantidadRegistros = this.listaItems.length
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
     
     this.tituloModal = "Eliminar Tipo Evento"
     this.nombreItemModal = "tipo evento"
     this.botonModal = "Eliminar"
+  }
+
+  updatePageNumber(page : number){
+    this.pageNumber = page
+    this.inicializarListaItems()
+  }
+
+  updatePrimeraBusqueda(busqueda: Boolean){
+    this.primeraBusqueda = busqueda
   }
 
   updateCurrentRegistro(registro: number){

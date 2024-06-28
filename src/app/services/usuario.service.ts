@@ -11,7 +11,9 @@ import { AgendaService } from './agenda.service';
 export class UsuarioService {
 
   usuarioId : number = 0
-
+  cantidadUsuarios : number = 0
+  perfilVolver : String = ""
+  
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
 
   async getUsuario(usuarioId: number) {
@@ -24,12 +26,16 @@ export class UsuarioService {
     return await lastValueFrom(item$)
   }
 
-  async getAllUsuariosByEmpresaId() {
-    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuarioByEmpresaId/' + this.agendaService.getEmpresaId())
+  async getAllUsuariosByEmpresaId(pageNumber : number) {
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuariosByEmpresaId/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((usuario) => Usuario.fromJson(usuario))
   }
-
+  async cantUsuarios(){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantUsuarios/' + this.agendaService.getEmpresaId())
+    this.cantidadUsuarios = await lastValueFrom(cant$)
+    return this.cantidadUsuarios
+  }
   async getAllClienteByEmpresaId() {
     const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllClienteByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
@@ -53,11 +59,25 @@ export class UsuarioService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllSexo() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllSexo')
-    return await lastValueFrom(listaItem$)
+  async getAllUsersByFilterName(pageNumber : number, buscar : string){
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsersByFilterName/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((usuario) => Usuario.fromJson(usuario))
+  }
+  
+  async getCantUsuariosFiltrados(buscar : string){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantUsuariosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    return await lastValueFrom(cant$)
   }
 
+  async getEventosByUsuarioAndEmpresa(usuarioId: number) {
+    const listaEvento$ = this.httpClient.put<string[]>(REST_SERVER_URL + '/getEventosByUsuarioAndEmpresa', new UsuarioEmpresa(usuarioId, this.agendaService.getEmpresaId()))
+    return await lastValueFrom(listaEvento$)
+  }
 
+  async getCantEventosByUsuarioAndEmpresa(usuarioId: number) {
+    const cant$ = this.httpClient.put<number>(REST_SERVER_URL + '/getCantEventosByUsuarioAndEmpresa', new UsuarioEmpresa(usuarioId, this.agendaService.getEmpresaId()))
+    return await lastValueFrom(cant$)
+  }
 
 }

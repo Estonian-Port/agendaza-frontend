@@ -10,69 +10,61 @@ export class AbmDataTableHeaderComponent implements OnInit {
   buscar : string = ''
   currentRegistro : number = 0
   currentPagina : number = 1
-  classes : String = ""
 
   @Input()
-  listaItems : Array<any> = []
-  
-  @Input()
-  cantidadPaginas : number[] = []
+  busqueda! : Boolean
 
   @Input()
-  cantidadRegistros : number[] = []
+  pageNumber : number = 0
+
+  @Input()
+  titulo : string = ''
+
+  @Output() 
+  outputBuscar = new EventEmitter<string>();
+
+  @Output() 
+  outputBusqueda = new EventEmitter<Boolean>();
 
   @Output() 
   outputCurrentRegistro = new EventEmitter<number>();
 
   @Output() 
-  outputBuscar = new EventEmitter<string>();
+  outputPageNumber= new EventEmitter<number>();
 
-  constructor(){}
-  
-  ngOnInit() {
+  constructor() { }
 
+  ngOnInit(): void {}
+
+  outputPalabraBuscar() {
+    this.outputBuscar.emit(this.buscar);
+    
   }
 
-  siguiente(){
-    if(this.currentRegistro >= 0 && this.currentRegistro < (this.cantidadPaginas.length -1) * 10){
-      this.currentRegistro += 10
-      this.currentPagina += 1
-      this.outputRegistro()
-    }
-  }
-
-  atras(){
-    if(this.currentRegistro > 0 && this.currentRegistro <= (this.cantidadPaginas.length -1) * 10){
-      this.currentRegistro -= 10
-      this.currentPagina -= 1
-      this.outputRegistro()
-    }
-  }
-
-  irPagina(pagina : number){
-    this.currentRegistro = (pagina - 1 ) * 10
-    this.currentPagina = pagina
-    this.outputRegistro()
-  }
-
-  actualizarCantidadPaginas(){
+  actualizaBuscar(){
     this.currentPagina = 1
-    this.currentRegistro = 0
-    
-    this.cantidadPaginas = new Array<number>(
-      Math.trunc(
-        this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
-    
-    this.outputRegistro()
+    this.busqueda = true
+    this.outputBusqueda.emit(this.busqueda);
     this.outputPalabraBuscar()
+    this.outputRegistro()
   }
 
   outputRegistro() {
     this.outputCurrentRegistro.emit(this.currentRegistro);
+    this.outputPageNumber.emit(this.pageNumber);    
   }
 
-  outputPalabraBuscar() {
-    this.outputBuscar.emit(this.buscar);
-  }
+  private routeMap: { [key: string]: string } = {
+    'Eventos': '/saveEvento',
+    'Extras': '/saveExtraEvento',
+    'Pagos': '/savePago',
+    'Empleados': '/saveUsuario',
+    'Tipo Eventos': '/saveTipoEvento',
+    'Servicios': '/saveServicio',
+    'Catering': '/saveExtraCatering'
+  };
 
+  getRoute(): string {
+    return this.routeMap[this.titulo] || '';
+  }
 }

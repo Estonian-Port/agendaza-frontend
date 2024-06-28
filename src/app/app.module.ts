@@ -34,7 +34,7 @@ import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.compon
 import { AbmExtraEventoComponent } from './layout/abm/abm-extra-evento/abm-extra-evento.component';
 import { AbmDataTablePagoComponent } from './components/abm/abm-data-table-pago/abm-data-table-pago.component';
 import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-table.component';
-import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
+import { AbmDataTablePaginacionComponent } from './components/abm/abm-data-table-paginacion/abm-data-table-paginacion.component';
 import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-evento/abm-data-table-evento.component';
 import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
 import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
@@ -61,9 +61,15 @@ import { EditEventoExtrasComponent } from './layout/edit/edit-evento/edit-evento
 import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-evento-catering/edit-evento-catering.component';
 import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component';
 import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
-import { VerListaEventoClienteComponent } from './layout/ver/ver-lista-evento-cliente/ver-lista-evento-cliente.component';
 import { ModalListaComponent } from './components/modal/modal-lista/modal-lista.component';
 import { ModalEditarComponent } from './components/modal/modal-editar/modal-editar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { VerClienteComponent } from './layout/ver/ver-cliente/ver-cliente.component';
+import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
+import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/edit-cargo-empleado.component';
+import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
+import { ModalInformativoComponent } from './components/modal/modal-informativo/modal-informativo.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +93,7 @@ import { ModalEditarComponent } from './components/modal/modal-editar/modal-edit
     OrderAbmByNombre,
     AbmEventoComponent,
     AbmDataTableComponent,
-    AbmDataTableHeaderComponent,
+    AbmDataTablePaginacionComponent,
     AbmDataTableEventoComponent,
     AbmDataTableUsuarioComponent,
     AbmDataTablePagoComponent,
@@ -120,9 +126,15 @@ import { ModalEditarComponent } from './components/modal/modal-editar/modal-edit
     EditEventoCateringComponent,
     VerEventoComponent,
     EditEventoHoraComponent,
-    VerListaEventoClienteComponent,
     ModalListaComponent,
     ModalEditarComponent,
+    SidebarComponent,
+    VerClienteComponent,
+    AbmDataTableHeaderComponent,
+    EditEmpleadoCargoComponent,
+    EditUsuarioPerfilComponent,
+    ModalInformativoComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

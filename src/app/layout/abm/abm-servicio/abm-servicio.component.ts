@@ -13,12 +13,14 @@ export class AbmServicioComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<any> = []
-  cantidadRegistros : number[] = []
+  cantidadRegistros : number=0
   cantidadPaginas : number[] = []
   currentRegistro : number = 0
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
+  pageNumber : number = 0
+  primeraBusqueda : Boolean = true
 
   constructor(private servicioService : ServicioService, private router : Router, private location : Location) { }
 
@@ -29,12 +31,21 @@ export class AbmServicioComponent implements OnInit {
   async inicializarListaItems(){
     this.listaItems = await this.servicioService.getAllServicioByEmpresaId()
 
-    this.cantidadRegistros = new Array<number>(this.listaItems.length)
+    this.cantidadRegistros = this.listaItems.length
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
     
     this.tituloModal = "Eliminar Servicio"
     this.nombreItemModal = "servicio"
     this.botonModal = "Eliminar"
+  }
+
+  updatePageNumber(page : number){
+    this.pageNumber = page
+    this.inicializarListaItems()
+  }
+
+  updatePrimeraBusqueda(busqueda: Boolean){
+    this.primeraBusqueda = busqueda
   }
 
   updateCurrentRegistro(registro: number){

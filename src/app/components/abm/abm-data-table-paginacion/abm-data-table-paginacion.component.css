@@ -1,0 +1,40 @@
+.panel-paginacion{
+    display: flex;
+    height: 1em;
+    bottom: 1em;
+    width: 98%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1em;
+    position: fixed;
+    padding-right: 3em;
+}
+
+.cont-pag{
+    margin: 0em 3em 0em 3em;
+}
+
+.cont-reg{
+    margin: 0em 3em 0em 3em;
+    padding-top: 1em;
+}
+
+.siguiente{
+    border-radius : 0 0.375rem  0.375rem 0 
+}
+
+.atras{
+    border-radius : 0.375rem  0 0 0.375rem  
+}
+
+.scuare{
+    width: 0.9em;
+    text-align: center;
+}
+
+@media only screen and (max-width: 806px) {
+    .panel-paginacion {
+        position: static;
+    }
+}

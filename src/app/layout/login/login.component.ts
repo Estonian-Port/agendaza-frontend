@@ -14,13 +14,13 @@ export class LoginComponent {
   usuarioLogin : UsuarioLogin = new UsuarioLogin('', '')
   errors = []
   errorLogin : ErrorMensaje = new ErrorMensaje(false, '')
+  showPassword = false
 
   @Output () valorLogin = new EventEmitter<boolean>()
 
   constructor(private loginService: LoginService, private router : Router) {}
 
   onSubmit(form: any) {
-    //console.log(form.value);
     this.ingresar()
   }
 
@@ -48,6 +48,12 @@ export class LoginComponent {
 
   isLogueado(): boolean {
     return this.loginService.getToken() != ""
+  }
+
+
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword
   }
 
 }
