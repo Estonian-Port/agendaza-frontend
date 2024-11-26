@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group col-3">
-                <label for="rol">Medio de Pago</label> 
+                <label for="medioDePago">Medio de Pago</label> 
                 <select class="form-select" [(ngModel)]="pago.medioDePago" name="medioDePago">
                     <option *ngFor="let medioDePago of listaMedioDePago | orderAbmById" [value]="medioDePago">{{medioDePago}}</option>
                 </select>

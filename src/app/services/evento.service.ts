@@ -46,21 +46,17 @@ export class EventoService {
     return listaItem.map((evento) => Evento.fromJson(evento))
 
   }
+  
   async cantEventos(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventos/' + this.agendaService.getEmpresaId())
     this.cantidadEventos = await lastValueFrom(cant$)
     return this.cantidadEventos
   }
+
   async cantEventosFiltrados(buscar : string){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
     this.cantidadEventos = await lastValueFrom(cant$)
     return this.cantidadEventos
-  }
-  async getAllEventoByEmpresaIdAndFechaFiltro(){
-    const listaItem$ = this.httpClient.put<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaIdAndFechaFiltro/' + this.agendaService.getEmpresaId(), new Date(this.fechaFiltroForAbmEvento))
-    const listaItem = await lastValueFrom(listaItem$)
-    this.fechaFiltroForAbmEvento = ""
-    return listaItem.map((evento) => Evento.fromJson(evento))
   }
 
   async buscarClientePorEmail(email : string){
