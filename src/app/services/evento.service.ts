@@ -25,7 +25,19 @@ export class EventoService {
     const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((evento) => Evento.fromJson(evento))
+  }
 
+  
+  async getAllEventosByFecha() {
+    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventosForAgendaByFecha',
+      { params: { 
+        fecha: this.fechaFiltroForAbmEvento,
+        empresaId : this.agendaService.getEmpresaId()
+      }})
+    const listaItem = await lastValueFrom(listaItem$)
+    this.fechaFiltroForAbmEvento = ""
+    return listaItem.map((evento) => Evento.fromJson(evento))
+    
   }
 
   async getAllEventoByFilterName(pageNumber : number, buscar : string){

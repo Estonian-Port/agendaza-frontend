@@ -29,17 +29,24 @@ export class AbmEventoComponent implements OnInit {
 
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
-    
-    if(this.buscar == ""){
-      this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.pageNumber)
-      this.cantidadEventos = await this.eventoService.cantEventos()
+
+    if(this.eventoService.fechaFiltroForAbmEvento != ""){
+      this.listaItems = await this.eventoService.getAllEventosByFecha()
 
     }else{
-
-      this.listaItems = await this.eventoService.getAllEventoByFilterName(this.pageNumber,this.buscar)
-      this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar)
-      
+      if(this.buscar == ""){
+        this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.pageNumber)
+        this.cantidadEventos = await this.eventoService.cantEventos()
+  
+      }else{
+  
+        this.listaItems = await this.eventoService.getAllEventoByFilterName(this.pageNumber,this.buscar)
+        this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar)
+        
+      }
     }
+
+
     this.cantidadRegistros = this.cantidadEventos
     this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadEventos / 10) + 1)
     
