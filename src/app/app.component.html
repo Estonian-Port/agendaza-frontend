@@ -3,7 +3,7 @@
 
   <app-sidebar class="sidebar-layout"></app-sidebar>
 
-  <div class="content-layout">
+  <div class="content-layout" [@routeAnimation]="route.snapshot.data">
     <router-outlet></router-outlet>
   </div>
 </div>

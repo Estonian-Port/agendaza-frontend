@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
 
 * {
   margin: 0;
@@ -42,7 +42,7 @@ button:focus {
 :root {
   --color-primario: royalblue;
   --color-secundario: dodgerblue;
-  --color-terciario: lightgray;
+  --color-terciario: whitesmoke;
   --color-cuaternario: #696969;
   --color-quintario: white;
   --color-sextario: black;
@@ -104,9 +104,9 @@ button:focus {
   grid-template-rows: 6vh 1.7fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    "a b b"
-    "a c c"
-    "a c c";
+    'a b b'
+    'a c c'
+    'a c c';
   height: 100%;
   width: 100%;
 }
@@ -127,9 +127,9 @@ button:focus {
 @media (max-width: 767px) {
   .layout {
     grid-template-areas:
-      "a b b"
-      "c c c"
-      "c c c";
+      'a b b'
+      'c c c'
+      'c c c';
   }
 
   .hide-on-phone {
