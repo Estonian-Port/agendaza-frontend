@@ -16,63 +16,61 @@
             <!--================================ Tipo de evento ===========================================-->
             <div [ngStyle]="{'display': (isStep(1)) ? 'block' : 'none' }">
                 <section class="nuevo-evento-step" formGroupName="tipoEventoForm">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="col-md-10">
-                                    <h2>Selecciones tipo de evento</h2>
-                                    <p>El tipo de evento a seleccionar cambiara la cantidad de horas de duracion y presupuesto base.</p>
-                                </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="col-md-10">
+                                  <h2>Selecciones tipo de evento</h2>
+                                  <p>El tipo de evento a seleccionar cambiara la cantidad de horas de duracion y presupuesto base.</p>
+                              </div>
 
-                                <div class="col-md-10">
-                                    <label for="duracion" class="form-label">Duracion</label>
+                              <div class="col-md-10">
+                                  <label for="duracion" class="form-label">Duracion</label>
 
-                                    <select class="form-select" formControlName="duracion" 
-                                        (change)="filterTipoEventoByDuracion()"
-                                        [ngClass]="{'is-invalid': duracion?.errors && submited}">
-                                        <option *ngFor="let duracion of listaDuracion | orderAbmById" [value]="duracion">{{duracion}}</option>
-                                    </select>
-                                </div>
+                                  <select class="form-select" formControlName="duracion" 
+                                      (change)="filterTipoEventoByDuracion()"
+                                      [ngClass]="{'is-invalid': duracion?.errors && submited}">
+                                      <option *ngFor="let duracion of listaDuracion | orderAbmById" [value]="duracion">{{duracion}}</option>
+                                  </select>
+                              </div>
 
-                                <div class="col-md-10">
-                                    <div class="label-with-error">
-                                        <label for="tipoEvento" class="form-label">Tipo Evento</label>
-                                    </div>
-                                    <select class="form-select" 
-                                        (change)="inicializarByTipoEventoId()"
-                                        formControlName="tipoEvento">
-                                        <option *ngFor="let tipoEvento of listaTipoEvento | orderAbmByNombre" [value]="tipoEvento.id">{{tipoEvento.nombre}}</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-10 mt-3">
-                                    <h2>Ingrese cantidad de personas</h2>
-                                    <div class="row mt-3">
-                                        <div class="form-group col-6">
-                                            <label for="capacidadAdultos" class="form-label">Cantidad Adultos</label>
-                                            <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"
-                                                (change)="actualizarValidStepBox()"
-                                                [ngClass]="{'is-invalid': capacidadAdultos?.errors && submited}"
-                                                formControlName="capacidadAdultos"
-                                                (change)="changeCapacidadAdultos()">
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <label for="capacidadNinos" class="form-label">Cantidad Niños</label> 
-                                            <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" 
-                                                formControlName="capacidadNinos">
-                                                <!--(change)="changeCapacidadNinos()"-->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="servicio" class="form-label">Incluye los siguiente servicios</label> 
-                                    <div id="listaServicio" *ngFor="let servicio of listaServicio | orderAbmByNombre">{{servicio.nombre}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                              <div class="col-md-10">
+                                  <div class="label-with-error">
+                                      <label for="tipoEvento" class="form-label">Tipo Evento</label>
+                                  </div>
+                                  <select class="form-select" 
+                                      (change)="inicializarByTipoEventoId()"
+                                      formControlName="tipoEvento">
+                                      <option *ngFor="let tipoEvento of listaTipoEvento | orderAbmByNombre" [value]="tipoEvento.id">{{tipoEvento.nombre}}</option>
+                                  </select>
+                              </div>
+                              
+                              <div class="col-md-10 mt-3">
+                                  <h2>Ingrese cantidad de personas</h2>
+                                  <div class="row mt-3">
+                                      <div class="form-group col-6">
+                                          <label for="capacidadAdultos" class="form-label">Cantidad Adultos</label>
+                                          <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"
+                                              (change)="actualizarValidStepBox()"
+                                              [ngClass]="{'is-invalid': capacidadAdultos?.errors && submited}"
+                                              formControlName="capacidadAdultos"
+                                              (change)="changeCapacidadAdultos()">
+                                      </div>
+                                      <div class="form-group col-6">
+                                          <label for="capacidadNinos" class="form-label">Cantidad Niños</label> 
+                                          <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" 
+                                              formControlName="capacidadNinos">
+                                              <!--(change)="changeCapacidadNinos()"-->
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="servicio" class="form-label">Incluye los siguiente servicios</label> 
+                                  <div id="listaServicio" *ngFor="let servicio of listaServicio | orderAbmByNombre">{{servicio.nombre}}</div>
+                              </div>
+                          </div>
+                      </div>
                 </section>
             </div>   
             <!--===============================================================================================-->
