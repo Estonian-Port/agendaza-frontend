@@ -14,48 +14,39 @@ import { EventoService } from 'src/app/services/evento.service';
 @Component({
   selector: 'app-agenda',
   templateUrl: './agenda.component.html',
-  styleUrls: ['./agenda.component.css']
+  styleUrls: ['./agenda.component.css'],
 })
 export class AgendaComponent implements OnInit {
+  constructor(private agendaService: AgendaService, private router: Router, private eventoService: EventoService) {}
 
-  constructor(private agendaService : AgendaService, private router : Router, private eventoService : EventoService) { }
-  
-  eventos: EventInput[] = []
+  eventos: EventInput[] = [];
 
   calendarOptions: CalendarOptions = {
-    plugins: [
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-      bootstrap5Plugin,
-      interactionPlugin
-    ],
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin, interactionPlugin],
     dateClick: this.handleDateClick.bind(this),
     themeSystem: 'bootstrap5',
     headerToolbar: {
       left: 'prev,next',
       center: 'title',
-      right: 'dayGridMonth,listWeek'
+      right: 'dayGridMonth,listWeek',
     },
     initialView: 'dayGridMonth',
     locale: 'es',
-    locales : [esLocale],
-  }
+    locales: [esLocale],
+  };
 
   async ngOnInit() {
     try {
-      this.eventos = await this.agendaService.getAllEventosForAgendaByEmpresaId(this.agendaService.getEmpresaId())
-      
-      this.calendarOptions.events = this.eventos
+      this.eventos = await this.agendaService.getAllEventosForAgendaByEmpresaId(this.agendaService.getEmpresaId());
 
+      this.calendarOptions.events = this.eventos;
     } catch (error) {
-      mostrarErrorConMensaje(this, error)
+      mostrarErrorConMensaje(this, error);
     }
   }
 
-  handleDateClick(arg: { dateStr: string; }) {
-    this.eventoService.fechaFiltroForAbmEvento = arg.dateStr
-    this.router.navigateByUrl("/abmEvento")
+  handleDateClick(arg: { dateStr: string }) {
+    this.eventoService.fechaFiltroForAbmEvento = arg.dateStr;
+    this.router.navigateByUrl('/abmEvento');
   }
-
 }
