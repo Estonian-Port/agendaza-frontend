@@ -120,7 +120,7 @@ button:focus {
 }
 
 .content-layout {
-  min-height: 93vh;
+  min-height: 94vh;
   grid-area: c;
 }
 
