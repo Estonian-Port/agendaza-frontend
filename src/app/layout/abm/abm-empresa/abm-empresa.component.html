@@ -1,28 +1,20 @@
-<div class="abm">
 
-    <app-abm-data-table-header
-        [busqueda] = "primeraBusqueda"
-        titulo = 'Empresas'
-        (outputBuscar)="updatePalabraBuscar($event)"
-        (outputPageNumber)="updatePageNumber($event)"
-        (outputBusqueda)="updatePrimeraBusqueda($event)">
-    </app-abm-data-table-header>
+<div class="container">
+  <h2 class="titulo-header">Administrar Empresas</h2>
 
-    <app-abm-data-table
-        [mostrarPrecio]="false"
-        [mostrarEliminar]="false"
-        (outputEditar)="editar($event)"
-        (outputEliminar)="eliminar($event)"
-        [listaItems]="listaItems"
-        [currentRegistro]="currentRegistro"
-        [buscar]="buscar">
-    </app-abm-data-table>
-    
-    <app-abm-data-table-paginacion
-        (outputCurrentRegistro)="updateCurrentRegistro($event)"
-        [listaItems]="listaItems"
-        [cantidadRegistros]="cantidadRegistros"
-        [cantidadPaginas]="cantidadPaginas">
-    </app-abm-data-table-paginacion>
-
+  <div class="card-container">
+    <div *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbmByNombre">
+      <div class="card">
+          <button (click)="editar(item.id)" class="boton-editar">
+            <h2 class="card-title">{{item.nombre}}</h2>
+            <i class="fas fa-edit text-warning card-icon" data-bs-toggle="tooltip" title="Editar"></i>
+          </button>
+          <div class="card-content">
+            <p>Cargo: Admin</p>
+            <p>Direccion: bonifacni 1564</p>
+            <p>Correo electronico:</p>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>
