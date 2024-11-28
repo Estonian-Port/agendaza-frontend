@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { fadeInOut } from 'src/app/animations/fade-in-out';
+import { translate } from 'src/app/animations/translate';
 import { ModalInformativoComponent } from 'src/app/components/modal/modal-informativo/modal-informativo.component';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
@@ -29,7 +30,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
   selector: 'app-save-evento',
   templateUrl: './save-evento.component.html',
   styleUrls: ['./save-evento.component.css'],
-  animations: [fadeInOut]
+  animations: [fadeInOut, translate]
 })
 export class SaveEventoComponent implements OnInit {
 

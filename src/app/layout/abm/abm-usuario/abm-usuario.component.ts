@@ -62,6 +62,14 @@ export class AbmUsuarioComponent implements OnInit {
     this.router.navigateByUrl('/editUsuario')
   }
 
+  async eliminar(id: number) {
+    (await this.usuarioService.deleteCargo(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
+      }
+    })
+  }
+
   cambiarPassword(id : number){
     this.usuarioService.usuarioId = id
     this.router.navigateByUrl('/editUsuarioPassword')

@@ -7,6 +7,7 @@
     justify-content: space-between;
     width: auto;
     height: 95%;
+    /*position: relative;*/
 }
 
 .nuevo-evento-step{
@@ -14,6 +15,8 @@
     border-radius: 10px;
     background-color: var(--color-terciario);
     height: 68vh;
+    position: absolute;
+    width: 93%;
 }
 
 .botones-nuevo-evento{
@@ -80,4 +83,22 @@
         display: none;
     }
 
+    .servicio-container{
+        display: none;
+    }
+
+    .extra-container{
+        height: 15vh;
+    }
+
+    .nuevo-evento{
+        height: 100%;
+        justify-content: space-between;
+        padding-bottom: 1em;
+    }
+
+    .nuevo-evento-step{
+        height: auto;
+        position: relative;
+    }
 }

@@ -14,7 +14,7 @@
         <form [formGroup]="formGroup">
 
             <!--================================ Tipo de evento ===========================================-->
-            <div [ngStyle]="{'display': (isStep(1)) ? 'block' : 'none' }">
+            <div class="step-animation" *ngIf="isStep(1)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="tipoEventoForm">
                       <div class="row">
                           <div class="col-md-6">
@@ -80,7 +80,7 @@
             <!--===============================================================================================-->
 
             <!--=================================== Datos del evento ==========================================-->
-            <div [ngStyle]="{'display': (isStep(2)) ? 'block' : 'none' }">
+            <div class="step-animation" *ngIf="isStep(2)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="datosEventoForm">
                     <div class="row">
                         <div class="col-md-5">
@@ -188,7 +188,7 @@
             <!--===============================================================================================-->
 
             <!--=================================== Cotizacion ================================================-->
-            <div [ngStyle]="{'display': (isStep(3)) ? 'block' : 'none' }">
+            <div class="step-animation" *ngIf="isStep(3)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="cotizacionForm">
                     <h2>Presupuesto</h2>
                     <p>Puede agregar extras que cambiaran el precio final</p>
@@ -276,7 +276,7 @@
             <!--===============================================================================================-->
 
             <!--===================================== Catering ================================================-->
-            <div [ngStyle]="{'display': (isStep(4)) ? 'block' : 'none' }">
+            <div class="step-animation" *ngIf="isStep(4)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="cateringForm">
                     <div class="row">
                         <div class="col-6">
@@ -375,12 +375,12 @@
             <!--===============================================================================================-->
             
             <!--=================================== Datos de contacto =========================================-->
-            <div [ngStyle]="{'display': (isStep(5)) ? 'block' : 'none' }">
+            <div class="step-animation" *ngIf="isStep(5)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="clienteForm">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-lg-8 col-md-12">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-lg-4 col-md-12">
                                     <h2>Finalizar reserva</h2>
                                     <p>Complete con los datos del cliente</p>
                                 </div>

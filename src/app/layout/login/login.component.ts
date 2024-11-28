@@ -50,8 +50,6 @@ export class LoginComponent {
     return this.loginService.getToken() != ""
   }
 
-
-
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword
   }

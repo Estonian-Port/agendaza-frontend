@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Usuario, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
+import { Usuario, UsuarioEditCargo, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
+import { Cargo } from '../model/Cargo';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,8 @@ export class UsuarioService {
   
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
 
-  async getUsuario(usuarioId: number) {
-    const item$ = this.httpClient.get<Usuario>(REST_SERVER_URL + '/getUsuario/' + usuarioId)
-    return await lastValueFrom(item$)
-  }
-
-  async getUsuarioRolByEmpresaId(usuarioId: number) {
-    const item$ = this.httpClient.put<string>(REST_SERVER_URL + '/getRolByUsuarioIdAndEmpresaId', new UsuarioEmpresa(usuarioId, this.agendaService.getEmpresaId()))
+  async getUsuario() {
+    const item$ = this.httpClient.get<Usuario>(REST_SERVER_URL + '/getUsuarioOfEmpresa/' + this.usuarioId + '/' + this.agendaService.getEmpresaId())
     return await lastValueFrom(item$)
   }
 
@@ -31,11 +27,13 @@ export class UsuarioService {
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((usuario) => Usuario.fromJson(usuario))
   }
+
   async cantUsuarios(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantUsuarios/' + this.agendaService.getEmpresaId())
     this.cantidadUsuarios = await lastValueFrom(cant$)
     return this.cantidadUsuarios
   }
+
   async getAllClienteByEmpresaId() {
     const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllClienteByEmpresaId/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
@@ -43,8 +41,15 @@ export class UsuarioService {
   }
 
   async save(usuario : Usuario) {
-    const usuariof = new UsuarioSave(usuario, this.agendaService.getEmpresaId(), usuario.rol)
+    const usuariof = new UsuarioSave(usuario, this.agendaService.getEmpresaId(), usuario.cargo)
     const item$ = this.httpClient.post<UsuarioJSON>(REST_SERVER_URL + '/saveUsuario', usuariof)
+    const item = await lastValueFrom(item$)
+    return item
+  }
+
+  async saveCargo(usuario: Usuario) {
+    const item$ = this.httpClient.post<UsuarioJSON>(REST_SERVER_URL + '/saveUsuarioCargoOfEmpresa', 
+      new UsuarioEditCargo(usuario.id, this.agendaService.getEmpresaId(), usuario.cargo))
     const item = await lastValueFrom(item$)
     return item
   }
@@ -54,8 +59,8 @@ export class UsuarioService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllRol() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllRol')
+  async getAllCargo() {
+    const listaItem$ = this.httpClient.get<Cargo[]>(REST_SERVER_URL + '/getAllCargo')
     return await lastValueFrom(listaItem$)
   }
 
@@ -78,6 +83,10 @@ export class UsuarioService {
   async getCantEventosByUsuarioAndEmpresa(usuarioId: number) {
     const cant$ = this.httpClient.put<number>(REST_SERVER_URL + '/getCantEventosByUsuarioAndEmpresa', new UsuarioEmpresa(usuarioId, this.agendaService.getEmpresaId()))
     return await lastValueFrom(cant$)
+  }
+
+  async deleteCargo(usuarioId: number) {
+    return this.httpClient.delete<any>(REST_SERVER_URL + '/deleteCargo/' + this.agendaService.getEmpresaId() + '/'+ usuarioId)
   }
 
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { LoginService } from 'src/app/services/login.service';
+import { Cargo } from 'src/app/model/Cargo';
 
 @Component({
   selector: 'app-edit-usuario-perfil',
@@ -10,19 +11,18 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class EditUsuarioPerfilComponent implements OnInit {
 
-  usuarioId : number = 0
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "","","", true)
+  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"")
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
 
-  constructor(public logInService : LoginService, private usuarioService : UsuarioService, private router : Router) { }
+  constructor(public loginService : LoginService, private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
 
-    this.usuarioId = await this.logInService.getUsuarioId()
-    this.usuario = await this.usuarioService.getUsuario(this.usuarioId)
-    this.usuario.rol = await this.usuarioService.getUsuarioRolByEmpresaId(this.usuarioId)
-    this.listaRol = await this.usuarioService.getAllRol()
+    this.usuarioService.usuarioId = await this.loginService.getUsuarioId()
+    this.usuario = await this.loginService.getUsuarioPerfil()
+    this.usuario.cargo = await this.loginService.getCargoByEmpresaAndUsuario(this.usuario.id)
+    this.listaRol = await this.usuarioService.getAllCargo()
 
   }
 
