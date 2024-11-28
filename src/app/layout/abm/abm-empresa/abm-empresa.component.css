@@ -4,7 +4,7 @@
 
 .titulo-header {
   font-size: 2rem;
-  color: var(--color-sextario);
+  color: var(--color-sexenario);
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
 }
@@ -16,21 +16,6 @@
   justify-content: left;
   align-items: center;
   gap: 2em;
-}
-
-.card {
-  background-color: var(--color-quintario);
-  border-radius: 1rem;
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
-  width: 100%;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  max-width: 20rem;
-  min-width: 20rem;
-}
-
-.card:hover {
-  transform: translateY(-10px);
 }
 
 .card-content {

@@ -4,7 +4,7 @@
 
   <div class="card-container">
     <div *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbmByNombre">
-      <div class="card">
+      <div class="card-empresa">
           <button (click)="editar(item.id)" class="boton-editar">
             <h2 class="card-title">{{item.nombre}}</h2>
             <i class="fas fa-edit text-warning card-icon" data-bs-toggle="tooltip" title="Editar"></i>

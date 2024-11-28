@@ -163,7 +163,7 @@
                     <button (click)="editAnotacionesModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
                 </div>
                 <div class="mb-4 col-9">
-                    <input type="text" class="form-control" name="anotaciones" [(ngModel)]="evento.anotaciones" disabled>
+                    <textarea type="text" class="form-control" rows="6" name="anotaciones" [(ngModel)]="evento.anotaciones" disabled></textarea>
                 </div>
             </div>
             <div class="form-group col-9 mb-4">

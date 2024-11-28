@@ -9,7 +9,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">{{titulo}}</h5>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" name="input-editar" [(ngModel)]="inputEditar">
+                    <textarea type="text" class="form-control" rows="4" name="input-editar" [(ngModel)]="inputEditar"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="changeModal()">Cerrar</button>

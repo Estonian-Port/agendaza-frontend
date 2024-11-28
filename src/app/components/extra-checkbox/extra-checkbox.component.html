@@ -1,5 +1,5 @@
-<div>
-    <input type="checkbox" class="form-check-input" value={{extra.id}} 
-    (change)="onCheckboxChange($event)" [checked]="isChecked()" name="extra{{extra.nombre}}{{i}}">
-    <label class="form-check-label">{{extra.nombre}} ${{extra.precio}}</label>
+<div class="d-flex card-extra">
+    <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{extra.id}} 
+    (change)="onCheckboxChange($event)" [checked]="isChecked()" [name]="'extra' + extra.id" [id]="'extra' + extra.id">
+    <label class="form-check-label curso-pointer" [for]="'extra' + extra.id">{{extra.nombre}} ${{extra.precio}}</label>
 </div>

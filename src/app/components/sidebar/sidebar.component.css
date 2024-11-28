@@ -4,7 +4,7 @@
   top: 0;
   height: 100%;
   width: 250px;
-  background: var(--color-quintario);
+  background: var(--color-quinario);
   border-right: 1px solid var(--color-terciario);
   transition: transform 0.3s ease;
   z-index: 10;
@@ -21,7 +21,7 @@
 .sidebar-header {
   padding: 1.5rem 0;
   background: var(--color-terciario);
-  color: var(--color-quintario);
+  color: var(--color-quinario);
 }
 
 .sidebar-collapsed {
@@ -50,9 +50,9 @@
 .sidebar-collapsed-toggle {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
   padding: 1rem 0;
+  
 }
 
 .sidebar-icon,
@@ -71,7 +71,7 @@
 .sidebar-list-item:hover,
 .sidebar-collapsed-list-item:hover,
 .sidebar-collapsed-toggle:hover {
-  background-color: var(--hover-bg-color);
+  background-color: var(--hover-bg-color-primary);
   transition: background-color 0.4s;
   width: 100%;
 }
@@ -84,4 +84,9 @@
   .sidebar-collapsed-icon {
     display: none;
   }
+
+  .sidebar-collapsed-toggle{
+    height: 100%;
+  }
+
 }

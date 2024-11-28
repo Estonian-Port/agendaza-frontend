@@ -1,9 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AgendaService } from 'src/app/services/agenda.service';
 import { Location } from '@angular/common';
 import { LoginService } from 'src/app/services/login.service';
-import { Empresa } from 'src/app/model/Empresa';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -11,16 +10,14 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
   constructor(private loginService: LoginService, private usuarioService : UsuarioService, private router: Router, private agendaService: AgendaService, private location: Location) { }
 
-  ngOnInit(): void { }
-  dropdownOpen: boolean = false;
+  dropdownVisible : boolean = false;
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
+  @ViewChild('dropdownMenu') 
+  dropdownMenu!: ElementRef;
 
   isLogin(): boolean {
     return "/login" == this.location.path()
@@ -32,27 +29,31 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.loginService.logout()
+    this.dropdownVisible = false
     this.router.navigateByUrl('/login')
-    this.dropdownOpen = false
   }
 
   perfil() {
     this.usuarioService.perfilVolver = this.location.path()
+    this.dropdownVisible = false
     this.router.navigateByUrl('/editUsuarioPerfil')
-    this.dropdownOpen = false
   }
+
   empresa(){
+    this.dropdownVisible = false
     this.router.navigateByUrl('/abmEmpresa')
-    this.dropdownOpen = false
   }
-  //esto hace que se ponga el false el dropdown cuando clickeas fuera
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    this.dropdownVisible = !this.dropdownVisible
+  }
+
   @HostListener('document:click', ['$event'])
-  clickOutside(event: Event) {
-    if (this.dropdownOpen) {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.dropdown') && !target.closest('.dropdown-toggle')) {
-        this.dropdownOpen = false;
-      }
+  clickOutside(event: MouseEvent) {
+    if (this.dropdownVisible &&
+      !this.dropdownMenu.nativeElement.contains(event.target)) {
+      this.dropdownVisible = false
     }
   }
 }

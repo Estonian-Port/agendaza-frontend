@@ -65,10 +65,14 @@
                               </div>
                           </div>
                           <div class="col-md-6">
-                              <div class="form-group">
-                                  <label for="servicio" class="form-label">Incluye los siguiente servicios</label> 
-                                  <div id="listaServicio" *ngFor="let servicio of listaServicio | orderAbmByNombre">{{servicio.nombre}}</div>
-                              </div>
+                            <div class="servicio-container">
+                                <div class="extra-overflow">
+                                    <div class="form-group card-servicios">
+                                        <label for="servicio" class="form-label"><b>Incluye los siguiente servicios</b></label> 
+                                        <div id="listaServicio" *ngFor="let servicio of listaServicio | orderAbmByNombre">- {{servicio.nombre}}</div>
+                                    </div>
+                                </div>
+                            </div>
                           </div>
                       </div>
                 </section>
@@ -162,8 +166,7 @@
                                 </div>
 
                                 <div class="form-group mt-2" id="hastaElOtroDia">
-                                    <!--  [(ngModel)]="hastaElOtroDiaCheckbox" -->
-                                    <input class="form-check-input" type="checkbox">
+                                    <input class="form-check-input me-2" type="checkbox" id="hastaElOtroDiaCheckbox">
                                     <label class="form-check-label" for="hastaElOtroDiaCheckbox"> Dura hasta el otro dia </label>
                                 </div>
                             </div>				                
@@ -192,26 +195,34 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-lg-4 col-md-12 form-group">
+                                <div class="col-lg-5 col-md-12 form-group">
                                     <h4>Extras fijos</h4> 
-                                    <div id="listaExtra" *ngFor="let extra of listaExtra | orderAbmByNombre; let i=index">
-                                        <app-extra-checkbox 
-                                            (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
-                                            [listaExtra]="evento.listaExtra"
-                                            [i]="i"
-                                            [extra]="extra">
-                                        </app-extra-checkbox>
+                                    <div class="extra-container">
+                                        <div class="extra-overflow">
+                                            <div class="extra-box" id="listaExtra" *ngFor="let extra of listaExtra | orderAbmByNombre; let i=index">
+                                                <app-extra-checkbox 
+                                                    (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
+                                                    [listaExtra]="evento.listaExtra"
+                                                    [i]="i"
+                                                    [extra]="extra">
+                                                </app-extra-checkbox>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-8 col-md-12 form-group">
+                                <div class="col-lg-7 col-md-12 form-group">
                                     <h4>Extras variables</h4> 
-                                    <div id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbmByNombre; let i=index">
-                                        <app-extra-variable-checkbox
-                                            (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
-                                            [listaExtra]="evento.listaExtraVariable"
-                                            [i]="i"
-                                            [extra]="extraVariable">
-                                        </app-extra-variable-checkbox>
+                                    <div class="extra-container">
+                                        <div class="extra-overflow">
+                                            <div class="extra-box" id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbmByNombre; let i=index">
+                                                <app-extra-variable-checkbox
+                                                    (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
+                                                    [listaExtra]="evento.listaExtraVariable"
+                                                    [i]="i"
+                                                    [extra]="extraVariable">
+                                                </app-extra-variable-checkbox>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -270,25 +281,25 @@
                     <div class="row">
                         <div class="col-6">
                             <h2>Seleccione opciones de catering</h2>
-                            <p>Puede agregar un servicio de catering al evento</p>
-                            <div class="form-group mt-2">
-                                <input class="form-check-input" type="checkbox" formControlName="agregarCateringCheckbox">
+                            <div class="form-group mb-3 card-extra">
+                                <input class="form-check-input me-2" type="checkbox" formControlName="agregarCateringCheckbox" id="agregarCateringCheckbox">
                                 <label class="form-check-label" for="agregarCateringCheckbox">Agregar servicio de catering</label>
                             </div>
                         </div>
 
-                        <div *ngIf="agregarCateringCheckbox?.value" class="col-6">
-                            <div class="form-group mt-2">
-                                <input class="form-check-input" type="checkbox" 
+                        <div class="col-6" *ngIf="agregarCateringCheckbox?.value" @fadeInOut>
+                            <div class="form-group my-2">
+                                <input class="form-check-input me-2" type="checkbox" id="cateringOtroCheckbox"
                                     formControlName="cateringOtroCheckbox" 
                                     (change)="cleanTipoCateringForCateringOtro()">
-                                <label class="form-check-label" for="cateringOtroCheckbox"> Catering Otro </label>
-                                <small class="form-text text-muted">(Permite ingresar un precio personalizado de plato)</small>
+                                <label class="form-check-label" for="cateringOtroCheckbox"> Catering Otro 
+                                    <small class="form-text text-muted">(Permite ingresar un precio personalizado de plato)</small>
+                                </label>
+                                
                             </div>
-                            <div *ngIf="cateringOtroCheckbox?.value" id="catering_otro_precio" class="form-group row">
+                            <div *ngIf="cateringOtroCheckbox?.value" @fadeInOut id="catering_otro_precio" class="form-group row">
                                 <div class="col-3">
-                                    <label for="cateringOtroPrecio" class="form-label">Precio del plato</label> 
-                                    <div class="input-group mb-2 col-4">
+                                    <div class="input-group col-4">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">$</div>
                                         </div>
@@ -298,38 +309,45 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <label for="descripcionCatering" class="form-label">Descripcion</label> 
                                     <input type="text" class="form-control" formControlName="cateringOtroDescripcion">
                                 </div>
                             </div>
                         </div>
                     </div>					
-                    <div *ngIf="agregarCateringCheckbox?.value">
+                    <div *ngIf="agregarCateringCheckbox?.value" @fadeInOut>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-12">
+                                    <div class="col-lg-5 col-md-12">
                                         <h4>Tipos de catering</h4>
-                                        <div id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbmByNombre; let i = index">
-                                            <app-extra-checkbox 
-                                                (outputExtraOtro)="cleanExtraOtroCheckbox()"
-                                                (outputExtraPresupuesto)="sumExtraTipoCatering($event)"
-                                                [listaExtra]="evento.listaExtraTipoCatering"
-                                                [i]="i"
-                                                [extra]="tipoCatering"
-                                            ></app-extra-checkbox>
+                                        <div class="extra-container">
+                                            <div class="extra-overflow">
+                                                <div class="extra-box" id="listaExtraTipoCatering" *ngFor="let tipoCatering of listaExtraTipoCatering | orderAbmByNombre; let i = index">
+                                                    <app-extra-checkbox 
+                                                        (outputExtraOtro)="cleanExtraOtroCheckbox()"
+                                                        (outputExtraPresupuesto)="sumExtraTipoCatering($event)"
+                                                        [listaExtra]="evento.listaExtraTipoCatering"
+                                                        [i]="i"
+                                                        [extra]="tipoCatering">
+                                                    </app-extra-checkbox>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                 
-                                    <div class="col-lg-8 col-md-12">
+                                    <div class="col-lg-7 col-md-12">
                                         <h4>Extras de catering</h4>
-                                        <div id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbmByNombre; let i = index">      
-                                            <app-extra-variable-checkbox
-                                                (outputExtraPresupuesto)="sumExtraCatering($event)"
-                                                [listaExtra]="evento.listaExtraCateringVariable"
-                                                [i]="i"
-                                                [extra]="cateringVariable">
-                                            </app-extra-variable-checkbox>
+                                        <div class="extra-container">
+                                            <div class="extra-overflow">
+                                                <div class="extra-box" id="listaExtraCatering" *ngFor="let cateringVariable of listaExtraCateringVariable | orderAbmByNombre; let i = index">      
+                                                    <app-extra-variable-checkbox
+                                                        (outputExtraPresupuesto)="sumExtraCatering($event)"
+                                                        [listaExtra]="evento.listaExtraCateringVariable"
+                                                        [i]="i"
+                                                        [extra]="cateringVariable">
+                                                    </app-extra-variable-checkbox>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>       
@@ -465,7 +483,7 @@
 
     <div class="botones-nuevo-evento">
         <button (click)="atras()" [disabled]="botonAtrasDisabled" type="button" [ngClass]="botonAtrasDisabled ? 'btn btn-secondary' : 'btn btn-primary'" class="mx-2">Atras</button>
-        <button (click)="siguiente()" type="button" class="btn btn-primary">{{botonSiguienteFinalizado}}</button>
+        <button (click)="siguiente()" type="button" class="btn btn-primary boton-min-width">{{botonSiguienteFinalizado}}</button>
     </div>
 </div>
 

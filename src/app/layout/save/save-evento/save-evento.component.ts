@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { fadeInOut } from 'src/app/animations/fade-in-out';
 import { ModalInformativoComponent } from 'src/app/components/modal/modal-informativo/modal-informativo.component';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
@@ -27,7 +28,8 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 @Component({
   selector: 'app-save-evento',
   templateUrl: './save-evento.component.html',
-  styleUrls: ['./save-evento.component.css']
+  styleUrls: ['./save-evento.component.css'],
+  animations: [fadeInOut]
 })
 export class SaveEventoComponent implements OnInit {
 
@@ -134,7 +136,7 @@ export class SaveEventoComponent implements OnInit {
           cateringOtroCheckbox: new FormControl(false),
           presupuestoCatering: new FormControl({value: 0, disabled: true}),
           cateringOtro: new FormControl(0),
-          cateringOtroDescripcion: new FormControl("0"),
+          cateringOtroDescripcion: new FormControl(""),
         }),
         clienteForm: this.formBuilder.group({
           nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
