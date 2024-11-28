@@ -14,7 +14,7 @@
     padding: 1em;
     border-radius: 10px;
     background-color: var(--color-terciario);
-    height: 68vh;
+    height: 69vh;
     position: absolute;
     width: 93%;
 }
@@ -100,5 +100,11 @@
     .nuevo-evento-step{
         height: auto;
         position: relative;
+    }
+    
+    .borde-superior-mobile{
+        border-top: 1px solid var(--color-cuaternario);
+        margin-bottom: 0.3em;
+        margin-top: 0.5em;
     }
 }

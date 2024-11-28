@@ -136,8 +136,8 @@ export class SaveEventoComponent implements OnInit {
           agregarCateringCheckbox: new FormControl(false),
           cateringOtroCheckbox: new FormControl(false),
           presupuestoCatering: new FormControl({value: 0, disabled: true}),
-          cateringOtro: new FormControl(0),
-          cateringOtroDescripcion: new FormControl(""),
+          cateringOtro: new FormControl({value: 0, disabled: true}),
+          cateringOtroDescripcion: new FormControl({value: "", disabled: true}),
         }),
         clienteForm: this.formBuilder.group({
           nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -422,6 +422,11 @@ export class SaveEventoComponent implements OnInit {
       this.evento.listaExtraTipoCatering.splice(0)
       this.extraTipoCateringPresupuesto = 0
       this.sumExtraTipoCatering(0)
+      this.cateringOtro?.enable()
+      this.cateringOtroDescripcion?.enable()
+    }else{
+      this.cateringOtro?.disable()
+      this.cateringOtroDescripcion?.disable()
     }
   }
 

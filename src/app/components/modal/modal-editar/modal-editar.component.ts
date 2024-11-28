@@ -18,6 +18,9 @@ export class ModalEditarComponent implements OnInit {
   @Input()
   myCallback!: Function
 
+  @Input()
+  formatoTextearea = false
+
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
 

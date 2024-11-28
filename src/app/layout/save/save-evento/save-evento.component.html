@@ -243,7 +243,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group col-6">
                                     <label class="form-label" for="descuento">Descuento</label>
                                     <div class="input-group mb-2">
@@ -257,8 +256,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2">
 
+                            <div class="row mt-2">
                                 <div class="form-group col-md-6">
                                     <label class="form-label" for="presupuesto">Presupuesto</label> 
                                     <div class="input-group mb-2">
@@ -279,38 +278,11 @@
             <div class="step-animation" *ngIf="isStep(4)" @fadeInOut>
                 <section class="nuevo-evento-step" formGroupName="cateringForm">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-lg-6 col-md-12">
                             <h2>Seleccione opciones de catering</h2>
-                            <div class="form-group mb-3 card-extra">
+                            <div class="form-group mb-2 card-checkbox">
                                 <input class="form-check-input me-2" type="checkbox" formControlName="agregarCateringCheckbox" id="agregarCateringCheckbox">
                                 <label class="form-check-label" for="agregarCateringCheckbox">Agregar servicio de catering</label>
-                            </div>
-                        </div>
-
-                        <div class="col-6" *ngIf="agregarCateringCheckbox?.value" @fadeInOut>
-                            <div class="form-group my-2">
-                                <input class="form-check-input me-2" type="checkbox" id="cateringOtroCheckbox"
-                                    formControlName="cateringOtroCheckbox" 
-                                    (change)="cleanTipoCateringForCateringOtro()">
-                                <label class="form-check-label" for="cateringOtroCheckbox"> Catering Otro 
-                                    <small class="form-text text-muted">(Permite ingresar un precio personalizado de plato)</small>
-                                </label>
-                                
-                            </div>
-                            <div *ngIf="cateringOtroCheckbox?.value" @fadeInOut id="catering_otro_precio" class="form-group row">
-                                <div class="col-3">
-                                    <div class="input-group col-4">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">$</div>
-                                        </div>
-                                        <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"
-                                        formControlName="cateringOtro"
-                                        (change)="sumCateringPresupuesto()"/>
-                                    </div>
-                                </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" formControlName="cateringOtroDescripcion">
-                                </div>
                             </div>
                         </div>
                     </div>					
@@ -352,8 +324,36 @@
                                     </div>
                                 </div>       
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 borde-superior-mobile">
                                 <div class="col-12">
+                                    <div class="form-group my-2 d-flex card-checkbox">
+                                        <input class="form-check-input me-2" type="checkbox" id="cateringOtroCheckbox"
+                                            formControlName="cateringOtroCheckbox" 
+                                            (change)="cleanTipoCateringForCateringOtro()">
+                                        <label class="form-check-label" for="cateringOtroCheckbox"> Catering Otro 
+                                            <small class="form-text text-muted">(Permite ingresar un precio personalizado de plato)</small>
+                                        </label>
+                                        
+                                    </div>
+                                    <div id="catering_otro_precio" class="form-group row">
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">$</div>
+                                                </div>
+                                                <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"
+                                                formControlName="cateringOtro"
+                                                (change)="sumCateringPresupuesto()"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <input type="text" class="form-control" formControlName="cateringOtroDescripcion">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-2">
                                     <h4>La cantidad de adultos del evento es: {{capacidadAdultos?.getRawValue()}}</h4>
                                 </div>
                                 <div class="col-12">

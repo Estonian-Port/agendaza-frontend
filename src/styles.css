@@ -130,7 +130,8 @@ button:focus {
 
 .card-empresa,
 .card-extra,
-.card-servicios{
+.card-servicios,
+.card-checkbox{
   border-radius: 0.5rem;
   background-color: var(--color-quinario);
   box-shadow: 0 0.3rem 0.4rem rgba(0, 0, 0, 0.1);
@@ -161,6 +162,12 @@ button:focus {
   min-width: 30em;
 }
 
+.card-checkbox{
+  padding: 0.4em;
+  max-width: fit-content;
+  min-width: auto;
+}
+
 .card-extra:hover{
   background-color: var(--hover-bg-color-secondary);
   transition: background-color 0.4s;
@@ -168,6 +175,12 @@ button:focus {
 
 .curso-pointer{
   cursor: pointer;
+}
+
+input:disabled {
+  background-color: #f0f0f0;
+  color: #a0a0a0;
+  cursor: not-allowed;
 }
 
 @media (max-width: 767px) {
