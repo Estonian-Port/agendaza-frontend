@@ -12,7 +12,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class EditEmpleadoCargoComponent implements OnInit {
 
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"")
+  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"",0)
   listaCargo : Array<string> = []
 
   constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router) { }

@@ -11,7 +11,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class EditUsuarioComponent implements OnInit {
   
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"")
+  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"",0)
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
 

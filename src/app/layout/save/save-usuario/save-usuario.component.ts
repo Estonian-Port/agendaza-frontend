@@ -17,7 +17,7 @@ export class SaveUsuarioComponent implements OnInit {
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
-    this.usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO",Cargo.EMPLEADO, "")
+    this.usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO",Cargo.EMPLEADO, "",0)
     this.listaCargo = await this.usuarioService.getAllCargo()
   }
 

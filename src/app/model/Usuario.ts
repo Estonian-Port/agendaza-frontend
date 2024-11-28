@@ -24,18 +24,19 @@ export type UsuarioJSON = {
   sexo: string
   cargo: Cargo
   email: string
+  celular: number
 }
 
 export class Usuario {
 
   constructor(public id: number, public nombre: string, public apellido: string, public username: string,
     public password :string, public fechaNacimiento : Date, public sexo : string, public cargo : Cargo,
-    public email : string) {}
+    public email : string, public celular : number) {}
 
   static fromJson(usuarioJson : UsuarioJSON) : Usuario{ 
     return  Object.assign(new Usuario(usuarioJson.id, usuarioJson.nombre, usuarioJson.apellido, 
       usuarioJson.username, usuarioJson.password, usuarioJson.fechaNacimiento, usuarioJson.sexo,
-      usuarioJson.cargo, usuarioJson.email))
+      usuarioJson.cargo, usuarioJson.email, usuarioJson.celular))
   }
 
   esValido(): boolean {
@@ -61,6 +62,7 @@ export class Usuario {
       cargo: this.cargo,
       sexo: this.sexo,
       email: this.email,
+      celular: this.celular
     }
   }
 }
