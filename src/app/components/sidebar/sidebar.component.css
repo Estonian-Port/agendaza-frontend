@@ -80,6 +80,17 @@
   width: 2rem;
 }
 
+.selected-icon{
+  color: var(--color-primario);
+}
+
+
+.selected-sidebar-collapsed-icon {
+  width: 100%;
+  border-right: 3px solid  var(--color-primario);
+}
+
+
 @media (max-width: 767px) {
   .sidebar-collapsed-icon {
     display: none;

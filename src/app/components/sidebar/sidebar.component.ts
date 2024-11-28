@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AgendaService } from 'src/app/services/agenda.service';
 import { Location } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,29 +12,43 @@ import { Location } from '@angular/common';
 export class SidebarComponent implements OnInit {
   constructor(private router: Router, private agendaService: AgendaService, private location: Location) {}
 
-  ngOnInit(): void {}
+  //activeRoute: string = ''
+  isSidebarActive: boolean = false
+  selectedIcon : String = ""
+  
 
-  isSidebarActive: boolean = false;
-
-  saveEvento() {
-    this.router.navigateByUrl('/saveEvento');
+  ngOnInit(): void{}   /*{
+    // Subscribirse a los eventos de navegación para obtener la ruta activa
+    this.router.events.pipe(
+      filter((event: any) => event instanceof NavigationEnd) // Filtramos solo los eventos de tipo NavigationEnd
+    ).subscribe((event: NavigationEnd) => {
+      // Cuando se completa una navegación, actualizamos la ruta activa
+      this.activeRoute = event.urlAfterRedirects; // Asignamos la URL después de cualquier redirección
+    });
   }
 
-  volverAgendas() {
-    this.agendaService.removeEmpresaId();
-    this.router.navigateByUrl('/');
-  }
+  isActiveRoute(route: string): boolean {
+    console.log(this.activeRoute )
+
+    return this.activeRoute.includes(route); // Verificamos si la ruta activa contiene el ícono
+  }*/
+
+
 
   isLogin(): boolean {
     return '/login' == this.location.path();
   }
 
-  isAgenda(): boolean {
-    return '/agenda' == this.location.path();
+  isAgendaSeleccionada(): boolean {
+    return '' != this.agendaService.getEmpresaId();
+  }
+
+  isInSeleccionarAgenda(): boolean {
+    return '' == this.location.path();
   }
 
   isInAgenda(): boolean {
-    return this.agendaService.getEmpresaId() != '';
+    return '/agenda'  == this.location.path();
   }
 
   isSaveEvento(): boolean {
@@ -48,16 +63,30 @@ export class SidebarComponent implements OnInit {
     return '/abm' == this.location.path().substring(0, 4);
   }
 
-  volverCalendario() {
+  irAgendas() {
+    this.agendaService.removeEmpresaId();
+    this.router.navigateByUrl('/');
+  }
+
+  irCalendario() {
     this.router.navigateByUrl('/agenda');
   }
 
-  panelAdmin() {
+  irSaveEvento() {
+
+    this.router.navigateByUrl('/saveEvento');
+  }
+
+  irPanelAdmin() {
     this.router.navigateByUrl('/panelAdmin');
   }
 
   toggleSidebar() {
     this.isSidebarActive = !this.isSidebarActive;
+  }
+
+  isSelectedIcon(iconName: string): boolean {
+    return this.selectedIcon == iconName;
   }
 
   @HostListener('document:click', ['$event'])
