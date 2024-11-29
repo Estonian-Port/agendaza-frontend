@@ -5,6 +5,7 @@ import { REST_SERVER_URL } from 'src/util/configuration';
 import { Usuario, UsuarioEditCargo, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
 import { Cargo } from '../model/Cargo';
+import { CryptoJsImpl } from 'src/util/cryptoJsImpl';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +42,17 @@ export class UsuarioService {
   }
 
   async save(usuario : Usuario) {
-    const usuariof = new UsuarioSave(usuario, this.agendaService.getEmpresaId(), usuario.cargo)
+    var empresaId = 0
+    if(this.agendaService.getEmpresaId() != "" && this.agendaService.getEmpresaId != null){
+      empresaId = this.agendaService.getEmpresaId()
+    }
+    const usuariof = new UsuarioSave(usuario, empresaId, usuario.cargo)
     const item$ = this.httpClient.post<UsuarioJSON>(REST_SERVER_URL + '/saveUsuario', usuariof)
     const item = await lastValueFrom(item$)
+
+    //modifica el username q esta en el session storage
+    const username = CryptoJsImpl.encryptData(item.username)
+    localStorage.setItem('session', username)
     return item
   }
 

@@ -21,8 +21,6 @@ export class EditUsuarioPerfilComponent implements OnInit {
 
     this.usuarioService.usuarioId = await this.loginService.getUsuarioId()
     this.usuario = await this.loginService.getUsuarioPerfil()
-    this.usuario.cargo = await this.loginService.getCargoByEmpresaAndUsuario(this.usuario.id)
-    this.listaRol = await this.usuarioService.getAllCargo()
 
   }
 

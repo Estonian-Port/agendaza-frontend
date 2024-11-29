@@ -134,7 +134,6 @@ button:focus {
   background-color: var(--color-terciario);
 }
 
-
 .card-empresa,
 .card-extra,
 .card-servicios,
@@ -178,6 +177,13 @@ button:focus {
 .card-extra:hover{
   background-color: var(--hover-bg-color-secondary);
   transition: background-color 0.4s;
+}
+
+.card-content {
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: var(--color-cuaternario);
+  line-height: 1.5;
 }
 
 .curso-pointer{

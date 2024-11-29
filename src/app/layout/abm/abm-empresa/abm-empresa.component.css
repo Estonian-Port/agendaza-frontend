@@ -1,7 +1,3 @@
-.container {
-  width: auto;
-}
-
 .titulo-header {
   font-size: 2rem;
   color: var(--color-sexenario);
@@ -9,7 +5,6 @@
   margin-top: 1.5rem;
 }
 
-/* Estilos para las cards */
 .card-container {
   display: flex;
   flex-wrap: wrap;
@@ -18,24 +13,17 @@
   gap: 2em;
 }
 
-.card-content {
-  padding: 1.5rem;
-  font-size: 1rem;
-  color: var(--color-cuaternario);
-  line-height: 1.5;
-
-}
-
-.boton-editar{
+.card-title{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 1.5em;
   padding-left: 1.5em;
   padding-right: 1.5em;
+  width: 80%;
 }
 
-.card-title {
+.card-title-text {
   font-size: 1.5rem;
   color: #007BFF;
   margin-bottom: 0;
@@ -46,17 +34,8 @@
 }
 
 
-/* Responsividad */
 @media (max-width: 1200px) {
   .card-container {
     justify-content: center;
-  }
-
-  .card {
-    max-width: 100%;
-  }
-
-  .titulo-header{
-    text-align: center;
   }
 }
