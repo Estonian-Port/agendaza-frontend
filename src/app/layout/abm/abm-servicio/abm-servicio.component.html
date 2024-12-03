@@ -22,6 +22,7 @@
 
     <app-abm-data-table-paginacion
         (outputCurrentRegistro)="updateCurrentRegistro($event)"
+        (outputPageNumber)="updatePageNumber($event)"
         [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
         [cantidadPaginas]="cantidadPaginas">

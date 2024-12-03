@@ -190,13 +190,22 @@ button:focus {
   cursor: pointer;
 }
 
+.dimensiones-tabla-texto {
+  max-width: 10em;
+  min-width: 10em;
+}
+
+.dimensiones-tabla-iconos {
+  max-width: auto;
+}
+
 input:disabled {
   background-color: #f0f0f0;
   color: #a0a0a0;
   cursor: not-allowed;
 }
 
-@media (max-width: 767px) {
+@media (max-width:870px) {
   .layout {
     grid-template-areas:
       'a b b'
@@ -207,4 +216,15 @@ input:disabled {
   .hide-on-phone {
     display: none;
   }
+
+  .dimensiones-tabla-texto {
+    max-width: 7em;
+    min-width: 7em;
+  }
+
+  .dimensiones-tabla-iconos {
+    max-width: 100%;
+    min-width: 9em;
+  }
+
 }

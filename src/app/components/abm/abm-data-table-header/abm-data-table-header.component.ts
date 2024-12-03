@@ -38,7 +38,6 @@ export class AbmDataTableHeaderComponent implements OnInit {
 
   outputPalabraBuscar() {
     this.outputBuscar.emit(this.buscar);
-    
   }
 
   actualizaBuscar(){

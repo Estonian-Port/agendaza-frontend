@@ -10,7 +10,6 @@ import { Location } from '@angular/common';
 })
 export class AbmServicioComponent implements OnInit {
 
-
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number=0
@@ -29,9 +28,10 @@ export class AbmServicioComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.servicioService.getAllServicioByEmpresaId()
+    this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.pageNumber)
 
-    this.cantidadRegistros = this.listaItems.length
+    this.cantidadRegistros = await this.servicioService.getCantidadServicio()
+
     this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
     
     this.tituloModal = "Eliminar Servicio"

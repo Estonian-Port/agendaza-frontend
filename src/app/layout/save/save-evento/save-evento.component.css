@@ -78,7 +78,7 @@
     width: 98%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
     .hide-on-phone{
         display: none;
     }
