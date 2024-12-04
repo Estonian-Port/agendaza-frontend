@@ -29,8 +29,9 @@ export class AbmTipoEventoComponent implements OnInit {
   async inicializarListaItems(){
     this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
 
+    // TODO traer del back
     this.cantidadRegistros = this.listaItems.length
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
     this.tituloModal = "Eliminar Tipo Evento"
     this.nombreItemModal = "tipo evento"

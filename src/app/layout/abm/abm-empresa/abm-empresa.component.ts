@@ -26,30 +26,6 @@ export class AbmEmpresaComponent implements OnInit {
   
   async inicializarListaItems(){
     this.listaItems = await this.empresaService.getAllEmpresaByUsuarioId()
-
-    this.cantidadRegistros =this.listaItems.length
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
-  }
-
-  updatePageNumber(page : number){
-    this.pageNumber = page
-    this.inicializarListaItems()
-  }
-
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
-  }
-
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
-  }
-
-  updatePalabraBuscar(palabraBuscar: string){
-    this.buscar = palabraBuscar
-  }
-
-  updateCantidadPaginas(cantidadPaginas: number[]){
-    this.cantidadPaginas = cantidadPaginas
   }
 
   editar(id : number){

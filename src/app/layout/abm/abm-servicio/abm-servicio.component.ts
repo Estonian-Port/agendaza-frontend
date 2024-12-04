@@ -28,15 +28,30 @@ export class AbmServicioComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.pageNumber)
 
-    this.cantidadRegistros = await this.servicioService.getCantidadServicio()
+    this.updatePalabraBuscar(this.buscar)
+    this.paginaCero()
 
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    if(this.buscar == ""){
+      this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.pageNumber)
+      this.cantidadRegistros = await this.servicioService.getCantidadServicio()
+    }else{
+      this.listaItems = await this.servicioService.getAllServicioFiltrados(this.pageNumber,this.buscar)
+      this.cantidadRegistros = await this.servicioService.cantServicioFiltrados(this.buscar)
+    }
+
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
     this.tituloModal = "Eliminar Servicio"
     this.nombreItemModal = "servicio"
     this.botonModal = "Eliminar"
+  }
+
+  paginaCero(){
+    if(this.primeraBusqueda){
+          this.pageNumber = 0
+    }
+    this.primeraBusqueda = false
   }
 
   updatePageNumber(page : number){

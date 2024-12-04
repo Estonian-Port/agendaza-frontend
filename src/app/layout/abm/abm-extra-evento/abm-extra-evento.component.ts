@@ -33,15 +33,13 @@ export class AbmExtraEventoComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-
-    this.listaItems = await this.extraService.getAllExtraByEmpresaId(this.pageNumber)
-    this.cantidadRegistros = await this.extraService.cantExtras()
-
-  }else{
-    this.listaItems = await this.extraService.getAllExtraByFilterName(this.pageNumber,this.buscar)
-    this.cantidadRegistros = await this.extraService.cantExtrasFiltrados(this.buscar)
-  }
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 10) + 1)
+      this.listaItems = await this.extraService.getAllExtraByEmpresaId(this.pageNumber)
+      this.cantidadRegistros = await this.extraService.cantExtras()
+    }else{
+      this.listaItems = await this.extraService.getAllExtraByFilterName(this.pageNumber,this.buscar)
+      this.cantidadRegistros = await this.extraService.cantExtrasFiltrados(this.buscar)
+    }
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
     this.tituloModal = "Eliminar Extra"
     this.nombreItemModal = "extra"

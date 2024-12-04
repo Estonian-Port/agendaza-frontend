@@ -1,26 +1,30 @@
 <div class="abm">
 
-    <app-abm-data-table-header
-        [busqueda] = "primeraBusqueda"
-        titulo = 'Eventos'
-        (outputBuscar)="updatePalabraBuscar($event)"
-        (outputPageNumber)="updatePageNumber($event)"
-        (outputBusqueda)="updatePrimeraBusqueda($event)">
-    </app-abm-data-table-header>
+    <div class="abm-content">
 
-    <app-abm-data-table-evento
-        (outputPagos)="pagos($event)"
-        (outputExtra)="extras($event)"
-        (outputCatering)="catering($event)"
-        (outputHora)="hora($event)"
-        (outputVer)="ver($event)"
-        (outputEliminar)="eliminar($event)"
-        [listaItems]="listaItems"
-        [listaHeader]="listaHeader"
-        [currentRegistro]="currentRegistro"
-        [pageNumber]="pageNumber"
-        [buscar]="buscar">
-    </app-abm-data-table-evento>
+        <app-abm-data-table-header
+            [busqueda] = "primeraBusqueda"
+            titulo = 'Eventos'
+            (outputBuscar)="updatePalabraBuscar($event)"
+            (outputPageNumber)="updatePageNumber($event)"
+            (outputBusqueda)="updatePrimeraBusqueda($event)">
+        </app-abm-data-table-header>
+
+        <app-abm-data-table-evento
+            (outputPagos)="pagos($event)"
+            (outputExtra)="extras($event)"
+            (outputCatering)="catering($event)"
+            (outputHora)="hora($event)"
+            (outputVer)="ver($event)"
+            (outputEliminar)="eliminar($event)"
+            [listaItems]="listaItems"
+            [listaHeader]="listaHeader"
+            [currentRegistro]="currentRegistro"
+            [pageNumber]="pageNumber"
+            [buscar]="buscar">
+        </app-abm-data-table-evento>
+        
+    </div>
 
     <app-abm-data-table-paginacion
         (outputCurrentRegistro)="updateCurrentRegistro($event)"

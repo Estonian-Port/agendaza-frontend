@@ -33,6 +33,19 @@ export class ServicioService {
     return this.cantidadServicio
   }
 
+  async getAllServicioFiltrados(pageNumber: number, buscar: string) {
+    const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioFiltrados/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((servicio) => GenericItem.fromJson(servicio))
+  }
+
+  async cantServicioFiltrados(buscar: string): Promise<number | PromiseLike<number>> {
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadServicioFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    this.cantidadServicio = await lastValueFrom(cant$)
+    return this.cantidadServicio
+  }
+
+
   async getAllServicioByTipoEventoId(tipoEventoId: number) {
     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioByTipoEventoId/' + tipoEventoId)
     const listaItem = await lastValueFrom(listaItem$)

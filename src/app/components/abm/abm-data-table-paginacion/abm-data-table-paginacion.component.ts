@@ -38,11 +38,10 @@ export class AbmDataTablePaginacionComponent implements OnInit {
 
   siguiente(){
       if(this.pageNumber < this.cantidadRegistros/10 -1){
-       this.pageNumber += 1       
-      this.currentPagina += 1
+        this.pageNumber += 1       
+        this.currentPagina += 1
       }
       this.outputRegistro()
-    
   }
 
   atras(){
@@ -70,18 +69,8 @@ export class AbmDataTablePaginacionComponent implements OnInit {
   actualizarCantidadPaginas(){
     this.currentPagina = 1
     this.currentRegistro = 0
-    
-    /*
-    this.cantidadPaginas = new Array<number>(
-      Math.trunc(
-        this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
-    
-    this.outputRegistro()
-    //this.outputPalabraBuscar()*/
   }
   
-
-
   outputRegistro() {
     this.outputCurrentRegistro.emit(this.currentRegistro);
     this.outputPageNumber.emit(this.pageNumber);    
@@ -89,7 +78,8 @@ export class AbmDataTablePaginacionComponent implements OnInit {
 
   getLimites(paginaActual: number): [number, number] {
     const fin = Math.max(5,paginaActual)
-    const inicio = Math.max(0,fin-5)
+    const inicio = Math.max(0,fin-5) + 1
+    console.log([inicio, fin])
     return [inicio, fin];
   }
   

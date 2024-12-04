@@ -38,7 +38,7 @@ export class AbmUsuarioComponent implements OnInit {
       this.cantidadRegistros = await this.usuarioService.getCantUsuariosFiltrados(this.buscar)
     }
 
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 11) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
   }
 

@@ -27,24 +27,22 @@ export class AbmPagoComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-
-    this.listaItems = await this.pagoService.getAllPagoByEmpresaId(this.pageNumber)
-    this.cantidadRegistros = await this.pagoService.cantPagos()
+      this.listaItems = await this.pagoService.getAllPagoByEmpresaId(this.pageNumber)
+      this.cantidadRegistros = await this.pagoService.cantPagos()
     }else{
       this.listaItems = await this.pagoService.getAllPagoByFilter(this.pageNumber,this.buscar)
       this.cantidadRegistros = await this.pagoService.cantPagosFiltrados(this.buscar)
-
     }
 
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 10) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
   }
+
   paginaCero(){
     if(this.primeraBusqueda){
           this.pageNumber = 0
     }
     this.primeraBusqueda = false
-
   }
 
   updatePageNumber(page : number){
@@ -54,7 +52,6 @@ export class AbmPagoComponent implements OnInit {
 
   updatePrimeraBusqueda(busqueda: Boolean){
     this.primeraBusqueda = busqueda
-
   }
 
   updateCurrentRegistro(registro: number){

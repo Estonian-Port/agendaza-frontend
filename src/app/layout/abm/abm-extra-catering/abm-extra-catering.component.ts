@@ -32,15 +32,14 @@ export class AbmExtraCateringComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-
-    this.listaItems = await this.extraService.getAllExtraCATByEmpresaId(this.pageNumber)
-    this.cantidadRegistros = await this.extraService.cantExtrasCAT()
-
-  }else{
-    this.listaItems = await this.extraService.getAllExtraCATByFilterName(this.pageNumber,this.buscar)
-    this.cantidadRegistros = await this.extraService.cantExtrasCATFiltrados(this.buscar)
-  }
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 10) + 1)
+      this.listaItems = await this.extraService.getAllExtraCATByEmpresaId(this.pageNumber)
+      this.cantidadRegistros = await this.extraService.cantExtrasCAT()
+    }else{
+      this.listaItems = await this.extraService.getAllExtraCATByFilterName(this.pageNumber,this.buscar)
+      this.cantidadRegistros = await this.extraService.cantExtrasCATFiltrados(this.buscar)
+    }
+    
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
 
     this.tituloModal = "Eliminar Extra"

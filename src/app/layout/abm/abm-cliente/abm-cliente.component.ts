@@ -26,8 +26,9 @@ export class AbmClienteComponent implements OnInit {
   async inicializarListaItems(){
     this.listaItems = await this.usuarioService.getAllClienteByEmpresaId()
 
+    // TODO Traer del back
     this.cantidadRegistros = this.listaItems.length
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
 
     this.listaHeader.push("Nombre")
     this.listaHeader.push("Apellido")

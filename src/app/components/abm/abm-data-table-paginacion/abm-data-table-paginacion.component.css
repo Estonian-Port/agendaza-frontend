@@ -30,7 +30,7 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 806px) {
+@media only screen and (max-width: 871px) {
     .panel-paginacion {
         position: static;
         justify-content: center;
