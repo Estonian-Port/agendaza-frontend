@@ -10,9 +10,6 @@ export class AbmDataTableComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
-  currentRegistro : number = 0
-
-  @Input()
   buscar = ''
 
   @Input()
@@ -20,9 +17,6 @@ export class AbmDataTableComponent implements OnInit {
   
   @Input()
   mostrarEliminar : boolean = true
-  
-  @Input()
-  pageNumber : number = 0
 
   @Output() 
   outputPrecio = new EventEmitter<number>();

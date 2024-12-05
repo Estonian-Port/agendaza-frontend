@@ -17,6 +17,7 @@ import { AgendaService } from './agenda.service';
 export class TipoEventoService {
   
   tipoEventoId : number = 0
+  cantidadTipoEvento : number = 0
   
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) {}
   
@@ -27,9 +28,33 @@ export class TipoEventoService {
   }
 
   async getAllTipoEventoByEmpresaId() {
-    const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoByEmpresaId/' + this.agendaService.getEmpresaId())
+    const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEvento/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
+  }
+
+  async getAllTipoEventoByEmpresaIdAbm(pageNumber : number) {
+    const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEvento/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
+  }
+
+  async getCantidadTipoEvento(): Promise<number | PromiseLike<number>> {
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadTipoEvento/' + this.agendaService.getEmpresaId())
+    this.cantidadTipoEvento = await lastValueFrom(cant$)
+    return this.cantidadTipoEvento
+  }
+
+  async getAllTipoEventoFiltrados(pageNumber: number, buscar: string) {
+    const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEventoFiltrados/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((servicio) => GenericItem.fromJson(servicio))
+  }
+
+  async cantTipoEventoFiltrados(buscar: string): Promise<number | PromiseLike<number>> {
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadTipoEventoFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    this.cantidadTipoEvento = await lastValueFrom(cant$)
+    return this.cantidadTipoEvento
   }
 
   async getAllDuracion() {

@@ -12,13 +12,13 @@ export class AbmTipoEventoComponent implements OnInit {
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number = 0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
+  realizoBusqueda : Boolean = true
+
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
-  pageNumber : number = 0
-  primeraBusqueda : Boolean = true
 
   constructor(private tipoEventoService : TipoEventoService, private router : Router, private location : Location) { }
 
@@ -27,10 +27,17 @@ export class AbmTipoEventoComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
+    this.updatePalabraBuscar(this.buscar)
+    this.paginaCero()
 
-    // TODO traer del back
-    this.cantidadRegistros = this.listaItems.length
+    if(this.buscar == ""){
+      this.listaItems = await this.tipoEventoService.getAllTipoEventoByEmpresaIdAbm(this.paginaActual)
+      this.cantidadRegistros = await this.tipoEventoService.getCantidadTipoEvento()
+    }else{
+      this.listaItems = await this.tipoEventoService.getAllTipoEventoFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.tipoEventoService.cantTipoEventoFiltrados(this.buscar)
+    }
+
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
     this.tituloModal = "Eliminar Tipo Evento"
@@ -38,19 +45,22 @@ export class AbmTipoEventoComponent implements OnInit {
     this.botonModal = "Eliminar"
   }
 
-  updatePageNumber(page : number){
-    this.pageNumber = page
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
+  }
+
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
+    this.realizoBusqueda = busqueda
   }
-
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
-  }
-
+  
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
   }

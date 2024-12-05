@@ -3,10 +3,10 @@
     <div class="abm-content">
         
         <app-abm-data-table-header
-            [busqueda] = "primeraBusqueda"
+            [realizoBusqueda] = "realizoBusqueda"
             titulo = 'Catering'
             (outputBuscar)="updatePalabraBuscar($event)"
-            (outputPageNumber)="updatePageNumber($event)"
+            (outputPaginaActual)="updatePaginaActual($event)"
             (outputBusqueda)="updatePrimeraBusqueda($event)">
         </app-abm-data-table-header>
 
@@ -18,20 +18,17 @@
             [tituloModal] = "tituloModal"
             [botonModal] = "botonModal"
             [listaItems]="listaItems"
-            [currentRegistro]="currentRegistro"
-            [pageNumber]="pageNumber"
             [buscar]="buscar">
         </app-abm-data-table>
     
     </div>
 
     <app-abm-data-table-paginacion
-        (outputCurrentRegistro)="updateCurrentRegistro($event)"
-        (outputPageNumber)="updatePageNumber($event)"
+        (outputPaginaActual)="updatePaginaActual($event)"
         [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
         [cantidadPaginas]="cantidadPaginas"
-        [pageNumber]="pageNumber">
+        [paginaActual]="paginaActual">
     </app-abm-data-table-paginacion>
 
 </div>

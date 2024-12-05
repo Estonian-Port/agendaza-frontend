@@ -13,13 +13,14 @@ export class AbmServicioComponent implements OnInit {
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number=0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
+  realizoBusqueda : Boolean = true
+
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
-  pageNumber : number = 0
-  primeraBusqueda : Boolean = true
+
 
   constructor(private servicioService : ServicioService, private router : Router, private location : Location) { }
 
@@ -28,15 +29,14 @@ export class AbmServicioComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
 
     if(this.buscar == ""){
-      this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.pageNumber)
+      this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.paginaActual)
       this.cantidadRegistros = await this.servicioService.getCantidadServicio()
     }else{
-      this.listaItems = await this.servicioService.getAllServicioFiltrados(this.pageNumber,this.buscar)
+      this.listaItems = await this.servicioService.getAllServicioFiltrados(this.paginaActual,this.buscar)
       this.cantidadRegistros = await this.servicioService.cantServicioFiltrados(this.buscar)
     }
 
@@ -48,23 +48,19 @@ export class AbmServicioComponent implements OnInit {
   }
 
   paginaCero(){
-    if(this.primeraBusqueda){
-          this.pageNumber = 0
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
     }
-    this.primeraBusqueda = false
+    this.realizoBusqueda = false
   }
 
-  updatePageNumber(page : number){
-    this.pageNumber = page
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
-  }
-
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
+    this.realizoBusqueda = busqueda
   }
 
   updatePalabraBuscar(palabraBuscar: string){

@@ -23,22 +23,50 @@ export class UsuarioService {
     return await lastValueFrom(item$)
   }
 
-  async getAllUsuariosByEmpresaId(pageNumber : number) {
-    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuariosByEmpresaId/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
+  async getAllUsuario(pageNumber : number) {
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuario/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((usuario) => Usuario.fromJson(usuario))
   }
 
-  async cantUsuarios(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantUsuarios/' + this.agendaService.getEmpresaId())
+  async getCantidadUsuario(){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadUsuario/' + this.agendaService.getEmpresaId())
     this.cantidadUsuarios = await lastValueFrom(cant$)
     return this.cantidadUsuarios
   }
 
-  async getAllClienteByEmpresaId() {
-    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllClienteByEmpresaId/' + this.agendaService.getEmpresaId())
+  async getAllUsuarioFiltrados(pageNumber : number, buscar : string){
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsuarioFiltrados/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((usuario) => Usuario.fromJson(usuario))
+  }
+  
+  async getCantidadUsuarioFiltrados(buscar : string){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadUsuarioFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    return await lastValueFrom(cant$)
+  }
+
+  async getAllCliente(pageNumber : number) {
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllCliente/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((usuario) => Usuario.fromJson(usuario))
+  }
+
+  async getCantidadCliente(){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadCliente/' + this.agendaService.getEmpresaId())
+    this.cantidadUsuarios = await lastValueFrom(cant$)
+    return this.cantidadUsuarios
+  }
+
+  async getAllClienteFiltrados(pageNumber : number, buscar : string){
+    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllClienteFiltrados/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((usuario) => Usuario.fromJson(usuario))
+  }
+  
+  async getCantidadClienteFiltrados(buscar : string){
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/getCantidadClienteFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    return await lastValueFrom(cant$)
   }
 
   async save(usuario : Usuario) {
@@ -71,17 +99,6 @@ export class UsuarioService {
   async getAllCargo() {
     const listaItem$ = this.httpClient.get<Cargo[]>(REST_SERVER_URL + '/getAllCargo')
     return await lastValueFrom(listaItem$)
-  }
-
-  async getAllUsersByFilterName(pageNumber : number, buscar : string){
-    const listaItem$ = this.httpClient.get<UsuarioJSON[]>(REST_SERVER_URL + '/getAllUsersByFilterName/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((usuario) => Usuario.fromJson(usuario))
-  }
-  
-  async getCantUsuariosFiltrados(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantUsuariosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
-    return await lastValueFrom(cant$)
   }
 
   async getEventosByUsuarioAndEmpresa(usuarioId: number) {

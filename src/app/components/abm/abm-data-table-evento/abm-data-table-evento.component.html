@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderByFechaInicio">
+            <tr *ngFor="let item of listaItems | orderByFechaInicio">
                 <td class="dimensiones-tabla-texto">{{item.nombre | truncarTexto}}</td>
                 <td>{{item.codigo}}</td>
                 <td>{{item.inicio | date: "dd/MM/yy"}}</td>

@@ -3,29 +3,26 @@
     <div class="abm-content">
 
         <app-abm-data-table-header
-            [busqueda] = "primeraBusqueda"
+            [realizoBusqueda] = "realizoBusqueda"
             titulo = 'Pagos'
             (outputBuscar)="updatePalabraBuscar($event)"
-            (outputPageNumber)="updatePageNumber($event)"
+            (outputPaginaActual)="updatePaginaActual($event)"
             (outputBusqueda)="updatePrimeraBusqueda($event)">
         </app-abm-data-table-header>
 
         <app-abm-data-table-pago class="tabla-panel"
             (outputEliminar)="eliminar($event)"
             [listaItems]="listaItems"
-            [currentRegistro]="currentRegistro"
-            [pageNumber]="pageNumber"
             [buscar]="buscar">
         </app-abm-data-table-pago>
 
     </div>
 
     <app-abm-data-table-paginacion
-        (outputCurrentRegistro)="updateCurrentRegistro($event)"
-        (outputPageNumber)="updatePageNumber($event)"
+        (outputPaginaActual)="updatePaginaActual($event)"
         [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
-        [pageNumber]="pageNumber"
+        [paginaActual]="paginaActual"
         [cantidadPaginas]="cantidadPaginas">
     </app-abm-data-table-paginacion>
 

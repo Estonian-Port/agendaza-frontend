@@ -12,13 +12,13 @@ export class AbmExtraCateringComponent implements OnInit {
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number=0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
+  realizoBusqueda : Boolean = true
+
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
-  primeraBusqueda : Boolean = true
-  pageNumber : number = 0
 
   constructor(private extraService : ExtraService, private router : Router, private location : Location) { }
 
@@ -32,10 +32,10 @@ export class AbmExtraCateringComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-      this.listaItems = await this.extraService.getAllExtraCATByEmpresaId(this.pageNumber)
+      this.listaItems = await this.extraService.getAllExtraCATByEmpresaId(this.paginaActual)
       this.cantidadRegistros = await this.extraService.cantExtrasCAT()
     }else{
-      this.listaItems = await this.extraService.getAllExtraCATByFilterName(this.pageNumber,this.buscar)
+      this.listaItems = await this.extraService.getAllExtraCATByFilterName(this.paginaActual,this.buscar)
       this.cantidadRegistros = await this.extraService.cantExtrasCATFiltrados(this.buscar)
     }
     
@@ -47,28 +47,26 @@ export class AbmExtraCateringComponent implements OnInit {
     this.botonModal = "Eliminar"
   }
 
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
   }
 
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
   }
-  updatePageNumber(page : number){
-    this.pageNumber = page
+
+  updatePaginaActual(page : number){
+    this.paginaActual = page
     this.inicializarListaItems()
   }
+
   updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
-
+    this.realizoBusqueda = busqueda
   }
-  paginaCero(){
-    if(this.primeraBusqueda){
-          this.pageNumber = 0
-    }
-    this.primeraBusqueda = false
 
-  }
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
