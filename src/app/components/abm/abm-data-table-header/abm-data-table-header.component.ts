@@ -53,7 +53,8 @@ export class AbmDataTableHeaderComponent implements OnInit {
     'Empleados': '/saveUsuario',
     'Tipo Eventos': '/saveTipoEvento',
     'Servicios': '/saveServicio',
-    'Catering': '/saveExtraCatering'
+    'Catering': '/saveExtraCatering',
+    'Clientes': '/saveCliente'
   };
 
   getRoute(): string {
