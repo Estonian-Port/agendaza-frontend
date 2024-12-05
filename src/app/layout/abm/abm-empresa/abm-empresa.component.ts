@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { EmpresaAbm } from 'src/app/model/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 export class AbmEmpresaComponent implements OnInit {
 
   buscar = ''
-  listaItems : Array<any> = []
+  listaItems : Array<EmpresaAbm> = []
   cantidadRegistros : number=0
   cantidadPaginas : number[] = []
   currentRegistro : number = 0

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Empresa } from '../model/Empresa';
+import { Empresa, EmpresaAbm, EmpresaAbmJSON } from '../model/Empresa';
 import { GenericItem, GenericItemJSON } from '../model/GenericItem';
 import { AgendaService } from './agenda.service';
 import { LoginService } from './login.service';
@@ -21,10 +21,15 @@ export class EmpresaService {
     return await lastValueFrom(item$)
   }
 
+  async getEmpresaAbm(){
+    const item$ = this.httpClient.get<EmpresaAbm>(REST_SERVER_URL + '/getEmpresa/' + this.empresaId)
+    return await lastValueFrom(item$)
+  }
+
   async getAllEmpresaByUsuarioId() {
-    const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllEmpresaByUsuarioId/' + await this.loginService.getUsuarioId())
+    const listaItem$ = this.httpClient.get<EmpresaAbmJSON[]>(REST_SERVER_URL + '/getAllEmpresaByUsuarioId/' + await this.loginService.getUsuarioId())
     const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((empresa) => GenericItem.fromJson(empresa))
+    return listaItem.map((empresa) => EmpresaAbm.fromJson(empresa))
   }
 
   async save(empresa : Empresa) {

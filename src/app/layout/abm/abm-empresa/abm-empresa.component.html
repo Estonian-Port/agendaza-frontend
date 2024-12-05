@@ -2,16 +2,17 @@
   <h2 class="titulo-header">Administrar Empresas</h2>
 
   <div class="card-container">
-    <div *ngFor="let item of listaItems | filterAbm: currentRegistro:buscar | orderAbmByNombre">
+    <div *ngFor="let item of listaItems | orderAbmByNombre">
       <div class="card-empresa">
           <button (click)="editar(item.id)" class="card-title">
             <h2 class="card-title-text">{{item.nombre}}</h2>
             <i class="fas fa-edit text-warning card-icon" data-bs-toggle="tooltip" title="Editar"></i>
           </button>
           <div class="card-content">
-            <p>Cargo: Admin</p>
-            <p>Direccion: bonifacni 1564</p>
-            <p>Correo electronico:</p>
+            <p>Cargo: {{item.tipoCargo}}</p>
+            <p>Direccion: {{item.calle}} {{item.numero}}, {{item.municipio}}</p>
+            <p>Correo electronico: {{item.email}}</p>
+            <p>Telefono: {{item.telefono}}</p>
           </div>
       </div>
     </div>

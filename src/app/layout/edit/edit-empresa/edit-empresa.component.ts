@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Cargo } from 'src/app/model/Cargo';
+import { EmpresaAbm } from 'src/app/model/Empresa';
+import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
   selector: 'app-edit-empresa',
@@ -6,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditEmpresaComponent implements OnInit {
 
-  constructor() { }
+  empresa = new EmpresaAbm(0, "", "", Cargo.CLIENTE, "", 0, "", 0,"")
 
-  ngOnInit(): void {
+  constructor(private empresaService : EmpresaService, private router : Router) { }
+
+  async ngOnInit(): Promise<void> {
+    this.empresa = await this.empresaService.getEmpresaAbm()
+
   }
+
+  //TODO
+  save() {
+    throw new Error('Method not implemented.');
+  }
+
+  volver(){
+    this.router.navigateByUrl("/abmEmpresa")
+  }
+
 
 }

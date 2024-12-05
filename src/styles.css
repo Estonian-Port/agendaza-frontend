@@ -158,7 +158,8 @@ button:focus {
   border-radius: 1rem;
   box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  min-width: 20rem;
+  min-width: 21rem;
+  min-height: 17rem;
 }
 
 .card-empresa:hover {
