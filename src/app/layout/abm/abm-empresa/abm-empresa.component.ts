@@ -34,12 +34,4 @@ export class AbmEmpresaComponent implements OnInit {
       this.router.navigateByUrl('/editEmpresa')
   }
 
-  async eliminar(id : number){
-    (await this.empresaService.delete(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
-  }
-
 }

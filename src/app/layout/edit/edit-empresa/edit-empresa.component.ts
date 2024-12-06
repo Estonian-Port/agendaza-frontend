@@ -19,9 +19,9 @@ export class EditEmpresaComponent implements OnInit {
 
   }
 
-  //TODO
   save() {
-    throw new Error('Method not implemented.');
+    this.empresaService.save(this.empresa)
+    this.router.navigateByUrl("/abmEmpresa")
   }
 
   volver(){

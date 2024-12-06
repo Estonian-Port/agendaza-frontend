@@ -33,12 +33,8 @@ export class EmpresaService {
   }
 
   async save(empresa : Empresa) {
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveServicio', empresa)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveEmpresa', empresa)
     return await lastValueFrom(item$)
-  }
-
-  async delete(id : number) {
-    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
   }
 
 }
