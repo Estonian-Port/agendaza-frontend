@@ -24,13 +24,13 @@ export class TipoEventoService {
   async getTipoEvento(id : number) {
     const item$ = this.httpClient.get<TipoEventoEditJSON>(REST_SERVER_URL + '/getTipoEvento/' + id)
     const item = await lastValueFrom(item$)
-    return TipoEvento.fromJson(item)
+    return TipoEvento.fromTipoEventoEditJson(item)
   }
 
   async getAllTipoEventoByEmpresaId() {
     const listaItem$ = this.httpClient.get<TipoEventoJSON[]>(REST_SERVER_URL + '/getAllTipoEvento/' + this.agendaService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((tipoEvento) => GenericItem.fromJson(tipoEvento))
+    return listaItem.map((tipoEvento) => TipoEvento.fromTipoEventoJson(tipoEvento))
   }
 
   async getAllTipoEventoByEmpresaIdAbm(pageNumber : number) {

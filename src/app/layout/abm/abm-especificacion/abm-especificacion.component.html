@@ -1,0 +1,32 @@
+<div class="container">
+  <br>
+    <div class="row contenedor-default">
+        <h2 class="col-6">Especificaciones</h2>
+        
+        <div class="col-6">
+            <div class="gap-2 d-flex justify-content-end">
+                <div>
+                    <a class="btn btn-primary" (click)="volver()">Volver</a>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-secondary disabled">
+                      <i class="fas fa-plus-circle mx-1"></i>
+                      Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row contenedor-default mt-2">
+      <tr *ngFor="let especificacion of listaEspecificaciones | orderAbmByNombre">
+        <div class="form-group col-sm-12 col-lg-6 mb-3">
+              <label class="form-label" for="detalle">{{ especificacion.nombre }}</label>
+              <input name="username" class="form-control" value="{{especificacion.detalle}}" disabled> 
+          </div>
+      </tr>
+    </div>
+
+
+
+</div>

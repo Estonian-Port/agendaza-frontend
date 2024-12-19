@@ -31,7 +31,6 @@ export class StepBoxComponent implements OnInit {
   }
 
   goToStep(id: number){
-    console.log("step to:" + id)
     this.outputStep.emit(id);
   }
 }

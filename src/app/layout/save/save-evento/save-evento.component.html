@@ -58,8 +58,8 @@
                                       <div class="form-group col-6">
                                           <label for="capacidadNinos" class="form-label">Cantidad Niños</label> 
                                           <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" 
-                                              formControlName="capacidadNinos">
-                                              <!--(change)="changeCapacidadNinos()"-->
+                                              formControlName="capacidadNinos"
+                                              (change)="changeCapacidadNinos()">
                                       </div>
                                   </div>
                               </div>

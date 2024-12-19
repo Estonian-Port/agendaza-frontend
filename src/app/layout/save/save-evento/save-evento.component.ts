@@ -320,65 +320,22 @@ export class SaveEventoComponent implements OnInit {
   }
 
   async changeCapacidadAdultos(){
+    this.evento.encargadoId = await this.loginService.getUsuarioId()
+    this.evento.capacidad.capacidadAdultos = this.capacidadAdultos?.getRawValue()
+    
+    this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
     this.sumCateringPresupuesto()
-
-    /* TODO REVISAR CON NUEVA LOGICA EXTRA CON FILTRO
     
-    // Extra Camarera
-    const capacidad = this.evento.capacidad.capacidadAdultos - this.capacidadTipoEvento.capacidadAdultos
-    
-    const extraCamareraInAgregados = this.evento.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
-    const extraCamareraInLista = this.listaExtraVariable.find(i => i.id === this.extraCamarera.id)
-
-    // Por cada 10 adultos de mas se agrega una camarera
-    if(capacidad >= 10){
-
-      const cantidadCamareras = Math.trunc(capacidad / 10)
-      
-      // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
-      if(extraCamareraInAgregados == null){
-        extraCamareraInLista!!.cantidad = cantidadCamareras
-        this.evento.listaExtraVariable.push(extraCamareraInLista!!)
-      }else{
-        const index = this.evento.listaExtraVariable.indexOf(extraCamareraInAgregados)
-        this.evento.listaExtraVariable[index].cantidad = cantidadCamareras
-      }
-    }else{
-      if(extraCamareraInAgregados != null){
-        extraCamareraInAgregados.cantidad = 0
-        _.pull(this.evento.listaExtraVariable, extraCamareraInAgregados)
-      }
-    }
-
-    */ 
   }
 
-  /* TODO REVISAR CON NUEVA LOGICA EXTRA CON FILTRO
   async changeCapacidadNinos(){
-    // Extra Ninos
-    const capacidad = this.evento.capacidad.capacidadNinos - this.capacidadTipoEvento.capacidadNinos
+    this.evento.encargadoId = await this.loginService.getUsuarioId()
+    this.evento.capacidad.capacidadNinos = this.capacidadNinos?.getRawValue()
+    
+    this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
 
-    const extraNinoInAgregados = this.evento.listaExtraVariable.find(i => i.id === this.extraNino.id)
-    const extraNinoInLista = this.listaExtraVariable.find(i => i.id === this.extraNino.id)
-
-    // Por cada nino de mas se agrega un extra nino
-    if(capacidad >= 1){
-
-      // Si aun no esta en el array se agrega, sino nada mas se le setea la cantidad correcta
-      if(extraNinoInAgregados == null){
-        extraNinoInLista!!.cantidad = capacidad
-        this.evento.listaExtraVariable.push(extraNinoInLista!!)
-      }else{
-        const index = this.evento.listaExtraVariable.indexOf(extraNinoInAgregados)
-        this.evento.listaExtraVariable[index].cantidad = capacidad
-      }
-    }else{
-      if(extraNinoInAgregados != null){
-        extraNinoInAgregados!!.cantidad = 0
-        _.pull(this.evento.listaExtraVariable, extraNinoInAgregados)
-      }
-    }
-  }*/
+    this.extraOtro?.setValue(this.evento.extraOtro)
+  }
 
   // -------------------------------------------------------------------------
   
@@ -443,6 +400,11 @@ export class SaveEventoComponent implements OnInit {
   }
 
   sumCateringPresupuesto(){
+
+    // Actualizar tambien las especificaciones
+    this.changeCapacidadNinos()
+
+
     if(this.cateringOtroCheckbox?.getRawValue()){
       this.presupuestoCatering?.setValue(this.extraCateringPresupuesto + this.cateringOtro?.getRawValue() * this.capacidadAdultos?.getRawValue())
     }else{

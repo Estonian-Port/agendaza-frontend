@@ -172,4 +172,10 @@ export class EventoService {
     return await lastValueFrom(item$)
   }
 
+  async recorrerEspecificaciones(evento: Evento) {
+    const item$ = this.httpClient.put<Evento>(REST_SERVER_URL + '/recorrerEspecificaciones/' + this.agendaService.getEmpresaId(), evento)
+    return await lastValueFrom(item$)
+  }
+
+
 }

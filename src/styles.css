@@ -199,6 +199,37 @@ button:focus {
   cursor: pointer;
 }
 
+.extra-container{
+  display: flex;
+  flex-direction: column;
+  height: 45vh;
+}
+
+.extra-overflow{
+  overflow-y: auto;
+}
+
+.extra-overflow::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+.extra-overflow::-webkit-scrollbar-track {
+  background: var(--color-quinario);
+}
+
+.extra-overflow::-webkit-scrollbar-thumb {
+  background: var(--color-cuaternario);
+  border-radius: 10px;
+}
+
+.extra-overflow::-webkit-scrollbar-thumb:hover {
+  background: var(--color-septenario);
+}
+
+.extra-box{
+  width: 98%;
+}
+
 .dimensiones-tabla-texto {
   max-width: 10em;
   min-width: 10em;
@@ -217,6 +248,16 @@ input:disabled {
   background-color: #f0f0f0;
   color: #a0a0a0;
   cursor: not-allowed;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
 }
 
 @media (max-width:871px) {

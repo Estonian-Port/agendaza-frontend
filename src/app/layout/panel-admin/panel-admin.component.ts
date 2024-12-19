@@ -12,7 +12,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class PanelAdminComponent implements OnInit {
 
-  configuracion = new PanelAdmin(0,0,0,0,0,0,0,0,0)
+  configuracion = new PanelAdmin(0,0,0,0,0,0,0,0,0,0)
   empresa = new Empresa(0,"")
 
   constructor(private configuracionService : ConfiguracionService, public empresaService : EmpresaService,
@@ -54,6 +54,10 @@ export class PanelAdminComponent implements OnInit {
 
   abmCliente() {
     this.router.navigateByUrl('/abmCliente')
+  }
+
+  abmEspecificacion() {
+    this.router.navigateByUrl('/abmEspecificacion')
   }
 
   volverCalendario(){

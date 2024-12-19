@@ -47,37 +47,6 @@
     height: 62vh;
 }
 
-.extra-container{
-    display: flex;
-    flex-direction: column;
-    height: 45vh;
-}
-
-.extra-overflow{
-    overflow-y: auto;
-}
-
-.extra-overflow::-webkit-scrollbar {
-    width: 0.2em;
-}
-
-.extra-overflow::-webkit-scrollbar-track {
-    background: var(--color-quinario);
-}
-
-.extra-overflow::-webkit-scrollbar-thumb {
-    background: var(--color-cuaternario);
-    border-radius: 10px;
-}
-
-.extra-overflow::-webkit-scrollbar-thumb:hover {
-    background: var(--color-septenario);
-}
-
-.extra-box{
-    width: 98%;
-}
-
 @media (max-width: 870px) {
     .hide-on-phone{
         display: none;
