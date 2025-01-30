@@ -14,11 +14,9 @@ import { AgendaService } from './agenda.service';
 })
 export class ExtraService {
 
-
   extraId : number = 0
   extraVolver: string = ""
   cantidadExtras : number = 0
-
 
   constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
 

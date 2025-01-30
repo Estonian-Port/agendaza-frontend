@@ -12,14 +12,14 @@ export class AbmExtraEventoComponent implements OnInit {
 
   buscar = ''
   listaItems : Array<Extra> = []
-  primeraBusqueda : Boolean = true
   cantidadRegistros : number=0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
+  realizoBusqueda : Boolean = true
+
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
-  pageNumber : number = 0
 
   constructor(private extraService : ExtraService, private router : Router, private location : Location) { }
 
@@ -33,35 +33,30 @@ export class AbmExtraEventoComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-
-    this.listaItems = await this.extraService.getAllExtraByEmpresaId(this.pageNumber)
-    this.cantidadRegistros = await this.extraService.cantExtras()
-
-  }else{
-    this.listaItems = await this.extraService.getAllExtraByFilterName(this.pageNumber,this.buscar)
-    this.cantidadRegistros = await this.extraService.cantExtrasFiltrados(this.buscar)
-  }
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 10) + 1)
+      this.listaItems = await this.extraService.getAllExtraByEmpresaId(this.paginaActual)
+      this.cantidadRegistros = await this.extraService.cantExtras()
+    }else{
+      this.listaItems = await this.extraService.getAllExtraByFilterName(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.extraService.cantExtrasFiltrados(this.buscar)
+    }
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
     this.tituloModal = "Eliminar Extra"
     this.nombreItemModal = "extra"
     this.botonModal = "Eliminar"
   }
 
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
   }
 
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
   }
-  paginaCero(){
-    if(this.primeraBusqueda){
-          this.pageNumber = 0
-    }
-    this.primeraBusqueda = false
 
-  }
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
@@ -71,13 +66,14 @@ export class AbmExtraEventoComponent implements OnInit {
     this.extraService.extraVolver = this.location.path()
     this.router.navigateByUrl('/precioExtra')
   }
-  updatePageNumber(page : number){
-    this.pageNumber = page
+
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
 
+  updatePrimeraBusqueda(busqueda: Boolean){
+    this.realizoBusqueda = busqueda
   }
 
   editar(id : number){

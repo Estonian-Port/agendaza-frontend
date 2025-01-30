@@ -14,12 +14,6 @@ export class AbmDataTableEventoComponent implements OnInit {
   listaHeader : Array<String> = []
 
   @Input()
-  currentRegistro : number = 0
-
-  @Input()
-  pageNumber : number = 0
-
-  @Input()
   buscar = ''
 
   modal = false
@@ -49,7 +43,6 @@ export class AbmDataTableEventoComponent implements OnInit {
 
   @Output() 
   outputEliminar = new EventEmitter<number>();
-
 
   constructor(private eventoService : EventoService) { }
 

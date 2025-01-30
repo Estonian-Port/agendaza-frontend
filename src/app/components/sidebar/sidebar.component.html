@@ -4,24 +4,24 @@
   </a>
 
   <ul class="sidebar-list">
-    <li class="sidebar-collapsed-list-item">
-      <a class="sidebar-collapsed-icon" (click)="volverAgendas()">
-        <i class="fas fa-book fa-lg"></i>
+    <li class="sidebar-collapsed-list-item" [ngClass]="{'selected-sidebar-collapsed-icon': isInSeleccionarAgenda()}">
+      <a class="sidebar-collapsed-icon" (click)="irAgendas()">
+        <i class="fas fa-book fa-lg" [ngClass]="{'selected-icon': isInSeleccionarAgenda()}"></i>
       </a>
     </li>
-    <li class="sidebar-collapsed-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-collapsed-icon" (click)="volverCalendario()">
-        <i class="fa fa-calendar fa-lg"></i>
+    <li class="sidebar-collapsed-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isInAgenda()}">
+      <a class="sidebar-collapsed-icon" (click)="irCalendario()">
+        <i class="fa fa-calendar fa-lg" [ngClass]="{'selected-icon': isInAgenda()}"></i>
       </a>
     </li>
-    <li class="sidebar-collapsed-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-collapsed-icon" (click)="saveEvento()">
-        <i class="fa fa-plus fa-lg"></i>
+    <li class="sidebar-collapsed-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isSaveEvento()}">
+      <a class="sidebar-collapsed-icon"(click)="irSaveEvento()">
+        <i class="fa fa-plus fa-lg" [ngClass]="{'selected-icon': isSaveEvento()}" ></i>
       </a>
     </li>
-    <li class="sidebar-collapsed-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-collapsed-icon" (click)="panelAdmin()">
-        <i class="fa fa-cog fa-lg"></i>
+    <li class="sidebar-collapsed-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isPanelAdmin()}">
+      <a class="sidebar-collapsed-icon" (click)="irPanelAdmin()">
+        <i class="fa fa-cog fa-lg"  [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
       </a>
     </li>
   </ul>
@@ -34,26 +34,26 @@
 
   <ul class="sidebar-list">
     <li class="sidebar-list-item">
-      <a class="sidebar-icon" (click)="volverAgendas()">
-        <i class="icon fas fa-book fa-lg"></i>
+      <a class="sidebar-icon" (click)="irAgendas()" [ngClass]="{'selected-sidebar-collapsed-icon': isInSeleccionarAgenda()}">
+        <i class="icon fas fa-book fa-lg" [ngClass]="{'selected-icon': isInSeleccionarAgenda()}"></i>
         <span>Agendas</span>
       </a>
     </li>
-    <li class="sidebar-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-icon" (click)="volverCalendario()">
-        <i class="icon fa fa-calendar fa-lg"></i>
+    <li class="sidebar-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isInAgenda()}">
+      <a class="sidebar-icon" (click)="irCalendario()">
+        <i class="icon fa fa-calendar fa-lg" [ngClass]="{'selected-icon': isInAgenda()}"></i>
         <span>Calendario</span>
       </a>
     </li>
-    <li class="sidebar-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-icon" (click)="saveEvento()">
-        <i class="icon fa fa-plus fa-lg"></i>
+    <li class="sidebar-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isSaveEvento()}">
+      <a class="sidebar-icon" (click)="irSaveEvento()">
+        <i class="icon fa fa-plus fa-lg" [ngClass]="{'selected-icon': isSaveEvento()}"></i>
         <span>Evento</span>
       </a>
     </li>
-    <li class="sidebar-list-item" *ngIf="isInAgenda()">
-      <a class="sidebar-icon" (click)="panelAdmin()">
-        <i class="icon fa fa-cog fa-lg"></i>
+    <li class="sidebar-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isPanelAdmin()}">
+      <a class="sidebar-icon" (click)="irPanelAdmin()">
+        <i class="icon fa fa-cog fa-lg" [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
         <span>Dashboard</span>
       </a>
     </li>

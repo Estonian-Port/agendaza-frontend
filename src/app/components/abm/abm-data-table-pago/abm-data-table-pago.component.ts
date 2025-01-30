@@ -10,16 +10,10 @@ export class AbmDataTablePagoComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
-  currentRegistro : number = 0
-
-  @Input()
   buscar = ''
 
   @Output() 
   outputEliminar = new EventEmitter<number>()
-
-  @Input()
-  pageNumber : number = 0
 
   modal = false
   idEliminar = 0

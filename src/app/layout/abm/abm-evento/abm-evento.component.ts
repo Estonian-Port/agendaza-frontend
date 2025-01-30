@@ -10,13 +10,12 @@ export class AbmEventoComponent implements OnInit {
 
 
   buscar = ''
-  primeraBusqueda : Boolean = true
   listaItems : Array<any> = []
   listaHeader : Array<any> =[]
-  cantidadRegistros : number=0
+  cantidadRegistros : number = 0
+  realizoBusqueda: Boolean = false
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
-  pageNumber : number = 0
+  paginaActual : number = 0
   cantidadEventos : number = 0
 
   constructor(private eventoService : EventoService, private router : Router) { }
@@ -27,48 +26,40 @@ export class AbmEventoComponent implements OnInit {
 
   async inicializarListaItems(){
 
-    this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
-    
-    if(this.buscar == ""){
-      this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.pageNumber)
+
+    if(this.eventoService.fechaFiltroForAbmEvento != ""){
+      this.listaItems = await this.eventoService.getAllEventosByFecha()
+      // TODO cantidad de registros de ese dia
+    }else if(this.buscar == ""){
+      this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.paginaActual)
       this.cantidadEventos = await this.eventoService.cantEventos()
-
     }else{
-
-      this.listaItems = await this.eventoService.getAllEventoByFilterName(this.pageNumber,this.buscar)
+      this.listaItems = await this.eventoService.getAllEventoByFilterName(this.paginaActual,this.buscar)
       this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar)
-      
     }
+
     this.cantidadRegistros = this.cantidadEventos
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadEventos / 10) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
     this.updateCantidadPaginas(this.cantidadPaginas)
   }
-  
+
   paginaCero(){
-    if(this.primeraBusqueda){
-          this.pageNumber = 0
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
     }
-    this.primeraBusqueda = false
+    this.realizoBusqueda = false
   }
 
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
-  }
-
-  updatePageNumber(page : number){
-    this.pageNumber = page
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
 
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
-
-  }
-
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
+    this.paginaCero()
   }
   
   updateCantidadPaginas(cantidadPaginas: number[]){

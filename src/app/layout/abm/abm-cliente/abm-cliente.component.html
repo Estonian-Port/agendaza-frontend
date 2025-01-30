@@ -1,22 +1,25 @@
 <div class="abm">
 
-    <app-abm-data-table-header
-        [busqueda] = "primeraBusqueda"
-        titulo = 'Extras'
-        (outputBuscar)="updatePalabraBuscar($event)"
-        (outputPageNumber)="updatePageNumber($event)"
-        (outputBusqueda)="updatePrimeraBusqueda($event)">
-    </app-abm-data-table-header>
+    <div class="abm-content">
+    
+        <app-abm-data-table-header
+            titulo = 'Clientes'
+            (outputBuscar)="updatePalabraBuscar($event)"
+            (outputPaginaActual)="updatePaginaActual($event)">
+        </app-abm-data-table-header>
 
-    <app-abm-data-table-usuario
-        [listaItems]="listaItems"
-        [listaHeader]="listaHeader"
-        [currentRegistro]="currentRegistro"
-        [buscar]="buscar">
-    </app-abm-data-table-usuario>
+        <app-abm-data-table-usuario
+            [listaItems]="listaItems"
+            [listaHeader]="listaHeader"
+            [buscar]="buscar"
+            [esCliente]="true">
+        </app-abm-data-table-usuario>
+
+    </div>
 
     <app-abm-data-table-paginacion
-        (outputCurrentRegistro)="updateCurrentRegistro($event)"
+        (outputPaginaActual)="updatePaginaActual($event)"
+        [paginaActual]="paginaActual"
         [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
         [cantidadPaginas]="cantidadPaginas">

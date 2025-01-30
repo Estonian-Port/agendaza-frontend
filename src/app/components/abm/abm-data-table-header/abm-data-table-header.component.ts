@@ -8,14 +8,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class AbmDataTableHeaderComponent implements OnInit {
 
   buscar : string = ''
-  currentRegistro : number = 0
-  currentPagina : number = 1
 
   @Input()
-  busqueda! : Boolean
+  realizoBusqueda! : Boolean
 
   @Input()
-  pageNumber : number = 0
+  paginaActual : number = 0
 
   @Input()
   titulo : string = ''
@@ -27,10 +25,7 @@ export class AbmDataTableHeaderComponent implements OnInit {
   outputBusqueda = new EventEmitter<Boolean>();
 
   @Output() 
-  outputCurrentRegistro = new EventEmitter<number>();
-
-  @Output() 
-  outputPageNumber= new EventEmitter<number>();
+  outputPaginaActual = new EventEmitter<number>();
 
   constructor() { }
 
@@ -38,20 +33,17 @@ export class AbmDataTableHeaderComponent implements OnInit {
 
   outputPalabraBuscar() {
     this.outputBuscar.emit(this.buscar);
-    
   }
 
   actualizaBuscar(){
-    this.currentPagina = 1
-    this.busqueda = true
-    this.outputBusqueda.emit(this.busqueda);
+    this.realizoBusqueda = true
+    this.outputBusqueda.emit(this.realizoBusqueda);
     this.outputPalabraBuscar()
     this.outputRegistro()
   }
 
   outputRegistro() {
-    this.outputCurrentRegistro.emit(this.currentRegistro);
-    this.outputPageNumber.emit(this.pageNumber);    
+    this.outputPaginaActual.emit(this.paginaActual);    
   }
 
   private routeMap: { [key: string]: string } = {
@@ -61,7 +53,8 @@ export class AbmDataTableHeaderComponent implements OnInit {
     'Empleados': '/saveUsuario',
     'Tipo Eventos': '/saveTipoEvento',
     'Servicios': '/saveServicio',
-    'Catering': '/saveExtraCatering'
+    'Catering': '/saveExtraCatering',
+    'Clientes': '/saveCliente'
   };
 
   getRoute(): string {

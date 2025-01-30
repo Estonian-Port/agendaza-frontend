@@ -10,17 +10,17 @@ import { Location } from '@angular/common';
 })
 export class AbmServicioComponent implements OnInit {
 
-
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number=0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
+  realizoBusqueda : Boolean = true
+
   nombreItemModal = ""
   tituloModal = ""
   botonModal = ""
-  pageNumber : number = 0
-  primeraBusqueda : Boolean = true
+
 
   constructor(private servicioService : ServicioService, private router : Router, private location : Location) { }
 
@@ -29,27 +29,38 @@ export class AbmServicioComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.servicioService.getAllServicioByEmpresaId()
+    this.updatePalabraBuscar(this.buscar)
+    this.paginaCero()
 
-    this.cantidadRegistros = this.listaItems.length
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    if(this.buscar == ""){
+      this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.paginaActual)
+      this.cantidadRegistros = await this.servicioService.getCantidadServicio()
+    }else{
+      this.listaItems = await this.servicioService.getAllServicioFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.servicioService.cantServicioFiltrados(this.buscar)
+    }
+
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
     this.tituloModal = "Eliminar Servicio"
     this.nombreItemModal = "servicio"
     this.botonModal = "Eliminar"
   }
 
-  updatePageNumber(page : number){
-    this.pageNumber = page
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
+  }
+
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
-  }
-
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
+    this.realizoBusqueda = busqueda
   }
 
   updatePalabraBuscar(palabraBuscar: string){

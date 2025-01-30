@@ -1,32 +1,33 @@
 <div class="abm">
 
-    <app-abm-data-table-header
-        [busqueda] = "primeraBusqueda"
-        titulo = 'Extras'
-        (outputBuscar)="updatePalabraBuscar($event)"
-        (outputPageNumber)="updatePageNumber($event)"
-        (outputBusqueda)="updatePrimeraBusqueda($event)">
-    </app-abm-data-table-header>
+    <div class="abm-content">
 
-    <app-abm-data-table
-        (outputPrecio)="precio($event)"
-        (outputEditar)="editar($event)"
-        (outputEliminar)="eliminar($event)"
-        [nombreItemModal] = "nombreItemModal"
-        [tituloModal] = "tituloModal"
-        [botonModal] = "botonModal"
-        [listaItems]="listaItems"
-        [currentRegistro]="currentRegistro"
-        [pageNumber]="pageNumber"
-        [buscar]="buscar">
-    </app-abm-data-table>
+        <app-abm-data-table-header
+            [realizoBusqueda] = "realizoBusqueda"
+            titulo = 'Extras'
+            (outputBuscar)="updatePalabraBuscar($event)"
+            (outputPaginaActual)="updatePaginaActual($event)"
+            (outputBusqueda)="updatePrimeraBusqueda($event)">
+        </app-abm-data-table-header>
+
+        <app-abm-data-table
+            (outputPrecio)="precio($event)"
+            (outputEditar)="editar($event)"
+            (outputEliminar)="eliminar($event)"
+            [nombreItemModal] = "nombreItemModal"
+            [tituloModal] = "tituloModal"
+            [botonModal] = "botonModal"
+            [listaItems]="listaItems"
+            [buscar]="buscar">
+        </app-abm-data-table>
+    
+    </div>
 
     <app-abm-data-table-paginacion
-        (outputCurrentRegistro)="updateCurrentRegistro($event)"
-        (outputPageNumber)="updatePageNumber($event)"
+        (outputPaginaActual)="updatePaginaActual($event)"
         [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
-        [pageNumber]="pageNumber"
+        [paginaActual]="paginaActual"
         [cantidadPaginas]="cantidadPaginas">
     </app-abm-data-table-paginacion>
 

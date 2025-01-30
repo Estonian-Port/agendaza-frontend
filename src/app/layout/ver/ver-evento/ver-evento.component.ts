@@ -39,6 +39,7 @@ export class VerEventoComponent implements OnInit {
   modalListar = false
   tituloModalListar="Lista de extras"
   listaModal : Array<GenericItem> = []
+  formatoTextarea = false
 
   encargadoNombreCompleto : string = ""
 
@@ -71,6 +72,7 @@ export class VerEventoComponent implements OnInit {
     this.tituloModalEditar="Editar nombre del evento"
     this.inputEditar = this.evento.nombre
     this.metodoAceptar = this.editEventoNombre.bind(this)
+    this.formatoTextarea = false
     this.setModalEditar(!this.modalEditar)
   }
 
@@ -83,6 +85,7 @@ export class VerEventoComponent implements OnInit {
     this.tituloModalEditar ="Editar cantidad de adultos"
     this.inputEditar = this.evento.capacidad.capacidadAdultos
     this.metodoAceptar = this.editCantAdultos.bind(this)
+    this.formatoTextarea = false
     this.setModalEditar(!this.modalEditar)
   }
 
@@ -96,6 +99,7 @@ export class VerEventoComponent implements OnInit {
     this.tituloModalEditar="Editar cantidad de niños"
     this.inputEditar = this.evento.capacidad.capacidadNinos
     this.metodoAceptar = this.editNinos.bind(this)
+    this.formatoTextarea = false
     this.setModalEditar(!this.modalEditar)
   }
 
@@ -110,6 +114,7 @@ export class VerEventoComponent implements OnInit {
     this.tituloModalEditar="Editar anotaciones"
     this.inputEditar = this.evento.anotaciones
     this.metodoAceptar = this.editAnotaciones.bind(this)
+    this.formatoTextarea = true
     this.setModalEditar(!this.modalEditar)
   }
 

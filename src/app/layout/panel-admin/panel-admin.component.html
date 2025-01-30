@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="row">
-            <div id="usuario" class="col-lg-3 col-md-12 mb-3">
+            <div id="usuario" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()">
                     <div class="col-9 text-start">
                         <h5>Empleados</h5>
@@ -20,7 +20,7 @@
                     </div>
                 </a>
             </div>
-            <div id="tipoEvento" class="col-lg-3 col-md-12 mb-3">
+            <div id="tipoEvento" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmTipoEvento()">
                     <div class="col-9 text-start">
                         <h5>Tipos de Evento</h5>
@@ -31,7 +31,7 @@
                     </div>
                 </a>
             </div>
-            <div id="extra" class="col-lg-3 col-md-12 mb-3">
+            <div id="extra" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmExtra()">
                     <div class="col-9 text-start">
                         <h5>Extras</h5>
@@ -42,7 +42,7 @@
                     </div>
                 </a>
             </div>
-            <div id="servicio" class="col-lg-3 col-md-12 mb-3">
+            <div id="servicio" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmServicio()">
                     <div class="col-9 text-start">
                         <h5>Servicios</h5>
@@ -78,8 +78,8 @@
                     </div>
                 </a>
             </div>
-            <div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-secondary d-flex inactiveLink" (click)="abmCliente()">
+            <!--div class="col-lg-3 col-md-12 mb-3">
+                <a type="button" class="btn btn-primary d-flex" (click)="abmCliente()">
                     <div class="col-9 text-start">
                         <h5>Clientes</h5>
                         <span>{{configuracion.cantCliente}} clientes</span>
@@ -88,8 +88,19 @@
                         <i class="fas fa-users fa-lg"></i>
                     </div>
                 </a>
-            </div>
+            </div-->
             <div class="col-lg-3 col-md-12 mb-3">
+                <a type="button" class="btn btn-primary d-flex" (click)="abmEspecificacion()">
+                    <div class="col-9 text-start">
+                        <h5>Especificaciones</h5>
+                        <span>{{configuracion.cantEspecificaciones}} Especificaciones</span>
+                    </div>
+                    <div class="col-3 text-center">
+                        <i class="fas fa-layer-group fa-lg"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmCatering()">
                     <div class="col-9 text-start">
                         <h5>Catering</h5>

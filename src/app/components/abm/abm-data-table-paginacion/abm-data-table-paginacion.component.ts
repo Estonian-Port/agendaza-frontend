@@ -5,14 +5,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './abm-data-table-paginacion.component.html',
   styleUrls: ['./abm-data-table-paginacion.component.css']
 })
-export class AbmDataTablePaginacionComponent implements OnInit {
-
-  currentRegistro : number = 0
-  currentPagina : number = 1
-  classes : String = ""
+export class AbmDataTablePaginacionComponent {
 
   @Input()
-  pageNumber : number = 0
+  paginaActual! : number
 
   @Input()
   listaItems : Array<any> = []
@@ -21,101 +17,85 @@ export class AbmDataTablePaginacionComponent implements OnInit {
   cantidadPaginas : number[] = []
 
   @Input()
-  cantidadRegistros : number = 0
+  cantidadRegistros! : number
 
   @Input()
-  cantidadEventos : number = 0
+  cantidadEventos! : number
 
   @Output() 
-  outputCurrentRegistro = new EventEmitter<number>();
-
-  @Output() 
-  outputPageNumber= new EventEmitter<number>();
+  outputPaginaActual = new EventEmitter<number>();
 
   constructor(){}
-  
-  ngOnInit() {}
 
   siguiente(){
-      if(this.pageNumber < this.cantidadRegistros/10 -1){
-       this.pageNumber += 1       
-      this.currentPagina += 1
+      if(this.paginaActual < this.cantidadRegistros/10 -1){
+        this.paginaActual += 1
       }
-      this.outputRegistro()
-    
+      this.updatePaginaActual()
   }
 
   atras(){
-      if(this.pageNumber > 0){
-        this.pageNumber -= 1
-        this.currentPagina -= 1
+      if(this.paginaActual > 0){
+        this.paginaActual -= 1
       }
-      this.outputRegistro()
+      this.updatePaginaActual()
   }
 
   irPagina(pagina : number){
-    this.pageNumber = pagina -1
-    this.currentPagina = pagina
-    this.outputRegistro()
+    this.paginaActual = pagina
+    this.updatePaginaActual()
   }
 
   getPaginaMitadSuperior(): number {
-    return Math.round((this.cantidadPaginas.length - this.currentPagina) * 1/2) + this.currentPagina
+    return Math.round((this.cantidadPaginas.length - this.paginaActual) * 1/2) + this.paginaActual
   }
 
   getPaginaMitadInferior(): number{
-    return Math.round(1/2 * this.currentPagina)
+    return Math.round(1/2 * this.paginaActual)
   }
   
   actualizarCantidadPaginas(){
-    this.currentPagina = 1
-    this.currentRegistro = 0
-    
-    /*
-    this.cantidadPaginas = new Array<number>(
-      Math.trunc(
-        this.listaItems.filter(it => it.contiene(this.buscar)).length / 10) + 1)
-    
-    this.outputRegistro()
-    //this.outputPalabraBuscar()*/
+    this.paginaActual = 0
   }
   
-
-
-  outputRegistro() {
-    this.outputCurrentRegistro.emit(this.currentRegistro);
-    this.outputPageNumber.emit(this.pageNumber);    
+  updatePaginaActual() {
+    this.outputPaginaActual.emit(this.paginaActual);
   }
 
   getLimites(paginaActual: number): [number, number] {
     const fin = Math.max(5,paginaActual)
-    const inicio = Math.max(0,fin-5)
+    const inicio = Math.max(0,fin-5) + 1
     return [inicio, fin];
   }
   
   getInicio(): number {
-
-    var fin = Math.max(5,this.currentPagina)
-    var inicio = fin - 4
-
-
-    if(5 <= this.currentPagina && this.cantidadPaginas.length - 1 > this.currentPagina){
-      inicio = fin - 2
-    }
-
-    if(this.cantidadPaginas.length == this.currentPagina){
-      inicio = fin - 4
-    }
-
-    if(this.cantidadPaginas.length - 2 <= this.currentPagina){
-      inicio = this.cantidadPaginas.length - 5
-    }
-    
+    var fin = Math.max(4,this.paginaActual)
+    var inicio = fin - 3
     return inicio
   }
 
-  getFinal(){
-    return Math.max(5,this.currentPagina +1)
-  }
+  getPaginacionIntermedia(): number[] {
+    let paginas: number[] = [];
+
+    // Si la página es 1, mostramos las primeras 5 páginas
+    if (this.paginaActual < 5) {
+        paginas = [1, 2, 3, 4];
+    }
+    // Si estamos entre la página 5 y 5 antes del final
+    else if (this.paginaActual >= 4 && this.paginaActual < this.cantidadPaginas.length - 5) {
+        paginas = [this.paginaActual - 1, this.paginaActual, this.paginaActual + 1];
+    }
+    // Si estamos cerca del final, mostramos las últimas 5 páginas
+    else if (this.paginaActual >= this.cantidadPaginas.length - 5) {
+        paginas = [
+            this.cantidadPaginas.length - 5,
+            this.cantidadPaginas.length - 4,
+            this.cantidadPaginas.length - 3,
+            this.cantidadPaginas.length - 2,
+        ];
+    }
+    return paginas;
+}
+
 
 }

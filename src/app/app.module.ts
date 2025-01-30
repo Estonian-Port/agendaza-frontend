@@ -70,6 +70,8 @@ import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/ed
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
 import { ModalInformativoComponent } from './components/modal/modal-informativo/modal-informativo.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { TruncarTextoPipe } from './pipes/truncar-texto.pipe';
+import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +136,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     EditEmpleadoCargoComponent,
     EditUsuarioPerfilComponent,
     ModalInformativoComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    TruncarTextoPipe,
+    AbmEspecificacionComponent
   ],
   imports: [
     BrowserModule,

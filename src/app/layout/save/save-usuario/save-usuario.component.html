@@ -1,58 +1,64 @@
 <div class="container">
     <br>
-    <h2>Agregar Usuario</h2>
     <form>
-        <input type="hidden" name="id" id="id" value="1">
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" [(ngModel)]='usuario.nombre' name="nombre" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input type="text" [(ngModel)]='usuario.apellido' name="apellido" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="nombre_usuario">Nombre de usuario</label>
-            <input type="text" [(ngModel)]='usuario.username' name="username" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" [(ngModel)]='usuario.password' name="password" class="form-control" id="password">
-        </div>
-        <div class="form-group">
-            <label for="repeat_password">Repetir Contraseña</label>
-            <input type="password" class="form-control" id="repeat_password">
-        </div>
-        <div class="form-group">
-            <label for="email">E-Mail</label>
-            <input type="email" [(ngModel)]='usuario.email' name="email" class="form-control">
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Fecha de Nacimiento</label>
-            <input type="date" [(ngModel)]='usuario.fechaNacimiento' name="fechaNacimiento" class="form-control">
-        </div>
 
-        <div class="form-group">
-            <label for="rol">Rol</label>
-            <select class="form-select" [(ngModel)]="usuario.rol" name="rol">
-                <option *ngFor="let rol of listaRol | orderAbmById" [value]="rol">{{rol}}</option>
-            </select>
-        </div>
-
-        <div class="form-check mt-3">
-            <input class="form-check-input" type="checkbox" id="checkbox"
-            [(ngModel)]="usuario.habilitado" name="habilitado">
-            <label for="checkbox">Habilitado</label>
-        </div>
-
-        <div class="container mt-3">
-            <div class="gap-2 d-flex justify-content-end">
-                <div>
-                    <a class="btn btn-primary" (click)="volver()">Volver</a>
+        <div class="row contenedor-default">
+            <h2 class="col-6">Agregar Usuario</h2>
+            
+            <div class="col-6">
+                <div class="gap-2 d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-primary" (click)="volver()">Volver</a>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+            </div>
+        </div>
+        <div class="row contenedor-default mt-2">
+            <div class="col-lg-5 col-md-12 form-group mb-4">
+                <label for="nombre">Nombre</label>
+                <input type="text" [(ngModel)]='usuario.nombre' name="nombre" class="form-control">
+            </div>
+            <div class=" col-lg-5 col-md-12form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" [(ngModel)]='usuario.apellido' name="apellido" class="form-control">
+            </div>
+            <div class="form-group col-lg-5 col-md-12 mb-4">
+                <label for="nombre_usuario">Nombre de usuario</label>
+                <input type="text" [(ngModel)]='usuario.username' name="username" class="form-control">
+            </div>
+            <div class="form-group col-lg-5 col-md-12">
+                <label for="email">Fecha de Nacimiento</label>
+                <input type="date" [(ngModel)]='usuario.fechaNacimiento' name="fechaNacimiento" class="form-control">
+            </div>
+            <div class="form-group col-lg-5 col-md-12 mb-4">
+                <label for="password">Contraseña</label>
+                <input type="password" [(ngModel)]='usuario.password' name="password" class="form-control" id="password">
+            </div>
+            <div class="form-group col-lg-5 col-md-12">
+                <label for="repeat_password">Repetir Contraseña</label>
+                <input type="password" class="form-control" id="repeat_password">
+            </div>
+            <div class="form-group col-lg-5 col-md-12">
+                <div class="form-group mb-4">
+                    <label for="email">E-Mail</label>
+                    <input type="email" [(ngModel)]='usuario.email' name="email" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-lg-5 col-md-12">
+                <div class="form-group mb-4">
+                    <label for="celular">Celular</label>
+                    <input type="emacelularil" [(ngModel)]='usuario.celular' name="celular" class="form-control">
+                </div>
+            </div> 
+            <div class="form-group col-lg-5 col-md-12">
+                <div class="form-group mb-4">
+                    <label for="cargo">Cargo</label>
+                    <select class="form-select" [(ngModel)]="usuario.cargo" name="cargo">
+                        <option *ngFor="let cargo of listaCargo | orderAbmById" [value]="cargo">{{cargo}}</option>
+                    </select>
                 </div>
             </div>
         </div>

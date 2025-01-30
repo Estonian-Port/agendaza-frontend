@@ -25,7 +25,19 @@ export class EventoService {
     const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((evento) => Evento.fromJson(evento))
+  }
 
+  
+  async getAllEventosByFecha() {
+    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventosForAgendaByFecha',
+      { params: { 
+        fecha: this.fechaFiltroForAbmEvento,
+        empresaId : this.agendaService.getEmpresaId()
+      }})
+    const listaItem = await lastValueFrom(listaItem$)
+    this.fechaFiltroForAbmEvento = ""
+    return listaItem.map((evento) => Evento.fromJson(evento))
+    
   }
 
   async getAllEventoByFilterName(pageNumber : number, buscar : string){
@@ -34,21 +46,17 @@ export class EventoService {
     return listaItem.map((evento) => Evento.fromJson(evento))
 
   }
+  
   async cantEventos(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventos/' + this.agendaService.getEmpresaId())
     this.cantidadEventos = await lastValueFrom(cant$)
     return this.cantidadEventos
   }
+
   async cantEventosFiltrados(buscar : string){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
     this.cantidadEventos = await lastValueFrom(cant$)
     return this.cantidadEventos
-  }
-  async getAllEventoByEmpresaIdAndFechaFiltro(){
-    const listaItem$ = this.httpClient.put<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaIdAndFechaFiltro/' + this.agendaService.getEmpresaId(), new Date(this.fechaFiltroForAbmEvento))
-    const listaItem = await lastValueFrom(listaItem$)
-    this.fechaFiltroForAbmEvento = ""
-    return listaItem.map((evento) => Evento.fromJson(evento))
   }
 
   async buscarClientePorEmail(email : string){
@@ -163,5 +171,11 @@ export class EventoService {
     const item$ = this.httpClient.put<boolean>(REST_SERVER_URL + '/reenviarMail/' + eventoId, this.agendaService.getEmpresaId())
     return await lastValueFrom(item$)
   }
+
+  async recorrerEspecificaciones(evento: Evento) {
+    const item$ = this.httpClient.put<Evento>(REST_SERVER_URL + '/recorrerEspecificaciones/' + this.agendaService.getEmpresaId(), evento)
+    return await lastValueFrom(item$)
+  }
+
 
 }

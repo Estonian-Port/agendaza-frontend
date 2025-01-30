@@ -37,6 +37,7 @@ import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component
 import { VerClienteComponent } from './layout/ver/ver-cliente/ver-cliente.component';
 import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/edit-cargo-empleado.component';
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
+import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
 
 
 const routes: Routes = [
@@ -83,6 +84,7 @@ const routes: Routes = [
       { path : 'verCliente', component: VerClienteComponent },
       { path : 'editCargoEmpleado', component: EditEmpleadoCargoComponent},
       { path : 'editUsuarioPerfil', component: EditUsuarioPerfilComponent},
+      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
       { path: '**', component: NotFoundComponent }
     ]
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Cargo } from 'src/app/model/Cargo';
 import { Usuario } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -9,14 +10,15 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class SaveUsuarioComponent implements OnInit {
 
-  usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO","ADMIN", "", true)
+  usuario! : Usuario
   listaSexo : Array<string> = []
-  listaRol : Array<string> = []
+  listaCargo : Array<Cargo> = []
 
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
-    this.listaRol = await this.usuarioService.getAllRol()
+    this.usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO",Cargo.EMPLEADO, "",0)
+    this.listaCargo = await this.usuarioService.getAllCargo()
   }
 
   async save(){

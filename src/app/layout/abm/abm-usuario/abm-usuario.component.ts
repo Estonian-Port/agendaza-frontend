@@ -13,10 +13,9 @@ export class AbmUsuarioComponent implements OnInit {
   buscar = ''
   listaItems : Array<any> = []
   cantidadRegistros : number = 0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
-  pageNumber : number = 0
-  primeraBusqueda : Boolean = true
+  realizoBusqueda : Boolean = true
 
   constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router, private location : Location) { }
   
@@ -29,26 +28,34 @@ export class AbmUsuarioComponent implements OnInit {
     this.paginaCero()
 
     if(this.buscar == ""){
-      this.listaItems = await this.usuarioService.getAllUsuariosByEmpresaId(this.pageNumber)
-      this.cantidadRegistros = await this.usuarioService.cantUsuarios()
-  }
+      this.listaItems = await this.usuarioService.getAllUsuario(this.paginaActual)
+      this.cantidadRegistros = await this.usuarioService.getCantidadUsuario()
+    }
     else {
-
-      this.listaItems = await this.usuarioService.getAllUsersByFilterName(this.pageNumber,this.buscar)
-      this.cantidadRegistros = await this.usuarioService.getCantUsuariosFiltrados(this.buscar)
+      this.listaItems = await this.usuarioService.getAllUsuarioFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.usuarioService.getCantidadUsuarioFiltrados(this.buscar)
     }
 
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.cantidadRegistros / 11) + 1)
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)
   }
 
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
   }
-  updatePageNumber(page : number){
-    this.pageNumber = page
+
+  updateCurrentRegistro(registro: number){
+    this.paginaActual = registro
+  }
+
+  updatePaginaActual(pagina : number){
+    this.paginaActual = pagina
     this.inicializarListaItems()
   }
+
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
   }
@@ -62,19 +69,21 @@ export class AbmUsuarioComponent implements OnInit {
     this.router.navigateByUrl('/editUsuario')
   }
 
+  async eliminar(id: number) {
+    (await this.usuarioService.deleteCargo(id)).subscribe({
+      complete: () => {
+        this.inicializarListaItems()
+      }
+    })
+  }
+
   cambiarPassword(id : number){
     this.usuarioService.usuarioId = id
     this.router.navigateByUrl('/editUsuarioPassword')
   }
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
 
-  }
-  paginaCero(){
-    if(this.primeraBusqueda){
-          this.pageNumber = 0
-    }
-    this.primeraBusqueda = false
+  updatePrimeraBusqueda(busqueda: Boolean){
+    this.realizoBusqueda = busqueda
 
   }
 }

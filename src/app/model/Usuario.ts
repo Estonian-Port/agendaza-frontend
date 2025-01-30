@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import { Cargo } from './Cargo'
 
 export type UsuarioLoginJSON = {
   username: string
@@ -21,21 +22,21 @@ export type UsuarioJSON = {
   password: string
   fechaNacimiento: Date
   sexo: string
-  rol: string
+  cargo: Cargo
   email: string
-  habilitado: boolean
+  celular: number
 }
 
 export class Usuario {
 
   constructor(public id: number, public nombre: string, public apellido: string, public username: string,
-    public password :string, public fechaNacimiento : Date, public sexo : string, public rol : string,
-    public email : string, public habilitado : boolean) {}
+    public password :string, public fechaNacimiento : Date, public sexo : string, public cargo : Cargo,
+    public email : string, public celular : number) {}
 
   static fromJson(usuarioJson : UsuarioJSON) : Usuario{ 
     return  Object.assign(new Usuario(usuarioJson.id, usuarioJson.nombre, usuarioJson.apellido, 
       usuarioJson.username, usuarioJson.password, usuarioJson.fechaNacimiento, usuarioJson.sexo,
-      usuarioJson.rol, usuarioJson.email, usuarioJson.habilitado))
+      usuarioJson.cargo, usuarioJson.email, usuarioJson.celular))
   }
 
   esValido(): boolean {
@@ -58,17 +59,23 @@ export class Usuario {
       username: this.username,
       password: this.password,
       fechaNacimiento: this.fechaNacimiento,
-      rol: this.rol,
+      cargo: this.cargo,
       sexo: this.sexo,
       email: this.email,
-      habilitado: this.habilitado
+      celular: this.celular
     }
   }
 }
   
 export class UsuarioSave {
 
-  constructor(public usuario: Usuario, public empresaId : number, public rol : string ) {}
+  constructor(public usuario: Usuario, public empresaId : number, public cargo : string ) {}
+
+}
+
+export class UsuarioEditCargo {
+
+  constructor(public id: number, public empresaId : number, public cargo : Cargo) {}
 
 }
 

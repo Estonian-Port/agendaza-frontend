@@ -28,7 +28,12 @@ export class TipoEvento{
     constructor(public id: number, public nombre: string, public cantidadDuracion: string, 
         public duracion: string, public capacidad : Capacidad, public empresaId : number){}
     
-    static fromJson(tipoEventoEditJSON: TipoEventoEditJSON): any {
+    static fromTipoEventoJson(tipoEventoJSON: TipoEventoJSON): any {
+        return new TipoEvento(tipoEventoJSON.id, tipoEventoJSON.nombre, "",
+            tipoEventoJSON.duracion, tipoEventoJSON.capacidad, tipoEventoJSON.empresaId)
+    }
+
+    static fromTipoEventoEditJson(tipoEventoEditJSON: TipoEventoEditJSON): any {
         return new TipoEvento(tipoEventoEditJSON.id, tipoEventoEditJSON.nombre, 
             tipoEventoEditJSON.cantidadDuracion.slice(0, 2) + ":" +  tipoEventoEditJSON.cantidadDuracion.slice(3, 5), 
             tipoEventoEditJSON.duracion, tipoEventoEditJSON.capacidad, tipoEventoEditJSON.empresaId)

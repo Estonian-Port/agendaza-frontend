@@ -11,11 +11,10 @@ export class AbmClienteComponent implements OnInit {
   listaItems : Array<any> = []
   listaHeader : Array<any> =[]
   cantidadRegistros : number=0
+  paginaActual : number = 0
   cantidadPaginas : number[] = []
-  currentRegistro : number = 0
-  pageNumber : number = 0
+  realizoBusqueda : Boolean = true
   cantidadEventos : number = 0
-  primeraBusqueda : Boolean = true
 
   constructor(private usuarioService : UsuarioService) { }
 
@@ -24,34 +23,45 @@ export class AbmClienteComponent implements OnInit {
   }
 
   async inicializarListaItems(){
-    this.listaItems = await this.usuarioService.getAllClienteByEmpresaId()
+    this.updatePalabraBuscar(this.buscar)
 
-    this.cantidadRegistros = this.listaItems.length
-    this.cantidadPaginas = new Array<number>(Math.trunc(this.listaItems.length / 11) + 1)
+    if(this.buscar == ""){
+      this.listaItems = await this.usuarioService.getAllCliente(this.paginaActual)
+      this.cantidadRegistros = await this.usuarioService.getCantidadCliente()
+    }
+    else {
+      this.listaItems = await this.usuarioService.getAllClienteFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.usuarioService.getCantidadClienteFiltrados(this.buscar)
+    }
+
+    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
 
     this.listaHeader.push("Nombre")
     this.listaHeader.push("Apellido")
     this.listaHeader.push("Usuario")
+
+    this.updateCantidadPaginas(this.cantidadPaginas)
   }
 
-  updatePageNumber(page : number){
-    this.pageNumber = page
+  paginaCero(){
+    if(this.realizoBusqueda){
+      this.paginaActual = 0
+    }
+    this.realizoBusqueda = false
+  }
+
+  updatePaginaActual(page : number){
+    this.paginaActual = page
     this.inicializarListaItems()
-  }
-
-  updateCurrentRegistro(registro: number){
-    this.currentRegistro = registro
-  }
-
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.primeraBusqueda = busqueda
   }
 
   updatePalabraBuscar(palabraBuscar: string){
     this.buscar = palabraBuscar
+    this.paginaCero()
   }
 
   updateCantidadPaginas(cantidadPaginas: number[]){
     this.cantidadPaginas = cantidadPaginas
   }
+
 }

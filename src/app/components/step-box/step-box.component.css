@@ -11,10 +11,10 @@
 
 .step-box:hover {
     cursor:pointer;
-    background-color: var(--hover-bg-color);
+    background-color: var(--hover-bg-color-primary);
     transition: background-color 0.4s;
 }
 
 .is-invalid-step {
-    background-color: #dc3545;
+    background-color: var(--color-noveno);
 }

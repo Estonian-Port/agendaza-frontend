@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Extra } from 'src/app/model/Extra';
 import { GenericItem } from 'src/app/model/GenericItem';
+import { TipoEvento, TipoEventoJSON } from 'src/app/model/TipoEvento';
 import { ExtraService } from 'src/app/services/extra.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { ErrorMensaje } from 'src/util/errorHandler';
@@ -17,7 +18,13 @@ export class SaveExtraEventoComponent implements OnInit {
   listaTipoExtra : Array<string> = []
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
-  listaTipoEvento : Array<GenericItem> = []
+
+  listaTipoEvento : Array<TipoEvento> = []
+
+  listaTipoEventoCorto : Array<TipoEvento> = []
+  listaTipoEventoMedio : Array<TipoEvento> = []
+  listaTipoEventoLargo : Array<TipoEvento> = []
+
 
   constructor(private extraService : ExtraService, private tipoEventoService : TipoEventoService, private router : Router) { }
 
@@ -29,6 +36,12 @@ export class SaveExtraEventoComponent implements OnInit {
       this.extraService.extraId = 0
     }
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
+
+    this.listaTipoEventoCorto = this.listaTipoEvento.filter(evento => evento.duracion === 'CORTO');
+    this.listaTipoEventoMedio = this.listaTipoEvento.filter(evento => evento.duracion === 'MEDIO');
+    this.listaTipoEventoLargo = this.listaTipoEvento.filter(evento => evento.duracion === 'LARGO');
+
+
   }
 
   async save(){
