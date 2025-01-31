@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { GenericItem, GenericItemEmpresaTipoEvento } from 'src/app/model/GenericItem';
+import { TipoEvento } from 'src/app/model/TipoEvento';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
@@ -12,16 +13,27 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 export class SaveServicioComponent implements OnInit {
   
   genericItem : GenericItemEmpresaTipoEvento = new GenericItemEmpresaTipoEvento(0, "", 0, [])
-  listaTipoEvento : Array<GenericItem> = []
+  
+  listaTipoEvento : Array<TipoEvento> = []
+
+  listaTipoEventoCorto : Array<TipoEvento> = []
+  listaTipoEventoMedio : Array<TipoEvento> = []
+  listaTipoEventoLargo : Array<TipoEvento> = []
 
   constructor(private servicioService : ServicioService, private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit(): Promise<void> {
+
     if(this.servicioService.servicioId){
       this.genericItem = await this.servicioService.getServicio(this.servicioService.servicioId)
       this.servicioService.servicioId = 0
     }
+
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
+
+    this.listaTipoEventoCorto = this.listaTipoEvento.filter(evento => evento.duracion === 'CORTO');
+    this.listaTipoEventoMedio = this.listaTipoEvento.filter(evento => evento.duracion === 'MEDIO');
+    this.listaTipoEventoLargo = this.listaTipoEvento.filter(evento => evento.duracion === 'LARGO');
   }
 
   async save(){
@@ -47,5 +59,19 @@ export class SaveServicioComponent implements OnInit {
     }
     return false
   }
+  
+  selectAll(listaTipoEvento : Array<TipoEvento>) {
+    if(!this.areAllSelected(listaTipoEvento)){
+      this.genericItem.listaTipoEventoId = [...new Set([... this.genericItem.listaTipoEventoId, ...listaTipoEvento.map(it => it.id)])]
+    }else{
+      this.genericItem.listaTipoEventoId = this.genericItem.listaTipoEventoId.filter(item => !listaTipoEvento.some(it => it.id == item));
+    }
+  }
+
+  areAllSelected(listaTipoEvento : Array<TipoEvento>) {
+    return listaTipoEvento.every(item => this.genericItem.listaTipoEventoId.includes(item.id));
+
+  }
+  
 }
 

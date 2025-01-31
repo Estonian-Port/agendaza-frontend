@@ -41,7 +41,6 @@ export class SaveExtraEventoComponent implements OnInit {
     this.listaTipoEventoMedio = this.listaTipoEvento.filter(evento => evento.duracion === 'MEDIO');
     this.listaTipoEventoLargo = this.listaTipoEvento.filter(evento => evento.duracion === 'LARGO');
 
-
   }
 
   async save(){
@@ -67,5 +66,20 @@ export class SaveExtraEventoComponent implements OnInit {
     }
     return false
   }
+
+
+  selectAll(listaTipoEvento : Array<TipoEvento>) {
+    if(!this.areAllSelected(listaTipoEvento)){
+      this.extra.listaTipoEventoId = [...new Set([... this.extra.listaTipoEventoId, ...listaTipoEvento.map(it => it.id)])]
+    }else{
+      this.extra.listaTipoEventoId = this.extra.listaTipoEventoId.filter(item => !listaTipoEvento.some(it => it.id == item));
+    }
+  }
+
+  areAllSelected(listaTipoEvento : Array<TipoEvento>) {
+    return listaTipoEvento.every(item => this.extra.listaTipoEventoId.includes(item.id));
+
+  }
+
 }
 

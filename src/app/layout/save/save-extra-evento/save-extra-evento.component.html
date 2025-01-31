@@ -39,7 +39,8 @@
                     <div class="extra-overflow me-4">
                         <div class="card-extra">
                             <label for="todos-corto" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-corto">
+                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-corto" 
+                            [checked]="areAllSelected(listaTipoEventoCorto)" (change)="selectAll(listaTipoEventoCorto)">
 
                         </div>
                     </div>
@@ -70,9 +71,9 @@
 
                     <div class="extra-overflow me-4">
                         <div class="card-extra">
-                            <label for="todos-corto" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-
-                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-corto">
+                            <label for="todos-medio" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
+                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-medio" 
+                            [checked]="areAllSelected(listaTipoEventoMedio)" (change)="selectAll(listaTipoEventoMedio)">
                         </div>
                     </div>
                     
@@ -106,8 +107,8 @@
                     <div class="extra-overflow me-4">
                         <div class="card-extra">
                             <label for="todos-corto" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-
-                            <input type="checkbox" class="form-check-inputflex-shrink-0" id="todos-corto">
+                            <input type="checkbox" class="form-check-inputflex-shrink-0" id="todos-largo" 
+                            [checked]="areAllSelected(listaTipoEventoLargo)" (change)="selectAll(listaTipoEventoLargo)">
                         </div>
                     </div>
                     
