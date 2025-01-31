@@ -32,7 +32,7 @@ export class LoginComponent {
       (await this.loginService.login(this.usuarioLogin)).subscribe({
           error: (err: any) => { 
             this.errorLogin.condicional = true
-            mostrarErrorConMensaje(this, "")
+            mostrarErrorConMensaje(this, err)
             this.errors.forEach(error => { this.errorLogin.mensaje = error })
           },
           complete: () => {

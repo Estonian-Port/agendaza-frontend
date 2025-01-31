@@ -8,7 +8,7 @@ import { Time } from 'src/app/model/Time';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
-import { ErrorMensaje, getErrorConMensaje } from 'src/util/errorHandler';
+import { ErrorMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-edit-evento',
@@ -159,7 +159,6 @@ export class VerEventoComponent implements OnInit {
     }catch(error: any){
       this.eventoErrorReenviarMail.condicional = true
       this.eventoReenviarMail = false
-      this.eventoErrorReenviarMail.mensaje = getErrorConMensaje(error)
     }
   }
 
