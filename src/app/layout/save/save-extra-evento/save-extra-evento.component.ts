@@ -35,6 +35,7 @@ export class SaveExtraEventoComponent implements OnInit {
       this.extra = await this.extraService.getExtra(this.extraService.extraId)
       this.extraService.extraId = 0
     }
+
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
 
     this.listaTipoEventoCorto = this.listaTipoEvento.filter(evento => evento.duracion === 'CORTO');
@@ -67,7 +68,6 @@ export class SaveExtraEventoComponent implements OnInit {
     return false
   }
 
-
   selectAll(listaTipoEvento : Array<TipoEvento>) {
     if(!this.areAllSelected(listaTipoEvento)){
       this.extra.listaTipoEventoId = [...new Set([... this.extra.listaTipoEventoId, ...listaTipoEvento.map(it => it.id)])]
@@ -78,8 +78,6 @@ export class SaveExtraEventoComponent implements OnInit {
 
   areAllSelected(listaTipoEvento : Array<TipoEvento>) {
     return listaTipoEvento.every(item => this.extra.listaTipoEventoId.includes(item.id));
-
   }
-
 }
 
