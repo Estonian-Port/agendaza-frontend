@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { fadeOut } from 'src/app/animations/fade-out';
 import { fadeInOut } from 'src/app/animations/fade-in-out';
 import { translate } from 'src/app/animations/translate';
 import { ModalInformativoComponent } from 'src/app/components/modal/modal-informativo/modal-informativo.component';
@@ -30,7 +31,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
   selector: 'app-save-evento',
   templateUrl: './save-evento.component.html',
   styleUrls: ['./save-evento.component.css'],
-  animations: [fadeInOut, translate]
+  animations: [fadeInOut, translate, fadeOut]
 })
 export class SaveEventoComponent implements OnInit {
 
@@ -421,7 +422,7 @@ export class SaveEventoComponent implements OnInit {
       try {
         this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.email.getRawValue())
         this.usuarioEncontrado()
-      } catch (error) {
+      } catch (error: any) {
         this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email.getRawValue(), 0)
         this.celular?.setValue("")
         this.email?.setValue(this.email.getRawValue())
@@ -460,9 +461,13 @@ export class SaveEventoComponent implements OnInit {
   usuarioNoEncontrado(error : any){
     this.error.condicional = true
     this.usuarioCondicional = false
-
     mostrarErrorConMensaje(this, error)
+
     this.errors.forEach(error => { this.error.mensaje = error })
+
+    setTimeout(() => {
+      this.error.condicional = false;
+    }, 3000);
   }
 
   // --------------------------------------------------------------------------
