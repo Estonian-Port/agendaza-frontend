@@ -15,6 +15,9 @@ export class AbmDataTablePagoComponent implements OnInit {
   @Output() 
   outputEliminar = new EventEmitter<number>()
 
+  @Output() 
+  outputDescargar = new EventEmitter<number>()
+
   modal = false
   idEliminar = 0
   cuerpoModal = ""
@@ -34,12 +37,16 @@ export class AbmDataTablePagoComponent implements OnInit {
     this.setModal(!this.modal)
   }
 
+  modalParaDescargarComprobante(id: number) {
+    this.outputDescargar.emit(id)
+  }
+
   setModal(modal : boolean){
     this.modal = modal
   }
 
   eliminar(id : number){
-    this.outputEliminar.emit(this.idEliminar);
+    this.outputEliminar.emit(this.idEliminar)
   }
 
 }
