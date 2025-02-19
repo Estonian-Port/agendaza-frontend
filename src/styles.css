@@ -205,6 +205,13 @@ button:focus {
   height: 45vh;
 }
 
+
+.pagos-container{
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+}
+
 .extra-overflow{
   overflow-y: auto;
 }
