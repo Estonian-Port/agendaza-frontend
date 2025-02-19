@@ -1,0 +1,17 @@
+<div class="row contenedor-default">
+  <h2 class="col-6">{{titulo}}</h2>
+  
+  <div class="col-6">
+      <div class="gap-2 d-flex justify-content-end">
+          <div>
+              <a class="btn btn-primary" (click)="volver()">Volver</a>
+          </div>
+          <div *ngIf="botonSave">
+              <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+          </div>
+          <div *ngIf="botonSave">
+            <button type="submit" class="btn btn-success" (click)="agregar()">Agregar</button>
+        </div>
+      </div>
+  </div>
+</div>

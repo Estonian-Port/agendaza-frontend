@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Cliente } from 'src/app/model/Usuario';
 
 @Component({
-  selector: 'app-modal-editar',
-  templateUrl: './modal-editar.component.html'
+  selector: 'app-modal-edit-cliente',
+  templateUrl: './modal-edit-cliente.component.html'
 })
-export class ModalEditarComponent {
+export class ModalEditClienteComponent {
 
   @Input()
   modal = false
@@ -13,28 +14,22 @@ export class ModalEditarComponent {
   titulo = ""
 
   @Input()
-  inputEditar = ""
-
-  @Input()
-  myCallback!: Function
-
-  @Input()
-  formatoTextearea = false
+  cliente = new Cliente(0, "", "", "", "", 0)
 
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
 
   @Output() 
-  outputAceptar = new EventEmitter<any>();
+  outputSave = new EventEmitter<any>();
 
   changeModal(){
     this.modal = !this.modal
     this.outputChangeModal.emit(this.modal)
   }
 
-  aceptar(){
-    this.outputAceptar.emit(this.inputEditar)
-    this.myCallback()
+  save(){
+    this.outputSave.emit(this.cliente)
     this.changeModal()
   }
+
 }
