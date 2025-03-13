@@ -423,12 +423,7 @@ export class SaveEventoComponent implements OnInit {
         this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.email.getRawValue())
         this.usuarioEncontrado()
       } catch (error: any) {
-        this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email.getRawValue(), 0)
-        this.celular?.setValue("")
-        this.email?.setValue(this.email.getRawValue())
-        this.nombre?.setValue("")
-        this.apellido?.setValue("")
-        this.usuarioNoEncontrado(error)
+        this.cleanCliente(error)
       }
     }
   }
@@ -439,14 +434,21 @@ export class SaveEventoComponent implements OnInit {
         this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.celular?.getRawValue())
         this.usuarioEncontrado()
       } catch (error) {
-        this.evento.cliente = new Cliente(0, "", "", "CLIENTE", "", this.celular?.getRawValue())
-        this.celular?.setValue(this.celular?.getRawValue())
-        this.email?.setValue("")
-        this.nombre?.setValue("")
-        this.apellido?.setValue("")
-        this.usuarioNoEncontrado(error)
+        this.cleanCliente(error)
       }
     }
+  }
+
+  cleanCliente(error : any){
+    this.nombre?.setValue("")
+    this.apellido?.setValue("")
+    this.usuarioNoEncontrado(error)
+    this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email?.getRawValue(), this.celular?.getRawValue())
+  }
+
+  setCliente(){
+    this.evento.cliente = new Cliente(0, this.nombre?.getRawValue(), this.apellido?.getRawValue(),"CLIENTE", this.email?.getRawValue(), 
+  this.celular?.getRawValue())
   }
 
   usuarioEncontrado(){
@@ -537,14 +539,13 @@ export class SaveEventoComponent implements OnInit {
       try{
         // Setea la fecha
         this.setFechaInicioAndFin()
+        this.setCliente()
         this.setEvento()
-        console.log(this.evento)
         await this.eventoService.save(this.evento)
         this.modal.mostrarModal()
         
       }catch(error){
         this.eventoSaveError.condicional = true
-        console.log(error);
         this.spinnerVisible = false
       }
     }

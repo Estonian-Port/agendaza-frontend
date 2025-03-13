@@ -21,6 +21,9 @@ export class AbmEventoComponent implements OnInit {
   constructor(private eventoService : EventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
+    if(this.eventoService.paginaActual !=0){
+      this.paginaActual = this.eventoService.paginaActual
+    }
     this.inicializarListaItems()
   }
 
@@ -66,23 +69,28 @@ export class AbmEventoComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
-  pagos(id : number){
+  pagos(){
+    this.guardarPaginaActual()
     this.router.navigateByUrl('/editEventoPagos')
   }
 
-  extras(id : number){
+  extras(){
+    this.guardarPaginaActual()
     this.router.navigateByUrl('/editEventoExtras')
   }
 
-  catering(id : number){
+  catering(){
+    this.guardarPaginaActual()
     this.router.navigateByUrl('/editEventoCatering')
   }
 
-  hora(id : number){
+  hora(){
+    this.guardarPaginaActual()
     this.router.navigateByUrl('/editEventoHora')
   }
   
-  ver(id : number){
+  ver(){
+    this.guardarPaginaActual()
     this.router.navigateByUrl('/verEvento')
   }
 
@@ -94,4 +102,7 @@ export class AbmEventoComponent implements OnInit {
     })
   }
 
+  guardarPaginaActual(){
+    this.eventoService.paginaActual = this.paginaActual
+  }
 }

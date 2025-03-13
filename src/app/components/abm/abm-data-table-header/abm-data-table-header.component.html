@@ -9,7 +9,7 @@
     </div>
 
     <div class="botonera">
-        <a class="btn btn-primary mx-2 icono" data-toggle="modal" [routerLink]="['/panelAdmin']">
+        <a class="btn btn-primary mx-2 icono" data-toggle="modal" (click)="volver()">
             Volver</a>
         <a class="btn btn-success agregar-icon icono" data-toggle="modal" [routerLink]="getRoute()">
             <i class="fas fa-plus-circle mx-1"></i>
