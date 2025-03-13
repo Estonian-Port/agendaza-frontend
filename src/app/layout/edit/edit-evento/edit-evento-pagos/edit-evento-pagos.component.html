@@ -34,12 +34,18 @@
                     <div class="pagos-container">
                         <div class="extra-overflow">
                             <div class="extra-box" *ngFor="let pago of eventoPago.listaPagos">
-                                <div class="card-extra">
-                                    <p >{{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}}
-                                        <button (click)="descargar(pago.id)" class="mx-2">
-                                            <i class="fas fa-download text-primary"></i>
-                                        </button>
-                                    </p>
+                                <div class="card-pagos">
+                                    <div class="d-flex justify-content-between">
+                                        {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}}
+                                        <div>
+                                            <button (click)="descargar(pago.id)" class="mx-2">
+                                                <i class="fas fa-download text-primary"></i>
+                                            </button>
+                                            <button (click)="modalParaEliminar(pago.id, pago.nombreEvento)" class="mx-2">
+                                                <i class="fas fa-trash text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -82,3 +88,12 @@
     </div>
 
 </div>
+
+<app-modal-basico
+    (outputAceptar)="eliminar()"
+    (outputChangeModal)="setModal($event)"
+    [modal]="modal"
+    [titulo]="tituloModal"
+    [cuerpo]="cuerpoModal"
+    [boton]="botonModal">
+</app-modal-basico>
