@@ -1,64 +1,99 @@
 <div class="container">
     <br>
-    <h2>Estado de Cuenta</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="form-group col-8 mb-4">
-                <h5>Evento</h5>
-                <input type="text" class="form-control" id="evento" [value]="eventoPago.nombre" disabled>
-            </div>
-            <div class="form-group col-8 mb-4">
-                <h5>Codigo</h5>
-                <input type="text" class="form-control" id="codigo" [value]="eventoPago.codigo" disabled>
-            </div>
-            <div class="col-md-9">
-                <div class="form-group">
-                    <h5>Lista de pagos</h5>
-                    <div *ngFor="let pago of eventoPago.listaPagos">
-                        <p>{{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}} </p>
-                    </div>
+    <div class="row contenedor-default">
+        <h2 class="col-6">Estado de Cuenta</h2>
+        
+        <div class="col-6">
+            <div class="gap-2 d-flex justify-content-end">
+                <div>
+                    <a class="btn btn-primary" (click)="volver()">Volver</a>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group col-8">
-                <h5>Monto total abonado</h5>
-                <div class="input-group mb-4">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">$</div>
-                    </div>
-                    <input type="number" class="form-control" id="monto_abonado_total" [value]="abonado" disabled>
-                </div>
-            </div>
-            <div class="form-group col-8">
-                <h5>Monto faltante</h5>
-                <div class="input-group mb-4">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">$</div>
-                    </div>
-                    <input type="number" class="form-control" id="monto_faltante" [value]="faltante" disabled>
-                </div>					        
-            </div>
-            <div class="form-group col-8">
-                <h5>El precio total del evento</h5>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">$</div>
-                    </div>
-                    <input type="number" class="form-control" id="presupuesto" [value]="eventoPago.precioTotal" disabled>
+                <div>
+                    <button type="submit" class="btn btn-success" (click)="agregarPago()"><i class="fas fa-plus-circle"></i> Agregar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container mt-3">
-        <div class="gap-2 d-flex justify-content-end">
-            <div>
-                <button (click)="volver()"class="btn btn-primary">Volver</button>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row contenedor-default mt-2">
+                <div class="form-group col-8 mb-4">
+                    <h5>Evento</h5>
+                    <input type="text" class="form-control" id="evento" [value]="eventoPago.nombre" disabled>
+                </div>
+                <div class="form-group col-8 mb-4">
+                    <h5>Codigo</h5>
+                    <input type="text" class="form-control" id="codigo" [value]="eventoPago.codigo" disabled>
+                </div>
             </div>
-            <div>
-                <button type="submit" class="btn btn-success" (click)="agregarPago()"><i class="fas fa-plus-circle"></i> Agregar</button>
+
+            <div class="row contenedor-default mt-2">
+                <div class="form-group">
+                    <h5>Lista de pagos</h5>
+                    <div class="pagos-container">
+                        <div class="extra-overflow">
+                            <div class="extra-box" *ngFor="let pago of eventoPago.listaPagos">
+                                <div class="card-pagos">
+                                    <div class="d-flex justify-content-between">
+                                        {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}}
+                                        <div>
+                                            <button (click)="descargar(pago.id)" class="mx-2">
+                                                <i class="fas fa-download text-primary"></i>
+                                            </button>
+                                            <button (click)="modalParaEliminar(pago.id, pago.nombreEvento)" class="mx-2">
+                                                <i class="fas fa-trash text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="contenedor-default mt-2">
+                <div class="form-group col-8">
+                    <h5>Monto total abonado</h5>
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input type="number" class="form-control" id="monto_abonado_total" [value]="abonado" disabled>
+                    </div>
+                </div>
+                <div class="form-group col-8">
+                    <h5>Monto faltante</h5>
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input type="number" class="form-control" id="monto_faltante" [value]="faltante" disabled>
+                    </div>					        
+                </div>
+                <div class="form-group col-8">
+                    <h5>El precio total del evento</h5>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input type="number" class="form-control" id="presupuesto" [value]="eventoPago.precioTotal" disabled>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
+
+<app-modal-basico
+    (outputAceptar)="eliminar()"
+    (outputChangeModal)="setModal($event)"
+    [modal]="modal"
+    [titulo]="tituloModal"
+    [cuerpo]="cuerpoModal"
+    [boton]="botonModal">
+</app-modal-basico>

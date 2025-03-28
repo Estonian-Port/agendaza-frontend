@@ -49,10 +49,14 @@ export class SavePagoComponent implements OnInit {
 
   async save(){
     const item = await this.pagoService.save(this.pago)
-    this.router.navigateByUrl('/abmPago')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmPago')
+    if(this.eventoService.eventoId != 0){
+      this.router.navigateByUrl('/editEventoPagos')
+    }else{
+      this.router.navigateByUrl('/abmPago')
+    }
   }
 }

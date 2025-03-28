@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Usuario, UsuarioEditCargo, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
+import { Cliente, Usuario, UsuarioEditCargo, UsuarioEditPassword, UsuarioEmpresa, UsuarioJSON, UsuarioSave } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
 import { Cargo } from '../model/Cargo';
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl';
@@ -87,8 +87,7 @@ export class UsuarioService {
   async saveCargo(usuario: Usuario) {
     const item$ = this.httpClient.post<UsuarioJSON>(REST_SERVER_URL + '/saveUsuarioCargoOfEmpresa', 
       new UsuarioEditCargo(usuario.id, this.agendaService.getEmpresaId(), usuario.cargo))
-    const item = await lastValueFrom(item$)
-    return item
+    return await lastValueFrom(item$)
   }
 
   async editPassword(usuarioEditPassword : UsuarioEditPassword) {
@@ -114,5 +113,9 @@ export class UsuarioService {
   async deleteCargo(usuarioId: number) {
     return this.httpClient.delete<any>(REST_SERVER_URL + '/deleteCargo/' + this.agendaService.getEmpresaId() + '/'+ usuarioId)
   }
-
+  
+  async saveCliente(cliente: Cliente){
+    const item$ = this.httpClient.post<Cliente>(REST_SERVER_URL + '/saveCliente', cliente)
+    return await lastValueFrom(item$)
+  }
 }

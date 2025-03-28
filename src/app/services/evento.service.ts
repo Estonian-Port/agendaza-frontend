@@ -18,6 +18,7 @@ export class EventoService {
   eventoCodigo : string = ""
   fechaFiltroForAbmEvento : string = ""
   cantidadEventos : number = 0
+  paginaActual: number = 0
 
   constructor(private httpClient : HttpClient, private agendaService : AgendaService, private loginService : LoginService) { }
 
@@ -89,8 +90,8 @@ export class EventoService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getEventoPago() {
-    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoPago/' + this.eventoId)
+  async getAllPagoFromEvento() {
+    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoId)
     return await lastValueFrom(evento$)
   }
 

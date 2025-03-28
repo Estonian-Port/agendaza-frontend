@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { fadeOut } from 'src/app/animations/fade-out';
 import { fadeInOut } from 'src/app/animations/fade-in-out';
 import { translate } from 'src/app/animations/translate';
 import { ModalInformativoComponent } from 'src/app/components/modal/modal-informativo/modal-informativo.component';
@@ -30,7 +31,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
   selector: 'app-save-evento',
   templateUrl: './save-evento.component.html',
   styleUrls: ['./save-evento.component.css'],
-  animations: [fadeInOut, translate]
+  animations: [fadeInOut, translate, fadeOut]
 })
 export class SaveEventoComponent implements OnInit {
 
@@ -421,13 +422,8 @@ export class SaveEventoComponent implements OnInit {
       try {
         this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.email.getRawValue())
         this.usuarioEncontrado()
-      } catch (error) {
-        this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email.getRawValue(), 0)
-        this.celular?.setValue("")
-        this.email?.setValue(this.email.getRawValue())
-        this.nombre?.setValue("")
-        this.apellido?.setValue("")
-        this.usuarioNoEncontrado(error)
+      } catch (error: any) {
+        this.cleanCliente(error)
       }
     }
   }
@@ -438,14 +434,21 @@ export class SaveEventoComponent implements OnInit {
         this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.celular?.getRawValue())
         this.usuarioEncontrado()
       } catch (error) {
-        this.evento.cliente = new Cliente(0, "", "", "CLIENTE", "", this.celular?.getRawValue())
-        this.celular?.setValue(this.celular?.getRawValue())
-        this.email?.setValue("")
-        this.nombre?.setValue("")
-        this.apellido?.setValue("")
-        this.usuarioNoEncontrado(error)
+        this.cleanCliente(error)
       }
     }
+  }
+
+  cleanCliente(error : any){
+    this.nombre?.setValue("")
+    this.apellido?.setValue("")
+    this.usuarioNoEncontrado(error)
+    this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email?.getRawValue(), this.celular?.getRawValue())
+  }
+
+  setCliente(){
+    this.evento.cliente = new Cliente(0, this.nombre?.getRawValue(), this.apellido?.getRawValue(),"CLIENTE", this.email?.getRawValue(), 
+  this.celular?.getRawValue())
   }
 
   usuarioEncontrado(){
@@ -460,9 +463,13 @@ export class SaveEventoComponent implements OnInit {
   usuarioNoEncontrado(error : any){
     this.error.condicional = true
     this.usuarioCondicional = false
-
     mostrarErrorConMensaje(this, error)
+
     this.errors.forEach(error => { this.error.mensaje = error })
+
+    setTimeout(() => {
+      this.error.condicional = false;
+    }, 3000);
   }
 
   // --------------------------------------------------------------------------
@@ -532,14 +539,13 @@ export class SaveEventoComponent implements OnInit {
       try{
         // Setea la fecha
         this.setFechaInicioAndFin()
+        this.setCliente()
         this.setEvento()
-        console.log(this.evento)
         await this.eventoService.save(this.evento)
         this.modal.mostrarModal()
         
       }catch(error){
         this.eventoSaveError.condicional = true
-        console.log(error);
         this.spinnerVisible = false
       }
     }

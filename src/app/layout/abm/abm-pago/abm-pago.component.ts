@@ -68,4 +68,15 @@ export class AbmPagoComponent implements OnInit {
       }
     })
   }
+
+  async descargar(id: number) {
+    const blob = await this.pagoService.generarComprobanteDePago(id)
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'comprobante_de_pago.pdf';
+    link.click();
+    link.remove();
+  } catch (error: any) {
+    console.error('Error al descargar el PDF:', error);
+  }
 }

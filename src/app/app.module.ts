@@ -72,6 +72,8 @@ import { ModalInformativoComponent } from './components/modal/modal-informativo/
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TruncarTextoPipe } from './pipes/truncar-texto.pipe';
 import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente/modal-edit-cliente.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +140,9 @@ import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-
     ModalInformativoComponent,
     SpinnerComponent,
     TruncarTextoPipe,
-    AbmEspecificacionComponent
+    AbmEspecificacionComponent,
+    HeaderComponent,
+    ModalEditClienteComponent
   ],
   imports: [
     BrowserModule,

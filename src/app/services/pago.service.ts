@@ -59,4 +59,9 @@ export class PagoService {
     return this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id)
   }
 
+  async generarComprobanteDePago(id : number): Promise<Blob> {
+    const item$ = this.httpClient.get(REST_SERVER_URL + '/generarComprobanteDePago/' + id, { responseType: 'blob' })
+    return lastValueFrom(item$);
+  }
+
 }

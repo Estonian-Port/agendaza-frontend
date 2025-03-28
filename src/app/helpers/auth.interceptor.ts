@@ -20,8 +20,8 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(cloned).pipe(
         catchError((error: HttpErrorResponse) => {
 
-          // Si hay un error de conexión o el backend está caído (status 0 o 503)
-          if (error.status === 0 || error.status === 503) {
+          // Si hay un error de conexión o el backend está caído (status 0 o 503) o error de token 403
+          if (error.status === 0 || error.status === 403 || error.status === 503) {
             
             // Limpiar el token del localStorage
             localStorage.removeItem('token');

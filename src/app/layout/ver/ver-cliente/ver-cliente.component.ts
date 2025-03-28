@@ -4,7 +4,6 @@ import { EventoVer } from 'src/app/model/Evento';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { Router } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
-import { EmpresaService } from 'src/app/services/empresa.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AgendaService } from 'src/app/services/agenda.service';
 
@@ -20,6 +19,10 @@ export class VerClienteComponent implements OnInit {
   cliente = ""
   eventos: Array<any> = []
   cantidadEventos = 0
+  titulo = "Ver Cliente"
+
+  modal = false
+  tituloModal=""
 
   constructor(private eventoService : EventoService, private agendaService : AgendaService, private usuarioService: UsuarioService , private router : Router) { }
 
@@ -39,6 +42,20 @@ export class VerClienteComponent implements OnInit {
 
   masDe10Eventos(): Boolean {
     return this.cantidadEventos > 10
+  }
+
+  editModal(){
+    this.tituloModal = "Editar cliente"
+    this.setModalEditar(!this.modal)
+  }
+
+  setModalEditar(modal : boolean){
+    this.modal = modal
+  }
+
+  async editCliente(cliente : Cliente){
+    const clienteEdit : Cliente = await this.usuarioService.saveCliente(cliente)
+    this.cliente = clienteEdit.nombre + " " + clienteEdit.apellido
   }
 
 }

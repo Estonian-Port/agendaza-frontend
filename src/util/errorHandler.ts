@@ -11,7 +11,7 @@ export function mostrarErrorConMensaje(component: any, error: any): void {
   }else if(error.status === 403){
     errorMessage = 'Usuario o contraseña incorrecta.'
   }else{
-    errorMessage = error.message
+    errorMessage = error.error
   }
   component.errors.push(errorMessage)
 }
