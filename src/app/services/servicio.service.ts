@@ -62,4 +62,10 @@ export class ServicioService {
     return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
   }
 
+  async getAllServicio() {
+     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicio')
+     const listaItem = await lastValueFrom(listaItem$)
+     return listaItem.map((servicio) => GenericItem.fromJson(servicio))
+    }
+
 }

@@ -29,6 +29,7 @@ export class PrecioExtraComponent implements OnInit {
   }
 
   volver(){
+    this.extraService.extraId = 0
     this.router.navigateByUrl("/" + this.extraService.extraVolver)
   }
 
