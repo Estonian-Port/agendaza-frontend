@@ -21,15 +21,7 @@
 .dropdown-btn {
   background-color:  var(--color-quinario);;
   border-radius: 50%;
-  padding: 0.5em;
-  margin-right: 1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.7em;
-  height: 0.7em; 
-  font-size: 20px;
+
 }
 
 .dropdown-item:hover{
