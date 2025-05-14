@@ -1,8 +1,25 @@
 <div class="container">
-    <div class="d-flex justify-content-between">
-        <div>
-            <h2>Ver Evento</h2>
+
+    <br>
+    <div class="row contenedor-default">
+        <h2 class="col-6">Ver evento</h2>
+        
+        <div class="col-6">
+            <div class="gap-2 d-flex justify-content-end">
+                <div>
+                    <button (click)="volver()" class="btn btn-primary">Volver</button>
+                </div>
+                <div>
+                    <button (click)="descargarComprobante()" class="btn btn-primary"><i class="fa fa-download"></i></button>
+                </div>
+                <div>
+                    <button (click)="reenviarMail()" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
         <div *ngIf='eventoReenviarMail' class="col-4">
             <div class="alert alert-success">Mail Enviado exitosamente</div>
         </div>
@@ -11,7 +28,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row contenedor-default mt-2">
         <div class="col-md-3">
             <div class="form-group mb-4">
                 <div>
@@ -50,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-9 mb-4">
+            <div class="form-group col-9">
                 <h5>Hora final</h5>
                 <div class="d-inline-flex flex-row">
                     <div class="form-group col-3">
@@ -90,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group mb-4">
+            <div class="form-group">
                 <div>
                     <div class="d-flex justify-content-between col-8">
                         <h5>Cant. Niños</h5>
@@ -150,7 +167,7 @@
                     <h5>Tipo Catering</h5>
                     <button *ngIf="tipoCatering" (click)="setListaModal(evento.listaExtraTipoCatering)"><i class="fas fa-eye text-primary fa-lg"></i></button>
                 </div>
-                <div class="mb-4 col-9">
+                <div class="col-9">
                     <input type="text" class="form-control" name="tipoCatering" [value]="tipoCatering | siNo" disabled>
                 </div>
             </div>
@@ -166,7 +183,7 @@
                     <h5>Anotaciones</h5>
                     <button (click)="editAnotacionesModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
                 </div>
-                <div class="mb-4 col-9">
+                <div class="col-9">
                     <textarea type="text" class="form-control" rows="6" name="anotaciones" [(ngModel)]="evento.anotaciones" disabled></textarea>
                 </div>
             </div>
@@ -174,19 +191,6 @@
         </div>
     </div>
 
-    <div class="container mt-3">
-        <div class="gap-2 d-flex justify-content-end">
-            <div>
-                <button (click)="volver()" class="btn btn-primary">Volver</button>
-            </div>
-            <div>
-                <button (click)="descargarComprobante()" class="btn btn-secondary" disabled>Descargar Comprobante</button>
-            </div>
-            <div>
-                <button (click)="reenviarMail()" class="btn btn-success"><i class="fa fa-envelope"></i> Reenviar Mail</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <app-modal-editar

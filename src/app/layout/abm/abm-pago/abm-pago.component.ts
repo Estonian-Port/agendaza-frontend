@@ -70,7 +70,7 @@ export class AbmPagoComponent implements OnInit {
   }
 
   async descargar(id: number) {
-    const blob = await this.pagoService.generarComprobanteDePago(id)
+    const blob = await this.pagoService.descargarPago(id)
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'comprobante_de_pago.pdf';

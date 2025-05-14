@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
 import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
+import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-edit-evento-pagos',
@@ -20,6 +21,10 @@ export class EditEventoPagosComponent implements OnInit {
   cuerpoModal = ""
   tituloModal = ""
   botonModal = ""
+
+  envioEmail = false
+  errorEnvioEmail = new ErrorMensaje(false, '')
+  errors = []
 
   constructor(private eventoService : EventoService, private router : Router, private pagoService : PagoService) { }
 
@@ -38,17 +43,6 @@ export class EditEventoPagosComponent implements OnInit {
 
   volver(){
     this.router.navigateByUrl("/abmEvento")
-  }
-
-  async descargar(id: number) {
-    const blob = await this.pagoService.generarComprobanteDePago(id)
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'comprobante_de_pago.pdf';
-    link.click();
-    link.remove();
-  } catch (error: any) {
-    console.error('Error al descargar el PDF:', error);
   }
 
   async eliminar(){
@@ -71,4 +65,69 @@ export class EditEventoPagosComponent implements OnInit {
     this.modal = modal
   }
 
+  async enviarEmailPago(pagoId : number){
+    try{
+      this.envioEmail = await this.pagoService.enviarEmailPago(pagoId, this.eventoService.eventoId)
+      
+      setTimeout(() => {
+        this.envioEmail = false;
+      }, 3000);
+
+    }catch(error: any){
+      this.mostrarError(error)
+    }
+  }
+
+  async descargarPago(id: number) {
+    try{
+      const blob = await this.pagoService.descargarPago(id)
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'comprobante_de_pago.pdf';
+      link.click();
+      link.remove();
+    } catch (error: any) {
+      console.error('Error al descargar el PDF:', error);
+    }
+  }
+
+
+  async enviarEmailEstadoCuenta(){
+    try{
+      this.envioEmail = await this.pagoService.enviarEmailEstadoCuenta(this.eventoService.eventoId)
+      setTimeout(() => {
+        this.envioEmail = false;
+      }, 3000);
+    }catch(error: any){
+       this.mostrarError(error)
+    }
+  }
+
+
+  async descargarEstadoCuenta() {
+    try{
+      const blob = await this.pagoService.descargarEstadoCuenta(this.eventoService.eventoId)
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'comprobante_estado_cuenta.pdf';
+      link.click();
+      link.remove();
+    } catch (error: any) {
+      console.error('Error al descargar el PDF:', error);
+    }
+  }
+
+  mostrarError(error : any){
+      this.errorEnvioEmail.condicional = true
+      this.envioEmail = false
+      
+      mostrarErrorConMensaje(this, error)
+  
+      this.errors.forEach(error => { this.errorEnvioEmail.mensaje = error })
+  
+      setTimeout(() => {
+        this.errorEnvioEmail.condicional = false;
+      }, 3000);
+  }
+  
 }
