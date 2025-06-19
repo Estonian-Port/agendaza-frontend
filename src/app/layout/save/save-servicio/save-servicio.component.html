@@ -2,26 +2,26 @@
     <br>
     <form> 
 
-        <div class="row contenedor-default">
-            <h2 class="col-6">Agregar Servicio</h2>
-            
-            <div class="col-6">
-                <div class="gap-2 d-flex justify-content-end">
-                    <div>
-                        <a class="btn btn-primary" (click)="volver()">Volver</a>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-header
+            (outputVolver)="volver()"
+            [titulo]="titulo">
+        </app-header>
 
         <div class="row contenedor-default mt-2">
-            <div class="col-lg-5 col-md-12 form-group mb-4">
-                <label for="nombre">Nombre</label> 
+            
+            <div class="col-lg-4 col-md-12 form-group mb-4">
+                <label for="servicio">Servicio</label>
+                <select class="form-select" (change)="onServicioChange()"  [(ngModel)]='seleccionado' name="seleccioando">
+                    <option *ngFor="let servicio of listaServicio | orderAbmByNombre" [value]="servicio.id">{{servicio.nombre}}</option>
+                    <option value="0">Otro</option>
+                </select>
+            </div>
+
+            <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>
+                <label for="nombre">Nuevo Servicio</label> 
                 <input type="text" [(ngModel)]='genericItem.nombre' class="form-control" id="nombre" name="nombre">
             </div>
+
         </div>
         
         <div class="row contenedor-default mt-2">

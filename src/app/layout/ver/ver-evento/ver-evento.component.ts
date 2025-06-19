@@ -8,7 +8,7 @@ import { Time } from 'src/app/model/Time';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
-import { ErrorMensaje } from 'src/util/errorHandler';
+import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
   selector: 'app-edit-evento',
@@ -148,17 +148,33 @@ export class VerEventoComponent implements OnInit {
     this.router.navigateByUrl("/abmEvento")
   }
 
-  descargarComprobante(){
-    console.log("TODO")
+  async descargarComprobante(){
+    try{
+      const blob = await this.eventoService.descargarEvento()
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'comprobante_de_evento.pdf';
+      link.click();
+      link.remove();
+    } catch (error: any) {
+      console.error('Error al descargar el PDF:', error);
+    }
   }
 
   async reenviarMail(){
     try{
       this.eventoReenviarMail = await this.eventoService.reenviarMail(this.evento.id)
-      this.eventoErrorReenviarMail.condicional = false
     }catch(error: any){
       this.eventoErrorReenviarMail.condicional = true
       this.eventoReenviarMail = false
+      
+      mostrarErrorConMensaje(this, error)
+  
+      this.errors.forEach(error => { this.eventoErrorReenviarMail.mensaje = error })
+  
+      setTimeout(() => {
+        this.eventoErrorReenviarMail.condicional = false;
+      }, 3000);
     }
   }
 

@@ -59,8 +59,24 @@ export class PagoService {
     return this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id)
   }
 
-  async generarComprobanteDePago(id : number): Promise<Blob> {
-    const item$ = this.httpClient.get(REST_SERVER_URL + '/generarComprobanteDePago/' + id, { responseType: 'blob' })
+  async enviarEmailPago(pagoId : number, eventoId: number) {
+    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailPago/' + pagoId + "/" + eventoId + "/" + this.agendaService.getEmpresaId())
+    return await lastValueFrom(item$)
+  }
+
+  async descargarPago(id : number): Promise<Blob> {
+    const item$ = this.httpClient.get(REST_SERVER_URL + '/descargarPago/' + id, { responseType: 'blob' })
+    return lastValueFrom(item$);
+  }
+
+
+  async enviarEmailEstadoCuenta(eventoId: number) {
+    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailEstadoCuenta/' + eventoId + "/" + this.agendaService.getEmpresaId())
+    return await lastValueFrom(item$)
+  }
+
+  async descargarEstadoCuenta(eventoId : number): Promise<Blob> {
+    const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEstadoCuenta/' + eventoId, { responseType: 'blob' })
     return lastValueFrom(item$);
   }
 

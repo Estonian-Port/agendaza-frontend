@@ -25,6 +25,8 @@ export class SaveExtraCateringComponent implements OnInit {
   listaTipoEventoMedio : Array<TipoEvento> = []
   listaTipoEventoLargo : Array<TipoEvento> = []
   
+  titulo = "Agregar Extra"
+
   constructor(private extraService : ExtraService, private tipoEventoService : TipoEventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
@@ -76,6 +78,9 @@ export class SaveExtraCateringComponent implements OnInit {
   }
 
   areAllSelected(listaTipoEvento : Array<TipoEvento>) {
+    if(listaTipoEvento.length === 0){
+      return false
+    }
     return listaTipoEvento.every(item => this.extra.listaTipoEventoId.includes(item.id));
   }
 }

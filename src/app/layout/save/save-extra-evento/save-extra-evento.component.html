@@ -1,21 +1,11 @@
 <div class="container">
     <br>
-    <form> 
+    <form>
 
-        <div class="row contenedor-default">
-            <h2 class="col-6">Agregar Extra</h2>
-            
-            <div class="col-6">
-                <div class="gap-2 d-flex justify-content-end">
-                    <div>
-                        <a class="btn btn-primary" (click)="volver()">Volver</a>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-header
+            (outputVolver)="volver()"
+            [titulo]="titulo">
+        </app-header>
 
         <div class="row contenedor-default mt-2">
             <div class="col-lg-5 col-md-12 form-group mb-4">

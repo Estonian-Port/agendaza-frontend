@@ -27,7 +27,6 @@ export class EventoService {
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((evento) => Evento.fromJson(evento))
   }
-
   
   async getAllEventosByFecha() {
     const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventosForAgendaByFecha',
@@ -178,5 +177,9 @@ export class EventoService {
     return await lastValueFrom(item$)
   }
 
+  async descargarEvento() {
+    const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEvento/' + this.eventoId, { responseType: 'blob' })
+    return lastValueFrom(item$);
+  }
 
 }

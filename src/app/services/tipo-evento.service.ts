@@ -73,19 +73,19 @@ export class TipoEventoService {
   }
 
   async getAllPrecioConFechaByTipoEventoId(tipoEventoId: number) {
-    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByTipoEventoId/' + tipoEventoId)
+    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByTipoEventoId/' + this.agendaService.getEmpresaId() + "/" + tipoEventoId)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
   }
 
   async getPrecioByTipoEventoIdAndFecha(tipoEventoId: number, fechaInicio : FechaForm) {
-    const precio$ = this.httpClient.put<number>(REST_SERVER_URL + '/getPrecioByTipoEventoIdAndFecha/' + tipoEventoId, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const precio$ = this.httpClient.put<number>(REST_SERVER_URL + '/getPrecioByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + "/" + tipoEventoId, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(precio$)
   }
 
   async savePrecio(listaPrecioForm : PrecioForm[]) {
     const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.tipoEventoId))
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEventoPrecio/' + this.tipoEventoId, listaPrecio)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveTipoEventoPrecio/' + this.agendaService.getEmpresaId() + "/" + this.tipoEventoId, listaPrecio)
     this.tipoEventoId = 0
     return await lastValueFrom(item$)
   }

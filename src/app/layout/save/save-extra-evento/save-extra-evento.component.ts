@@ -25,6 +25,7 @@ export class SaveExtraEventoComponent implements OnInit {
   listaTipoEventoMedio : Array<TipoEvento> = []
   listaTipoEventoLargo : Array<TipoEvento> = []
 
+  titulo = "Agregar Extra"
 
   constructor(private extraService : ExtraService, private tipoEventoService : TipoEventoService, private router : Router) { }
 
@@ -77,7 +78,10 @@ export class SaveExtraEventoComponent implements OnInit {
   }
 
   areAllSelected(listaTipoEvento : Array<TipoEvento>) {
-    return listaTipoEvento.every(item => this.extra.listaTipoEventoId.includes(item.id));
+    if(listaTipoEvento.length === 0){
+      return false
+    }
+    return listaTipoEvento.every(item => this.extra.listaTipoEventoId.includes(item.id))
   }
 }
 

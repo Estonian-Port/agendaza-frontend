@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { fadeOut } from 'src/app/animations/fade-out';
 import { GenericItem, GenericItemEmpresaTipoEvento } from 'src/app/model/GenericItem';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { ServicioService } from 'src/app/services/servicio.service';
@@ -9,6 +10,7 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 @Component({
   selector: 'app-save-servicio',
   templateUrl: './save-servicio.component.html',
+  animations: [fadeOut]
 })
 export class SaveServicioComponent implements OnInit {
   
@@ -20,6 +22,12 @@ export class SaveServicioComponent implements OnInit {
   listaTipoEventoMedio : Array<TipoEvento> = []
   listaTipoEventoLargo : Array<TipoEvento> = []
 
+  titulo = "Agregar Servicio"
+  seleccionado = 1
+  otro = false
+
+  listaServicio : Array<GenericItem> = []
+
   constructor(private servicioService : ServicioService, private tipoEventoService : TipoEventoService, private router : Router) { }
   
   async ngOnInit(): Promise<void> {
@@ -27,6 +35,8 @@ export class SaveServicioComponent implements OnInit {
     if(this.servicioService.servicioId){
       this.genericItem = await this.servicioService.getServicio(this.servicioService.servicioId)
       this.servicioService.servicioId = 0
+    }else{
+      this.listaServicio = await this.servicioService.getAllServicio()
     }
 
     this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaId()
@@ -72,6 +82,18 @@ export class SaveServicioComponent implements OnInit {
     return listaTipoEvento.every(item => this.genericItem.listaTipoEventoId.includes(item.id));
 
   }
+
+  onServicioChange(): void {
+    console.log("asdasdasd")
+    console.log(this.seleccionado)
+    if (this.seleccionado == 0) {
+      console.log("si")
+
+        this.otro = true;
+    } else {
+        this.otro = false;
+    }
+}
   
 }
 

@@ -102,37 +102,37 @@ export class ExtraService {
   }
 
   async getAllPrecioConFechaByExtraId(extraId: number) {
-    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByExtraId/' + extraId)
+    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByExtraId/' + this.agendaService.getEmpresaId() + '/' + extraId)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
   }
 
   async savePrecio(listaPrecioForm : PrecioForm[]) {
     const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.extraId))
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.extraId, listaPrecio)
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.agendaService.getEmpresaId() + '/' + this.extraId, listaPrecio)
     this.extraId = 0
     return await lastValueFrom(item$)
   }
 
   // TODO Reemplazar fechaForm en getAllTipo...
   async getAllExtraEventoByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
   async getAllExtraEventoVariableByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
   // TODO Reemplazar fechaForm en getAllTipo...
   async getAllTipoCateringByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
   async getAllCateringExtraByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoIdAndFecha/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
