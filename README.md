@@ -1,14 +1,50 @@
-# agendaza-frontend
-Sistema de gestion de reservas y eventos
+# 📒 Agendaza (FRONT-END) - Sistema de Gestión para Salones de Eventos
 
-### Login
-<img width="425" alt="image" src="https://github.com/RdzSebastian/agendaza-frontend-ps/assets/69222642/9b83b06b-f80c-4a3b-9646-ba52d1d1fc97">
+Agendaza es un sistema integral para la gestión de eventos en salones. Facilita la administración de reservas, clientes, catering, servicios adicionales y mucho más.
 
-### Home
-<img width="422" alt="image" src="https://github.com/RdzSebastian/agendaza-frontend-ps/assets/69222642/61a68641-7577-4320-91bd-4f60c766f36a">
+[![Version](https://img.shields.io/badge/version-0.5.0-blue.svg)](https://github.com/Estonian-Port/agendaza-backend/tags)
 
-### Calendar
-<img width="424" alt="image" src="https://github.com/RdzSebastian/agendaza-frontend-ps/assets/69222642/b381d142-cea9-4fa0-988b-7c19375a0b12">
+<!-- Futuras acciones de CI/CD
+[![Build Status](https://github.com/Estonian-Port/agendaza-backend/actions/workflows/build.yml/badge.svg)](https://github.com/Estonian-Port/agendaza-backend/actions)
+[![Coverage Status](https://coveralls.io/repos/github/Estonian-Port/agendaza-backend/badge.svg?branch=main)](https://coveralls.io/github/Estonian-Port/agendaza-backend?branch=main)
+-->
 
-### Administration Panel
-<img width="422" alt="image" src="https://github.com/RdzSebastian/agendaza-frontend-ps/assets/69222642/dc9ebe6c-d800-424d-a3fa-703a58aaa8c1">
+---
+
+## ✨ Características
+
+- Gestión de clientes y reservas
+- Administración de servicios de catering y adicionales
+- Seguimiento de pagos y contratos
+- Reportes e informes por evento o período
+
+---
+
+## 🗺️ Modelo de Entidad-Relación
+
+<img src="DER.png" alt="Modelo DER" width="600">
+
+---
+
+## 🚀 Estado actual
+
+Versión **0.5.0** — En desarrollo activo.  
+Se encuentra implementado el núcleo funcional del sistema. Se planifican mejoras progresivas e integración de CI/CD.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- Backend: Kotlin + Spring Boot
+- Frontend: Angular + Bootstrap
+- Base de datos: PostgreSQL
+- Orquestación: Docker + Docker Compose
+
+---
+
+## 👥 Desarrollado por
+
+Este proyecto fue desarrollado por **Estonian Port**.  
+Visitanos en 👉 [https://estonian-port.github.io/estonianport-landingpage/](https://estonian-port.github.io/estonianport-landingpage/)
+
+---
