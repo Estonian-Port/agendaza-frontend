@@ -2,20 +2,13 @@
     <br>
     <form>
 
-        <div class="row contenedor-default">
-            <h2 class="col-6">Agregar Usuario</h2>
-            
-            <div class="col-6">
-                <div class="gap-2 d-flex justify-content-end">
-                    <div>
-                        <a class="btn btn-primary" (click)="volver()">Volver</a>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-header
+            (outputVolver)="volver()"
+            [titulo]="titulo"
+            [botonSave]="true"
+            (outputSave)="save()">
+        </app-header>
+        
         <div class="row contenedor-default mt-2">
             <div class="col-lg-5 col-md-12 form-group mb-4">
                 <label for="nombre">Nombre</label>

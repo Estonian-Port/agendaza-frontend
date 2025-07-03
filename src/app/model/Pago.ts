@@ -5,16 +5,24 @@ export type PagoJSON = {
     nombreEvento : string
     medioDePago : string
     fecha : Date
+    empresaId : number
+    usuarioId : number
+    concepto : string
+    numeroCuota : number
 }
 
 export class Pago{
 
     constructor(public id: number, public monto : number, public codigo : string, 
-        public nombreEvento : string, public medioDePago : string, public fecha : Date){}
+        public nombreEvento : string, public medioDePago : string, public fecha : Date,
+        public empresaId : number, public usuarioId : number,
+        public concepto : string, public numeroCuota : number){}
     
     static fromJson(PagoJSON: PagoJSON): any {
         return new Pago(PagoJSON.id, PagoJSON.monto, PagoJSON.codigo, 
-            PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fecha)
+            PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fecha,
+            PagoJSON.empresaId, PagoJSON.usuarioId,
+            PagoJSON.concepto, PagoJSON.numeroCuota)
        }
     
     // Se usa en el filtro de header

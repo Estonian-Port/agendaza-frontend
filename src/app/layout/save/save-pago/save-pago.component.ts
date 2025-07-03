@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pago } from 'src/app/model/Pago';
-import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
@@ -12,12 +11,14 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 })
 export class SavePagoComponent implements OnInit {
 
-  pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0))
+  pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
   codigo : string = ""
   listaMedioDePago : Array<string> = []
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
-  botonBuscarDisabled : boolean = false 
+  botonBuscarDisabled : boolean = false
+  titulo = "Agregar pago"
+  listaConcepto = ["CUOTA", "SENIA", "PAGO_TOTAL", "ADELANTO"]
 
   constructor(private pagoService : PagoService, private eventoService : EventoService, private router : Router) { }
 
@@ -39,7 +40,7 @@ export class SavePagoComponent implements OnInit {
       this.pago.medioDePago = "TRANSFERENCIA"
       this.error.condicional = false
     } catch (error) {
-      this.pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0))
+      this.pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
       this.error.condicional = true
 
       mostrarErrorConMensaje(this, error)

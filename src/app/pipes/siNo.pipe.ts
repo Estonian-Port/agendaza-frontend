@@ -6,7 +6,7 @@ import { PipeTransform, Pipe } from '@angular/core'
 export class siNo implements PipeTransform {
 
   transform(value: any): any {
-    return value ? 'Si' : 'No';;
+    return value ? 'Si' : 'No';
   }
 
 }

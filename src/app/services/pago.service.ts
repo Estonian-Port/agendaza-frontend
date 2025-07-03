@@ -51,7 +51,9 @@ export class PagoService {
   }
 
   async save(pago : Pago) {
-    const item$ = this.httpClient.post<Pago>(REST_SERVER_URL + '/savePago', new PagoEmpresaEncargado(pago, this.agendaService.getEmpresaId(), await this.loginService.getUsuarioId()))
+    pago.empresaId = this.agendaService.getEmpresaId()
+    pago.usuarioId = await this.loginService.getUsuarioId()
+    const item$ = this.httpClient.post<Pago>(REST_SERVER_URL + '/savePago', pago)
     return await lastValueFrom(item$)
   }
 

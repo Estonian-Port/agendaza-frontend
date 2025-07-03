@@ -25,6 +25,7 @@ import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDesdePrecio.pipe';
 import { OrderByFechaInicio } from './pipes/orderByFechaInicio.pipe';
 import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { siNo } from './pipes/siNo.pipe';
+import { Enum } from './pipes/enum.pipe'
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
@@ -142,7 +143,8 @@ import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente
     TruncarTextoPipe,
     AbmEspecificacionComponent,
     HeaderComponent,
-    ModalEditClienteComponent
+    ModalEditClienteComponent,
+    Enum
   ],
   imports: [
     BrowserModule,

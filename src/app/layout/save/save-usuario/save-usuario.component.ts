@@ -13,6 +13,7 @@ export class SaveUsuarioComponent implements OnInit {
   usuario! : Usuario
   listaSexo : Array<string> = []
   listaCargo : Array<Cargo> = []
+  titulo = "Agregar usuario"
 
   constructor(private usuarioService : UsuarioService, private router : Router) { }
 
