@@ -22,7 +22,6 @@ export class SaveServicioComponent implements OnInit {
   listaTipoEventoMedio : Array<TipoEvento> = []
   listaTipoEventoLargo : Array<TipoEvento> = []
 
-  titulo = "Agregar Servicio"
   seleccionado = 1
   otro = false
 

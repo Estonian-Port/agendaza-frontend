@@ -61,6 +61,11 @@ export class EditEventoPagosComponent implements OnInit {
     this.setModal(!this.modal)
   }
 
+  editarPago(pagoId: number) {
+    this.pagoService.pagoId = pagoId
+    this.router.navigateByUrl("/savePago")
+  }
+
   setModal(modal : boolean){
     this.modal = modal
   }

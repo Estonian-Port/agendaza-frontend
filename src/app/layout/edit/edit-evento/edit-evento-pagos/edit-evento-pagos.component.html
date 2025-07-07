@@ -1,25 +1,15 @@
 <div class="container">
-    <br>
-    <div class="row contenedor-default">
-        <h2 class="col-6">Estado de Cuenta</h2>
-        
-        <div class="col-6">
-            <div class="gap-2 d-flex justify-content-end">
-                <div>
-                    <a class="btn btn-primary" (click)="volver()">Volver</a>
-                </div>
-                <div>
-                    <a class="btn btn-primary" (click)="descargarEstadoCuenta()"><i class="fas fa-download"></i></a>
-                </div>
-                <div>
-                    <a class="btn btn-primary" (click)="enviarEmailEstadoCuenta()"><i class="fas fa-envelope"></i></a>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-success" (click)="agregarPago()"><i class="fas fa-plus-circle"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <app-header
+        titulo="Estado de cuenta"
+        (outputVolver)="volver()"
+        [botonAgregar]="true"
+        [botonEmail]="true"
+        [botonDescargar]="true"
+        (outputAgregar)="agregarPago()"
+        (outputDescargar)="descargarEstadoCuenta()"
+        (outputEnviarEmail)="enviarEmailEstadoCuenta()">
+    </app-header>
 
     <div class="d-flex justify-content-between">
         <div *ngIf='envioEmail' class="col-4">
@@ -51,13 +41,16 @@
                             <div class="extra-box" *ngFor="let pago of eventoPago.listaPagos">
                                 <div class="card-pagos">
                                     <div class="d-flex justify-content-between">
-                                        {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago}}
+                                        {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto}} {{pago.medioDePago | formatEnum}}
                                         <div>
                                             <button (click)="enviarEmailPago(pago.id)" class="mx-2">
                                                 <i class="fas fa-envelope text-primary"></i>
                                             </button>
                                             <button (click)="descargarPago(pago.id)" class="mx-2">
                                                 <i class="fas fa-download text-primary"></i>
+                                            </button>
+                                            <button (click)="editarPago(pago.id)" class="mx-2">
+                                                <i class="fas fa-edit text-warning"></i>
                                             </button>
                                             <button (click)="modalParaEliminar(pago.id, pago.nombreEvento)" class="mx-2">
                                                 <i class="fas fa-trash text-danger"></i>

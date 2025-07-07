@@ -1,23 +1,13 @@
 <div class="container">
 
-    <br>
-    <div class="row contenedor-default">
-        <h2 class="col-6">Ver evento</h2>
-        
-        <div class="col-6">
-            <div class="gap-2 d-flex justify-content-end">
-                <div>
-                    <button (click)="volver()" class="btn btn-primary">Volver</button>
-                </div>
-                <div>
-                    <button (click)="descargarComprobante()" class="btn btn-primary"><i class="fa fa-download"></i></button>
-                </div>
-                <div>
-                    <button (click)="reenviarMail()" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-header
+        titulo="Ver evento"
+        [botonDescargar]="true"
+        [botonEmail]="true"
+        (outputDescargar)="descargarComprobante()"
+        (outputEnviarMail)="reenviarMail()"
+        (outputVolver)="volver()">
+    </app-header>
 
     <div class="d-flex justify-content-between">
         <div *ngIf='eventoReenviarMail' class="col-4">

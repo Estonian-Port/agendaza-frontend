@@ -24,8 +24,6 @@ export class SaveExtraCateringComponent implements OnInit {
   listaTipoEventoCorto : Array<TipoEvento> = []
   listaTipoEventoMedio : Array<TipoEvento> = []
   listaTipoEventoLargo : Array<TipoEvento> = []
-  
-  titulo = "Agregar Extra"
 
   constructor(private extraService : ExtraService, private tipoEventoService : TipoEventoService, private router : Router) { }
 

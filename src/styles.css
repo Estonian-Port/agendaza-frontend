@@ -187,8 +187,8 @@ button:focus {
 .card-pagos{
   margin-bottom: 0.3em;
   padding: 0.5em;
-  max-width: 25em;
-  min-width: 25em;
+  max-width: 27em;
+  min-width: 27em;
 }
 
 .card-extra:hover{

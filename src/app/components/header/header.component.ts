@@ -11,20 +11,30 @@ export class HeaderComponent {
 
   @Input()
   botonAgregar = false
+  
+  @Input()
+  botonDescargar = false
+  
+  @Input()
+  botonEmail = false
 
   @Input()
   titulo = ""
 
   @Output()
-  outputVolver = new EventEmitter<number>();
+  outputVolver = new EventEmitter<number>()
 
   @Output()
-  outputSave = new EventEmitter();
+  outputSave = new EventEmitter()
 
   @Output()
-  outputAgregar = new EventEmitter<number>();
+  outputAgregar = new EventEmitter<number>()
 
-  constructor() { }
+  @Output()
+  outputDescargar = new EventEmitter<number>()
+
+  @Output()
+  outputEnviarMail = new EventEmitter<number>()
 
   volver() {
     this.outputVolver.emit()
@@ -36,6 +46,14 @@ export class HeaderComponent {
     
   agregar() {
     this.outputAgregar.emit()
+  }
+
+  descargar(){
+    this.outputDescargar.emit()
+  }
+
+  enviarEmail(){
+    this.outputEnviarMail.emit()
   }
 
 }

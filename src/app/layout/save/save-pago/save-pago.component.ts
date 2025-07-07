@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pago } from 'src/app/model/Pago';
-import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
@@ -12,22 +11,31 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 })
 export class SavePagoComponent implements OnInit {
 
-  pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0))
+  pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
   codigo : string = ""
   listaMedioDePago : Array<string> = []
+  listaConcepto : Array<string> = []
+  
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
-  botonBuscarDisabled : boolean = false 
+  botonBuscarDisabled : boolean = false
 
   constructor(private pagoService : PagoService, private eventoService : EventoService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
     this.listaMedioDePago = await this.pagoService.getAllMedioDePago()
+    this.listaConcepto = await this.pagoService.getAllConcepto()
 
     if(this.eventoService.eventoCodigo != ""){
       this.codigo = this.eventoService.eventoCodigo
       this.eventoService.eventoCodigo = ""
       this.buscar()
+      this.botonBuscarDisabled = true
+    }
+
+    if(this.pagoService.pagoId){
+      this.pago = await this.pagoService.get(this.pagoService.pagoId)
+      this.pagoService.pagoId = 0
       this.botonBuscarDisabled = true
     }
   }
@@ -39,7 +47,7 @@ export class SavePagoComponent implements OnInit {
       this.pago.medioDePago = "TRANSFERENCIA"
       this.error.condicional = false
     } catch (error) {
-      this.pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0))
+      this.pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
       this.error.condicional = true
 
       mostrarErrorConMensaje(this, error)

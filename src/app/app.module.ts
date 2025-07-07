@@ -25,6 +25,7 @@ import { OrderByFechaDesdePrecio } from './pipes/orderByFechaDesdePrecio.pipe';
 import { OrderByFechaInicio } from './pipes/orderByFechaInicio.pipe';
 import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { siNo } from './pipes/siNo.pipe';
+import { FormatEnum } from './pipes/formatEnum.pipe'
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
@@ -70,10 +71,11 @@ import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/ed
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
 import { ModalInformativoComponent } from './components/modal/modal-informativo/modal-informativo.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { TruncarTextoPipe } from './pipes/truncar-texto.pipe';
+import { TruncarTextoPipe } from './pipes/truncarTexto.pipe';
 import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente/modal-edit-cliente.component';
+import { FormatNumero } from './pipes/formatNumero.pipe';
 
 @NgModule({
   declarations: [
@@ -142,7 +144,9 @@ import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente
     TruncarTextoPipe,
     AbmEspecificacionComponent,
     HeaderComponent,
-    ModalEditClienteComponent
+    ModalEditClienteComponent,
+    FormatEnum,
+    FormatNumero
   ],
   imports: [
     BrowserModule,

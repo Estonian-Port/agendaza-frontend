@@ -1,4 +1,4 @@
-<div class="row contenedor-default">
+<div class="row contenedor-default mt-3">
   <h2 class="col-6">{{titulo}}</h2>
   
   <div class="col-6">
@@ -9,8 +9,14 @@
           <div *ngIf="botonSave">
               <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
           </div>
-          <div *ngIf="botonSave">
-            <button type="submit" class="btn btn-success" (click)="agregar()">Agregar</button>
+          <div *ngIf="botonDescargar">
+              <a class="btn btn-primary" (click)="descargar()"><i class="fas fa-download"></i></a>
+          </div>
+          <div *ngIf="botonEmail">
+              <a class="btn btn-primary" (click)="enviarEmail()"><i class="fas fa-envelope"></i></a>
+          </div>
+          <div *ngIf="botonAgregar">
+            <button type="submit" class="btn btn-success" (click)="agregar()"><i class="fas fa-plus-circle"></i></button>
         </div>
       </div>
   </div>
