@@ -18,21 +18,31 @@ export class PagoService {
 
   constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService) {}
 
+  async get(id : number) {
+    const item$ = this.httpClient.get<PagoJSON>(REST_SERVER_URL + '/getPago/' + id)
+    const item = await lastValueFrom(item$)
+    return Pago.fromJson(item)
+  }
+
+
   async getAllPagoByEmpresaId(pageNumber : number) {
     const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagos/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((pago) => Pago.fromJson(pago))
   }
+
   async getAllPagoByFilter(pageNumber : number, buscar : string) {
     const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagosFilter/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((pago) => Pago.fromJson(pago))
   }
+
   async cantPagos(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagos/' + this.agendaService.getEmpresaId())
     this.cantidadPagos = await lastValueFrom(cant$)
     return this.cantidadPagos
   }
+
   async cantPagosFiltrados(buscar : string){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
     this.cantidadPagos = await lastValueFrom(cant$)
@@ -41,6 +51,11 @@ export class PagoService {
 
   async getAllMedioDePago() {
     const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllMedioDePago')
+    return await lastValueFrom(listaItem$)
+  }
+
+  async getAllConcepto() {
+    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllConcepto')
     return await lastValueFrom(listaItem$)
   }
 

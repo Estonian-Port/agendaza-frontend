@@ -1,10 +1,9 @@
 <div class="container">
-    <br>
     <form>
 
         <app-header
+            titulo="Agregar pago"
             (outputVolver)="volver()"
-            [titulo]="titulo"
             [botonSave]="true"
             (outputSave)="save()">
         </app-header>
@@ -48,13 +47,13 @@
                 <div class="col-lg-3 col-md-12 mb-2">
                     <label for="medioDePago">Medio de Pago</label> 
                     <select class="form-select" [(ngModel)]="pago.medioDePago" name="medioDePago">
-                        <option *ngFor="let medioDePago of listaMedioDePago | orderAbmById" [value]="medioDePago">{{medioDePago | enum}}</option>
+                        <option *ngFor="let medioDePago of listaMedioDePago | orderAbmById" [value]="medioDePago">{{medioDePago | formatEnum}}</option>
                     </select>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-2">
                     <label for="concepto">Concepto</label> 
                     <select class="form-select" [(ngModel)]="pago.concepto" name="concepto">
-                        <option *ngFor="let concepto of listaConcepto | orderAbmById" [value]="concepto">{{concepto | enum}}</option>
+                        <option *ngFor="let concepto of listaConcepto | orderAbmById" [value]="concepto">{{concepto | formatEnum}}</option>
                     </select>
                 </div>
                 <div *ngIf="pago.concepto == 'CUOTA'">

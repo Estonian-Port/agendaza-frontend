@@ -19,8 +19,6 @@ export class VerClienteComponent implements OnInit {
   cliente = ""
   eventos: Array<any> = []
   cantidadEventos = 0
-  titulo = "Ver Cliente"
-
   modal = false
   tituloModal=""
 
