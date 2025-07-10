@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON, GenericItemJSON } from '../model/GenericItem';
 import { AgendaService } from './agenda.service';
+import { EmpresaService } from './empresa.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,13 +60,13 @@ export class ServicioService {
   }
 
   async delete(id : number) {
-    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id)
+    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteServicio/' + id + "/" + this.agendaService.getEmpresaId())
   }
 
-  async getAllServicio() {
-     const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicio')
-     const listaItem = await lastValueFrom(listaItem$)
-     return listaItem.map((servicio) => GenericItem.fromJson(servicio))
-    }
+  async getAllServicioAgregar() {
+    const listaItem$ = this.httpClient.get<GenericItemJSON[]>(REST_SERVER_URL + '/getAllServicioAgregar/' + this.agendaService.getEmpresaId())
+    const listaItem = await lastValueFrom(listaItem$)
+    return listaItem.map((servicio) => GenericItem.fromJson(servicio))
+  }
 
 }

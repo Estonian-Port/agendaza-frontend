@@ -76,6 +76,7 @@ import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-
 import { HeaderComponent } from './components/header/header.component';
 import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente/modal-edit-cliente.component';
 import { FormatNumero } from './pipes/formatNumero.pipe';
+import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-seleccionador/tipo-evento-seleccionador.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,8 @@ import { FormatNumero } from './pipes/formatNumero.pipe';
     HeaderComponent,
     ModalEditClienteComponent,
     FormatEnum,
-    FormatNumero
+    FormatNumero,
+    TipoEventoSeleccionadorComponent
   ],
   imports: [
     BrowserModule,
