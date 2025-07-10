@@ -32,7 +32,12 @@
                     <input type="text" class="form-control" name="evento" [value]='pago.nombreEvento' disabled/>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-2">
-                    <label for="fecha">Dia evento</label> 
+                    <label for="fecha">Fecha de evento</label> 
+                    <input type="text" class="form-control" name="fecha" [value]="pago.fechaEvento | date: 'dd/MM/yy HH:mm'" disabled/>
+                </div>
+
+                <div class="col-lg-3 col-md-12 mb-2">
+                    <label for="fecha">Fecha de pago</label> 
                     <input type="text" class="form-control" name="fecha" [value]="pago.fecha | date: 'dd/MM/yy HH:mm'" disabled/>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-2">
@@ -52,7 +57,7 @@
                 </div>
                 <div class="col-lg-3 col-md-12 mb-2">
                     <label for="concepto">Concepto</label> 
-                    <select class="form-select" [(ngModel)]="pago.concepto" name="concepto">
+                    <select class="form-select" (change)="cleanCouta()" [(ngModel)]="pago.concepto" name="concepto">
                         <option *ngFor="let concepto of listaConcepto | orderAbmById" [value]="concepto">{{concepto | formatEnum}}</option>
                     </select>
                 </div>
