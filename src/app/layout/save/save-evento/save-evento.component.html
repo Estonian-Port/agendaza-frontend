@@ -29,7 +29,7 @@
                                 <select class="form-select" formControlName="duracion" 
                                     (change)="filterTipoEventoByDuracion()"
                                     [ngClass]="{'is-invalid': duracion?.errors && submited}">
-                                    <option *ngFor="let duracion of listaDuracion | orderAbmById" [value]="duracion">{{duracion}}</option>
+                                    <option *ngFor="let duracion of listaDuracion | orderAbmById" [value]="duracion">{{duracion | formatEnum}}</option>
                                 </select>
                             </div>
 
@@ -40,7 +40,7 @@
                                 <select class="form-select" 
                                     (change)="inicializarByTipoEventoId()"
                                     formControlName="tipoEvento">
-                                    <option *ngFor="let tipoEvento of listaTipoEvento | orderAbmByNombre" [value]="tipoEvento.id">{{tipoEvento.nombre}}</option>
+                                    <option *ngFor="let tipoEvento of listaTipoEvento | orderAbmByNombre" [value]="tipoEvento.id">{{tipoEvento.nombre | formatEnum}}</option>
                                 </select>
                             </div>
                             
