@@ -12,13 +12,11 @@ import { EventoService } from 'src/app/services/evento.service';
 export class EditEventoHoraComponent implements OnInit {
 
   evento : EventoHora = new EventoHora(0,"","","","")
-  listaHora : Array<string> = DateUtil.ListaHora
-  listaMinuto : Array<string> = DateUtil.ListaMinuto
   inicio : Time = new Time("00","00")
   fin : Time = new Time("00","00")
   hastaElOtroDiaCheckbox : boolean = false
 
-  fechaInicio : Date = new Date()
+  fechaInicio : string = ""
   fechaFin : Date = new Date()
 
   constructor(private eventoService : EventoService, private router : Router) { }
@@ -32,29 +30,38 @@ export class EditEventoHoraComponent implements OnInit {
     this.fin.hour = this.evento.fin.split(":")[0].split("T")[1]
     this.fin.minute = this.evento.fin.split(":")[1]
     
-    this.fechaInicio = new Date(this.evento.inicio)
+    this.fechaInicio = this.evento.inicio.split("T")[0]
     this.fechaFin = new Date(this.evento.fin)
+  
+    const [year, month, day] = this.fechaInicio.split('-').map(Number);
+    const fechaInicioDate = new Date(year, month - 1, day);
 
-    this.hastaElOtroDiaCheckbox = this.fechaInicio.getDate() < this.fechaFin.getDate()
+    this.hastaElOtroDiaCheckbox = fechaInicioDate.getDate() < this.fechaFin.getDate()
 
+  }
+
+  changeHastaElOtroDiaCheckbox() {
+    this.hastaElOtroDiaCheckbox = !this.hastaElOtroDiaCheckbox
   }
 
   volver(){
     this.router.navigateByUrl("/abmEvento")
   }
 
-  save(){
+  async save(){
 
-    this.evento.inicio =  new Date(this.fechaInicio.getFullYear(), this.fechaInicio.getMonth(), this.fechaInicio.getDate(), (Number(this.inicio.hour) - 3), Number(this.inicio.minute)).toISOString()
-    var fechaFinal =  new Date(this.fechaInicio.getFullYear(), this.fechaInicio.getMonth(), this.fechaInicio.getDate(), (Number(this.fin.hour) - 3), Number(this.fin.minute))
+    const [year, month, day] = this.fechaInicio.split('-').map(Number);
+    this.evento.inicio = new Date(year, month - 1, day, Number(this.inicio.hour) - 3, Number(this.inicio.minute)).toISOString();
 
-    if(this.hastaElOtroDiaCheckbox && this.fechaInicio.getDate() == this.fechaFin.getDate()){
-      fechaFinal.setDate(fechaFinal.getDate() + 1)
+    let fechaFinal = new Date(year, month - 1, day, Number(this.fin.hour) - 3, Number(this.fin.minute));
+    
+    console.log(this.hastaElOtroDiaCheckbox)
+    if (this.hastaElOtroDiaCheckbox) {
+      fechaFinal.setDate(fechaFinal.getDate() + 1);
     }
+    this.evento.fin = fechaFinal.toISOString();
 
-    this.evento.fin = fechaFinal.toISOString()
-
-    this.eventoService.editEventoHora(this.evento)
+    await this.eventoService.editEventoHora(this.evento)
     this.router.navigateByUrl("/abmEvento")
   }
 

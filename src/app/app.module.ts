@@ -77,6 +77,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente/modal-edit-cliente.component';
 import { FormatNumero } from './pipes/formatNumero.pipe';
 import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-seleccionador/tipo-evento-seleccionador.component';
+import { HoraMinutosComponent } from './components/hora-minutos/hora-minutos.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-selec
     ModalEditClienteComponent,
     FormatEnum,
     FormatNumero,
-    TipoEventoSeleccionadorComponent
+    TipoEventoSeleccionadorComponent,
+    HoraMinutosComponent
   ],
   imports: [
     BrowserModule,
