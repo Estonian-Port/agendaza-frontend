@@ -6,6 +6,9 @@
           <div>
               <a class="btn btn-primary" (click)="volver()">Volver</a>
           </div>
+          <div *ngIf="botonCambiarContrasenia">
+            <button type="submit" class="btn btn-warning" (click)="cambiarContrasenia()"><i class="fas fa-key"></i> Cambiar contraseña</button>
+          </div>
           <div *ngIf="botonSave">
               <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
           </div>
@@ -17,7 +20,7 @@
           </div>
           <div *ngIf="botonAgregar">
             <button type="submit" class="btn btn-success" (click)="agregar()"><i class="fas fa-plus-circle"></i></button>
-        </div>
+          </div>
       </div>
   </div>
 </div>

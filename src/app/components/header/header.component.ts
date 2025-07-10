@@ -19,22 +19,28 @@ export class HeaderComponent {
   botonEmail = false
 
   @Input()
+  botonCambiarContrasenia = false
+
+  @Input()
   titulo = ""
 
   @Output()
-  outputVolver = new EventEmitter<number>()
+  outputVolver = new EventEmitter()
 
   @Output()
   outputSave = new EventEmitter()
 
   @Output()
-  outputAgregar = new EventEmitter<number>()
+  outputAgregar = new EventEmitter()
 
   @Output()
-  outputDescargar = new EventEmitter<number>()
+  outputDescargar = new EventEmitter()
 
   @Output()
-  outputEnviarMail = new EventEmitter<number>()
+  outputEnviarMail = new EventEmitter()
+
+  @Output()
+  outputCambiarContrasenia = new EventEmitter()
 
   volver() {
     this.outputVolver.emit()
@@ -54,6 +60,10 @@ export class HeaderComponent {
 
   enviarEmail(){
     this.outputEnviarMail.emit()
+  }
+
+  cambiarContrasenia(){
+    this.outputCambiarContrasenia.emit()
   }
 
 }
