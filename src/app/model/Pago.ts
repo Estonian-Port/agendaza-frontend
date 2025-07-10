@@ -8,7 +8,7 @@ export type PagoJSON = {
     empresaId : number
     usuarioId : number
     concepto : string
-    numeroCuota : number
+    numeroCuota? : string
 }
 
 export class Pago{
@@ -16,7 +16,7 @@ export class Pago{
     constructor(public id: number, public monto : number, public codigo : string, 
         public nombreEvento : string, public medioDePago : string, public fecha : Date,
         public empresaId : number, public usuarioId : number,
-        public concepto : string, public numeroCuota : number){}
+        public concepto : string, public numeroCuota? : string){}
     
     static fromJson(PagoJSON: PagoJSON): any {
         return new Pago(PagoJSON.id, PagoJSON.monto, PagoJSON.codigo, 
