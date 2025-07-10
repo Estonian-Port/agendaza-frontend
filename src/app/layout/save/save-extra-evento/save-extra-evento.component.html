@@ -2,124 +2,36 @@
     <form>
 
         <app-header
-            titulo="Agregar Extra">
+            titulo="Agregar Extra"
             (outputVolver)="volver()"
+            [botonSave]="true"
+            (outputSave)="save()">
         </app-header>
 
         <div class="row contenedor-default mt-2">
-            <div class="col-lg-5 col-md-12 form-group mb-4">
-                <label for="nombre">Nombre</label> 
-                <input type="text" [(ngModel)]='extra.nombre' class="form-control" id="nombre" name="nombre">
+            <div *ngIf="!edicion" class="col-lg-4 col-md-12 form-group mb-4">
+                <label for="servicio">Servicio</label>
+                <select class="form-select" (change)="onServicioChange()" [(ngModel)]='extra.id' name="servicio">
+                    <option *ngFor="let extra of listaExtra | orderAbmByNombre" [value]="extra.id">{{extra.nombre}}</option>
+                    <option value="0">Otro</option>
+                </select>
             </div>
 
-            <div class="col-lg-5 col-md-12 form-group mb-4">
+            <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>
+                <label for="nombre">Nombre</label> 
+                <input type="text" [(ngModel)]='extra.nombre' class="form-control" id="nombre" name="nombre" [disabled]="edicion">
+            </div>
+
+            <div class="col-lg-4 col-md-12 form-group mb-4">
                 <label for="tipoExtra">Tipo Extra</label> 
-                <select class="form-select" [(ngModel)]="extra.tipoExtra" name="tipoExtra">
-                    <option *ngFor="let tipoExtra of listaTipoExtra" [value]="tipoExtra">{{tipoExtra}}</option>
+                <select class="form-select" [(ngModel)]="extra.tipoExtra" name="tipoExtra" [disabled]="edicion">
+                    <option *ngFor="let tipoExtra of listaTipoExtra" [value]="tipoExtra">{{tipoExtra | formatEnum}}</option>
                 </select>            
             </div>
         </div>
  
-        <div class="row contenedor-default mt-2">
-            <div class="col-lg-4 col-md-12 form-group">
-                <div class="d-flex justify-content-between">
-                    <h4 class="me-4">Corto</h4>
-
-                    <div class="extra-overflow me-4">
-                        <div class="card-extra">
-                            <label for="todos-corto" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-corto" 
-                            [checked]="areAllSelected(listaTipoEventoCorto)" (change)="selectAll(listaTipoEventoCorto)">
-
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="extra-container">
-                    <div class="extra-overflow">
-                        <div class="extra-box" id="listaExtraTipoCatering" *ngFor="let item of listaTipoEventoCorto | orderAbmByNombre">
-                            
-                            <div class="d-flex card-extra">
-                                <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{item.id}} 
-                                [checked]="isChecked(item.id)" (change)="onCheckboxChange($event)" [name]="'item' + item.id" [id]="'item' + item.id">
-
-                                <label class="form-check-label curso-pointer" [for]="'item' + item.id">{{item.nombre}}</label>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-12 form-group">
-                <div class="d-flex justify-content-between">
-
-                    <h4>Medio</h4>
-
-
-                    <div class="extra-overflow me-4">
-                        <div class="card-extra">
-                            <label for="todos-medio" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-                            <input type="checkbox" class="form-check-input me-2 flex-shrink-0" id="todos-medio" 
-                            [checked]="areAllSelected(listaTipoEventoMedio)" (change)="selectAll(listaTipoEventoMedio)">
-                        </div>
-                    </div>
-                    
-
-            </div>
-
-
-                <div class="extra-container">
-                    <div class="extra-overflow">
-                        <div class="extra-box" id="listaExtraTipoCatering" *ngFor="let item of listaTipoEventoMedio | orderAbmByNombre">
-                            <div class="d-flex card-extra">
-                            
-                                <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{item.id}} 
-                                [checked]="isChecked(item.id)" (change)="onCheckboxChange($event)" [name]="'item' + item.id" [id]="'item' + item.id">
-
-                                <label class="form-check-label curso-pointer" [for]="'item' + item.id">{{item.nombre}}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-
-            <div class="col-lg-4 col-md-12 form-group ">
-
-
-                <div class="d-flex justify-content-between">
-                    <h4>Largo</h4>
-
-                    <div class="extra-overflow me-4">
-                        <div class="card-extra">
-                            <label for="todos-corto" class="form-check-label curso-pointer me-2 ms-1">Todos</label>
-                            <input type="checkbox" class="form-check-inputflex-shrink-0" id="todos-largo" 
-                            [checked]="areAllSelected(listaTipoEventoLargo)" (change)="selectAll(listaTipoEventoLargo)">
-                        </div>
-                    </div>
-                    
-
-            </div>
-
-                
-                <div class="extra-container">
-                    <div class="extra-overflow">
-                        <div class="extra-box" id="listaExtraTipoCatering" *ngFor="let item of listaTipoEventoLargo | orderAbmByNombre">
-                            <div class="d-flex card-extra">
-            
-                                <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{item.id}} 
-                                [checked]="isChecked(item.id)" (change)="onCheckboxChange($event)" [name]="'item' + item.id" [id]="'item' + item.id">
-
-                                <label class="form-check-label curso-pointer" [for]="'item' + item.id">{{item.nombre}}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <app-tipo-evento-seleccionador
+            [genericItem]="extra">
+        </app-tipo-evento-seleccionador>
     </form>
 </div>
