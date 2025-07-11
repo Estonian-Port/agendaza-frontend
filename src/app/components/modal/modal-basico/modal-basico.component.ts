@@ -19,10 +19,10 @@ export class ModalBasicoComponent implements OnInit {
   boton = ""
 
   @Output() 
-  outputAceptar = new EventEmitter<number>();
+  outputAceptar = new EventEmitter<number>()
 
   @Output() 
-  outputChangeModal = new EventEmitter<boolean>();
+  outputChangeModal = new EventEmitter<boolean>()
 
   constructor() { }
 

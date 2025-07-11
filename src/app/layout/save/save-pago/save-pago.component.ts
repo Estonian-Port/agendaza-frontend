@@ -11,7 +11,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 })
 export class SavePagoComponent implements OnInit {
 
-  pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
+  pago! : Pago
   codigo : string = ""
   listaMedioDePago : Array<string> = []
   listaConcepto : Array<string> = []
@@ -35,6 +35,7 @@ export class SavePagoComponent implements OnInit {
 
     if(this.pagoService.pagoId){
       this.pago = await this.pagoService.get(this.pagoService.pagoId)
+      this.codigo = this.pago.codigo
       this.pagoService.pagoId = 0
       this.botonBuscarDisabled = true
     }
@@ -47,7 +48,6 @@ export class SavePagoComponent implements OnInit {
       this.pago.medioDePago = "TRANSFERENCIA"
       this.error.condicional = false
     } catch (error) {
-      this.pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),0,0,"", 0)
       this.error.condicional = true
 
       mostrarErrorConMensaje(this, error)
@@ -66,5 +66,9 @@ export class SavePagoComponent implements OnInit {
     }else{
       this.router.navigateByUrl('/abmPago')
     }
+  }
+
+  cleanCouta() {
+    this.pago.numeroCuota = undefined
   }
 }

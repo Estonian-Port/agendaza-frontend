@@ -47,7 +47,7 @@ export class SaveEventoComponent implements OnInit {
   listaDia : Array<number> = []
   listaMes : Array<Mes> = DateUtil.ListaMes
   currentYear = new Date().getFullYear()
-  listaYear : Array<number> = [this.currentYear, this.currentYear + 1, this.currentYear + 2]
+  listaYear : Array<number> = [this.currentYear, this.currentYear + 1, this.currentYear + 2, this.currentYear + 3]
   fechaEvento : FechaForm = new FechaForm(this.currentYear,0,1)
   listaHora : Array<string> = DateUtil.ListaHora
   listaMinuto : Array<string> = DateUtil.ListaMinuto

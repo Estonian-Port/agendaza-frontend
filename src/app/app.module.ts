@@ -45,7 +45,6 @@ import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
-import { EditUsuarioPasswordComponent } from './layout/edit/edit-usuario-password/edit-usuario-password.component';
 import { ModalBasicoComponent } from './components/modal/modal-basico/modal-basico.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
@@ -77,6 +76,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { ModalEditClienteComponent } from './components/modal/modal-edit-cliente/modal-edit-cliente.component';
 import { FormatNumero } from './pipes/formatNumero.pipe';
 import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-seleccionador/tipo-evento-seleccionador.component';
+import { HoraMinutosComponent } from './components/hora-minutos/hora-minutos.component';
+import { ModalPasswordComponent } from './components/modal/modal-password/modal-password.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,6 @@ import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-selec
     SaveServicioComponent,
     SaveTipoEventoComponent,
     EditUsuarioComponent,
-    EditUsuarioPasswordComponent,
     ModalBasicoComponent,
     EditEmpresaComponent,
     SaveEmpresaComponent,
@@ -148,7 +148,9 @@ import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-selec
     ModalEditClienteComponent,
     FormatEnum,
     FormatNumero,
-    TipoEventoSeleccionadorComponent
+    TipoEventoSeleccionadorComponent,
+    HoraMinutosComponent,
+    ModalPasswordComponent
   ],
   imports: [
     BrowserModule,

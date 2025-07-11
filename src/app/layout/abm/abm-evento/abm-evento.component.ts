@@ -8,7 +8,6 @@ import { EventoService } from 'src/app/services/evento.service';
 })
 export class AbmEventoComponent implements OnInit {
 
-
   buscar = ''
   listaItems : Array<any> = []
   listaHeader : Array<any> =[]
