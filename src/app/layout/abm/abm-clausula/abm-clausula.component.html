@@ -1,0 +1,34 @@
+<div class="abm">
+
+    <div class="abm-content">
+
+        <app-abm-data-table-header
+            [realizoBusqueda] = "realizoBusqueda"
+            titulo = 'Clausulas'
+            (outputBuscar)="updatePalabraBuscar($event)"
+            (outputPaginaActual)="updatePaginaActual($event)"
+            (outputBusqueda)="updatePrimeraBusqueda($event)">
+        </app-abm-data-table-header>
+
+        <app-abm-data-table
+            [mostrarPrecio]="false"
+            [mostrarEditar]="false"
+            (outputEliminar)="eliminar($event)"
+            [nombreItemModal] = "nombreItemModal"
+            [tituloModal] = "tituloModal"
+            [botonModal] = "botonModal"
+            [listaItems]="listaItems"
+            [buscar]="buscar">
+        </app-abm-data-table>
+        
+    </div>
+
+    <app-abm-data-table-paginacion
+        (outputPaginaActual)="updatePaginaActual($event)"
+        [paginaActual]="paginaActual"
+        [listaItems]="listaItems"
+        [cantidadRegistros]="cantidadRegistros"
+        [cantidadPaginas]="cantidadPaginas">
+    </app-abm-data-table-paginacion>
+
+</div>

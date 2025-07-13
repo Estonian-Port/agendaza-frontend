@@ -78,6 +78,8 @@ import { FormatNumero } from './pipes/formatNumero.pipe';
 import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-seleccionador/tipo-evento-seleccionador.component';
 import { HoraMinutosComponent } from './components/hora-minutos/hora-minutos.component';
 import { ModalPasswordComponent } from './components/modal/modal-password/modal-password.component';
+import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
+import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 
 @NgModule({
   declarations: [
@@ -150,7 +152,9 @@ import { ModalPasswordComponent } from './components/modal/modal-password/modal-
     FormatNumero,
     TipoEventoSeleccionadorComponent,
     HoraMinutosComponent,
-    ModalPasswordComponent
+    ModalPasswordComponent,
+    SaveClausulaComponent,
+    AbmClausulaComponent
   ],
   imports: [
     BrowserModule,

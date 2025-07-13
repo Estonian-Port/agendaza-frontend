@@ -58,8 +58,8 @@ export class PanelAdminComponent implements OnInit {
     this.router.navigateByUrl('/abmCliente')
   }
 
-  abmEspecificacion() {
-    this.router.navigateByUrl('/abmEspecificacion')
+  abmClausula() {
+    this.router.navigateByUrl('/abmClausula')
   }
 
   volverCalendario(){

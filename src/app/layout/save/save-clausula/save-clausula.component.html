@@ -1,0 +1,27 @@
+<div class="container">
+    <form> 
+
+        <app-header
+            titulo="Agregar Servicio"
+            (outputVolver)="volver()"
+            [botonSave]="true"
+            (outputSave)="save()">
+        </app-header>
+
+        <div class="row contenedor-default mt-2">
+            <div class="col-lg-4 col-md-12 form-group mb-4">
+                <label for="servicio">Servicio</label>
+                <select class="form-select" (change)="onServicioChange()" [(ngModel)]='genericItem.id' name="servicio">
+                    <option *ngFor="let servicio of listaClausula | orderAbmByNombre" [value]="servicio.id">{{servicio.nombre}}</option>
+                    <option value="0">Otro</option>
+                </select>
+            </div>
+
+            <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>
+                <label for="nombre">Nombre</label> 
+                <input type="text" [(ngModel)]='genericItem.nombre' class="form-control" id="nombre" name="nombre">
+            </div>
+        </div>
+
+    </form>
+</div>

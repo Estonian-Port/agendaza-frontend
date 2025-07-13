@@ -7,6 +7,8 @@ export class GenericItem{
 
     constructor(public id: number, public nombre: string){}
     
+    public empresaId : number = 0
+
     static fromJson(genericItemJSON: GenericItemJSON): any {
         return new GenericItem(genericItemJSON.id, genericItemJSON.nombre)
     }
@@ -16,6 +18,7 @@ export class GenericItem{
         return (this.nombre.toUpperCase() || '').includes(palabra.toUpperCase())
     }
 }
+
 
 export type GenericItemEmpresaTipoEventoJSON = {
     id : number
