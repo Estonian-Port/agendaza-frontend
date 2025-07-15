@@ -263,6 +263,7 @@ export class SaveEventoComponent implements OnInit {
   }
 
   async changeDate(){
+    this.setFechaInicioAndFin()
     this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
     this.setListasExtra()
     this.sumPresupuesto()
@@ -359,7 +360,11 @@ export class SaveEventoComponent implements OnInit {
   }
 
   sumPresupuesto(){
-    this.presupuesto?.setValue(this.precioTipoEvento + this.extraPresupuesto + this.extraOtro?.getRawValue())
+  const precioTipoEvento = Number(this.precioTipoEvento) || 0;
+  const extraPresupuesto = Number(this.extraPresupuesto) || 0;
+  const extraOtro = Number(this.extraOtro?.getRawValue()) || 0;
+
+  this.presupuesto?.setValue(precioTipoEvento + extraPresupuesto + extraOtro);
 
     if(this.descuento?.getRawValue() != 0){
       this.presupuesto?.setValue(this.presupuesto.getRawValue() - (this.presupuesto.getRawValue() * (this.descuento?.getRawValue() / 100)))

@@ -109,7 +109,7 @@ export class ExtraService {
 
   // TODO Reemplazar fechaForm en getAllTipo...
   async getAllExtraEventoByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
+    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoConPrecioByTipoEventoAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
     return await lastValueFrom(listaItem$)
   }
 
