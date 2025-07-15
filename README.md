@@ -2,21 +2,27 @@
 
 Agendaza es un sistema integral para la gestión de eventos en salones. Facilita la administración de reservas, clientes, catering, servicios adicionales y mucho más.
 
-[![Version](https://img.shields.io/badge/version-0.5.0-blue.svg)](https://github.com/Estonian-Port/agendaza-backend/tags)
+[![Version](https://img.shields.io/badge/version-0.6.2-blue.svg)](https://github.com/Estonian-Port/agendaza-backend/tags)
 
 <!-- Futuras acciones de CI/CD
 [![Build Status](https://github.com/Estonian-Port/agendaza-backend/actions/workflows/build.yml/badge.svg)](https://github.com/Estonian-Port/agendaza-backend/actions)
 [![Coverage Status](https://coveralls.io/repos/github/Estonian-Port/agendaza-backend/badge.svg?branch=main)](https://coveralls.io/github/Estonian-Port/agendaza-backend?branch=main)
 -->
 
+## 📖 Manual de usuario
+
+- [Descargar manual](Manual_de_usuario.pdf)
+
+
 ---
 
 ## ✨ Características
 
+- Calendario con los eventos registrados
 - Gestión de clientes y reservas
-- Administración de servicios de catering y adicionales
+- Administración de servicios de catering y extras
 - Seguimiento de pagos y contratos
-- Reportes e informes por evento o período
+- Reportes e informes por evento
 
 ---
 
@@ -28,8 +34,7 @@ Agendaza es un sistema integral para la gestión de eventos en salones. Facilita
 
 ## 🚀 Estado actual
 
-Versión **0.5.0** — En desarrollo activo.  
-Se encuentra implementado el núcleo funcional del sistema. Se planifican mejoras progresivas e integración de CI/CD.
+Versión **0.6.2** — En desarrollo activo.  
 
 ---
 
@@ -38,7 +43,7 @@ Se encuentra implementado el núcleo funcional del sistema. Se planifican mejora
 - Backend: Kotlin + Spring Boot
 - Frontend: Angular + Bootstrap
 - Base de datos: PostgreSQL
-- Orquestación: Docker + Docker Compose
+- Orquestación: Docker + Docker Compose (Proximamente)
 
 ---
 
