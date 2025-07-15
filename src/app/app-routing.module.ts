@@ -37,6 +37,8 @@ import { VerClienteComponent } from './layout/ver/ver-cliente/ver-cliente.compon
 import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/edit-cargo-empleado.component';
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
 import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
+import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
+import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 
 
 const routes: Routes = [
@@ -60,6 +62,7 @@ const routes: Routes = [
       { path : 'abmCliente', component: AbmClienteComponent },
       { path : 'abmPago', component: AbmPagoComponent },
       { path : 'abmEmpresa', component: AbmEmpresaComponent },
+      { path : 'abmClausula', component: AbmClausulaComponent },
       { path : 'saveEvento', component: SaveEventoComponent },
       { path : 'saveUsuario', component: SaveUsuarioComponent },
       { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
@@ -69,6 +72,7 @@ const routes: Routes = [
       { path : 'saveCliente', component: SaveClienteComponent },
       { path : 'savePago', component: SavePagoComponent },
       { path : 'saveEmpresa', component: SaveEmpresaComponent },
+      { path : 'saveClausula', component: SaveClausulaComponent },
       { path : 'editUsuario', component: EditUsuarioComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },

@@ -18,6 +18,9 @@ export class AbmDataTableComponent implements OnInit {
   @Input()
   mostrarEliminar : boolean = true
 
+  @Input()
+  mostrarEditar : boolean = true
+
   @Output() 
   outputPrecio = new EventEmitter<number>();
 
