@@ -65,7 +65,7 @@ export class Evento {
 
 export class EventoPago{
     constructor(public id : number, public nombre : string, public codigo : string, 
-        public precioTotal : number, public listaPagos : Array<Pago>){}
+        public precioTotal : number){}
 }
 
 export class EventoExtra{

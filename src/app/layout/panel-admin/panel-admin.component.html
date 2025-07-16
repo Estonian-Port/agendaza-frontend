@@ -89,7 +89,7 @@
                     </div>
                 </a>
             </div-->
-            <div class="col-lg-3 col-md-12 mb-3">
+            <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
                 <a type="button" class="btn btn-primary d-flex" (click)="abmClausula()">
                     <div class="col-9 text-start">
                         <h5>Clausulas</h5>

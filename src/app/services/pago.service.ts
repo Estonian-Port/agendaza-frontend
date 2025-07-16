@@ -5,6 +5,7 @@ import { REST_SERVER_URL } from 'src/util/configuration';
 import { CodigoEmpresaId, Pago, PagoEmpresaEncargado, PagoJSON } from '../model/Pago';
 import { AgendaService } from './agenda.service';
 import { LoginService } from './login.service';
+import { EventoService } from './evento.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PagoService {
   cantidadPagos : number = 0
 
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService) {}
+  constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService, private eventoService : EventoService) {}
 
   async get(id : number) {
     const item$ = this.httpClient.get<PagoJSON>(REST_SERVER_URL + '/getPago/' + id)
@@ -95,6 +96,11 @@ export class PagoService {
   async descargarEstadoCuenta(eventoId : number): Promise<Blob> {
     const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEstadoCuenta/' + eventoId, { responseType: 'blob' })
     return lastValueFrom(item$);
+  }
+
+  async getAllPagoFromEvento() {
+    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoService.eventoId)
+    return await lastValueFrom(evento$)
   }
 
 }

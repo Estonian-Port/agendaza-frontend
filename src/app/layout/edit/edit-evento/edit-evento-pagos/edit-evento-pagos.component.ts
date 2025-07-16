@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
+import { Pago } from 'src/app/model/Pago';
 import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
@@ -12,7 +13,9 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 })
 export class EditEventoPagosComponent implements OnInit {
 
-  eventoPago : EventoPago = new EventoPago(0,"","",0,[])
+  eventoPago : EventoPago = new EventoPago(0,"","",0)
+  listaPago : Array<Pago> = []
+  
   abonado : number = 0
   faltante : number = 0
 
@@ -29,9 +32,11 @@ export class EditEventoPagosComponent implements OnInit {
   constructor(private eventoService : EventoService, private router : Router, private pagoService : PagoService) { }
 
   async ngOnInit() {
-    this.eventoPago = await this.eventoService.getAllPagoFromEvento()
+    this.eventoPago = await this.eventoService.getEventoPago()
+    this.listaPago = await this.pagoService.getAllPagoFromEvento()
+
   
-    this.abonado = _.sum(this.eventoPago.listaPagos.map(it => it.monto))
+    this.abonado = _.sum(this.listaPago.map(it => it.monto))
     this.faltante = this.eventoPago.precioTotal - this.abonado
 
   }
@@ -48,7 +53,7 @@ export class EditEventoPagosComponent implements OnInit {
   async eliminar(){
     (await this.pagoService.delete(this.idEliminar)).subscribe({
       complete: async () => {
-        this.eventoPago = await this.eventoService.getAllPagoFromEvento()
+        this.listaPago = await this.pagoService.getAllPagoFromEvento()
       }
     })
   }

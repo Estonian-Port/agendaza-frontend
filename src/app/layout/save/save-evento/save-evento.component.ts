@@ -325,7 +325,7 @@ export class SaveEventoComponent implements OnInit {
     this.evento.encargadoId = await this.loginService.getUsuarioId()
     this.evento.capacidad.capacidadAdultos = this.capacidadAdultos?.getRawValue()
     
-    this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
+    //this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
     this.sumCateringPresupuesto()
     
   }
@@ -334,7 +334,7 @@ export class SaveEventoComponent implements OnInit {
     this.evento.encargadoId = await this.loginService.getUsuarioId()
     this.evento.capacidad.capacidadNinos = this.capacidadNinos?.getRawValue()
     
-    this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
+    //this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
 
     this.extraOtro?.setValue(this.evento.extraOtro)
   }

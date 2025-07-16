@@ -8,12 +8,12 @@ import { GenericItem } from '../model/GenericItem';
 import { Cliente, Usuario, UsuarioJSON } from '../model/Usuario';
 import { AgendaService } from './agenda.service';
 import { LoginService } from './login.service';
+import { Pago } from '../model/Pago';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventoService {
-
   eventoId : number = 0
   eventoCodigo : string = ""
   fechaFiltroForAbmEvento : string = ""
@@ -90,10 +90,11 @@ export class EventoService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getAllPagoFromEvento() {
-    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoId)
+  async getEventoPago() {
+    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoPago/' + this.eventoId)
     return await lastValueFrom(evento$)
   }
+
 
   async getEventoExtra() {
     const evento$ = this.httpClient.get<EventoExtra>(REST_SERVER_URL + '/getEventoExtra/' + this.eventoId)

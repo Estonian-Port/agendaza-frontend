@@ -38,7 +38,7 @@
                     <h5>Lista de pagos</h5>
                     <div class="pagos-container">
                         <div class="extra-overflow">
-                            <div class="extra-box" *ngFor="let pago of eventoPago.listaPagos">
+                            <div class="extra-box" *ngFor="let pago of listaPago">
                                 <div class="card-pagos">
                                     <div class="d-flex justify-content-between">
                                         {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto | formatNumero }} {{pago.medioDePago | formatEnum}}
