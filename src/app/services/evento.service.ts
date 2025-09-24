@@ -90,12 +90,6 @@ export class EventoService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getEventoPago() {
-    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoPago/' + this.eventoId)
-    return await lastValueFrom(evento$)
-  }
-
-
   async getEventoExtra() {
     const evento$ = this.httpClient.get<EventoExtra>(REST_SERVER_URL + '/getEventoExtra/' + this.eventoId)
     return await lastValueFrom(evento$)

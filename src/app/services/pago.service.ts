@@ -6,6 +6,7 @@ import { CodigoEmpresaId, Pago, PagoEmpresaEncargado, PagoJSON } from '../model/
 import { AgendaService } from './agenda.service';
 import { LoginService } from './login.service';
 import { EventoService } from './evento.service';
+import { EventoPago } from '../model/Evento';
 
 @Injectable({
   providedIn: 'root'
@@ -60,10 +61,19 @@ export class PagoService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getEventoForPago(codigo: string) {
-    const codigoEmpresaId = new CodigoEmpresaId(codigo, this.agendaService.getEmpresaId())
-    const listaItem$ = this.httpClient.put<Pago>(REST_SERVER_URL + '/getEventoForPago', codigoEmpresaId)
-    return await lastValueFrom(listaItem$)
+  async getEventoForSavePago() {
+    const evento$ = this.httpClient.get<Pago>(REST_SERVER_URL + '/getEventoForSavePago/' + this.eventoService.eventoId)
+    return await lastValueFrom(evento$)
+  }
+
+  async getEventoForEditEventoPago() {
+    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoForEditEventoPago/' + this.eventoService.eventoId)
+    return await lastValueFrom(evento$)
+  }
+
+  async getAllPagoFromEvento() {
+    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoService.eventoId)
+    return await lastValueFrom(evento$)
   }
 
   async save(pago : Pago) {
@@ -96,11 +106,6 @@ export class PagoService {
   async descargarEstadoCuenta(eventoId : number): Promise<Blob> {
     const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEstadoCuenta/' + eventoId, { responseType: 'blob' })
     return lastValueFrom(item$);
-  }
-
-  async getAllPagoFromEvento() {
-    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoService.eventoId)
-    return await lastValueFrom(evento$)
   }
 
 }

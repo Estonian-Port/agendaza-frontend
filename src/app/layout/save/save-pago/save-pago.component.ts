@@ -44,8 +44,9 @@ export class SavePagoComponent implements OnInit {
   async buscar(){
 
     try {
-      this.pago = await this.pagoService.getEventoForPago(this.codigo)
+      this.pago = await this.pagoService.getEventoForSavePago()
       this.pago.medioDePago = "TRANSFERENCIA"
+      this.pago.concepto = "SENIA"
       this.error.condicional = false
     } catch (error) {
       this.error.condicional = true

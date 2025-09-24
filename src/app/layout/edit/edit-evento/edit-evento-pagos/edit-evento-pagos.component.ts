@@ -32,7 +32,7 @@ export class EditEventoPagosComponent implements OnInit {
   constructor(private eventoService : EventoService, private router : Router, private pagoService : PagoService) { }
 
   async ngOnInit() {
-    this.eventoPago = await this.eventoService.getEventoPago()
+    this.eventoPago = await this.pagoService.getEventoForEditEventoPago()
     this.listaPago = await this.pagoService.getAllPagoFromEvento()
 
   
