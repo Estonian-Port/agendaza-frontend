@@ -33,11 +33,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 90%;
+    height: 93vh;
+    position: relative;
 }
 
 .agendaza-tipografia{
     font-family: 'Bree Serif', serif;
+}
+
+.app-version-footer {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.35); 
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+    pointer-events: none;
 }
 
 @media (max-width : 870px) {

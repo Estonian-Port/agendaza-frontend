@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import { UsuarioLogin } from 'src/app/model/Usuario'
 import { LoginService } from 'src/app/services/login.service'
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler'
+import packageInfo from '../../../../package.json';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent {
   errors = []
   errorLogin : ErrorMensaje = new ErrorMensaje(false, '')
   showPassword = false
+  appVersion: string = packageInfo.version;
 
   @Output () valorLogin = new EventEmitter<boolean>()
 
