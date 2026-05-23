@@ -47,7 +47,7 @@ export class LoginService {
   // No guardar username sino id
   async getUsuarioId() {
     const username = CryptoJsImpl.decryptData(localStorage.getItem('session'))
-    const usuario$ = this.httpClient.put<number>(REST_SERVER_URL + '/getUsuarioIdByUsername', username)
+    const usuario$ = this.httpClient.get<number>(REST_SERVER_URL + '/getUsuarioIdByUsername/' + username)
     return await lastValueFrom(usuario$)
   }
 
