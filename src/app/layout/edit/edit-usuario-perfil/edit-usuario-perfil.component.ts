@@ -16,12 +16,11 @@ export class EditUsuarioPerfilComponent implements OnInit {
 
   //========= Modal ========
   modal = false
-  usuarioEditPassword = new UsuarioEditPassword(0, "")
+  usuarioEditPassword : string = ""
 
   constructor(public loginService : LoginService, private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
-    this.usuarioService.usuarioId = await this.loginService.getUsuarioId()
     this.usuario = await this.loginService.getUsuarioPerfil()
   }
 
@@ -35,8 +34,7 @@ export class EditUsuarioPerfilComponent implements OnInit {
   }
 
   async editPassword(){
-    this.usuarioEditPassword.id  = await this.loginService.getUsuarioId()
-    const item = await this.usuarioService.editPassword(this.usuarioEditPassword)
+    const item = await this.usuarioService.updatePassword(this.loginService.getUsuarioId(), this.usuarioEditPassword)
     this.router.navigateByUrl('/abmUsuario')
   }
 

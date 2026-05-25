@@ -17,7 +17,6 @@ import { StepBox } from 'src/app/model/StepBox';
 import { Time } from 'src/app/model/Time';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { Cliente } from 'src/app/model/Usuario';
-import { AgendaService } from 'src/app/services/agenda.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { ExtraService } from 'src/app/services/extra.service';
@@ -108,7 +107,7 @@ export class SaveEventoComponent implements OnInit {
 
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
     public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
-    public eventoService : EventoService, public loginService : LoginService, public agendaService : AgendaService,
+    public eventoService : EventoService, public loginService : LoginService,
     public router : Router, private formBuilder: FormBuilder) { 
 
       this.formGroup = this.formBuilder.group({
@@ -425,7 +424,7 @@ export class SaveEventoComponent implements OnInit {
   async buscarClientePorEmail(){
     if(this.email?.valid){
       try {
-        this.evento.cliente = await this.eventoService.buscarClientePorEmail(this.email.getRawValue())
+        this.evento.cliente = await this.usuarioService.buscarClientePorEmail(this.email.getRawValue())
         this.usuarioEncontrado()
       } catch (error: any) {
         this.cleanCliente(error)
@@ -436,7 +435,7 @@ export class SaveEventoComponent implements OnInit {
   async buscarClientePorCelular(){
     if(this.celular?.valid){
       try {
-        this.evento.cliente = await this.eventoService.buscarClientePorCelular(this.celular?.getRawValue())
+        this.evento.cliente = await this.usuarioService.buscarClientePorCelular(this.celular?.getRawValue())
         this.usuarioEncontrado()
       } catch (error) {
         this.cleanCliente(error)

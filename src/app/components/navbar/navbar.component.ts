@@ -1,6 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AgendaService } from 'src/app/services/agenda.service';
 import { Location } from '@angular/common';
 import { LoginService } from 'src/app/services/login.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -12,7 +11,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class NavbarComponent {
 
-  constructor(private loginService: LoginService, private usuarioService : UsuarioService, private router: Router, private agendaService: AgendaService, private location: Location) { }
+  constructor(private loginService: LoginService, private usuarioService : UsuarioService, private router: Router, private location: Location) { }
 
   dropdownVisible : boolean = false;
 

@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Empresa, EmpresaAbm, EmpresaAbmJSON } from '../model/Empresa';
-import { GenericItem, GenericItemJSON } from '../model/GenericItem';
-import { AgendaService } from './agenda.service';
+import { GenericItem } from '../model/GenericItem';
 import { LoginService } from './login.service';
 import { Especificacion, EspecificacionJSON } from '../model/Especificacion';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,10 @@ export class EmpresaService {
 
   empresaId = 0
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService) {}
+  constructor(private httpClient: HttpClient, private usuarioService : UsuarioService, private loginService : LoginService) {}
 
   async getEmpresa(){
-    const item$ = this.httpClient.get<GenericItem>(REST_SERVER_URL + '/getEmpresa/' + await this.agendaService.getEmpresaId())
+    const item$ = this.httpClient.get<GenericItem>(REST_SERVER_URL + '/getEmpresa/' + await this.usuarioService.getEmpresaId())
     return await lastValueFrom(item$)
   }
 
@@ -39,7 +39,7 @@ export class EmpresaService {
   }
 
   async getEspecificaciones(){
-    const listaItem$ = this.httpClient.get<EspecificacionJSON[]>(REST_SERVER_URL + '/getEspecificaciones/' + await this.agendaService.getEmpresaId())
+    const listaItem$ = this.httpClient.get<EspecificacionJSON[]>(REST_SERVER_URL + '/getEspecificaciones/' + await this.usuarioService.getEmpresaId())
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((especificacion) => Especificacion.fromJson(especificacion))
   }

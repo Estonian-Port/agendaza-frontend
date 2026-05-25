@@ -26,12 +26,12 @@ export class AbmClienteComponent implements OnInit {
     this.updatePalabraBuscar(this.buscar)
 
     if(this.buscar == ""){
-      this.listaItems = await this.usuarioService.getAllCliente(this.paginaActual)
-      this.cantidadRegistros = await this.usuarioService.getCantidadCliente()
+      this.listaItems = await this.usuarioService.getAllClientes(this.paginaActual)
+      this.cantidadRegistros = await this.usuarioService.getCantidadClientes()
     }
     else {
-      this.listaItems = await this.usuarioService.getAllClienteFiltrados(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.usuarioService.getCantidadClienteFiltrados(this.buscar)
+      this.listaItems = await this.usuarioService.getClientesFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.usuarioService.getCantidadClientesFiltrados(this.buscar)
     }
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))

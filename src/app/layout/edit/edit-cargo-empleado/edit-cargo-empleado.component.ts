@@ -15,7 +15,7 @@ export class EditEmpleadoCargoComponent implements OnInit {
   usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0), "",Cargo.CLIENTE,"",0)
   listaCargo : Array<string> = []
 
-  constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router) { }
+  constructor(private usuarioService : UsuarioService, private router : Router) { }
 
   async ngOnInit(): Promise<void> {
     this.usuario = await this.usuarioService.getUsuario()

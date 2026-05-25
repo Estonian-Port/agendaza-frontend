@@ -5,7 +5,6 @@ import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { Router } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { AgendaService } from 'src/app/services/agenda.service';
 
 @Component({
   selector: 'app-ver-cliente',
@@ -22,7 +21,7 @@ export class VerClienteComponent implements OnInit {
   modal = false
   tituloModal=""
 
-  constructor(private eventoService : EventoService, private agendaService : AgendaService, private usuarioService: UsuarioService , private router : Router) { }
+  constructor(private eventoService : EventoService, private usuarioService: UsuarioService , private router : Router) { }
 
 
   async ngOnInit() {
@@ -55,5 +54,6 @@ export class VerClienteComponent implements OnInit {
     const clienteEdit : Cliente = await this.usuarioService.saveCliente(cliente)
     this.cliente = clienteEdit.nombre + " " + clienteEdit.apellido
   }
+  
 
 }

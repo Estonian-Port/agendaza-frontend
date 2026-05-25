@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
-import { AgendaCard } from 'src/app/model/Agenda';
-import { AgendaService } from 'src/app/services/agenda.service';
-import { LoginService } from 'src/app/services/login.service';
-import { mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { Component, OnInit } from "@angular/core"
+import { AgendaCard } from "src/app/model/Agenda"
+import { LoginService } from "src/app/services/login.service"
+import { UsuarioService } from "src/app/services/usuario.service"
+import { mostrarErrorConMensaje } from "src/util/errorHandler"
 
 @Component({
   selector: 'app-seleccionar-agenda',
@@ -12,16 +11,21 @@ import { mostrarErrorConMensaje } from 'src/util/errorHandler';
 export class SeleccionarAgendaComponent implements OnInit {
 
   listaAgenda: Array<AgendaCard> = []
+  errors: string[] = [] 
 
-  constructor(public agendaService : AgendaService, public logInService : LoginService) { }
+  constructor(public usuarioService : UsuarioService, public logInService : LoginService) { }
 
   async ngOnInit(): Promise<void> {
     try {
-      this.listaAgenda = await this.agendaService.getListaAgendaByUsuarioId(await this.logInService.getUsuarioId())
-
+      const usuarioId = this.logInService.getUsuarioId()
+      
+      if (!usuarioId) {
+        console.log("No se pudo recuperar el ID del usuario logueado.")
+      }
+      
+      this.listaAgenda = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
     } catch (error) {
-      mostrarErrorConMensaje(this, error)
+      console.log(mostrarErrorConMensaje(this, error))
     }
   }
-
 }

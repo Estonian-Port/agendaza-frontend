@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { CodigoEmpresaId, Pago, PagoEmpresaEncargado, PagoJSON } from '../model/Pago';
-import { AgendaService } from './agenda.service';
+import { Pago, PagoJSON } from '../model/Pago';
 import { LoginService } from './login.service';
 import { EventoService } from './evento.service';
 import { EventoPago } from '../model/Evento';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class PagoService {
   cantidadPagos : number = 0
 
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService, private eventoService : EventoService) {}
+  constructor(private httpClient: HttpClient, private usuarioService : UsuarioService, private loginService : LoginService, private eventoService : EventoService) {}
 
   async get(id : number) {
     const item$ = this.httpClient.get<PagoJSON>(REST_SERVER_URL + '/getPago/' + id)
@@ -28,25 +28,25 @@ export class PagoService {
 
 
   async getAllPagoByEmpresaId(pageNumber : number) {
-    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagos/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
+    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagos/' + this.usuarioService.getEmpresaId() + '/' + pageNumber)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((pago) => Pago.fromJson(pago))
   }
 
   async getAllPagoByFilter(pageNumber : number, buscar : string) {
-    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagosFilter/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
+    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagosFilter/' + this.usuarioService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
     const listaItem = await lastValueFrom(listaItem$)
     return listaItem.map((pago) => Pago.fromJson(pago))
   }
 
   async cantPagos(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagos/' + this.agendaService.getEmpresaId())
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagos/' + this.usuarioService.getEmpresaId())
     this.cantidadPagos = await lastValueFrom(cant$)
     return this.cantidadPagos
   }
 
   async cantPagosFiltrados(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
+    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagosFiltrados/' + this.usuarioService.getEmpresaId() + '/' + buscar)
     this.cantidadPagos = await lastValueFrom(cant$)
     return this.cantidadPagos
   }
@@ -77,7 +77,7 @@ export class PagoService {
   }
 
   async save(pago : Pago) {
-    pago.empresaId = this.agendaService.getEmpresaId()
+    pago.empresaId = this.usuarioService.getEmpresaId()
     pago.usuarioId = await this.loginService.getUsuarioId()
     const item$ = this.httpClient.post<Pago>(REST_SERVER_URL + '/savePago', pago)
     return await lastValueFrom(item$)
@@ -88,7 +88,7 @@ export class PagoService {
   }
 
   async enviarEmailPago(pagoId : number, eventoId: number) {
-    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailPago/' + pagoId + "/" + eventoId + "/" + this.agendaService.getEmpresaId())
+    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailPago/' + pagoId + "/" + eventoId + "/" + this.usuarioService.getEmpresaId())
     return await lastValueFrom(item$)
   }
 
@@ -99,7 +99,7 @@ export class PagoService {
 
 
   async enviarEmailEstadoCuenta(eventoId: number) {
-    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailEstadoCuenta/' + eventoId + "/" + this.agendaService.getEmpresaId())
+    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailEstadoCuenta/' + eventoId + "/" + this.usuarioService.getEmpresaId())
     return await lastValueFrom(item$)
   }
 

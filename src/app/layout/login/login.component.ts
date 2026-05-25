@@ -36,30 +36,25 @@ export class LoginComponent {
     this.isLoading = true
 
     try {
-      (await this.loginService.login(this.usuarioLogin)).subscribe({
-        error: (err: any) => {
-          this.errorLogin.condicional = true
-          this.isLoading = false
-          mostrarErrorConMensaje(this, err)
-          this.errors.forEach(error => {
-            this.errorLogin.mensaje = error
-          })
-        },
-        complete: () => {
-          this.isLoading = false
-          this.router.navigateByUrl('/')
-        }
-      })
+      // 1. Esperamos síncronamente a que el login (y la obtención del ID) termine
+      await this.loginService.login(this.usuarioLogin)
+      
+      // 2. Si llegó hasta acá es porque el login fue exitoso (el equivalente al 'complete')
+      this.isLoading = false
+      this.router.navigateByUrl('/')
+
     } catch (error) {
+      // 3. Si ocurre algún error en la red o las credenciales fallan, salta acá automáticamente
       this.errorLogin.condicional = true
       this.isLoading = false
+      
       mostrarErrorConMensaje(this, error)
-      this.errors.forEach(error => {
-        this.errorLogin.mensaje = error
+      
+      this.errors.forEach(err => {
+        this.errorLogin.mensaje = err
       })
     }
   }
-
   /**
    * Verifica si el usuario está autenticado
    */

@@ -16,7 +16,7 @@ export class ModalPasswordComponent {
   modal = false
 
   @Input()
-  usuarioEditPassword = new UsuarioEditPassword(0, "")
+  usuarioEditPassword : string = ""
 
   @Output() 
   outputAceptar = new EventEmitter<number>()
@@ -42,7 +42,7 @@ export class ModalPasswordComponent {
   }
 
   aceptar() {
-    if (this.usuarioEditPassword.password !== this.repeatPassword) {
+    if (this.usuarioEditPassword !== this.repeatPassword) {
       this.passwordsNoCoinciden = true
       return
     }

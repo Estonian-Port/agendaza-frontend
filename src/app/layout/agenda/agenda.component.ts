@@ -6,10 +6,10 @@ import listPlugin from '@fullcalendar/list';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import esLocale from '@fullcalendar/core/locales/es';
 import { mostrarErrorConMensaje } from 'src/util/errorHandler';
-import { AgendaService } from 'src/app/services/agenda.service';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Router } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-agenda',
@@ -17,7 +17,7 @@ import { EventoService } from 'src/app/services/evento.service';
   styleUrls: ['./agenda.component.css'],
 })
 export class AgendaComponent implements OnInit {
-  constructor(private agendaService: AgendaService, private router: Router, private eventoService: EventoService) {}
+  constructor(private usuarioService: UsuarioService, private router: Router, private eventoService: EventoService) {}
 
   eventos: EventInput[] = [];
 
@@ -37,7 +37,7 @@ export class AgendaComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.eventos = await this.agendaService.getAllEventosForAgendaByEmpresaId(this.agendaService.getEmpresaId());
+      this.eventos = await this.eventoService.getAllEventosForAgendaByEmpresaId()
 
       this.calendarOptions.events = this.eventos;
     } catch (error) {

@@ -3,19 +3,17 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { PanelAdmin } from '../model/Configuracion';
-import { UsuarioEmpresa } from '../model/Usuario';
-import { AgendaService } from './agenda.service';
-import { LoginService } from './login.service';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfiguracionService {
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
+  constructor(private httpClient: HttpClient, private usuarioService : UsuarioService) { }
 
   async getAllCantidadesForPanelAdminByEmpresaId() : Promise<PanelAdmin> {
-    const configuracion$ = this.httpClient.get<PanelAdmin>(REST_SERVER_URL + '/getAllCantidadesForPanelAdminByEmpresaId/' + this.agendaService.getEmpresaId())
+    const configuracion$ = this.httpClient.get<PanelAdmin>(REST_SERVER_URL + '/getAllCantidadesForPanelAdminByEmpresaId/' + this.usuarioService.getEmpresaId())
     return await lastValueFrom(configuracion$)
   }
 
