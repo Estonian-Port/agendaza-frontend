@@ -4,17 +4,16 @@
 
         <app-abm-data-table-header
             titulo = 'Eventos'
-            [realizoBusqueda] = "realizoBusqueda"
             (outputBuscar)="updatePalabraBuscar($event)"
             (outputPaginaActual)="updatePaginaActual($event)">
         </app-abm-data-table-header>
 
         <app-abm-data-table-evento
-            (outputPagos)="pagos()"
-            (outputExtra)="extras()"
-            (outputCatering)="catering()"
-            (outputHora)="hora()"
-            (outputVer)="ver()"
+            (outputPagos)="pagos($event)"
+            (outputExtra)="extras($event)"
+            (outputCatering)="catering($event)"
+            (outputHora)="hora($event)"
+            (outputVer)="ver($event)"
             (outputEliminar)="eliminar($event)"
             [listaItems]="listaItems"
             [listaHeader]="listaHeader"

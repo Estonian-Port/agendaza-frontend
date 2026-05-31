@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
@@ -43,10 +43,11 @@ export class VerEventoComponent implements OnInit {
 
   encargadoNombreCompleto : string = ""
 
-  constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
+  constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router, private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.evento = await this.eventoService.getEventoVer()
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.evento = await this.eventoService.getEventoVer(id)
 
     this.evento.empresa = (await this.empresaService.getEmpresa()).nombre
 
@@ -92,7 +93,7 @@ export class VerEventoComponent implements OnInit {
   async editCantAdultos(){
     this.evento.capacidad.capacidadAdultos = this.inputEditar
     await this.eventoService.editEventoCantAdultos(this.evento)
-    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
   }
 
   editCantNinosModal(){
@@ -106,7 +107,7 @@ export class VerEventoComponent implements OnInit {
   async editNinos(){
     this.evento.capacidad.capacidadNinos = this.inputEditar
     await this.eventoService.editEventoCantNinos(this.evento)
-    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
 
   }
 
@@ -150,7 +151,7 @@ export class VerEventoComponent implements OnInit {
 
   async descargarComprobante(){
     try{
-      const blob = await this.eventoService.descargarEvento()
+      const blob = await this.eventoService.descargarEvento(this.evento.id)
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'comprobante_de_evento.pdf';

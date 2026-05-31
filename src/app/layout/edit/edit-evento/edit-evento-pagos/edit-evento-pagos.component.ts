@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
 import { Pago } from 'src/app/model/Pago';
@@ -29,11 +29,17 @@ export class EditEventoPagosComponent implements OnInit {
   errorEnvioEmail = new ErrorMensaje(false, '')
   errors = []
 
-  constructor(private eventoService : EventoService, private router : Router, private pagoService : PagoService) { }
+  constructor(
+    private eventoService : EventoService,
+    private router : Router,
+    private pagoService : PagoService,
+    private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.eventoPago = await this.pagoService.getEventoForEditEventoPago()
-    this.listaPago = await this.pagoService.getAllPagoFromEvento()
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.eventoPago = await this.pagoService.getEventoForEditEventoPago(id)
+    this.listaPago = await this.pagoService.getAllPagoFromEvento(id)
 
   
     this.abonado = _.sum(this.listaPago.map(it => it.monto))
@@ -53,7 +59,7 @@ export class EditEventoPagosComponent implements OnInit {
   async eliminar(){
     (await this.pagoService.delete(this.idEliminar)).subscribe({
       complete: async () => {
-        this.listaPago = await this.pagoService.getAllPagoFromEvento()
+        this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id)
       }
     })
   }
@@ -77,7 +83,7 @@ export class EditEventoPagosComponent implements OnInit {
 
   async enviarEmailPago(pagoId : number){
     try{
-      this.envioEmail = await this.pagoService.enviarEmailPago(pagoId, this.eventoService.eventoId)
+      this.envioEmail = await this.pagoService.enviarEmailPago(pagoId, this.eventoPago.id)
       
       setTimeout(() => {
         this.envioEmail = false;
@@ -104,7 +110,7 @@ export class EditEventoPagosComponent implements OnInit {
 
   async enviarEmailEstadoCuenta(){
     try{
-      this.envioEmail = await this.pagoService.enviarEmailEstadoCuenta(this.eventoService.eventoId)
+      this.envioEmail = await this.pagoService.enviarEmailEstadoCuenta(this.eventoPago.id)
       setTimeout(() => {
         this.envioEmail = false;
       }, 3000);
@@ -116,7 +122,7 @@ export class EditEventoPagosComponent implements OnInit {
 
   async descargarEstadoCuenta() {
     try{
-      const blob = await this.pagoService.descargarEstadoCuenta(this.eventoService.eventoId)
+      const blob = await this.pagoService.descargarEstadoCuenta(this.eventoPago.id)
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'comprobante_estado_cuenta.pdf';

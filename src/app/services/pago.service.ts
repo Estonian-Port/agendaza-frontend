@@ -61,18 +61,18 @@ export class PagoService {
     return await lastValueFrom(listaItem$)
   }
 
-  async getEventoForSavePago() {
-    const evento$ = this.httpClient.get<Pago>(REST_SERVER_URL + '/getEventoForSavePago/' + this.eventoService.eventoId)
+  async getEventoForSavePago(eventoId: number) {
+    const evento$ = this.httpClient.get<Pago>(REST_SERVER_URL + '/getEventoForSavePago/' + eventoId)
     return await lastValueFrom(evento$)
   }
 
-  async getEventoForEditEventoPago() {
-    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoForEditEventoPago/' + this.eventoService.eventoId)
+  async getEventoForEditEventoPago(eventoId: number) {
+    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoForEditEventoPago/' + eventoId)
     return await lastValueFrom(evento$)
   }
 
-  async getAllPagoFromEvento() {
-    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + this.eventoService.eventoId)
+  async getAllPagoFromEvento(eventoId: number) {
+    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + eventoId)
     return await lastValueFrom(evento$)
   }
 

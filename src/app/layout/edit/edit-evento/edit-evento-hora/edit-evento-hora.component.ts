@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DateUtil } from 'src/app/model/DateUtil';
 import { EventoHora } from 'src/app/model/Evento';
 import { Time } from 'src/app/model/Time';
@@ -19,10 +19,14 @@ export class EditEventoHoraComponent implements OnInit {
   fechaInicio : string = ""
   fechaFin : Date = new Date()
 
-  constructor(private eventoService : EventoService, private router : Router) { }
+  constructor(
+    private eventoService : EventoService,
+    private router : Router,
+    private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.evento = await this.eventoService.getEventoHora()
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.evento = await this.eventoService.getEventoHora(id)
 
     this.inicio.hour = this.evento.inicio.split(":")[0].split("T")[1]
     this.inicio.minute = this.evento.inicio.split(":")[1]

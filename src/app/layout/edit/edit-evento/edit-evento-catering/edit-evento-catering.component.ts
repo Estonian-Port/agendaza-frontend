@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoCatering } from 'src/app/model/Evento';
 import { Extra } from 'src/app/model/Extra';
@@ -23,10 +23,12 @@ export class EditEventoCateringComponent implements OnInit {
   agregarCatering : boolean = true
   presupuestoCatering : number = 0
 
-  constructor(private eventoService : EventoService, private router : Router, private extraService : ExtraService) { }
+  constructor(private eventoService : EventoService, private router : Router, private extraService : ExtraService, private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.evento = await this.eventoService.getEventoCatering()
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.evento = await this.eventoService.getEventoCatering(id)
 
     const fecha = new Date(this.evento.fechaEvento)
 
