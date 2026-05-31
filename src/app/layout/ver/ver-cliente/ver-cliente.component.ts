@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // 1. Agregamos ActivatedRoute
+import { Location } from '@angular/common'; // 2. Agregamos Location
 import { EventoService } from 'src/app/services/evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -21,20 +22,37 @@ export class VerClienteComponent implements OnInit {
   modal = false
   tituloModal=""
 
-  constructor(private eventoService : EventoService, private usuarioService: UsuarioService , private router : Router) { }
+  constructor(
+    private eventoService : EventoService, 
+    private usuarioService: UsuarioService, 
+    private router : Router,
+    private route: ActivatedRoute, // Inyectado
+    private location: Location     // Inyectado
+  ) { }
 
+  ngOnInit() {
+    // 3. Nos suscribimos a los parámetros de la URL para obtener el eventoId
+    this.route.queryParams.subscribe(async params => {
+      if (params['eventoId']) {
+        const eventoId = Number(params['eventoId']);
+        
+        // 4. Ahora sí, le pasamos el ID explícito al servicio
+        this.evento = await this.eventoService.getEventoVer(eventoId);
+        
+        this.eventos = await this.usuarioService.getEventosByUsuarioAndEmpresa(this.evento.cliente.id);
+        this.cantidadEventos = await this.usuarioService.getCantEventosByUsuarioAndEmpresa(this.evento.cliente.id);
 
-  async ngOnInit() {
-    this.evento = await this.eventoService.getEventoVer()
-    this.eventos = await this.usuarioService.getEventosByUsuarioAndEmpresa(this.evento.cliente.id)
-    this.cantidadEventos = await this.usuarioService.getCantEventosByUsuarioAndEmpresa(this.evento.cliente.id)
-
-    this.cliente = this.evento.cliente.nombre + " " + this.evento.cliente.apellido
+        this.cliente = this.evento.cliente.nombre + " " + this.evento.cliente.apellido;
+      }
+    });
   }
 
   volver(eventoId: number){
-    this.eventoService.eventoId = eventoId
-    this.router.navigateByUrl("/verEvento")
+    // OPCIÓN A: Navegar explícitamente a la ruta de ver evento que configuramos antes
+    this.router.navigate(['/verEvento', eventoId]);
+    
+    // OPCIÓN B: Simplemente retroceder en el historial (descomentar si prefieres esta)
+    // this.location.back();
   }
 
   masDe10Eventos(): Boolean {
@@ -54,6 +72,4 @@ export class VerClienteComponent implements OnInit {
     const clienteEdit : Cliente = await this.usuarioService.saveCliente(cliente)
     this.cliente = clienteEdit.nombre + " " + clienteEdit.apellido
   }
-  
-
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common'; // <-- Importamos Location
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
 import { Pago } from 'src/app/model/Pago';
@@ -30,10 +31,11 @@ export class EditEventoPagosComponent implements OnInit {
   errors = []
 
   constructor(
-    private eventoService : EventoService,
     private router : Router,
     private pagoService : PagoService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private location: Location // <-- Lo inyectamos en el constructor
+  ) { }
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -41,27 +43,33 @@ export class EditEventoPagosComponent implements OnInit {
     this.eventoPago = await this.pagoService.getEventoForEditEventoPago(id)
     this.listaPago = await this.pagoService.getAllPagoFromEvento(id)
 
-  
     this.abonado = _.sum(this.listaPago.map(it => it.monto))
     this.faltante = this.eventoPago.precioTotal - this.abonado
-
   }
 
   agregarPago(){
-    this.eventoService.eventoCodigo = this.eventoPago.codigo
-    this.router.navigateByUrl("/savePago")
+    // Pasamos el codigo del evento por la URL
+    this.router.navigate(['/savePago'], { queryParams: { eventoCodigo: this.eventoPago.codigo } });
+  }
+
+  editarPago(pagoId: number) {
+    // Pasamos el id del pago por la URL
+    this.router.navigate(['/savePago'], { queryParams: { pagoId: pagoId } });
   }
 
   volver(){
-    this.router.navigateByUrl("/abmEvento")
+    // Usamos Location para no perder la paginación de la pantalla anterior
+    this.location.back();
   }
 
   async eliminar(){
-    (await this.pagoService.delete(this.idEliminar)).subscribe({
-      complete: async () => {
-        this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id)
-      }
-    })
+    try {
+      // Arreglado el problema de Promise vs Subscribe
+      await this.pagoService.delete(this.idEliminar);
+      this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id);
+    } catch (error) {
+      console.error("Error al eliminar el pago", error);
+    }
   }
 
   modalParaEliminar(id : number, nombre : string){
@@ -70,11 +78,6 @@ export class EditEventoPagosComponent implements OnInit {
     this.cuerpoModal = "Quiere eliminar el pago del evento: " + nombre
     this.botonModal = "Eliminar"
     this.setModal(!this.modal)
-  }
-
-  editarPago(pagoId: number) {
-    this.pagoService.pagoId = pagoId
-    this.router.navigateByUrl("/savePago")
   }
 
   setModal(modal : boolean){
@@ -107,7 +110,6 @@ export class EditEventoPagosComponent implements OnInit {
     }
   }
 
-
   async enviarEmailEstadoCuenta(){
     try{
       this.envioEmail = await this.pagoService.enviarEmailEstadoCuenta(this.eventoPago.id)
@@ -118,7 +120,6 @@ export class EditEventoPagosComponent implements OnInit {
        this.mostrarError(error)
     }
   }
-
 
   async descargarEstadoCuenta() {
     try{
@@ -145,5 +146,4 @@ export class EditEventoPagosComponent implements OnInit {
         this.errorEnvioEmail.condicional = false;
       }, 3000);
   }
-  
 }

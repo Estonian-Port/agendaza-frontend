@@ -4,44 +4,58 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Empresa, EmpresaAbm, EmpresaAbmJSON } from '../model/Empresa';
 import { GenericItem } from '../model/GenericItem';
-import { LoginService } from './login.service';
 import { Especificacion, EspecificacionJSON } from '../model/Especificacion';
-import { UsuarioService } from './usuario.service';
+import { CustomResponse } from 'src/util/customResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpresaService {
 
-  empresaId = 0
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient, private usuarioService : UsuarioService, private loginService : LoginService) {}
-
-  async getEmpresa(){
-    const item$ = this.httpClient.get<GenericItem>(REST_SERVER_URL + '/getEmpresa/' + await this.usuarioService.getEmpresaId())
-    return await lastValueFrom(item$)
+  async getEmpresa(empresaId: number): Promise<GenericItem> {
+    const item$ = this.httpClient.get<CustomResponse<GenericItem>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getEmpresaAbm(){
-    const item$ = this.httpClient.get<EmpresaAbm>(REST_SERVER_URL + '/getEmpresa/' + this.empresaId)
-    return await lastValueFrom(item$)
+  async getEmpresaAbm(empresaId: number): Promise<EmpresaAbm> {
+    const item$ = this.httpClient.get<CustomResponse<EmpresaAbm>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/abm'
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getAllEmpresaByUsuarioId(){
-    const listaItem$ = this.httpClient.get<EmpresaAbmJSON[]>(REST_SERVER_URL + '/getAllEmpresaByUsuarioId/' + await this.loginService.getUsuarioId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((empresa) => EmpresaAbm.fromJson(empresa))
+  async getAllEmpresaByUsuarioId(usuarioId: number): Promise<EmpresaAbm[]> {
+    // ¡Atención aquí! Según el controlador del paso anterior, este endpoint 
+    // le pertenece a UsuarioController, no a EmpresaController.
+    const listaItem$ = this.httpClient.get<CustomResponse<EmpresaAbmJSON[]>>(
+      REST_SERVER_URL + '/v1/usuarios/' + usuarioId + '/empresas'
+    );
+    const response = await lastValueFrom(listaItem$);
+    return response.data.map((empresa) => EmpresaAbm.fromJson(empresa));
   }
 
-  async save(empresa : Empresa){
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveEmpresa', empresa)
-    return await lastValueFrom(item$)
+  async save(empresa: Empresa): Promise<GenericItem> {
+    // Para POST y PUT, la convención REST es usar la ruta base de la entidad
+    const item$ = this.httpClient.post<CustomResponse<GenericItem>>(
+      REST_SERVER_URL + '/v1/empresas', 
+      empresa
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getEspecificaciones(){
-    const listaItem$ = this.httpClient.get<EspecificacionJSON[]>(REST_SERVER_URL + '/getEspecificaciones/' + await this.usuarioService.getEmpresaId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((especificacion) => Especificacion.fromJson(especificacion))
+  async getEspecificaciones(empresaId: number): Promise<Especificacion[]> {
+    const listaItem$ = this.httpClient.get<CustomResponse<EspecificacionJSON[]>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/especificaciones'
+    );
+    const response = await lastValueFrom(listaItem$);
+    return response.data.map((especificacion) => Especificacion.fromJson(especificacion));
   }
 
 }

@@ -17,7 +17,11 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./agenda.component.css'],
 })
 export class AgendaComponent implements OnInit {
-  constructor(private usuarioService: UsuarioService, private router: Router, private eventoService: EventoService) {}
+  constructor(
+    private usuarioService: UsuarioService, 
+    private router: Router, 
+    private eventoService: EventoService
+  ) {}
 
   eventos: EventInput[] = [];
 
@@ -38,7 +42,6 @@ export class AgendaComponent implements OnInit {
   async ngOnInit() {
     try {
       this.eventos = await this.eventoService.getAllEventosForAgendaByEmpresaId()
-
       this.calendarOptions.events = this.eventos;
     } catch (error) {
       mostrarErrorConMensaje(this, error);
@@ -46,7 +49,6 @@ export class AgendaComponent implements OnInit {
   }
 
   handleDateClick(arg: { dateStr: string }) {
-    this.eventoService.fechaFiltroForAbmEvento = arg.dateStr;
-    this.router.navigateByUrl('/abmEvento');
+    this.router.navigate(['/abmEvento'], { queryParams: { fecha: arg.dateStr } });
   }
 }

@@ -128,7 +128,7 @@ export class LoginService {
     }
     const empresaId = CryptoJsImpl.decryptData(empresaIdEncriptada)
     const cargo$ = this.httpClient.get<Cargo>(
-      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/cargo/${empresaId}`
+      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/empresa/${empresaId}`
     )
     return await lastValueFrom(cargo$)
   }

@@ -31,7 +31,7 @@ export class UsuarioService {
     private loginService: LoginService
   ) { }
 
-  // ==================== GESTIÓN DE EMPRESA (Ex AgendaService integrado) ====================
+  // ==================== GESTIÓN DE EMPRESA ====================
 
   setEmpresaId(empresaId: number): void {
     const empresaIdEncrypt = CryptoJsImpl.encryptData(empresaId)

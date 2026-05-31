@@ -65,8 +65,7 @@ export class AbmUsuarioComponent implements OnInit {
   }
 
   editar(id : number){
-    this.usuarioService.usuarioId = id
-    this.router.navigateByUrl('/editUsuario')
+    this.router.navigate(['/editUsuario'], { queryParams: { usuarioId: id } });
   }
 
   async eliminar(id: number) {

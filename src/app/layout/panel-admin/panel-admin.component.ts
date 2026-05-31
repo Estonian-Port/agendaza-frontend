@@ -4,8 +4,8 @@ import { PanelAdmin as PanelAdmin } from 'src/app/model/Configuracion';
 import { Empresa } from 'src/app/model/Empresa';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
-import { EventoService } from 'src/app/services/evento.service';
 import { LoginService } from 'src/app/services/login.service';
+// EventoService eliminado de las importaciones
 
 @Component({
   selector: 'app-panel-admin',
@@ -16,12 +16,15 @@ export class PanelAdminComponent implements OnInit {
   configuracion = new PanelAdmin(0,0,0,0,0,0,0,0,0,0)
   empresa = new Empresa(0,"")
 
-  constructor(private configuracionService : ConfiguracionService, public empresaService : EmpresaService,
-    private router : Router, public loginService : LoginService, private eventoService : EventoService) { }
+  constructor(
+    private configuracionService : ConfiguracionService, 
+    public empresaService : EmpresaService,
+    private router : Router, 
+    public loginService : LoginService
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.empresa = await this.empresaService.getEmpresa()
-
     this.configuracion = await this.configuracionService.getAllCantidadesForPanelAdminByEmpresaId()
   }
 
@@ -30,7 +33,6 @@ export class PanelAdminComponent implements OnInit {
   }
 
   abmEvento() {
-    this.eventoService.paginaActual = 0
     this.router.navigateByUrl('/abmEvento')
   }
 

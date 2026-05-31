@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LoginService } from 'src/app/services/login.service';
-import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
-
 
 @Component({
   selector: 'app-abm-data-table-usuario',
@@ -10,27 +8,13 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 })
 export class AbmDataTableUsuarioComponent implements OnInit {
 
-  usuarioId : number = 0
+  @Input() listaItems : Array<any> = []
+  @Input() listaHeader : Array<String> = []
+  @Input() buscar = ''
+  @Input() esCliente: Boolean = false
 
-  @Input()
-  listaItems : Array<any> = []
-
-  @Input()
-  listaHeader : Array<String> = []
-
-  @Input()
-  buscar = ''
-
-  @Input()
-  esCliente: Boolean = false
-
-  @Output()
-  outputEditar = new EventEmitter<number>();
-
-  @Output() 
-  outputEliminar = new EventEmitter<number>()
-
-  constructor(private router : Router, public empresaService : EmpresaService) { }
+  @Output() outputEditar = new EventEmitter<number>();
+  @Output() outputEliminar = new EventEmitter<number>();
 
   modal = false
   idEliminar = 0
@@ -39,19 +23,28 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   botonModal = ""
   nombreEmpresa = ""
 
+  constructor(
+    public empresaService : EmpresaService,
+    private usuarioService: UsuarioService 
+  ) { }
+
   async ngOnInit(): Promise<void> {
-    this.nombreEmpresa = (await this.empresaService.getEmpresa()).nombre
+    // 1. Obtenemos el ID de la empresa del usuario logueado
+    const empresaId = await this.usuarioService.getEmpresaId();
+    
+    // 2. Le pasamos el ID explícito al servicio stateless
+    const empresa = await this.empresaService.getEmpresa(empresaId);
+    this.nombreEmpresa = empresa.nombre;
   }
 
   editarUsuario(id: number){
-    this.outputEditar.emit(id)
-    this.router.navigateByUrl("/editCargoEmpleado")
+    // Solo emitimos. El componente padre atrapará esto y hará la navegación.
+    this.outputEditar.emit(id);
   }
 
   editarCliente(id: number){
-    //TODO
-    //this.outputEditar.emit(id)
-    //this.router.navigateByUrl("/editCargoEmpleado")
+    // TODO
+    // this.outputEditar.emit(id)
   }
 
   setModal(modal : boolean){
@@ -66,8 +59,7 @@ export class AbmDataTableUsuarioComponent implements OnInit {
     this.setModal(!this.modal)
   }
 
-  eliminar(id : number){
+  eliminar(){
     this.outputEliminar.emit(this.idEliminar);
   }
-
 }
