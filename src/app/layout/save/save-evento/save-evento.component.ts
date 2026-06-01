@@ -191,8 +191,9 @@ export class SaveEventoComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     // Tipo de evento
-    this.listaDuracion = await this.tipoEventoService.getAllDuracion()    
-    this.empresa = await this.empresaService.getEmpresa()
+    this.listaDuracion = await this.tipoEventoService.getAllDuracion()
+    const empresaId = await this.usuarioService.getEmpresaId();   
+    this.empresa = await this.empresaService.getEmpresa(empresaId)
     
     // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)

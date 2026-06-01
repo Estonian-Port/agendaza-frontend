@@ -18,7 +18,6 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class AgendaComponent implements OnInit {
   constructor(
-    private usuarioService: UsuarioService, 
     private router: Router, 
     private eventoService: EventoService
   ) {}

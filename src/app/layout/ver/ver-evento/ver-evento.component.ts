@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
 import { ExtraVariable } from 'src/app/model/ExtraVariable';
@@ -8,6 +9,7 @@ import { Time } from 'src/app/model/Time';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
 @Component({
@@ -43,13 +45,21 @@ export class VerEventoComponent implements OnInit {
 
   encargadoNombreCompleto : string = ""
 
-  constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router, private route: ActivatedRoute) { }
+  constructor(
+    private eventoService : EventoService, 
+    private empresaService : EmpresaService,
+    private usuarioService : UsuarioService, // <-- 3. Inyectar UsuarioService
+    private router : Router, 
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.evento = await this.eventoService.getEventoVer(id)
 
-    this.evento.empresa = (await this.empresaService.getEmpresa()).nombre
+    const empresaId = await this.usuarioService.getEmpresaId();
+    this.evento.empresa = (await this.empresaService.getEmpresa(empresaId)).nombre;
 
     this.inicio.hour = this.evento.inicio.split(":")[0].split("T")[1]
     this.inicio.minute = this.evento.inicio.split(":")[1]
@@ -66,7 +76,7 @@ export class VerEventoComponent implements OnInit {
   }
 
   verCliente(){
-    this.router.navigateByUrl("/verCliente")
+    this.router.navigate(['/verCliente'], { queryParams: { eventoId: this.evento.id } });
   }
 
   editEventoNombreModal(){
@@ -108,7 +118,6 @@ export class VerEventoComponent implements OnInit {
     this.evento.capacidad.capacidadNinos = this.inputEditar
     await this.eventoService.editEventoCantNinos(this.evento)
     this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
-
   }
 
   editAnotacionesModal(){
@@ -146,7 +155,7 @@ export class VerEventoComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigateByUrl("/abmEvento")
+    this.location.back();
   }
 
   async descargarComprobante(){
@@ -178,6 +187,4 @@ export class VerEventoComponent implements OnInit {
       }, 3000);
     }
   }
-
 }
-

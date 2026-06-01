@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PanelAdmin as PanelAdmin } from 'src/app/model/Configuracion';
 import { Empresa } from 'src/app/model/Empresa';
-import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { LoginService } from 'src/app/services/login.service';
-// EventoService eliminado de las importaciones
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-panel-admin',
@@ -17,15 +16,16 @@ export class PanelAdminComponent implements OnInit {
   empresa = new Empresa(0,"")
 
   constructor(
-    private configuracionService : ConfiguracionService, 
-    public empresaService : EmpresaService,
+    private empresaService : EmpresaService,
     private router : Router, 
-    public loginService : LoginService
+    private usuarioService : UsuarioService,
+    public loginService: LoginService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.empresa = await this.empresaService.getEmpresa()
-    this.configuracion = await this.configuracionService.getAllCantidadesForPanelAdminByEmpresaId()
+    const empresaId = await this.usuarioService.getEmpresaId();
+    this.empresa = await this.empresaService.getEmpresa(empresaId)
+    this.configuracion = await this.empresaService.getAllCantidadesForPanelAdminByEmpresaId(empresaId)
   }
 
   abmUsuario(){

@@ -305,3 +305,8 @@ export class EventoCapacidad {
         return this.capacidadAdultos + this.capacidadNinos
     }
 }
+
+export interface EventosUsuarioResponse {
+  eventos: string[];
+  cantidad: number;
+}

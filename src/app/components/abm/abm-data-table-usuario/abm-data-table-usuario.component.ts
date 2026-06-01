@@ -29,16 +29,13 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // 1. Obtenemos el ID de la empresa del usuario logueado
     const empresaId = await this.usuarioService.getEmpresaId();
     
-    // 2. Le pasamos el ID explícito al servicio stateless
     const empresa = await this.empresaService.getEmpresa(empresaId);
     this.nombreEmpresa = empresa.nombre;
   }
 
   editarUsuario(id: number){
-    // Solo emitimos. El componente padre atrapará esto y hará la navegación.
     this.outputEditar.emit(id);
   }
 
@@ -59,7 +56,7 @@ export class AbmDataTableUsuarioComponent implements OnInit {
     this.setModal(!this.modal)
   }
 
-  eliminar(){
-    this.outputEliminar.emit(this.idEliminar);
+  eliminar(id: number){
+    this.outputEliminar.emit(id);
   }
 }

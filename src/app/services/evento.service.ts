@@ -147,7 +147,7 @@ export class EventoService {
 
   /**
    * Obtiene eventos de una empresa paginados y filtrados
-   * GET /v1/eventos/empresa/{empresaId}/eventos?page=0&size=20&search=opcional
+   * GET /v1/eventos/empresa/{empresaId}/eventos?page=0&size=10&search=opcional
    * 
    * Consolidación de getAllEventoByEmpresaId + getAllEventoByFilterName
    * 
@@ -163,7 +163,7 @@ export class EventoService {
     
     const params: any = {
       page: pageNumber,
-      size: 20
+      size: 10
     }
 
     if (search && search.trim()) {

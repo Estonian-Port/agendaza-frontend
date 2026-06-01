@@ -5,6 +5,7 @@ import { Usuario, UsuarioJSON, UsuarioLoginJSON, UsuarioMe, UsuarioMeJSON } from
 import { REST_SERVER_URL } from 'src/util/configuration'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { Cargo } from '../model/Cargo'
+import { CustomResponse } from 'src/util/customResponse'
 
 @Injectable({
   providedIn: 'root'
@@ -127,10 +128,10 @@ export class LoginService {
       throw new Error('Empresa no seleccionada')
     }
     const empresaId = CryptoJsImpl.decryptData(empresaIdEncriptada)
-    const cargo$ = this.httpClient.get<Cargo>(
-      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/empresa/${empresaId}`
+    const cargo$ = this.httpClient.get<CustomResponse<Cargo>>(
+      REST_SERVER_URL + `/v1/cargos/${usuarioId}/empresa/${empresaId}`
     )
-    return await lastValueFrom(cargo$)
+    return (await lastValueFrom(cargo$)).data
   }
 
   /**
@@ -139,6 +140,7 @@ export class LoginService {
   async setCargo(): Promise<void> {
     const usuarioId = this.getUsuarioId()
     const cargo = await this.getCargoByEmpresaAndUsuario(usuarioId)
+    console.log(cargo)
     localStorage.setItem('cargo', CryptoJsImpl.encryptData(cargo.toString()))
   }
 
@@ -147,6 +149,7 @@ export class LoginService {
    */
   getCargo(): Cargo {
     const cargoEncriptado = localStorage.getItem('cargo')
+    //console.log(CryptoJsImpl.decryptData(cargoEncriptado))
     if (!cargoEncriptado) {
       throw new Error('Cargo no establecido')
     }

@@ -1,5 +1,5 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-abm-data-table-header',
@@ -28,7 +28,7 @@ export class AbmDataTableHeaderComponent implements OnInit {
   @Output() 
   outputPaginaActual = new EventEmitter<number>();
 
-  constructor(private router : Router) { }
+  constructor(private location : Location) { }
 
   ngOnInit(): void {}
 
@@ -64,8 +64,7 @@ export class AbmDataTableHeaderComponent implements OnInit {
   }
 
   volver() {
-    this.router.navigateByUrl('/panelAdmin')
+    this.location.back()
   }
-
   
 }

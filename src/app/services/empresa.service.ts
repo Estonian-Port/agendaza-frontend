@@ -6,6 +6,7 @@ import { Empresa, EmpresaAbm, EmpresaAbmJSON } from '../model/Empresa';
 import { GenericItem } from '../model/GenericItem';
 import { Especificacion, EspecificacionJSON } from '../model/Especificacion';
 import { CustomResponse } from 'src/util/customResponse';
+import { PanelAdmin } from '../model/Configuracion';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class EmpresaService {
   }
 
   async getAllEmpresaByUsuarioId(usuarioId: number): Promise<EmpresaAbm[]> {
-    // ¡Atención aquí! Según el controlador del paso anterior, este endpoint 
+    // TODO Según el controlador del paso anterior, este endpoint 
     // le pertenece a UsuarioController, no a EmpresaController.
     const listaItem$ = this.httpClient.get<CustomResponse<EmpresaAbmJSON[]>>(
       REST_SERVER_URL + '/v1/usuarios/' + usuarioId + '/empresas'
@@ -56,6 +57,14 @@ export class EmpresaService {
     );
     const response = await lastValueFrom(listaItem$);
     return response.data.map((especificacion) => Especificacion.fromJson(especificacion));
+  }
+
+  async getAllCantidadesForPanelAdminByEmpresaId(empresaId: number): Promise<PanelAdmin> {
+    const configuracion$ = this.httpClient.get<CustomResponse<PanelAdmin>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/panel-admin/cantidades'
+    );
+    const response = await lastValueFrom(configuracion$);
+    return response.data;
   }
 
 }

@@ -16,6 +16,7 @@ import { Cargo } from '../model/Cargo'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { AgendaCard, AgendaCardJSON } from '../model/Agenda'
 import { CustomResponse } from 'src/util/customResponse'
+import { EventosUsuarioResponse } from '../model/Evento'
 
 @Injectable({
   providedIn: 'root'
@@ -254,27 +255,16 @@ export class UsuarioService {
   }
 
   /**
-   * Obtiene los eventos de un usuario en una empresa
+   * Obtiene los eventos y la cantidad de un usuario en una empresa
    */
-  async getEventosByUsuarioAndEmpresa(usuarioId: number): Promise<string[]> {
-    const listaEvento$ = this.httpClient.put<CustomResponse<string[]>>(
-      REST_SERVER_URL + '/v1/eventos/usuario-empresa',
-      new UsuarioEmpresa(usuarioId, this.getEmpresaId())
-    )
-    const response = await lastValueFrom(listaEvento$)
-    return response.data
-  }
-
-  /**
-   * Obtiene la cantidad de eventos de un usuario en una empresa
-   */
-  async getCantEventosByUsuarioAndEmpresa(usuarioId: number): Promise<number> {
-    const cant$ = this.httpClient.put<CustomResponse<number>>(
-      REST_SERVER_URL + '/v1/eventos/usuario-empresa/cantidad',
-      new UsuarioEmpresa(usuarioId, this.getEmpresaId())
-    )
-    const response = await lastValueFrom(cant$)
-    return response.data
+  async getEventosByUsuarioAndEmpresa(usuarioId: number, empresaId: number): Promise<EventosUsuarioResponse> {
+    // Cambiamos a GET y eliminamos el body (new UsuarioEmpresa)
+    const url = REST_SERVER_URL + `/v1/eventos/usuario/${usuarioId}/empresa/${empresaId}`
+    const peticion$ = this.httpClient.get<CustomResponse<EventosUsuarioResponse>>(url)
+    const response = await lastValueFrom(peticion$);
+    
+    // Devolvemos la data entera, que ahora trae tanto el array como el número
+    return response.data;
   }
 
   /**

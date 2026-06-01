@@ -3,7 +3,7 @@
     <div class="abm-content">
 
         <app-abm-data-table-header
-            titulo = 'Eventos'
+            titulo="Eventos"
             (outputBuscar)="updatePalabraBuscar($event)"
             (outputPaginaActual)="updatePaginaActual($event)">
         </app-abm-data-table-header>
@@ -16,16 +16,15 @@
             (outputVer)="ver($event)"
             (outputEliminar)="eliminar($event)"
             [listaItems]="listaItems"
-            [listaHeader]="listaHeader"
             [buscar]="buscar">
+            <!-- listaHeader eliminado: el componente hijo no lo usa en su template -->
         </app-abm-data-table-evento>
-        
+
     </div>
 
     <app-abm-data-table-paginacion
         (outputPaginaActual)="updatePaginaActual($event)"
         [paginaActual]="paginaActual"
-        [listaItems]="listaItems"
         [cantidadRegistros]="cantidadRegistros"
         [cantidadPaginas]="cantidadPaginas"
         [cantidadEventos]="cantidadEventos">

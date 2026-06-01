@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Cargo } from 'src/app/model/Cargo';
 import { EmpresaAbm } from 'src/app/model/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-empresa',
@@ -12,11 +14,16 @@ export class EditEmpresaComponent implements OnInit {
 
   empresa = new EmpresaAbm(0, "", "", Cargo.CLIENTE, "", 0, "", 0,"")
 
-  constructor(private empresaService : EmpresaService, private router : Router) { }
+  constructor(
+    private empresaService : EmpresaService,
+    private router : Router,
+    private usuarioService : UsuarioService,
+    private location : Location
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    this.empresa = await this.empresaService.getEmpresaAbm()
-
+    const empresaId = await this.usuarioService.getEmpresaId();
+    this.empresa = await this.empresaService.getEmpresaAbm(empresaId)
   }
 
   save() {
@@ -25,8 +32,6 @@ export class EditEmpresaComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigateByUrl("/abmEmpresa")
+    this.location.back()
   }
-
-
 }
