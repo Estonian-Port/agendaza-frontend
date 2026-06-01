@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Especificacion } from 'src/app/model/Especificacion';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -15,7 +14,6 @@ export class AbmEspecificacionComponent implements OnInit {
   listaEspecificaciones: Array<Especificacion> = []
 
   constructor(
-    public router : Router,
     public empresaService : EmpresaService,
     public usuarioService : UsuarioService,
     private location: Location

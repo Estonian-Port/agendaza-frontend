@@ -28,7 +28,7 @@ export class EditEmpresaComponent implements OnInit {
 
   save() {
     this.empresaService.save(this.empresa)
-    this.router.navigateByUrl("/abmEmpresa")
+    this.volver()
   }
 
   volver(){

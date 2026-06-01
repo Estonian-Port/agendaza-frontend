@@ -46,7 +46,7 @@ export class EditEventoExtrasComponent implements OnInit {
 
   save(){
     this.eventoService.editEventoExtra(this.evento)
-    this.router.navigateByUrl("/abmEvento")
+    this.volver()
   }
 
   sumExtraPresupuesto(extraPrecio : number){

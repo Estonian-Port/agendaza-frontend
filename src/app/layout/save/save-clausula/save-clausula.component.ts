@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GenericItem } from 'src/app/model/GenericItem';
@@ -14,7 +15,10 @@ export class SaveClausulaComponent {
   otro = false
   edicion = false
 
-  constructor(private clausulaService : ClausulaService, private router : Router) { }
+  constructor(
+    private clausulaService : ClausulaService,
+    private location : Location
+  ) { }
   
   async ngOnInit(): Promise<void> {
 
@@ -38,11 +42,11 @@ export class SaveClausulaComponent {
 
   async save(){
     const item = await this.clausulaService.save(this.genericItem)
-    this.router.navigateByUrl('/abmClausula')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmClausula')
+    this.location.back()
   }
 
   onServicioChange(): void {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { PrecioForm } from 'src/app/model/Precio';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Location } from '@angular/common';
@@ -16,7 +15,10 @@ export class PrecioExtraComponent implements OnInit {
   listaPrecioNext : Array<PrecioForm> = []
   currentYear = new Date().getFullYear()
 
-  constructor(private extraService : ExtraService, private router : Router, private location : Location) { }
+  constructor(
+    private extraService : ExtraService,
+    private location : Location
+  ) { }
 
   async ngOnInit(): Promise<void> {
       const listaPrecio = await this.extraService.getAllPrecioConFechaByExtraId(this.extraService.extraId)
@@ -29,13 +31,12 @@ export class PrecioExtraComponent implements OnInit {
   }
 
   volver(){
-    this.extraService.extraId = 0
-    this.router.navigateByUrl("/" + this.extraService.extraVolver)
+    this.location.back()
   }
 
   async save(){
     const item = await this.extraService.savePrecio([...this.listaPrecioCurrent, ...this.listaPrecioNext])
-    this.router.navigateByUrl("/" + this.extraService.extraVolver)
+    this.volver()
   }
 
   agregarPrecioCurrent(){

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
@@ -13,7 +14,9 @@ export class SaveTipoEventoComponent implements OnInit {
   tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",new Capacidad(0,0,0), 0)
   listaDuracion : Array<string> = []
 
-  constructor(private tipoEventoService : TipoEventoService, private router : Router) { }
+  constructor(
+    private tipoEventoService : TipoEventoService,
+    private location : Location) { }
   
   async ngOnInit() {
     if(this.tipoEventoService.tipoEventoId != 0){
@@ -25,11 +28,11 @@ export class SaveTipoEventoComponent implements OnInit {
 
   async save(){
     const item = await this.tipoEventoService.save(this.tipoEvento)
-    this.router.navigateByUrl('/abmTipoEvento')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmTipoEvento')
+    this.location.back()
   }
 
 }

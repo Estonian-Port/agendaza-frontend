@@ -63,6 +63,7 @@ const routes: Routes = [
       { path : 'abmPago', component: AbmPagoComponent },
       { path : 'abmEmpresa', component: AbmEmpresaComponent },
       { path : 'abmClausula', component: AbmClausulaComponent },
+      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
       { path : 'saveEvento', component: SaveEventoComponent },
       { path : 'saveUsuario', component: SaveUsuarioComponent },
       { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
@@ -73,11 +74,10 @@ const routes: Routes = [
       { path : 'savePago', component: SavePagoComponent },
       { path : 'saveEmpresa', component: SaveEmpresaComponent },
       { path : 'saveClausula', component: SaveClausulaComponent },
+      { path : 'precioExtra', component: PrecioExtraComponent },
+      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
       { path : 'editUsuario', component: EditUsuarioComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
-      { path : 'editEmpresa', component: EditEmpresaComponent },
-      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
-      { path : 'precioExtra', component: PrecioExtraComponent },
       { path : 'editEventoPagos/:id', component: EditEventoPagosComponent },
       { path : 'editEventoExtras/:id', component: EditEventoExtrasComponent },
       { path : 'editEventoCatering/:id', component: EditEventoCateringComponent },
@@ -86,7 +86,6 @@ const routes: Routes = [
       { path : 'verCliente', component: VerClienteComponent },
       { path : 'editCargoEmpleado', component: EditEmpleadoCargoComponent},
       { path : 'editUsuarioPerfil', component: EditUsuarioPerfilComponent},
-      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
       { path: '**', component: NotFoundComponent }
     ]
   }

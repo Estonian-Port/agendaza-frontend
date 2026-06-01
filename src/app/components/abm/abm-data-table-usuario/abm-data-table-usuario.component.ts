@@ -40,8 +40,7 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   }
 
   editarCliente(id: number){
-    // TODO
-    // this.outputEditar.emit(id)
+    this.outputEditar.emit(id)
   }
 
   setModal(modal : boolean){

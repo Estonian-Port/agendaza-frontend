@@ -48,7 +48,7 @@ export class VerEventoComponent implements OnInit {
   constructor(
     private eventoService : EventoService, 
     private empresaService : EmpresaService,
-    private usuarioService : UsuarioService, // <-- 3. Inyectar UsuarioService
+    private usuarioService : UsuarioService,
     private router : Router, 
     private route: ActivatedRoute,
     private location: Location

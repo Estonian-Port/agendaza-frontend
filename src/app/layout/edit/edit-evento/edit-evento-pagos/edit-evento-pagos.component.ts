@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common'; // <-- Importamos Location
+import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
 import { Pago } from 'src/app/model/Pago';
-import { EventoService } from 'src/app/services/evento.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 
@@ -34,7 +33,7 @@ export class EditEventoPagosComponent implements OnInit {
     private router : Router,
     private pagoService : PagoService,
     private route: ActivatedRoute,
-    private location: Location // <-- Lo inyectamos en el constructor
+    private location: Location
   ) { }
 
   async ngOnInit() {
@@ -48,17 +47,14 @@ export class EditEventoPagosComponent implements OnInit {
   }
 
   agregarPago(){
-    // Pasamos el codigo del evento por la URL
     this.router.navigate(['/savePago'], { queryParams: { eventoCodigo: this.eventoPago.codigo } });
   }
 
   editarPago(pagoId: number) {
-    // Pasamos el id del pago por la URL
     this.router.navigate(['/savePago'], { queryParams: { pagoId: pagoId } });
   }
 
   volver(){
-    // Usamos Location para no perder la paginación de la pantalla anterior
     this.location.back();
   }
 

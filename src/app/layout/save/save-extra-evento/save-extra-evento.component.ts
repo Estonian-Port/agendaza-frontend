@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -20,7 +21,9 @@ export class SaveExtraEventoComponent implements OnInit {
   otro = false
   edicion = false
 
-  constructor(private extraService : ExtraService, private router : Router) { }
+  constructor(
+    private extraService : ExtraService,
+    private location : Location) { }
 
   async ngOnInit(): Promise<void> {
     this.listaTipoExtra = await this.extraService.getAllEventoTipoExtra()
@@ -46,11 +49,11 @@ export class SaveExtraEventoComponent implements OnInit {
 
   async save(){
     const item = await this.extraService.save(this.extra)
-    this.router.navigateByUrl('/abmExtraEvento')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmExtraEvento')
+    this.location.back()
   }
 
   onServicioChange(): void {

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
@@ -23,7 +24,12 @@ export class EditEventoCateringComponent implements OnInit {
   agregarCatering : boolean = true
   presupuestoCatering : number = 0
 
-  constructor(private eventoService : EventoService, private router : Router, private extraService : ExtraService, private route: ActivatedRoute) { }
+  constructor(
+    private eventoService : EventoService,
+    private router : Router,
+    private extraService : ExtraService,
+    private route: ActivatedRoute,
+    private location: Location) { }
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -40,16 +46,15 @@ export class EditEventoCateringComponent implements OnInit {
       this.cateringOtro = true
       this.sumCateringPresupuesto()
     }
-
   }
 
   volver(){
-    this.router.navigateByUrl("/abmEvento")
+    this.location.back()
   }
 
   save(){
     this.eventoService.editEventoCatering(this.evento)
-    this.router.navigateByUrl("/abmEvento")
+    this.volver()
   }
 
   sumExtraTipoCatering(extraPrecio : number){

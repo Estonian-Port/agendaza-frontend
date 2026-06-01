@@ -4,6 +4,7 @@ import { Usuario, UsuarioEditPassword } from 'src/app/model/Usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Cargo } from 'src/app/model/Cargo';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-usuario-perfil',
@@ -18,7 +19,10 @@ export class EditUsuarioPerfilComponent implements OnInit {
   modal = false
   usuarioEditPassword : string = ""
 
-  constructor(public loginService : LoginService, private usuarioService : UsuarioService, private router : Router) { }
+  constructor(
+    public loginService : LoginService,
+    private usuarioService : UsuarioService,
+    private location: Location) { }
 
   async ngOnInit(): Promise<void> {
     this.usuario = await this.loginService.getUsuarioPerfil()
@@ -26,24 +30,22 @@ export class EditUsuarioPerfilComponent implements OnInit {
 
   async save(){
     const item = await this.usuarioService.save(this.usuario)
-    this.router.navigateByUrl("/" + this.usuarioService.perfilVolver)
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl("/" + this.usuarioService.perfilVolver)
+    this.location.back()
   }
 
   async editPassword(){
     const item = await this.usuarioService.updatePassword(this.loginService.getUsuarioId(), this.usuarioEditPassword)
-    this.router.navigateByUrl('/abmUsuario')
+    this.volver()
   }
 
   // ====== Modal ======
 
   changeModal(modal: boolean) {
-    console.log(this.modal)
     this.modal = modal
-    console.log(this.modal)
   }
 
 }

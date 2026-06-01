@@ -249,7 +249,7 @@ export class UsuarioService {
    * Obtiene todos los cargos disponibles
    */
   async getAllCargo(): Promise<Cargo[]> {
-    const listaItem$ = this.httpClient.get<CustomResponse<Cargo[]>>(REST_SERVER_URL + '/v1/cargos')
+    const listaItem$ = this.httpClient.get<CustomResponse<Cargo[]>>(REST_SERVER_URL + '/v1/cargos/tipos')
     const response = await lastValueFrom(listaItem$)
     return response.data
   }
@@ -288,9 +288,9 @@ export class UsuarioService {
   /**
    * Obtiene la información base de un usuario por su ID
    */
-  async getUsuario(): Promise<Usuario> {
+  async getUsuario(id: number): Promise<Usuario> {
     const usuario$ = this.httpClient.get<CustomResponse<UsuarioJSON>>(
-      '${REST_SERVER_URL}/v1/usuarios/' + this.loginService.getUsuarioId()
+      `${REST_SERVER_URL}/v1/usuarios/` + id
     )
     const response = await lastValueFrom(usuario$)
     return Usuario.fromJson(response.data)

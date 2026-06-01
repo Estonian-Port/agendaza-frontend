@@ -1,6 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DateUtil } from 'src/app/model/DateUtil';
+import { ActivatedRoute } from '@angular/router';
 import { EventoHora } from 'src/app/model/Evento';
 import { Time } from 'src/app/model/Time';
 import { EventoService } from 'src/app/services/evento.service';
@@ -21,8 +21,9 @@ export class EditEventoHoraComponent implements OnInit {
 
   constructor(
     private eventoService : EventoService,
-    private router : Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -49,7 +50,7 @@ export class EditEventoHoraComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigateByUrl("/abmEvento")
+    this.location.back()
   }
 
   async save(){
@@ -66,7 +67,7 @@ export class EditEventoHoraComponent implements OnInit {
     this.evento.fin = fechaFinal.toISOString();
 
     await this.eventoService.editEventoHora(this.evento)
-    this.router.navigateByUrl("/abmEvento")
+    this.volver()
   }
 
 }

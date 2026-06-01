@@ -140,8 +140,7 @@ export class LoginService {
   async setCargo(): Promise<void> {
     const usuarioId = this.getUsuarioId()
     const cargo = await this.getCargoByEmpresaAndUsuario(usuarioId)
-    console.log(cargo)
-    localStorage.setItem('cargo', CryptoJsImpl.encryptData(cargo.toString()))
+    localStorage.setItem('cargo', CryptoJsImpl.encryptData(cargo))
   }
 
   /**
@@ -149,7 +148,6 @@ export class LoginService {
    */
   getCargo(): Cargo {
     const cargoEncriptado = localStorage.getItem('cargo')
-    //console.log(CryptoJsImpl.decryptData(cargoEncriptado))
     if (!cargoEncriptado) {
       throw new Error('Cargo no establecido')
     }

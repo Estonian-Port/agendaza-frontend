@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -18,7 +19,10 @@ export class SaveServicioComponent implements OnInit {
   otro = false
   edicion = false
 
-  constructor(private servicioService : ServicioService, private router : Router) { }
+  constructor(
+    private servicioService : ServicioService,
+    private location : Location
+  ) { }
   
   async ngOnInit(): Promise<void> {
 
@@ -43,11 +47,11 @@ export class SaveServicioComponent implements OnInit {
 
   async save(){
     const item = await this.servicioService.save(this.genericItem)
-    this.router.navigateByUrl('/abmServicio')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmServicio')
+    this.location.back()
   }
 
   onServicioChange(): void {

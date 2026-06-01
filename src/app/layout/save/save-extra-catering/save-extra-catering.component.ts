@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -20,7 +21,10 @@ export class SaveExtraCateringComponent implements OnInit {
   otro = false
   edicion = false
 
-  constructor(private extraService : ExtraService, private router : Router) { }
+  constructor(
+    private extraService : ExtraService,
+    private location : Location
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.listaTipoExtra = await this.extraService.getAllCateringTipoExtra()
@@ -47,11 +51,11 @@ export class SaveExtraCateringComponent implements OnInit {
 
   async save(){
     const item = await this.extraService.save(this.extra)
-    this.router.navigateByUrl('/abmExtraCatering')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmExtraCatering')
+    this.location.back()
   }
 
   onServicioChange(): void {
