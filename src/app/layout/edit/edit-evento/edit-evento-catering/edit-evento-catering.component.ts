@@ -62,11 +62,17 @@ export class EditEventoCateringComponent implements OnInit {
     this.sumCateringPresupuesto()
   }
 
-  cleanTipoCateringForCateringOtro(){
-    if(this.cateringOtro){
-      this.evento.listaExtraTipoCatering.splice(0)
-      this.extraTipoCateringPresupuesto = 0
-      this.sumExtraTipoCatering(0)
+cleanTipoCateringForCateringOtro() {
+    if (this.cateringOtro) {
+      // Cuando se TILDA: Limpiamos la lista de tipo catering normal
+      this.evento.listaExtraTipoCatering.splice(0);
+      this.extraTipoCateringPresupuesto = 0;
+      this.sumExtraTipoCatering(0);
+    } else {
+      // Cuando se DESTILDA: Limpiamos los datos del catering otro personalizado
+      this.evento.cateringOtro = 0;
+      this.evento.cateringOtroDescripcion = "";
+      this.sumCateringPresupuesto();
     }
   }
 

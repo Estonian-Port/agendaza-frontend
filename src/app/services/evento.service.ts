@@ -426,7 +426,7 @@ export class EventoService {
   async editEventoExtra(evento: EventoExtra): Promise<number> {
     const response = await lastValueFrom(
       this.httpClient.put<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/' + evento.id + '/extra',
+        REST_SERVER_URL + '/v1/eventos/extra',
         evento
       )
     )

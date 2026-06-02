@@ -213,6 +213,12 @@ button:focus {
   height: 45vh;
 }
 
+.extra-container-edit{
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+}
+
 
 .pagos-container{
   display: flex;
@@ -296,6 +302,10 @@ input[type="number"] {
   .dimensiones-tabla-iconos {
     max-width: 100%;
     min-width: 9em;
+  }
+
+  .extra-container{
+      height: 15vh;
   }
 
 }
