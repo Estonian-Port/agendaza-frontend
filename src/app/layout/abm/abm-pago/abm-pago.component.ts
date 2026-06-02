@@ -62,11 +62,8 @@ export class AbmPagoComponent implements OnInit {
   }
 
   async eliminar(id : number){
-    (await this.pagoService.delete(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
+    await this.pagoService.delete(id)
+    this.inicializarListaItems()
   }
 
   async descargar(id: number) {

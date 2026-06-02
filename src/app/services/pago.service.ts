@@ -84,8 +84,10 @@ export class PagoService {
   }
 
   async delete(id : number) {
-    return this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id)
-  }
+    const delete$ = this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id);
+    return await lastValueFrom(delete$);
+  }  
+
 
   async enviarEmailPago(pagoId : number, eventoId: number) {
     const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailPago/' + pagoId + "/" + eventoId + "/" + this.usuarioService.getEmpresaId())
@@ -96,7 +98,6 @@ export class PagoService {
     const item$ = this.httpClient.get(REST_SERVER_URL + '/descargarPago/' + id, { responseType: 'blob' })
     return lastValueFrom(item$);
   }
-
 
   async enviarEmailEstadoCuenta(eventoId: number) {
     const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailEstadoCuenta/' + eventoId + "/" + this.usuarioService.getEmpresaId())

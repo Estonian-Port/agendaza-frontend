@@ -47,7 +47,7 @@ export class EditEventoPagosComponent implements OnInit {
   }
 
   agregarPago(){
-    this.router.navigate(['/savePago'], { queryParams: { eventoCodigo: this.eventoPago.codigo } });
+    this.router.navigate(['/savePago'], { queryParams: { eventoCodigo: this.eventoPago.codigo, eventoId: this.eventoPago.id } });
   }
 
   editarPago(pagoId: number) {
@@ -60,7 +60,6 @@ export class EditEventoPagosComponent implements OnInit {
 
   async eliminar(){
     try {
-      // Arreglado el problema de Promise vs Subscribe
       await this.pagoService.delete(this.idEliminar);
       this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id);
     } catch (error) {
@@ -108,10 +107,13 @@ export class EditEventoPagosComponent implements OnInit {
 
   async enviarEmailEstadoCuenta(){
     try{
+
       this.envioEmail = await this.pagoService.enviarEmailEstadoCuenta(this.eventoPago.id)
+      
       setTimeout(() => {
         this.envioEmail = false;
       }, 3000);
+
     }catch(error: any){
        this.mostrarError(error)
     }

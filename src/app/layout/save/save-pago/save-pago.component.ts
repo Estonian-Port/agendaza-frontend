@@ -11,7 +11,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 })
 export class SavePagoComponent implements OnInit {
 
-  pago! : Pago
+  pago : Pago = new Pago(0, 0, "", "", "", new Date(0,0,0,0,0,0),new Date(0,0,0,0,0,0),0,0, "","")
   codigo : string = ""
   eventoId : number = 0
   
@@ -33,7 +33,7 @@ export class SavePagoComponent implements OnInit {
     this.listaConcepto = await this.pagoService.getAllConcepto()
 
     // Leemos los parámetros de la URL
-    this.route.queryParams.subscribe(async params => {
+    await this.route.queryParams.subscribe(async params => {
       
       // CASO 1: Estamos editando un pago existente (?pagoId=X)
       if (params['pagoId']) {
