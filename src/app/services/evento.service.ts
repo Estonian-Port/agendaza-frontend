@@ -418,7 +418,7 @@ export class EventoService {
 
   /**
    * Actualiza los extras de un evento
-   * PUT /v1/eventos/{eventoId}/extra
+   * PUT /v1/eventos/extra
    * 
    * @param evento EventoExtra con id y detalles
    * @returns ID del evento actualizado
@@ -435,7 +435,7 @@ export class EventoService {
 
   /**
    * Actualiza la información de catering de un evento
-   * PUT /v1/eventos/{eventoId}/catering
+   * PUT /v1/eventos/catering
    * 
    * @param evento EventoCatering con id y detalles
    * @returns ID del evento actualizado
@@ -443,7 +443,7 @@ export class EventoService {
   async editEventoCatering(evento: EventoCatering): Promise<number> {
     const response = await lastValueFrom(
       this.httpClient.put<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/' + evento.id + '/catering',
+        REST_SERVER_URL + '/v1/eventos/catering',
         evento
       )
     )
