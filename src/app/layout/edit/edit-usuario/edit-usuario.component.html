@@ -1,46 +1,48 @@
 <div class="container">
-    <br>
-    <h2>Editar usuario</h2>
-    <form>
-        <input type="hidden" name="id" id="id" value="1">
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="nombre">Nombre</label> 
-            <input type="text" [(ngModel)]='usuario.nombre' name="nombre" class="form-control">
-        </div>
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="apellido">Apellido</label> 
-            <input type="text" [(ngModel)]='usuario.apellido' name="apellido" class="form-control">
-        </div>
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="nombre_usuario">Nombre de usuario</label> 
-            <input type="text" [(ngModel)]='usuario.username' name="username" class="form-control">
-        </div>
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="email">E-Mail</label> 
-            <input type="email" [(ngModel)]='usuario.email' name="email" class="form-control">
-        </div>
-        
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="email">Fecha de Nacimiento</label>
-            <input type="date" [(ngModel)]='usuario.fechaNacimiento' name="fechaNacimiento" class="form-control">
-        </div>
 
-        <div class="form-group col-sm-12 col-lg-3">
-            <label for="rol">Rol</label> 
-            <select class="form-select" [(ngModel)]="usuario.cargo" name="rol">
-                <option *ngFor="let rol of listaRol" [value]="rol">{{rol}}</option>
-            </select>
-        </div>
+    <app-header
+        titulo="Editar usuario"
+        (outputVolver)="volver()"
+        [botonSave]="true"
+        (outputSave)="save()">
+    </app-header>
 
-        <div class="container mt-3">
-            <div class="gap-2 d-flex justify-content-end">
-                <div>
-                    <button class="btn btn-primary" (click)="volver()">Volver</button>
+    <div class="row contenedor-default mt-2">
+        <form>
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="nombre" class="form-label font-weight-bold">Nombre</label> 
+                    <input type="text" [(ngModel)]='usuario.nombre' name="nombre" class="form-control">
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="apellido" class="form-label font-weight-bold">Apellido</label> 
+                    <input type="text" [(ngModel)]='usuario.apellido' name="apellido" class="form-control">
                 </div>
             </div>
-        </div>
-    </form>
+
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="nombre_usuario" class="form-label font-weight-bold">Nombre de usuario</label> 
+                    <input type="text" [(ngModel)]='usuario.username' name="username" class="form-control">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="email" class="form-label font-weight-bold">E-Mail</label> 
+                    <input type="email" [(ngModel)]='usuario.email' name="email" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="fechaNacimiento" class="form-label font-weight-bold">Fecha de Nacimiento</label>
+                    <input type="date" [(ngModel)]='usuario.fechaNacimiento' name="fechaNacimiento" class="form-control">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="rol" class="form-label font-weight-bold">Rol</label> 
+                    <select class="form-select" [(ngModel)]="usuario.cargo" name="rol">
+                        <option *ngFor="let rol of listaRol" [value]="rol">{{rol}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
