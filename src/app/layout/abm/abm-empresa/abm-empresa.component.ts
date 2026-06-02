@@ -6,8 +6,7 @@ import { LoginService } from 'src/app/services/login.service'; // <-- 1. Importa
 
 @Component({
   selector: 'app-abm-empresa',
-  templateUrl: './abm-empresa.component.html', 
-  styleUrls: ['./abm-empresa.component.css'],
+  templateUrl: './abm-empresa.component.html'
 })
 export class AbmEmpresaComponent implements OnInit {
 

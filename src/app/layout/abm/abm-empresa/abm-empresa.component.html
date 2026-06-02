@@ -1,20 +1,32 @@
 <div class="container">
-  <h2 class="titulo-header">Administrar Empresas</h2>
+  
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+      <h2 class="titulo-header">Administrar Empresas</h2>
+  </div>
 
   <div class="card-container">
-    <div *ngFor="let item of listaItems | orderAbmByNombre">
-      <div class="card-empresa">
-          <button (click)="editar(item.id)" class="card-title">
-            <h2 class="card-title-text">{{item.nombre}}</h2>
-            <i class="fas fa-edit text-warning card-icon" data-bs-toggle="tooltip" title="Editar"></i>
-          </button>
-          <div class="card-content">
-            <p>Cargo: {{item.tipoCargo}}</p>
-            <p>Direccion: {{item.calle}} {{item.numero}}, {{item.municipio}}</p>
-            <p>Correo electronico: {{item.email}}</p>
-            <p>Telefono: {{item.telefono}}</p>
-          </div>
-      </div>
+    <div *ngFor="let item of listaItems | orderAbmByNombre" class="card-empresa-moderna">
+        <div class="card-header-custom">
+            <h3 class="card-title-text">{{item.nombre}}</h3>
+            <button (click)="editar(item.id)" class="edit-btn text-warning">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+        
+        <div class="card-content-custom">
+            <div class="info-item">
+                <i class="fas fa-briefcase"></i> <span>{{item.tipoCargo}}</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i> <span>{{item.calle}} {{item.numero}}, {{item.municipio}}</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-envelope"></i> <span>{{item.email}}</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i> <span>{{item.telefono}}</span>
+            </div>
+        </div>
     </div>
   </div>
 </div>

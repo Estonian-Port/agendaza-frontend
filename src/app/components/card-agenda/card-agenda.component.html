@@ -1,13 +1,10 @@
-<div class="card-empresa text-center curso-pointer" (click)="selecionarAgenda(agenda.id)">
-    <div class="mt-3">
-        <h1>{{agenda.nombre}}</h1>
+<div class="card-agenda-select curso-pointer" (click)="selecionarAgenda(agenda.id)">
+    <div class="icon-wrapper">
+        <i class="fas fa-book fa-2x text-primary"></i>
     </div>
-    <div>
-        <div class="card-content">
-            <div class="mt-2"> 
-                <i class="fas fa-book fa-8x text-primary"> </i>	
-            </div>
-            <p class="mt-4">{{agenda.rol}}</p>
-        </div>
+    
+    <div class="text-center">
+        <h4 class="mb-0 text-dark">{{agenda.nombre}}</h4>
+        <span class="badge bg-secondary mt-2">{{agenda.rol}}</span>
     </div>
 </div>
