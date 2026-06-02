@@ -7,6 +7,7 @@ import { GenericItem } from '../model/GenericItem';
 import { Especificacion, EspecificacionJSON } from '../model/Especificacion';
 import { CustomResponse } from 'src/util/customResponse';
 import { PanelAdmin } from '../model/Configuracion';
+import { TipoEventoJSON } from '../model/TipoEvento';
 
 @Injectable({
   providedIn: 'root'
@@ -67,4 +68,10 @@ export class EmpresaService {
     return response.data;
   }
 
+  async getAllTipoEventoByEmpresaIdAndDuracion(empresaId: number, duracion: string) {
+    const url = `${REST_SERVER_URL}/v1/empresas/${empresaId}/tipos-evento?duracion=${duracion}`;
+    const listaItem$ = this.httpClient.get<CustomResponse<TipoEventoJSON[]>>(url);
+    const response = await lastValueFrom(listaItem$);
+        return response.data.map((tipoEvento) => GenericItem.fromJson(tipoEvento));
+  }
 }

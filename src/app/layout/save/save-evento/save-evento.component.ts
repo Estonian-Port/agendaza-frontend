@@ -190,9 +190,9 @@ export class SaveEventoComponent implements OnInit {
   // ---------------------------------------- Init ------------------------------------------
 
   async ngOnInit(): Promise<void> {
-    // Tipo de evento
+    const empresaId = this.usuarioService.getEmpresaId();
+
     this.listaDuracion = await this.tipoEventoService.getAllDuracion()
-    const empresaId = await this.usuarioService.getEmpresaId();   
     this.empresa = await this.empresaService.getEmpresa(empresaId)
     
     // Datos del evento
@@ -212,7 +212,7 @@ export class SaveEventoComponent implements OnInit {
   async filterTipoEventoByDuracion(){
 
     // Tipo de evento
-    this.listaTipoEvento = await this.tipoEventoService.getAllTipoEventoByEmpresaIdAndDuracion(this.duracion?.getRawValue())
+    this.listaTipoEvento = await this.empresaService.getAllTipoEventoByEmpresaIdAndDuracion(this.empresa.id,this.duracion?.getRawValue())
     
     // Setea el primer valor ordenado por la letra que comienza
     this.tipoEvento?.setValue(_.minBy(this.listaTipoEvento, 'nombre')?.id)
@@ -292,18 +292,37 @@ export class SaveEventoComponent implements OnInit {
     this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.fechaEvento)
   }
 
-  setFechaInicioAndFin(){
-    this.fechaEvento = FechaForm.fromFormControl(this.fechaEventoAnio?.getRawValue(), this.fechaEventoMes?.getRawValue(), this.fechaEventoDia?.getRawValue())
+setFechaInicioAndFin() {
+    // 1. Obtenemos los valores de tus Forms
+    const anio = this.fechaEventoAnio?.getRawValue();
+    const mes = String(this.fechaEventoMes?.getRawValue()).padStart(2, '0');
+    const dia = String(this.fechaEventoDia?.getRawValue()).padStart(2, '0');
+    
+    // 2. Usamos tus objetos Time directamente (sin el -3)
+    const hInicio = String(this.inicioTime.hour).padStart(2, '0');
+    const mInicio = String(this.inicioTime.minute).padStart(2, '0');
+    
+    const hFin = String(this.finalTime.hour).padStart(2, '0');
+    const mFin = String(this.finalTime.minute).padStart(2, '0');
 
-    this.evento.inicio =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.inicioTime.hour) - 3), Number(this.inicioTime.minute)).toISOString()
-    var fechaFinal =  new Date(this.fechaEvento.year, this.fechaEvento.mes, this.fechaEvento.dia, (Number(this.finalTime.hour) - 3), Number(this.finalTime.minute))
+    // 3. Construimos el String ISO LOCAL (formato: YYYY-MM-DDTHH:mm:ss)
+    this.evento.inicio = `${anio}-${mes}-${dia}T${hInicio}:${mInicio}:00`;
 
-    if(this.hastaElOtroDiaCheckbox){
-      fechaFinal.setDate(fechaFinal.getDate() + 1)
+    // 4. Lógica para fecha final (si aplica)
+    const fechaFinalDate = new Date(anio, Number(mes) - 1, Number(dia), Number(this.finalTime.hour), Number(this.finalTime.minute));
+    
+    if (this.hastaElOtroDiaCheckbox) {
+        fechaFinalDate.setDate(fechaFinalDate.getDate() + 1);
     }
 
-    this.evento.fin = fechaFinal.toISOString()
-  }
+    const yF = fechaFinalDate.getFullYear();
+    const mF = String(fechaFinalDate.getMonth() + 1).padStart(2, '0');
+    const dF = String(fechaFinalDate.getDate()).padStart(2, '0');
+    const hF = String(fechaFinalDate.getHours()).padStart(2, '0');
+    const minF = String(fechaFinalDate.getMinutes()).padStart(2, '0');
+
+    this.evento.fin = `${yF}-${mF}-${dF}T${hF}:${minF}:00`;
+}
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
