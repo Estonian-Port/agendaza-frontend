@@ -1,3 +1,5 @@
+import { er } from "@fullcalendar/core/internal-common"
+
 export class ErrorMensaje {
   constructor(public condicional : boolean, public mensaje : String){
 
@@ -11,7 +13,7 @@ export function mostrarErrorConMensaje(component: any, error: any): void {
   }else if(error.status === 403){
     errorMessage = 'Usuario o contraseña incorrecta.'
   }else{
-    errorMessage = error.error
+    errorMessage = error.error.error
   }
   component.errors.push(errorMessage)
 }

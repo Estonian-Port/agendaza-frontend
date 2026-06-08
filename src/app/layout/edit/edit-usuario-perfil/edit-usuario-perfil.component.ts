@@ -17,7 +17,6 @@ export class EditUsuarioPerfilComponent implements OnInit {
 
   //========= Modal ========
   modal = false
-  usuarioEditPassword : string = ""
 
   constructor(
     public loginService : LoginService,
@@ -37,8 +36,9 @@ export class EditUsuarioPerfilComponent implements OnInit {
     this.location.back()
   }
 
-  async editPassword(){
-    const item = await this.usuarioService.updatePassword(this.loginService.getUsuarioId(), this.usuarioEditPassword)
+  async editPassword(nuevaPassword: string){
+    
+    const item = await this.usuarioService.updatePassword(this.loginService.getUsuarioId(), nuevaPassword)
     this.volver()
   }
 

@@ -27,8 +27,6 @@ export class EditUsuarioComponent implements OnInit {
 
     this.usuario = await this.usuarioService.getUsuario(id)
     this.usuario.cargo = await this.usuarioService.getCargoByUsuarioAndEmpresa(this.usuario.id)
-    console.log(this.usuario.cargo)
-
     this.listaRol = await this.usuarioService.getAllCargo()
   }
 

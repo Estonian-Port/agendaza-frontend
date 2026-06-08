@@ -7,11 +7,9 @@ import {
   Usuario,
   UsuarioEditCargo,
   UsuarioEditPassword,
-  UsuarioEmpresa,
   UsuarioJSON,
   UsuarioSave,
 } from '../model/Usuario'
-import { LoginService } from './login.service'
 import { Cargo } from '../model/Cargo'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { AgendaCard, AgendaCardJSON } from '../model/Agenda'

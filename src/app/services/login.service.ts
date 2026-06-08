@@ -106,8 +106,8 @@ export class LoginService {
    */
   async getUsuarioPerfil() {
     const usuarioId = this.getUsuarioId()
-    const item$ = this.httpClient.get<Usuario>(REST_SERVER_URL + `/v1/usuarios/${usuarioId}/perfil/me`)
-    return await lastValueFrom(item$)
+    const item$ = this.httpClient.get<CustomResponse<Usuario>>(REST_SERVER_URL + `/v1/usuarios/${usuarioId}/perfil`)
+    return (await lastValueFrom(item$)).data
   }
 
   /**

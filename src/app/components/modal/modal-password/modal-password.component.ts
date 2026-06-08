@@ -11,15 +11,13 @@ export class ModalPasswordComponent {
   showRepeatPassword= false
   repeatPassword: string = ''
   passwordsNoCoinciden: boolean = false
+  usuarioEditPassword : string = ""
 
   @Input()
   modal = false
 
-  @Input()
-  usuarioEditPassword : string = ""
-
   @Output() 
-  outputAceptar = new EventEmitter<number>()
+  outputAceptar = new EventEmitter<string>()
 
   @Output() 
   outputChangeModal = new EventEmitter<boolean>()
@@ -48,7 +46,8 @@ export class ModalPasswordComponent {
     }
 
     this.passwordsNoCoinciden = false
-    this.outputAceptar.emit()
+    // Emite el valor modificado hacia el padre
+    this.outputAceptar.emit(this.usuarioEditPassword)
     this.changeModal()
   }
 

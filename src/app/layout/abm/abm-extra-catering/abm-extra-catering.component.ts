@@ -34,7 +34,6 @@ export class AbmExtraCateringComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-      console.log("AAAAAAAA")
       this.listaItems = await this.extraService.getAllExtraCateringByEmpresaId(this.paginaActual)
       this.cantidadRegistros = await this.extraService.cantExtraCatering()
     }else{
