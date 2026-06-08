@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { fadeOut } from 'src/app/animations/fade-out';
 import { GenericItem, GenericItemEmpresaTipoEvento } from 'src/app/model/GenericItem';
@@ -18,32 +18,36 @@ export class SaveServicioComponent implements OnInit {
 
   otro = false
   edicion = false
-
+  
   constructor(
     private servicioService : ServicioService,
-    private location : Location
-  ) { }
-  
+    private route: ActivatedRoute,
+    private location : Location) { }
+
   async ngOnInit(): Promise<void> {
 
-    if(this.servicioService.servicioId){
-      this.genericItem = await this.servicioService.getServicio(this.servicioService.servicioId)
-      this.servicioService.servicioId = 0
-      this.otro = true
-      this.edicion = true
-    }else{
-      this.listaServicio = await this.servicioService.getAllServicioAgregar()
-      if(this.listaServicio.length == 0){
-        this.genericItem.id = 0
-        this.onServicioChange()
+    await this.route.queryParams.subscribe(async params => {
+      
+      if (params['servicioId']) {
+        const servicioId = Number(params['servicioId']);
+        this.genericItem = await this.servicioService.getServicio(servicioId)
+        this.otro = true
+        this.edicion = true
       }else{
-        const servicioEdicion = [...this.listaServicio].sort((a, b) => a.nombre.localeCompare(b.nombre))[0];
+        this.listaServicio = await this.servicioService.getAllServicioAgregar()
+        if(this.listaServicio.length == 0){
+          this.genericItem.id = 0
+          this.onServicioChange()
+        }else{
+          const servicioEdicion = [...this.listaServicio].sort((a, b) => a.nombre.localeCompare(b.nombre))[0];
 
-        this.genericItem.id = servicioEdicion.id
-        this.genericItem.nombre = servicioEdicion.nombre
+          this.genericItem.id = servicioEdicion.id
+          this.genericItem.nombre = servicioEdicion.nombre
+        }
       }
-    }
+    })
   }
+
 
   async save(){
     const item = await this.servicioService.save(this.genericItem)

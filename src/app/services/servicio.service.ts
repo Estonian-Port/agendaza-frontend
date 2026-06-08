@@ -13,9 +13,6 @@ const BASE = `${REST_SERVER_URL}/v1/servicios`;
 })
 export class ServicioService {
 
-  servicioId: number = 0;
-  cantidadServicio: number = 0;
-
   constructor(
     private httpClient: HttpClient,
     private usuarioService: UsuarioService
@@ -43,8 +40,7 @@ export class ServicioService {
     const empresaId = this.usuarioService.getEmpresaId();
     const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/cantidad`);
     const res = await lastValueFrom(cant$);
-    this.cantidadServicio = res.data;
-    return this.cantidadServicio;
+    return res.data;
   }
 
   async getAllServicioFiltrados(pageNumber: number, buscar: string) {
@@ -64,8 +60,7 @@ export class ServicioService {
       { params: { buscar } }
     );
     const res = await lastValueFrom(cant$);
-    this.cantidadServicio = res.data;
-    return this.cantidadServicio;
+    return res.data;
   }
 
   async getAllServicioByTipoEventoId(tipoEventoId: number) {

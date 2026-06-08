@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { fadeOut } from 'src/app/animations/fade-out';
 import { Extra } from 'src/app/model/Extra';
@@ -23,28 +23,33 @@ export class SaveExtraEventoComponent implements OnInit {
 
   constructor(
     private extraService : ExtraService,
+    private route: ActivatedRoute,
     private location : Location) { }
 
   async ngOnInit(): Promise<void> {
     this.listaTipoExtra = await this.extraService.getAllEventoTipoExtra()
 
-    if(this.extraService.extraId){
-      this.extra = await this.extraService.getExtra(this.extraService.extraId)
-      this.extraService.extraId = 0
-      this.otro = true
-      this.edicion = true
-    }else{
-      this.listaExtra = await this.extraService.getAllExtraEventoAgregar()
-      if(this.listaExtra.length == 0){
-        this.extra.id = 0
-        this.onServicioChange()
+    await this.route.queryParams.subscribe(async params => {
+      
+      if (params['extraId']) {
+        const extraId = Number(params['extraId']);
+        this.extra = await this.extraService.getExtra(extraId)
+        this.otro = true
+        this.edicion = true
       }else{
-        const extraEdicion = [...this.listaExtra].sort((a, b) => a.nombre.localeCompare(b.nombre))[0]
+        this.listaExtra = await this.extraService.getAllExtraEventoAgregar()
+        
+        if(this.listaExtra.length == 0){
+          this.extra.id = 0
+          this.onServicioChange()
+        }else{
+          const extraEdicion = [...this.listaExtra].sort((a, b) => a.nombre.localeCompare(b.nombre))[0]
 
-        this.extra.id = extraEdicion.id
-        this.extra.nombre = extraEdicion.nombre
+          this.extra.id = extraEdicion.id
+          this.extra.nombre = extraEdicion.nombre
+        }
       }
-    }
+    })
   }
 
   async save(){

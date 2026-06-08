@@ -14,10 +14,6 @@ import { UsuarioService } from './usuario.service';
 })
 export class ExtraService {
 
-  extraId : number = 0
-  extraVolver: string = ""
-  cantidadExtras : number = 0
-
   constructor(private httpClient: HttpClient, private usuarioService : UsuarioService) { }
 
   async getExtra(id : number) {
@@ -40,14 +36,12 @@ export class ExtraService {
 
   async cantExtras(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtras/' + this.usuarioService.getEmpresaId())
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+    return await lastValueFrom(cant$)
   }
 
   async cantExtrasFiltrados(buscar : string){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtrasFiltrados/' + this.usuarioService.getEmpresaId() + '/' + buscar)
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+    return await lastValueFrom(cant$)
   }
 
   async getAllExtraCateringByEmpresaId(pageNumber : number) {
@@ -64,14 +58,12 @@ export class ExtraService {
 
   async cantExtraCatering(){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtraCatering/' + this.usuarioService.getEmpresaId())
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+    return await lastValueFrom(cant$)
   }
 
   async cantExtraCateringFilter(buscar : string){
     const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtraCateringFilter/' + this.usuarioService.getEmpresaId() + '/' + buscar)
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+    return await lastValueFrom(cant$)
   }
 
   async getAllEventoTipoExtra() {
@@ -100,10 +92,9 @@ export class ExtraService {
     return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
   }
 
-  async savePrecio(listaPrecioForm : PrecioForm[]) {
-    const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.usuarioService.getEmpresaId(), this.extraId))
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.usuarioService.getEmpresaId() + '/' + this.extraId, listaPrecio)
-    this.extraId = 0
+  async savePrecio(extraId: number, listaPrecioForm : PrecioForm[]) {
+    const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.usuarioService.getEmpresaId(), extraId))
+    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.usuarioService.getEmpresaId() + '/' + extraId, listaPrecio)
     return await lastValueFrom(item$)
   }
 

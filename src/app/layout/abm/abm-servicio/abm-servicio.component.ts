@@ -72,8 +72,7 @@ export class AbmServicioComponent implements OnInit {
   }
 
   editar(id : number){
-    this.servicioService.servicioId = id
-    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/save' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { servicioId: id } })
   }
 
   async eliminar(id: number): Promise<void> {
