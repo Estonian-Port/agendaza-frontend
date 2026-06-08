@@ -30,7 +30,11 @@
 
                         <div class="form-group p-2">
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" [attr.data-testid]="'ingresar'">Ingresar</button>
+                                <button class="btn btn-primary" type="submit" [attr.data-testid]="'ingresar'" [disabled]="isLoading">
+                                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    
+                                    {{ isLoading ? '' : 'Ingresar' }}
+                                </button>
                             </div>
                         </div>
                         <div *ngIf='errorLogin.condicional' class="mt-2 alert alert-danger text-center">
