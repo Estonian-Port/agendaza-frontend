@@ -47,7 +47,6 @@ import { SaveEventoComponent } from './layout/save/save-evento/save-evento.compo
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { ModalBasicoComponent } from './components/modal/modal-basico/modal-basico.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
-import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
 import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
@@ -121,7 +120,6 @@ import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.com
     EditUsuarioComponent,
     ModalBasicoComponent,
     EditEmpresaComponent,
-    SaveEmpresaComponent,
     AbmExtraCateringComponent,
     SaveExtraCateringComponent,
     SaveExtraEventoComponent,

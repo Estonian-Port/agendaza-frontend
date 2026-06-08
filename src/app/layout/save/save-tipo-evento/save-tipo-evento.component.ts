@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
@@ -13,17 +13,24 @@ export class SaveTipoEventoComponent implements OnInit {
 
   tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",new Capacidad(0,0,0), 0)
   listaDuracion : Array<string> = []
+  tipoEventoId : number = 0
 
   constructor(
     private tipoEventoService : TipoEventoService,
-    private location : Location) { }
+    private route: ActivatedRoute,
+    private location : Location
+  ) { }
   
   async ngOnInit() {
-    if(this.tipoEventoService.tipoEventoId != 0){
-      this.tipoEvento = await this.tipoEventoService.getTipoEvento(this.tipoEventoService.tipoEventoId)
-      this.tipoEventoService.tipoEventoId = 0
-    }
-    this.listaDuracion = await this.tipoEventoService.getAllDuracion()
+    await this.route.queryParams.subscribe(async params => {
+      
+      if (params['tipoEventoId']) {
+        const tipoEventoId = Number(params['tipoEventoId']);
+        this.tipoEvento = await this.tipoEventoService.getTipoEvento(tipoEventoId)
+      }
+
+      this.listaDuracion = await this.tipoEventoService.getAllDuracion()
+    })
   }
 
   async save(){

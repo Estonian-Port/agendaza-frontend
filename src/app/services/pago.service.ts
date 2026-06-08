@@ -15,10 +15,6 @@ const BASE = `${REST_SERVER_URL}/v1/pagos`;
 })
 export class PagoService {
 
-  pagoId: number = 0;
-  pageNumber: number = 0;
-  cantidadPagos: number = 0;
-
   constructor(
     private httpClient: HttpClient,
     private usuarioService: UsuarioService,
@@ -58,8 +54,7 @@ export class PagoService {
     const empresaId = this.usuarioService.getEmpresaId();
     const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/cantidad`);
     const res = await lastValueFrom(cant$);
-    this.cantidadPagos = res.data;
-    return this.cantidadPagos;
+    return res.data;
   }
 
   async cantPagosFiltrados(buscar: string): Promise<number> {
@@ -69,8 +64,7 @@ export class PagoService {
       { params: { buscar } }
     );
     const res = await lastValueFrom(cant$);
-    this.cantidadPagos = res.data;
-    return this.cantidadPagos;
+    return res.data;
   }
 
   async getAllMedioDePago() {

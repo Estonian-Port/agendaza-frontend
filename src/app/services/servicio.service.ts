@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON, GenericItemJSON } from '../model/GenericItem';
 import { UsuarioService } from './usuario.service';
+import { CustomResponse } from 'src/util/customResponse';
 
 const BASE = `${REST_SERVER_URL}/v1/servicios`;
 
@@ -23,8 +24,8 @@ export class ServicioService {
   // ── Queries ──────────────────────────────────────────────────────────────
 
   async getServicio(id: number) {
-    const item$ = this.httpClient.get<GenericItemEmpresaTipoEventoJSON>(`${BASE}/${id}`);
-    const item = await lastValueFrom(item$);
+    const item$ = this.httpClient.get<CustomResponse<GenericItemEmpresaTipoEventoJSON>>(`${BASE}/${id}`);
+    const item = (await lastValueFrom(item$)).data;
     return GenericItemEmpresaTipoEvento.fromJson(item);
   }
 

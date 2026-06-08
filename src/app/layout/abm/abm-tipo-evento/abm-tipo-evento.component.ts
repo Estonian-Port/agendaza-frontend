@@ -70,13 +70,11 @@ export class AbmTipoEventoComponent implements OnInit {
   }
 
   precio(id : number){
-    this.tipoEventoService.tipoEventoId = id
-    this.router.navigateByUrl('/precio' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/precio' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { tipoEventoId: id } })
   }
 
   editar(id : number){
-    this.tipoEventoService.tipoEventoId = id
-    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/save' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { tipoEventoId: id } })
   }
 
   async eliminar(id: number): Promise<void> {

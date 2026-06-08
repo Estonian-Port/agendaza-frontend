@@ -17,7 +17,7 @@ export class EditEmpresaComponent implements OnInit {
   constructor(
     private empresaService : EmpresaService,
     private location : Location,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit(): Promise<void> {

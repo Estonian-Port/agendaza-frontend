@@ -10,8 +10,6 @@ import { UsuarioService } from './usuario.service';
 })
 export class ClausulaService {
 
-  clausulaId : number = 0
-  cantidadClausula : number = 0
   REST_SERVER_URL_COMPLETO = REST_SERVER_URL + '/clausula'
 
   constructor(private httpClient: HttpClient, private usuarioService : UsuarioService){}
@@ -30,8 +28,7 @@ export class ClausulaService {
 
   async getAllCantidad(): Promise<number | PromiseLike<number>> {
     const cant$ = this.httpClient.get<number>(this.REST_SERVER_URL_COMPLETO + '/getAllCantidad/' + this.usuarioService.getEmpresaId())
-    this.cantidadClausula = await lastValueFrom(cant$)
-    return this.cantidadClausula
+    return await lastValueFrom(cant$)
   }
 
   async getAllFiltro(pageNumber: number, buscar: string) {
@@ -42,8 +39,7 @@ export class ClausulaService {
 
   async getAllFiltroCantidad(buscar: string): Promise<number | PromiseLike<number>> {
     const cant$ = this.httpClient.get<number>(this.REST_SERVER_URL_COMPLETO + '/getAllFiltroCantidad/' + this.usuarioService.getEmpresaId() + '/' + buscar)
-    this.cantidadClausula = await lastValueFrom(cant$)
-    return this.cantidadClausula
+    return await lastValueFrom(cant$)
   }
 
   async save(genericItem : GenericItem) {

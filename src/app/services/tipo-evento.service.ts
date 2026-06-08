@@ -18,9 +18,6 @@ const BASE = `${REST_SERVER_URL}/v1/tipos-evento`;
 })
 export class TipoEventoService {
 
-  tipoEventoId: number = 0;
-  cantidadTipoEvento: number = 0;
-
   constructor(
     private httpClient: HttpClient,
     private usuarioService: UsuarioService
@@ -57,8 +54,7 @@ export class TipoEventoService {
     const empresaId = this.usuarioService.getEmpresaId();
     const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/cantidad`);
     const res = await lastValueFrom(cant$);
-    this.cantidadTipoEvento = res.data;
-    return this.cantidadTipoEvento;
+    return res.data;
   }
 
   async getAllTipoEventoFiltrados(pageNumber: number, buscar: string) {
@@ -78,8 +74,7 @@ export class TipoEventoService {
       { params: { buscar } }
     );
     const res = await lastValueFrom(cant$);
-    this.cantidadTipoEvento = res.data;
-    return this.cantidadTipoEvento;
+    return res.data;
   }
 
   async getAllDuracion() {
@@ -139,15 +134,14 @@ export class TipoEventoService {
     return res.data;
   }
 
-  async savePrecio(listaPrecioForm: PrecioForm[]) {
+  async savePrecio(tipoEventoId: number, listaPrecioForm: PrecioForm[]) {
     const empresaId = this.usuarioService.getEmpresaId();
-    const listaPrecio = listaPrecioForm.map((p) => Precio.fromForm(p, empresaId, this.tipoEventoId));
+    const listaPrecio = listaPrecioForm.map((p) => Precio.fromForm(p, empresaId, tipoEventoId));
     const item$ = this.httpClient.post<{ data: GenericItem }>(
-      `${BASE}/empresa/${empresaId}/${this.tipoEventoId}/precios`,
+      `${BASE}/empresa/${empresaId}/${tipoEventoId}/precios`,
       listaPrecio
     );
     const res = await lastValueFrom(item$);
-    this.tipoEventoId = 0;
     return res.data;
   }
 

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { PrecioForm } from 'src/app/model/Precio';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
@@ -16,15 +16,19 @@ export class PrecioTipoEventoComponent implements OnInit {
   listaPrecioCurrent: Array<PrecioForm> = [];
   listaPrecioNext: Array<PrecioForm> = [];
   currentYear = new Date().getFullYear();
+  tipoEventoId: number = 0
 
   constructor(
     private tipoEventoService: TipoEventoService,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.tipoEventoId = Number(this.route.snapshot.queryParamMap.get('tipoEventoId'));
+
     const listaPrecio = await this.tipoEventoService.getAllPrecioConFechaByTipoEventoId(
-      this.tipoEventoService.tipoEventoId
+      this.tipoEventoId
     );
 
     if (listaPrecio.length != 0) {
@@ -40,7 +44,7 @@ export class PrecioTipoEventoComponent implements OnInit {
 
   async save() {
     const listaCombinada = [...this.listaPrecioCurrent, ...this.listaPrecioNext];
-    await this.tipoEventoService.savePrecio(listaCombinada);
+    await this.tipoEventoService.savePrecio(this.tipoEventoId, listaCombinada);
     this.volver();
   }
 

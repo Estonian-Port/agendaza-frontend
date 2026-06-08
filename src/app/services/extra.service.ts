@@ -5,7 +5,7 @@ import { REST_SERVER_URL } from 'src/util/configuration';
 import { Extra, ExtraJSON } from '../model/Extra';
 import { ExtraVariable } from '../model/ExtraVariable';
 import { FechaForm } from '../model/FechaForm';
-import { GenericItem, GenericItemEmpresaTipoEvento } from '../model/GenericItem';
+import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { UsuarioService } from './usuario.service';
 
