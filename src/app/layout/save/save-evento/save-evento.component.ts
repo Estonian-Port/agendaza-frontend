@@ -295,7 +295,10 @@ export class SaveEventoComponent implements OnInit {
 setFechaInicioAndFin() {
     // 1. Obtenemos los valores de tus Forms
     const anio = this.fechaEventoAnio?.getRawValue();
-    const mes = String(this.fechaEventoMes?.getRawValue()).padStart(2, '0');
+
+    const mesValue = Number(this.fechaEventoMes?.getRawValue()) + 1;
+    const mes = String(mesValue).padStart(2, '0');
+
     const dia = String(this.fechaEventoDia?.getRawValue()).padStart(2, '0');
     
     // 2. Usamos tus objetos Time directamente (sin el -3)

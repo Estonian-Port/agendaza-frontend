@@ -29,7 +29,6 @@ export class UsuarioService {
 
   constructor(
     private httpClient: HttpClient,
-    private loginService: LoginService
   ) { }
 
   // ==================== GESTIÓN DE EMPRESA ====================
@@ -323,6 +322,13 @@ export class UsuarioService {
   async buscarClientePorCelular(celular : number){
     const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(REST_SERVER_URL + '/v1/usuarios/celular?celular='+ celular)
     const response = await lastValueFrom(usuario$)
+    return response.data
+  }
+
+  async getCargoByUsuarioAndEmpresa(usuarioId: number) {
+    const empresaId = this.getEmpresaId()
+    const cargo$ = this.httpClient.get<CustomResponse<Cargo>>(REST_SERVER_URL + `/v1/cargos/${usuarioId}/empresa/${empresaId}`)
+    const response = await lastValueFrom(cargo$)
     return response.data
   }
   

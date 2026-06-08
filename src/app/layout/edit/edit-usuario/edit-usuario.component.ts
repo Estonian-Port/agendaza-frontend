@@ -18,7 +18,6 @@ export class EditUsuarioComponent implements OnInit {
 
   constructor(
     private usuarioService : UsuarioService,
-    private loginService : LoginService,
     private location : Location,
     private route: ActivatedRoute,
   ) { }
@@ -26,10 +25,10 @@ export class EditUsuarioComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const id = Number(this.route.snapshot.queryParamMap.get('usuarioId'));
 
-    console.log(id)
     this.usuario = await this.usuarioService.getUsuario(id)
-    this.usuario.cargo = await this.loginService.getCargo()
-    
+    this.usuario.cargo = await this.usuarioService.getCargoByUsuarioAndEmpresa(this.usuario.id)
+    console.log(this.usuario.cargo)
+
     this.listaRol = await this.usuarioService.getAllCargo()
   }
 

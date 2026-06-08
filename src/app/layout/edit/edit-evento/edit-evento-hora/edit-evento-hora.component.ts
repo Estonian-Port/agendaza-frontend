@@ -54,20 +54,37 @@ export class EditEventoHoraComponent implements OnInit {
   }
 
   async save(){
-
-    const [year, month, day] = this.fechaInicio.split('-').map(Number);
-    this.evento.inicio = new Date(year, month - 1, day, Number(this.inicio.hour) - 3, Number(this.inicio.minute)).toISOString();
-
-    let fechaFinal = new Date(year, month - 1, day, Number(this.fin.hour) - 3, Number(this.fin.minute));
+    const [year, month, day] = this.fechaInicio.split('-');
     
-    console.log(this.hastaElOtroDiaCheckbox)
+    // 1. Armamos el inicio manualmente para evitar que Date() y toISOString() nos muevan las horas
+    const hInicio = String(this.inicio.hour).padStart(2, '0');
+    const mInicio = String(this.inicio.minute).padStart(2, '0');
+    
+    this.evento.inicio = `${year}-${month}-${day}T${hInicio}:${mInicio}:00`;
+
+    // 2. Lógica para la fecha final usando el constructor local, pero extrayendo las partes manualmente
+    let fechaFinalDate = new Date(
+      Number(year), 
+      Number(month) - 1, 
+      Number(day), 
+      Number(this.fin.hour), 
+      Number(this.fin.minute)
+    );
+    
     if (this.hastaElOtroDiaCheckbox) {
-      fechaFinal.setDate(fechaFinal.getDate() + 1);
+      fechaFinalDate.setDate(fechaFinalDate.getDate() + 1);
     }
-    this.evento.fin = fechaFinal.toISOString();
 
-    await this.eventoService.editEventoHora(this.evento)
-    this.volver()
+    const yF = fechaFinalDate.getFullYear();
+    const mF = String(fechaFinalDate.getMonth() + 1).padStart(2, '0');
+    const dF = String(fechaFinalDate.getDate()).padStart(2, '0');
+    const hF = String(fechaFinalDate.getHours()).padStart(2, '0');
+    const minF = String(fechaFinalDate.getMinutes()).padStart(2, '0');
+
+    this.evento.fin = `${yF}-${mF}-${dF}T${hF}:${minF}:00`;
+
+    await this.eventoService.editEventoHora(this.evento);
+    this.volver();
   }
-
+  
 }

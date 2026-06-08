@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cargo } from 'src/app/model/Cargo';
 import { EmpresaAbm } from 'src/app/model/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
@@ -16,13 +16,12 @@ export class EditEmpresaComponent implements OnInit {
 
   constructor(
     private empresaService : EmpresaService,
-    private router : Router,
-    private usuarioService : UsuarioService,
-    private location : Location
+    private location : Location,
+    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    const empresaId = await this.usuarioService.getEmpresaId();
+    const empresaId = Number(this.route.snapshot.queryParamMap.get('empresaId'));
     this.empresa = await this.empresaService.getEmpresaAbm(empresaId)
   }
 
