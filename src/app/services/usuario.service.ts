@@ -23,10 +23,6 @@ import { EventosUsuarioResponse } from '../model/Evento'
 })
 export class UsuarioService {
 
-  cantidadUsuarios: number = 0
-  perfilVolver: String = ""
-  usuarioId: number = 0
-
   constructor(
     private httpClient: HttpClient,
   ) { }
@@ -81,8 +77,7 @@ export class UsuarioService {
       `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/cantidad`
     )
     const response = await lastValueFrom(cant$)
-    this.cantidadUsuarios = response.data
-    return this.cantidadUsuarios
+    return response.data
   }
 
   /**
@@ -132,8 +127,7 @@ export class UsuarioService {
       `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/clientes/cantidad`
     )
     const response = await lastValueFrom(cant$)
-    this.cantidadUsuarios = response.data
-    return this.cantidadUsuarios
+    return response.data
   }
 
   /**

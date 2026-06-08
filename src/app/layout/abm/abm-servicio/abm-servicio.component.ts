@@ -76,12 +76,13 @@ export class AbmServicioComponent implements OnInit {
     this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
   }
 
-  async eliminar(id : number){
-    (await this.servicioService.delete(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
+  async eliminar(id: number): Promise<void> {
+    try {
+      await this.servicioService.delete(id)
+      await this.inicializarListaItems();
+    } catch (error) {
+      console.error('Error al eliminar el servicio:', error);
+    }
   }
 
 }

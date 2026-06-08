@@ -76,11 +76,6 @@ export class AbmUsuarioComponent implements OnInit {
     })
   }
 
-  cambiarPassword(id : number){
-    this.usuarioService.usuarioId = id
-    this.router.navigateByUrl('/editUsuarioPassword')
-  }
-
   updatePrimeraBusqueda(busqueda: Boolean){
     this.realizoBusqueda = busqueda
 

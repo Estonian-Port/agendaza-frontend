@@ -33,7 +33,6 @@ export class NavbarComponent {
   }
 
   perfil() {
-    this.usuarioService.perfilVolver = this.location.path()
     this.dropdownVisible = false
     this.router.navigateByUrl('/editUsuarioPerfil')
   }

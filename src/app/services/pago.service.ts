@@ -8,105 +8,143 @@ import { EventoService } from './evento.service';
 import { EventoPago } from '../model/Evento';
 import { UsuarioService } from './usuario.service';
 
+const BASE = `${REST_SERVER_URL}/v1/pagos`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class PagoService {
 
-  pagoId : number = 0
-  pageNumber : number = 0
-  cantidadPagos : number = 0
+  pagoId: number = 0;
+  pageNumber: number = 0;
+  cantidadPagos: number = 0;
 
+  constructor(
+    private httpClient: HttpClient,
+    private usuarioService: UsuarioService,
+    private loginService: LoginService,
+    private eventoService: EventoService
+  ) {}
 
-  constructor(private httpClient: HttpClient, private usuarioService : UsuarioService, private loginService : LoginService, private eventoService : EventoService) {}
+  // ── Queries ──────────────────────────────────────────────────────────────
 
-  async get(id : number) {
-    const item$ = this.httpClient.get<PagoJSON>(REST_SERVER_URL + '/getPago/' + id)
-    const item = await lastValueFrom(item$)
-    return Pago.fromJson(item)
+  async get(id: number) {
+    const item$ = this.httpClient.get<{ data: PagoJSON }>(`${BASE}/${id}`);
+    const res = await lastValueFrom(item$);
+    return Pago.fromJson(res.data);
   }
 
-
-  async getAllPagoByEmpresaId(pageNumber : number) {
-    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagos/' + this.usuarioService.getEmpresaId() + '/' + pageNumber)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((pago) => Pago.fromJson(pago))
+  async getAllPagoByEmpresaId(pageNumber: number) {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const listaItem$ = this.httpClient.get<{ data: PagoJSON[] }>(
+      `${BASE}/empresa/${empresaId}`,
+      { params: { page: pageNumber } }
+    );
+    const res = await lastValueFrom(listaItem$);
+    return res.data.map((pago) => Pago.fromJson(pago));
   }
 
-  async getAllPagoByFilter(pageNumber : number, buscar : string) {
-    const listaItem$ = this.httpClient.get<PagoJSON[]>(REST_SERVER_URL + '/getAllPagosFilter/' + this.usuarioService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((pago) => Pago.fromJson(pago))
+  async getAllPagoByFilter(pageNumber: number, buscar: string) {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const listaItem$ = this.httpClient.get<{ data: PagoJSON[] }>(
+      `${BASE}/empresa/${empresaId}/filtrar`,
+      { params: { buscar, page: pageNumber } }
+    );
+    const res = await lastValueFrom(listaItem$);
+    return res.data.map((pago) => Pago.fromJson(pago));
   }
 
-  async cantPagos(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagos/' + this.usuarioService.getEmpresaId())
-    this.cantidadPagos = await lastValueFrom(cant$)
-    return this.cantidadPagos
+  async cantPagos(): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/cantidad`);
+    const res = await lastValueFrom(cant$);
+    this.cantidadPagos = res.data;
+    return this.cantidadPagos;
   }
 
-  async cantPagosFiltrados(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantPagosFiltrados/' + this.usuarioService.getEmpresaId() + '/' + buscar)
-    this.cantidadPagos = await lastValueFrom(cant$)
-    return this.cantidadPagos
+  async cantPagosFiltrados(buscar: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const cant$ = this.httpClient.get<{ data: number }>(
+      `${BASE}/empresa/${empresaId}/filtrar/cantidad`,
+      { params: { buscar } }
+    );
+    const res = await lastValueFrom(cant$);
+    this.cantidadPagos = res.data;
+    return this.cantidadPagos;
   }
 
   async getAllMedioDePago() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllMedioDePago')
-    return await lastValueFrom(listaItem$)
+    const listaItem$ = this.httpClient.get<{ data: string[] }>(`${BASE}/medios-de-pago`);
+    const res = await lastValueFrom(listaItem$);
+    return res.data;
   }
 
   async getAllConcepto() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllConcepto')
-    return await lastValueFrom(listaItem$)
+    const listaItem$ = this.httpClient.get<{ data: string[] }>(`${BASE}/conceptos`);
+    const res = await lastValueFrom(listaItem$);
+    return res.data;
   }
 
   async getEventoForSavePago(eventoId: number) {
-    const evento$ = this.httpClient.get<Pago>(REST_SERVER_URL + '/getEventoForSavePago/' + eventoId)
-    return await lastValueFrom(evento$)
+    const evento$ = this.httpClient.get<{ data: Pago }>(`${BASE}/evento/${eventoId}/datos-para-pago`);
+    const res = await lastValueFrom(evento$);
+    return res.data;
   }
 
   async getEventoForEditEventoPago(eventoId: number) {
-    const evento$ = this.httpClient.get<EventoPago>(REST_SERVER_URL + '/getEventoForEditEventoPago/' + eventoId)
-    return await lastValueFrom(evento$)
+    const evento$ = this.httpClient.get<{ data: EventoPago }>(`${BASE}/evento/${eventoId}/estado-cuenta`);
+    const res = await lastValueFrom(evento$);
+    return res.data;
   }
 
   async getAllPagoFromEvento(eventoId: number) {
-    const evento$ = this.httpClient.get<Pago[]>(REST_SERVER_URL + '/getAllPagoFromEvento/' + eventoId)
-    return await lastValueFrom(evento$)
+    const evento$ = this.httpClient.get<{ data: Pago[] }>(`${BASE}/evento/${eventoId}`);
+    const res = await lastValueFrom(evento$);
+    return res.data;
   }
 
-  async save(pago : Pago) {
-    pago.empresaId = this.usuarioService.getEmpresaId()
-    pago.usuarioId = await this.loginService.getUsuarioId()
-    const item$ = this.httpClient.post<Pago>(REST_SERVER_URL + '/savePago', pago)
-    return await lastValueFrom(item$)
+  // ── Mutations ────────────────────────────────────────────────────────────
+
+  async save(pago: Pago) {
+    pago.empresaId = this.usuarioService.getEmpresaId();
+    pago.usuarioId = await this.loginService.getUsuarioId();
+    const item$ = this.httpClient.post<{ data: Pago }>(`${BASE}`, pago);
+    const res = await lastValueFrom(item$);
+    return res.data;
   }
 
-  async delete(id : number) {
-    const delete$ = this.httpClient.delete<Pago>(REST_SERVER_URL + '/deletePago/' + id);
+  async delete(id: number) {
+    const delete$ = this.httpClient.delete<{ data: string }>(`${BASE}/${id}`);
     return await lastValueFrom(delete$);
-  }  
-
-
-  async enviarEmailPago(pagoId : number, eventoId: number) {
-    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailPago/' + pagoId + "/" + eventoId + "/" + this.usuarioService.getEmpresaId())
-    return await lastValueFrom(item$)
   }
 
-  async descargarPago(id : number): Promise<Blob> {
-    const item$ = this.httpClient.get(REST_SERVER_URL + '/descargarPago/' + id, { responseType: 'blob' })
+  // ── Comprobantes y email ──────────────────────────────────────────────────
+
+  async descargarPago(id: number): Promise<Blob> {
+    const item$ = this.httpClient.get(`${BASE}/${id}/comprobante`, { responseType: 'blob' });
     return lastValueFrom(item$);
   }
 
-  async enviarEmailEstadoCuenta(eventoId: number) {
-    const item$ = this.httpClient.get<boolean>(REST_SERVER_URL + '/enviarEmailEstadoCuenta/' + eventoId + "/" + this.usuarioService.getEmpresaId())
-    return await lastValueFrom(item$)
+  async enviarEmailPago(pagoId: number, eventoId: number): Promise<boolean> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const item$ = this.httpClient.get<{ data: boolean }>(
+      `${BASE}/${pagoId}/email/evento/${eventoId}/empresa/${empresaId}`
+    );
+    const res = await lastValueFrom(item$);
+    return res.data;
   }
 
-  async descargarEstadoCuenta(eventoId : number): Promise<Blob> {
-    const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEstadoCuenta/' + eventoId, { responseType: 'blob' })
+  async descargarEstadoCuenta(eventoId: number): Promise<Blob> {
+    const item$ = this.httpClient.get(`${BASE}/evento/${eventoId}/estado-cuenta/pdf`, { responseType: 'blob' });
     return lastValueFrom(item$);
   }
 
+  async enviarEmailEstadoCuenta(eventoId: number): Promise<boolean> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const item$ = this.httpClient.get<{ data: boolean }>(
+      `${BASE}/evento/${eventoId}/estado-cuenta/email/empresa/${empresaId}`
+    );
+    const res = await lastValueFrom(item$);
+    return res.data;
+  }
 }
