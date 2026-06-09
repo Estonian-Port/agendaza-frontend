@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventoExtra } from 'src/app/model/Evento';
-import { Extra } from 'src/app/model/Extra';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { Extra, ExtraVariable } from 'src/app/model/Extra';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { TipoEventoExtra } from 'src/app/model/TipoEvento';
 import { EventoService } from 'src/app/services/evento.service';
@@ -33,10 +32,13 @@ export class EditEventoExtrasComponent implements OnInit {
 
     this.evento = await this.eventoService.getEventoExtra(id)
 
-    const fecha = new Date(this.evento.fechaEvento)
-    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-    
+
+    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, this.evento.fechaEvento, "EVENTO");
+    const dtoVariables = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, this.evento.fechaEvento, "VARIABLE_EVENTO");
+
+    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, 0));
+    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto));
+
     this.sumPresupuesto()
   }
 

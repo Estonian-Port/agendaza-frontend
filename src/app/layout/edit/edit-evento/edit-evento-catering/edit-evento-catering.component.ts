@@ -1,10 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoCatering } from 'src/app/model/Evento';
-import { Extra } from 'src/app/model/Extra';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { Extra, ExtraVariable } from 'src/app/model/Extra';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { EventoService } from 'src/app/services/evento.service';
 import { ExtraService } from 'src/app/services/extra.service';
@@ -26,7 +25,6 @@ export class EditEventoCateringComponent implements OnInit {
 
   constructor(
     private eventoService : EventoService,
-    private router : Router,
     private extraService : ExtraService,
     private route: ActivatedRoute,
     private location: Location) { }
@@ -36,12 +34,12 @@ export class EditEventoCateringComponent implements OnInit {
 
     this.evento = await this.eventoService.getEventoCatering(id)
 
-    const fecha = new Date(this.evento.fechaEvento)
+    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.fechaEvento, "TIPO_CATERING");
+    const dtoVariables = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.fechaEvento, "VARIABLE_CATERING");
 
-    // TODO Reemplazar fechaForm en getAllTipo...
-    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, new FechaForm(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()))
-    
+    this.listaExtraTipoCatering = dtoExtras.map(dto => Extra.fromDTO(dto, 0));
+    this.listaExtraCateringVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto));
+
     if(this.evento.cateringOtro != 0){
       this.cateringOtro = true
       this.sumCateringPresupuesto()
@@ -62,7 +60,7 @@ export class EditEventoCateringComponent implements OnInit {
     this.sumCateringPresupuesto()
   }
 
-cleanTipoCateringForCateringOtro() {
+  cleanTipoCateringForCateringOtro() {
     if (this.cateringOtro) {
       // Cuando se TILDA: Limpiamos la lista de tipo catering normal
       this.evento.listaExtraTipoCatering.splice(0);

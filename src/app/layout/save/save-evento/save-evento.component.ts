@@ -9,8 +9,7 @@ import { ModalInformativoComponent } from 'src/app/components/modal/modal-inform
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
-import { Extra } from 'src/app/model/Extra';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { Extra, ExtraVariable } from 'src/app/model/Extra';
 import { FechaForm } from 'src/app/model/FechaForm';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { StepBox } from 'src/app/model/StepBox';
@@ -264,7 +263,7 @@ export class SaveEventoComponent implements OnInit {
 
   async changeDate(){
     this.setFechaInicioAndFin()
-    this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio)
     this.setListasExtra()
     this.sumPresupuesto()
     this.buscarListaEventoByDiaAndEmpresaId()
@@ -289,10 +288,10 @@ export class SaveEventoComponent implements OnInit {
   async buscarListaEventoByDiaAndEmpresaId(){
     this.setFechaInicioAndFin()
     this.horarioDisponible = await this.eventoService.getHorarioDisponible(this.evento)
-    this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.fechaEvento)
+    this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.evento.inicio)
   }
 
-setFechaInicioAndFin() {
+  setFechaInicioAndFin() {
     // 1. Obtenemos los valores de tus Forms
     const anio = this.fechaEventoAnio?.getRawValue();
 
@@ -325,7 +324,7 @@ setFechaInicioAndFin() {
     const minF = String(fechaFinalDate.getMinutes()).padStart(2, '0');
 
     this.evento.fin = `${yF}-${mF}-${dF}T${hF}:${minF}:00`;
-}
+  }
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
@@ -365,15 +364,21 @@ setFechaInicioAndFin() {
   
   // --------------------------- Cotizacion ----------------------------------
 
-  async setListasExtra(){
+  async setListasExtra() {
 
-    // Cotizacion
-    this.listaExtra = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-    this.listaExtraVariable = await this.extraService.getAllExtraEventoVariableByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    // --- Cotización ---
+    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "EVENTO");
+    const dtoVariables = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_EVENTO");
 
-    // Catering
-    this.listaExtraTipoCatering = await this.extraService.getAllTipoCateringByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
-    this.listaExtraCateringVariable = await this.extraService.getAllCateringExtraByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.fechaEvento)
+    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, this.empresa.id));
+    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto));
+
+    // --- Catering ---
+    const dtoCatering = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "TIPO_CATERING");
+    const dtoCateringVariable = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_CATERING");
+
+    this.listaExtraTipoCatering = dtoCatering.map(dto => Extra.fromDTO(dto, this.empresa.id));
+    this.listaExtraCateringVariable = dtoCateringVariable.map(dto => ExtraVariable.fromDTO(dto));
   }
 
   sumExtraPresupuesto(extraPrecio : number){
@@ -382,11 +387,11 @@ setFechaInicioAndFin() {
   }
 
   sumPresupuesto(){
-  const precioTipoEvento = Number(this.precioTipoEvento) || 0;
-  const extraPresupuesto = Number(this.extraPresupuesto) || 0;
-  const extraOtro = Number(this.extraOtro?.getRawValue()) || 0;
+    const precioTipoEvento = Number(this.precioTipoEvento) || 0;
+    const extraPresupuesto = Number(this.extraPresupuesto) || 0;
+    const extraOtro = Number(this.extraOtro?.getRawValue()) || 0;
 
-  this.presupuesto?.setValue(precioTipoEvento + extraPresupuesto + extraOtro);
+    this.presupuesto?.setValue(precioTipoEvento + extraPresupuesto + extraOtro);
 
     if(this.descuento?.getRawValue() != 0){
       this.presupuesto?.setValue(this.presupuesto.getRawValue() - (this.presupuesto.getRawValue() * (this.descuento?.getRawValue() / 100)))

@@ -166,7 +166,10 @@
                                 </div>
 
                                 <div class="form-group mt-2" id="hastaElOtroDia">
-                                    <input class="form-check-input me-2" type="checkbox" id="hastaElOtroDiaCheckbox">
+                                    <input class="form-check-input me-2" type="checkbox" id="hastaElOtroDiaCheckbox"
+                                        [(ngModel)]="hastaElOtroDiaCheckbox" 
+                                        [ngModelOptions]="{standalone: true}"
+                                        (change)="changeDate()">
                                     <label class="form-check-label" for="hastaElOtroDiaCheckbox"> Dura hasta el otro dia </label>
                                 </div>
                             </div>				                

@@ -4,7 +4,6 @@ import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Pago, PagoJSON } from '../model/Pago';
 import { LoginService } from './login.service';
-import { EventoService } from './evento.service';
 import { EventoPago } from '../model/Evento';
 import { UsuarioService } from './usuario.service';
 
@@ -18,8 +17,7 @@ export class PagoService {
   constructor(
     private httpClient: HttpClient,
     private usuarioService: UsuarioService,
-    private loginService: LoginService,
-    private eventoService: EventoService
+    private loginService: LoginService
   ) {}
 
   // ── Queries ──────────────────────────────────────────────────────────────

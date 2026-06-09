@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
@@ -11,6 +10,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { ExtraVariable } from 'src/app/model/Extra';
 
 @Component({
   selector: 'app-edit-evento',

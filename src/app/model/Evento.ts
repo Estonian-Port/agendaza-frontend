@@ -1,6 +1,5 @@
 import { Capacidad } from "./Capacidad"
-import { Extra } from "./Extra"
-import { ExtraVariable } from "./ExtraVariable"
+import { Extra, ExtraVariable } from "./Extra"
 import { TipoEventoExtra } from "./TipoEvento"
 import { Cliente, UsuarioAbm } from "./Usuario"
 

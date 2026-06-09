@@ -1,15 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Capacidad } from '../model/Capacidad';
-import { ExtraVariable } from '../model/ExtraVariable';
 import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { Time } from '../model/Time';
 import { TipoEvento, TipoEventoEditJSON, TipoEventoJSON } from '../model/TipoEvento';
 import { UsuarioService } from './usuario.service';
+import { ExtraVariable } from '../model/Extra';
 
 const BASE = `${REST_SERVER_URL}/v1/tipos-evento`;
 
@@ -118,19 +118,22 @@ export class TipoEventoService {
   async getAllPrecioConFechaByTipoEventoId(tipoEventoId: number) {
     const empresaId = this.usuarioService.getEmpresaId();
     const listaItem$ = this.httpClient.get<{ data: PrecioJSON[] }>(
-      `${BASE}/empresa/${empresaId}/${tipoEventoId}/precios`
+      `${BASE}/${tipoEventoId}/empresa/${empresaId}/precios`
     );
     const res = await lastValueFrom(listaItem$);
     return res.data.map((precio) => Precio.toForm(Precio.fromJson(precio)));
   }
 
-  async getPrecioByTipoEventoIdAndFecha(tipoEventoId: number, fechaInicio: FechaForm) {
+async getPrecioByTipoEventoIdAndFecha(tipoEventoId: number, fechaInicio: string): Promise<number> {
     const empresaId = this.usuarioService.getEmpresaId();
-    const precio$ = this.httpClient.put<{ data: number }>(
-      `${BASE}/empresa/${empresaId}/${tipoEventoId}/precio-por-fecha`,
-      new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia)
+    
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(
+        `${BASE}/${tipoEventoId}/empresa/${empresaId}/precio-por-fecha`,
+        { params: new HttpParams().set('fechaEvento', fechaInicio) }
+      )
     );
-    const res = await lastValueFrom(precio$);
+
     return res.data;
   }
 
@@ -138,7 +141,7 @@ export class TipoEventoService {
     const empresaId = this.usuarioService.getEmpresaId();
     const listaPrecio = listaPrecioForm.map((p) => Precio.fromForm(p, empresaId, tipoEventoId));
     const item$ = this.httpClient.post<{ data: GenericItem }>(
-      `${BASE}/empresa/${empresaId}/${tipoEventoId}/precios`,
+      `${BASE}/${tipoEventoId}/empresa/${empresaId}/precios`,
       listaPrecio
     );
     const res = await lastValueFrom(item$);

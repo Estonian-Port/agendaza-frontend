@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { lastValueFrom } from 'rxjs'
 import { REST_SERVER_URL } from 'src/util/configuration'
@@ -9,16 +9,15 @@ import {
   EventoExtra,
   EventoHora,
   EventoJSON,
-  EventoPago,
   EventoVer
 } from '../model/Evento'
-import { FechaForm } from '../model/FechaForm'
 import { GenericItem } from '../model/GenericItem'
-import { Cliente, Usuario, UsuarioJSON } from '../model/Usuario'
 import { UsuarioService } from './usuario.service'
 import { LoginService } from './login.service'
-import { Pago } from '../model/Pago'
 import { CustomResponse } from 'src/util/customResponse'
+
+const BASE = `${REST_SERVER_URL}/v1/eventos`;
+
 
 @Injectable({
   providedIn: 'root'
@@ -313,28 +312,17 @@ export class EventoService {
 
   // ==================== VALIDACIONES ====================
 
-  /**
-   * Obtiene horarios disponibles para una fecha específica
-   * POST /v1/eventos/disponibilidad/horarios
-   * 
-   * @param fecha FechaForm con año, mes, día
-   * @returns Array de horarios disponibles
-   */
-  async getListaEventoByDiaAndEmpresaId(fecha: FechaForm): Promise<string[]> {
-    const empresaId = this.usuarioService.getEmpresaId()
-    const eventoBuscarFecha = new EventoBuscarFecha(
-      empresaId,
-      new Date(fecha.year, fecha.mes, fecha.dia, 0, 0, 0),
-      new Date(fecha.year, fecha.mes, fecha.dia, 23, 59, 59)
-    )
-
-    const response = await lastValueFrom(
-      this.httpClient.post<CustomResponse<string[]>>(
-        REST_SERVER_URL + '/v1/eventos/disponibilidad/horarios',
-        eventoBuscarFecha
+  async getListaEventoByDiaAndEmpresaId(fechaEvento: string): Promise<string[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: string[] }>(
+        `${BASE}/empresa/${empresaId}/ocupacion-del-dia`,
+        { params: new HttpParams().set('fechaEvento', fechaEvento) }
       )
-    )
-    return response.data
+    );
+
+    return res.data;
   }
 
   /**
@@ -345,20 +333,20 @@ export class EventoService {
    * @returns true si está disponible, false si hay conflicto
    */
   async getHorarioDisponible(evento: Evento): Promise<boolean> {
-    const empresaId = this.usuarioService.getEmpresaId()
-    const eventoBuscarFecha = new EventoBuscarFecha(
-      empresaId,
-      new Date(evento.inicio),
-      new Date(evento.fin)
-    )
+    const empresaId = this.usuarioService.getEmpresaId();
+    
+    const params = new HttpParams()
+      .set('empresaId', empresaId.toString())
+      .set('desde', evento.inicio)
+      .set('hasta', evento.fin);
 
     const response = await lastValueFrom(
-      this.httpClient.post<CustomResponse<boolean>>(
-        REST_SERVER_URL + '/v1/eventos/disponibilidad/validar',
-        eventoBuscarFecha
+      this.httpClient.get<CustomResponse<boolean>>(
+        `${REST_SERVER_URL}/v1/eventos/disponibilidad/validar`,
+        { params }
       )
-    )
-    return response.data
+    );
+    return response.data;
   }
 
   // ==================== CRUD ====================
