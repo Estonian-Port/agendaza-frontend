@@ -26,7 +26,7 @@ export class EmpresaService {
 
   async getEmpresaAbm(empresaId: number): Promise<EmpresaAbm> {
     const item$ = this.httpClient.get<CustomResponse<EmpresaAbm>>(
-      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/abm'
+      REST_SERVER_URL + '/v1/empresas/' + empresaId
     );
     const response = await lastValueFrom(item$);
     return response.data;
