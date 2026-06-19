@@ -19,7 +19,7 @@ import { ExtraVariable } from 'src/app/model/Extra';
 export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
-  0,[],[],"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
+  0,[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")
@@ -70,7 +70,11 @@ export class VerEventoComponent implements OnInit {
     this.extras = this.evento.listaExtra.length > 0
     this.extrasVariables = this.evento.listaExtraVariable.length > 0
     this.extraCatering = this.evento.listaExtraCateringVariable.length > 0
-    this.tipoCatering = this.evento.listaExtraTipoCatering.length > 0
+
+    const tieneCateringLista : boolean = this.evento.listaExtraTipoCatering && this.evento.listaExtraTipoCatering.length > 0
+    const tieneCateringOtro : boolean = this.evento.cateringOtro > 0 || (this.evento.cateringOtroDescripcion != null && this.evento.cateringOtroDescripcion.trim() !== '')
+
+    this.tipoCatering = tieneCateringLista || tieneCateringOtro
 
     this.encargadoNombreCompleto = this.evento.encargado.apellido + ", " + this.evento.encargado.nombre
   }
@@ -152,6 +156,23 @@ export class VerEventoComponent implements OnInit {
 
   listaExtraVariableToModal(lista : Array<ExtraVariable>){
     return lista.map((extraVariable: ExtraVariable) => new GenericItem(extraVariable.id, extraVariable.nombre))
+  }
+
+  abrirModalTipoCatering() {
+    // Si tiene catering de la lista mostramos ese
+    if (this.evento.listaExtraTipoCatering && this.evento.listaExtraTipoCatering.length > 0) {
+      this.setListaModal(this.evento.listaExtraTipoCatering);
+    } 
+    // Si es catering otro, lo armamos
+    else {
+      const descripcion = this.evento.cateringOtroDescripcion ? this.evento.cateringOtroDescripcion : 'Catering Personalizado';
+      const precio = this.evento.cateringOtro > 0 ? ` ($${this.evento.cateringOtro})` : '';
+      
+      // Creamos un ítem ficticio para que el modal lo pueda renderizar en su lista
+      const itemCateringOtro = new GenericItem(0, descripcion + precio);
+      
+      this.setListaModal([itemCateringOtro]);
+    }
   }
 
   volver(){

@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 export class VerClienteComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
-  0,[],[],"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
+  0,[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   cliente = ""
   eventos: Array<any> = []

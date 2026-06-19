@@ -236,6 +236,7 @@ export class EventoVer {
         public descuento: number,
         public listaExtra: Array<Extra>,
         public listaExtraVariable: Array<ExtraVariable>,
+        public cateringOtro: number,
         public cateringOtroDescripcion: string,
         public listaExtraTipoCatering: Array<Extra>,
         public listaExtraCateringVariable: Array<ExtraVariable>,
