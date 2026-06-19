@@ -1,8 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { AgendaService } from 'src/app/services/agenda.service';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,29 +9,13 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private router: Router, private agendaService: AgendaService, private location: Location) {}
+  constructor(private router: Router, private usuarioService: UsuarioService, private location: Location) {}
 
-  //activeRoute: string = ''
   isSidebarActive: boolean = false
   selectedIcon : String = ""
   
 
-  ngOnInit(): void{}   /*{
-    // Subscribirse a los eventos de navegación para obtener la ruta activa
-    this.router.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd) // Filtramos solo los eventos de tipo NavigationEnd
-    ).subscribe((event: NavigationEnd) => {
-      // Cuando se completa una navegación, actualizamos la ruta activa
-      this.activeRoute = event.urlAfterRedirects; // Asignamos la URL después de cualquier redirección
-    });
-  }
-
-  isActiveRoute(route: string): boolean {
-    console.log(this.activeRoute )
-
-    return this.activeRoute.includes(route); // Verificamos si la ruta activa contiene el ícono
-  }*/
-
+  ngOnInit(): void{}
 
 
   isLogin(): boolean {
@@ -40,7 +23,7 @@ export class SidebarComponent implements OnInit {
   }
 
   isAgendaSeleccionada(): boolean {
-    return '' != this.agendaService.getEmpresaId();
+    return this.usuarioService.isAgendaSeleccionada();
   }
 
   isInSeleccionarAgenda(): boolean {
@@ -64,7 +47,7 @@ export class SidebarComponent implements OnInit {
   }
 
   irAgendas() {
-    this.agendaService.removeEmpresaId();
+    this.usuarioService.removeEmpresaId();
     this.router.navigateByUrl('/');
   }
 

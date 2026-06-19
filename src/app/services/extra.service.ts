@@ -1,144 +1,215 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Extra, ExtraJSON } from '../model/Extra';
-import { ExtraVariable } from '../model/ExtraVariable';
+import { Extra, ExtraJSON, ExtraPrecioDTO } from '../model/Extra';
 import { FechaForm } from '../model/FechaForm';
-import { GenericItem, GenericItemEmpresaTipoEvento } from '../model/GenericItem';
+import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
-import { AgendaService } from './agenda.service';
+import { UsuarioService } from './usuario.service';
+
+const BASE = `${REST_SERVER_URL}/v1/extras`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExtraService {
 
-  extraId : number = 0
-  extraVolver: string = ""
-  cantidadExtras : number = 0
+  constructor(
+    private httpClient: HttpClient,
+    private usuarioService: UsuarioService
+  ) {}
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService) { }
+  // ==================== METADATA ====================
 
-  async getExtra(id : number) {
-    const item$ = this.httpClient.get<ExtraJSON>(REST_SERVER_URL + '/getExtra/' + id)
-    const item = await lastValueFrom(item$)
-    return Extra.fromJson(item)
+  async getAllEventoTipoExtra(): Promise<string[]> {
+    return lastValueFrom(
+      this.httpClient.get<{ data: string[] }>(`${BASE}/tipos/evento`)
+    ).then(r => r.data);
   }
 
-  async getAllExtraByEmpresaId(pageNumber : number) {
-    const listaItem$ = this.httpClient.get<ExtraJSON[]>(REST_SERVER_URL + '/getAllExtra/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => Extra.fromJson(extra))
+  async getAllCateringTipoExtra(): Promise<string[]> {
+    return lastValueFrom(
+      this.httpClient.get<{ data: string[] }>(`${BASE}/tipos/catering`)
+    ).then(r => r.data);
   }
 
-  async getAllExtraByFilterName(pageNumber : number, buscar : string) {
-    const listaItem$ = this.httpClient.get<ExtraJSON[]>(REST_SERVER_URL + '/getAllExtraFilter/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => Extra.fromJson(extra))
+  // ==================== OBTENER EXTRA ====================
+
+  async getExtra(id: number): Promise<Extra> {
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON }>(`${BASE}/${id}`)
+    );
+    return Extra.fromJson(res.data);
   }
 
-  async cantExtras(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtras/' + this.agendaService.getEmpresaId())
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+  // ==================== EVENTO PAGINADO ====================
+
+  async getAllExtraByEmpresaId(pageNumber: number): Promise<Extra[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(
+        `${BASE}/empresa/${empresaId}/evento`,
+        { params: new HttpParams().set('page', pageNumber) }
+      )
+    );
+    return res.data.map(Extra.fromJson);
   }
 
-  async cantExtrasFiltrados(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtrasFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+  async getAllExtraByFilterName(pageNumber: number, buscar: string): Promise<Extra[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(
+        `${BASE}/empresa/${empresaId}/evento/buscar`,
+        { params: new HttpParams().set('page', pageNumber).set('buscar', buscar) }
+      )
+    );
+    return res.data.map(Extra.fromJson);
   }
 
-  async getAllExtraCateringByEmpresaId(pageNumber : number) {
-    const listaItem$ = this.httpClient.get<ExtraJSON[]>(REST_SERVER_URL + '/getAllExtraCatering/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => Extra.fromJson(extra))
+  async cantExtras(): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/evento/count`)
+    );
+    return res.data;
   }
 
-  async getAllExtraCateringFilter(pageNumber : number, buscar : string) {
-    const listaItem$ = this.httpClient.get<ExtraJSON[]>(REST_SERVER_URL + '/getAllExtraCateringFilter/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => Extra.fromJson(extra))
+  async cantExtrasFiltrados(buscar: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(
+        `${BASE}/empresa/${empresaId}/evento/count/buscar`,
+        { params: new HttpParams().set('buscar', buscar) }
+      )
+    );
+    return res.data;
   }
 
-  async cantExtraCatering(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtraCatering/' + this.agendaService.getEmpresaId())
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+  // ==================== CATERING PAGINADO ====================
+
+  async getAllExtraCateringByEmpresaId(pageNumber: number): Promise<Extra[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(
+        `${BASE}/empresa/${empresaId}/catering`,
+        { params: new HttpParams().set('page', pageNumber) }
+      )
+    );
+    return res.data.map(Extra.fromJson);
   }
 
-  async cantExtraCateringFilter(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantExtraCateringFilter/' + this.agendaService.getEmpresaId() + '/' + buscar)
-    this.cantidadExtras = await lastValueFrom(cant$)
-    return this.cantidadExtras
+  async getAllExtraCateringFilter(pageNumber: number, buscar: string): Promise<Extra[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(
+        `${BASE}/empresa/${empresaId}/catering/buscar`,
+        { params: new HttpParams().set('page', pageNumber).set('buscar', buscar) }
+      )
+    );
+    return res.data.map(Extra.fromJson);
   }
 
-  async getAllEventoTipoExtra() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEventoTipoExtra')
-    return await lastValueFrom(listaItem$)
+  async cantExtraCatering(): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/catering/count`)
+    );
+    return res.data;
   }
 
-  async getAllCateringTipoExtra() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllCateringTipoExtra')
-    return await lastValueFrom(listaItem$)
+  async cantExtraCateringFilter(buscar: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(
+        `${BASE}/empresa/${empresaId}/catering/count/buscar`,
+        { params: new HttpParams().set('buscar', buscar) }
+      )
+    );
+    return res.data;
   }
 
-  async save(extra : Extra) {
-    extra.empresaId = this.agendaService.getEmpresaId()
-    const item$ = this.httpClient.post<Extra>(REST_SERVER_URL + '/saveExtra', extra)
-    return await lastValueFrom(item$)
+  // ==================== LISTAS GLOBALES ====================
+
+  async getAllExtraEvento(): Promise<Extra[]> {
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(`${BASE}/evento`)
+    );
+    return res.data.map(Extra.fromJson);
+  }
+
+  async getAllExtraCatering(): Promise<Extra[]> {
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraJSON[] }>(`${BASE}/catering`)
+    );
+    return res.data.map(Extra.fromJson);
+  }
+
+  async getAllExtraEventoAgregar(): Promise<GenericItemEmpresaTipoEventoJSON[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: Extra[] }>(`${BASE}/empresa/${empresaId}/evento/agregar`)
+    );
+    return res.data.map(GenericItemEmpresaTipoEvento.fromJson);
+  }
+
+  async getAllExtraCateringAgregar(): Promise<GenericItem[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: Extra[] }>(`${BASE}/empresa/${empresaId}/catering/agregar`)
+    );
+    return res.data.map(GenericItem.fromJson);
+  }
+
+  // ==================== PRECIO ====================
+
+  async getAllPrecioConFechaByExtraId(extraId: number): Promise<PrecioForm[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: PrecioJSON[] }>(`${BASE}/${extraId}/empresa/${empresaId}/precios`)
+    );
+    return res.data.map(p => Precio.toForm(Precio.fromJson(p)));
+  }
+
+  async savePrecio(extraId: number, listaPrecioForm: PrecioForm[]): Promise<void> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const listaPrecio = listaPrecioForm.map(p => Precio.fromForm(p, empresaId, extraId));
+    await lastValueFrom(
+      this.httpClient.post<void>(
+        `${BASE}/${extraId}/empresa/${empresaId}/precios`,
+        listaPrecio
+      )
+    );
+  }
+
+async getAllExtraEventoByTipoEventoIdAndFecha(
+    tipoEventoId: number,
+    fechaEvento: string,
+    tipoExtra: string
+  ): Promise<ExtraPrecioDTO[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: ExtraPrecioDTO[] }>(
+        `${BASE}/empresa/${empresaId}/tipo-evento/${tipoEventoId}/precio`,
+        { params: new HttpParams().set('fechaEvento', fechaEvento).set('tipoExtra', tipoExtra) }
+      )
+    );
+
+    return res.data;
+  }
+  // ==================== ABM ====================
+
+  async save(extra: Extra): Promise<Extra> {
+    extra.empresaId = this.usuarioService.getEmpresaId();
+    const res = await lastValueFrom(
+      this.httpClient.post<{ data: Extra }>(`${BASE}`, extra)
+    );
+    return res.data;
   }
 
   delete(id: number) {
-    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteExtra/' + id + "/" + this.agendaService.getEmpresaId())
+    const empresaId = this.usuarioService.getEmpresaId();
+    return this.httpClient.delete<void>(`${BASE}/${id}/empresa/${empresaId}`);
   }
-
-  async getAllPrecioConFechaByExtraId(extraId: number) {
-    const listaItem$ = this.httpClient.get<PrecioJSON[]>(REST_SERVER_URL + '/getAllPrecioConFechaByExtraId/' + this.agendaService.getEmpresaId() + '/' + extraId)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((precio) => Precio.toForm(Precio.fromJson(precio)))
-  }
-
-  async savePrecio(listaPrecioForm : PrecioForm[]) {
-    const listaPrecio = listaPrecioForm.map((precio) => Precio.fromForm(precio, this.agendaService.getEmpresaId(), this.extraId))
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveExtraPrecio/' + this.agendaService.getEmpresaId() + '/' + this.extraId, listaPrecio)
-    this.extraId = 0
-    return await lastValueFrom(item$)
-  }
-
-  // TODO Reemplazar fechaForm en getAllTipo...
-  async getAllExtraEventoByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoConPrecioByTipoEventoAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
-    return await lastValueFrom(listaItem$)
-  }
-
-  async getAllExtraEventoVariableByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllExtraEventoVariableByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
-    return await lastValueFrom(listaItem$)
-  }
-
-  // TODO Reemplazar fechaForm en getAllTipo...
-  async getAllTipoCateringByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<Extra[]>(REST_SERVER_URL + '/getAllTipoCateringByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
-    return await lastValueFrom(listaItem$)
-  }
-
-  async getAllCateringExtraByTipoEventoIdAndFecha(id : number, fechaInicio : FechaForm) {
-    const listaItem$ = this.httpClient.put<ExtraVariable[]>(REST_SERVER_URL + '/getAllCateringExtraByTipoEventoIdAndFecha/' + this.agendaService.getEmpresaId() + '/' + + id, new Date(fechaInicio.year, fechaInicio.mes, fechaInicio.dia))
-    return await lastValueFrom(listaItem$)
-  }
-
-  async getAllExtraEventoAgregar() {
-    const listaItem$ = this.httpClient.get<Extra[]>(REST_SERVER_URL + '/getAllExtraEventoAgregar/' + this.agendaService.getEmpresaId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => GenericItem.fromJson(extra))
-  }
-
-  async getAllExtraCateringAgregar() {
-    const listaItem$ = this.httpClient.get<Extra[]>(REST_SERVER_URL + '/getAllExtraCateringAgregar/' + this.agendaService.getEmpresaId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((extra) => GenericItem.fromJson(extra))
-  }
-
 }

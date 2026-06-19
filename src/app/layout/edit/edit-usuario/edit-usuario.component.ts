@@ -1,5 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Cargo } from 'src/app/model/Cargo';
 import { Usuario } from 'src/app/model/Usuario';
 import { LoginService } from 'src/app/services/login.service';
@@ -15,18 +16,27 @@ export class EditUsuarioComponent implements OnInit {
   listaSexo : Array<string> = []
   listaRol : Array<string> = []
 
-  constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router) { }
+  constructor(
+    private usuarioService : UsuarioService,
+    private location : Location,
+    private route: ActivatedRoute,
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    this.usuario = await this.usuarioService.getUsuario()
-    this.usuario.cargo = await this.loginService.getCargo()
-    
+    const id = Number(this.route.snapshot.queryParamMap.get('usuarioId'));
+
+    this.usuario = await this.usuarioService.getUsuario(id)
+    this.usuario.cargo = await this.usuarioService.getCargoByUsuarioAndEmpresa(this.usuario.id)
     this.listaRol = await this.usuarioService.getAllCargo()
   }
 
   async save(){
     const item = await this.usuarioService.save(this.usuario)
-    this.router.navigateByUrl('/abmUsuario')
+    this.location.back()
+  }
+
+  volver(){
+    this.location.back()
   }
 
 }

@@ -18,7 +18,6 @@ import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
-import { SaveEmpresaComponent } from './layout/save/save-empresa/save-empresa.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
@@ -63,6 +62,7 @@ const routes: Routes = [
       { path : 'abmPago', component: AbmPagoComponent },
       { path : 'abmEmpresa', component: AbmEmpresaComponent },
       { path : 'abmClausula', component: AbmClausulaComponent },
+      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
       { path : 'saveEvento', component: SaveEventoComponent },
       { path : 'saveUsuario', component: SaveUsuarioComponent },
       { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
@@ -71,22 +71,19 @@ const routes: Routes = [
       { path : 'saveExtraCatering', component: SaveExtraCateringComponent },
       { path : 'saveCliente', component: SaveClienteComponent },
       { path : 'savePago', component: SavePagoComponent },
-      { path : 'saveEmpresa', component: SaveEmpresaComponent },
       { path : 'saveClausula', component: SaveClausulaComponent },
+      { path : 'precioExtra', component: PrecioExtraComponent },
+      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
       { path : 'editUsuario', component: EditUsuarioComponent },
       { path : 'editEmpresa', component: EditEmpresaComponent },
-      { path : 'editEmpresa', component: EditEmpresaComponent },
-      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
-      { path : 'precioExtra', component: PrecioExtraComponent },
-      { path : 'editEventoPagos', component: EditEventoPagosComponent },
-      { path : 'editEventoExtras', component: EditEventoExtrasComponent },
-      { path : 'editEventoCatering', component: EditEventoCateringComponent },
-      { path : 'editEventoHora', component: EditEventoHoraComponent },
-      { path : 'verEvento', component: VerEventoComponent },
+      { path : 'editEventoPagos/:id', component: EditEventoPagosComponent },
+      { path : 'editEventoExtras/:id', component: EditEventoExtrasComponent },
+      { path : 'editEventoCatering/:id', component: EditEventoCateringComponent },
+      { path : 'editEventoHora/:id', component: EditEventoHoraComponent },
+      { path : 'verEvento/:id', component: VerEventoComponent },
       { path : 'verCliente', component: VerClienteComponent },
       { path : 'editCargoEmpleado', component: EditEmpleadoCargoComponent},
       { path : 'editUsuarioPerfil', component: EditUsuarioPerfilComponent},
-      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
       { path: '**', component: NotFoundComponent }
     ]
   }

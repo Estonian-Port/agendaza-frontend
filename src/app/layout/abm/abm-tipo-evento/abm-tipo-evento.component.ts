@@ -70,21 +70,20 @@ export class AbmTipoEventoComponent implements OnInit {
   }
 
   precio(id : number){
-    this.tipoEventoService.tipoEventoId = id
-    this.router.navigateByUrl('/precio' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/precio' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { tipoEventoId: id } })
   }
 
   editar(id : number){
-    this.tipoEventoService.tipoEventoId = id
-    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/save' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { tipoEventoId: id } })
   }
 
-  async eliminar(id : number){
-    (await this.tipoEventoService.delete(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
+  async eliminar(id: number): Promise<void> {
+    try {
+      await this.tipoEventoService.delete(id)
+      await this.inicializarListaItems();
+    } catch (error) {
+      console.error('Error al eliminar el tipo evento:', error);
+    }
   }
 
 }

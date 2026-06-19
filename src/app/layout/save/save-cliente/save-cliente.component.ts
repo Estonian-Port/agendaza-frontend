@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cargo } from 'src/app/model/Cargo';
@@ -12,7 +13,10 @@ export class SaveClienteComponent implements OnInit {
 
   usuario! : Usuario
 
-  constructor(private usuarioService : UsuarioService, private router : Router) { }
+  constructor(
+    private usuarioService : UsuarioService,
+    private location : Location
+  ) { }
 
   ngOnInit(): void {
     this.usuario = new Usuario(0, "", "", "", "", new Date(0,0,0,0,0,0),"MASCULINO",Cargo.CLIENTE, "",0)
@@ -20,11 +24,11 @@ export class SaveClienteComponent implements OnInit {
 
   async save(){
     const item = await this.usuarioService.save(this.usuario)
-    this.router.navigateByUrl('/abmCliente')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmCliente')
+    this.location.back()
   }
 
 }

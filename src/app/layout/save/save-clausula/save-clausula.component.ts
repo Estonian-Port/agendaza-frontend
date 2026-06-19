@@ -1,5 +1,6 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { ClausulaService } from 'src/app/services/clausula.service';
 
@@ -13,36 +14,43 @@ export class SaveClausulaComponent {
   listaClausula : Array<GenericItem> = []
   otro = false
   edicion = false
+  clausulaId : number = 0
 
-  constructor(private clausulaService : ClausulaService, private router : Router) { }
+  constructor(
+    private clausulaService : ClausulaService,
+    private location : Location,
+    private route: ActivatedRoute,
+    
+  ) { }
   
   async ngOnInit(): Promise<void> {
-
-    if(this.clausulaService.clausulaId){
-      this.genericItem = await this.clausulaService.get(this.clausulaService.clausulaId)
-      this.clausulaService.clausulaId = 0
-      this.otro = true
-    }else{
-      this.listaClausula = await this.clausulaService.getAllAgregar()
-      if(this.listaClausula.length == 0){
-        this.genericItem.id = 0
-        this.onServicioChange()
+    await this.route.queryParams.subscribe(async params => {
+      if (params['clausulaId']) {
+        const clausulaId = Number(params['clausulaId']);
+        this.genericItem = await this.clausulaService.get(clausulaId)
+        this.otro = true
       }else{
-        const clausulaEdicio = [...this.listaClausula].sort((a, b) => a.nombre.localeCompare(b.nombre))[0];
+        this.listaClausula = await this.clausulaService.getAllAgregar()
+        if(this.listaClausula.length == 0){
+          this.genericItem.id = 0
+          this.onServicioChange()
+        }else{
+          const clausulaEdicio = [...this.listaClausula].sort((a, b) => a.nombre.localeCompare(b.nombre))[0];
 
-        this.genericItem.id = clausulaEdicio.id
-        this.genericItem.nombre = clausulaEdicio.nombre
+          this.genericItem.id = clausulaEdicio.id
+          this.genericItem.nombre = clausulaEdicio.nombre
+        }
       }
-    }
+    })
   }
 
   async save(){
     const item = await this.clausulaService.save(this.genericItem)
-    this.router.navigateByUrl('/abmClausula')
+    this.volver()
   }
 
   volver(){
-    this.router.navigateByUrl('/abmClausula')
+    this.location.back()
   }
 
   onServicioChange(): void {

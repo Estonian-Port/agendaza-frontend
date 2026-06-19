@@ -1,8 +1,8 @@
 <div class="container">
 
 	<app-header
-	  	titulo="Ver Cliente">
-		(outputVolver)="volver(evento.id)"
+	  	titulo="Ver Cliente"
+		(outputVolver)="volver()">
 	</app-header>
 
 	<div class="row contenedor-default mt-2">
@@ -28,7 +28,7 @@
 							<td>{{item.nombre}}</td>
 							<td>{{item.codigo}}</td>
 							<td class="text-center">
-							<button (click)="volver(item.id)" a class="mx-2" title="Ver" class="fas fa-eye text-primary" data-toggle="tooltip"></button>
+							<button (click)="volver()" a class="mx-2" title="Ver" class="fas fa-eye text-primary" data-toggle="tooltip"></button>
 							</td>
 						</tr>
 					</tbody>
@@ -41,8 +41,8 @@
 
 <app-modal-edit-cliente
     (outputChangeModal)="setModalEditar($event)"
-		(outputSave)="editCliente($event)"
-    [modal]="modal"
+	(outputSave)="editCliente($event)"
+	[modal]="modal"
     [titulo]="tituloModal"
-		[cliente]="evento.cliente">
+	[cliente]="evento.cliente">
 </app-modal-edit-cliente>

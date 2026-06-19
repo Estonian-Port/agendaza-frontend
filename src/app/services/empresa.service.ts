@@ -3,45 +3,75 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Empresa, EmpresaAbm, EmpresaAbmJSON } from '../model/Empresa';
-import { GenericItem, GenericItemJSON } from '../model/GenericItem';
-import { AgendaService } from './agenda.service';
-import { LoginService } from './login.service';
+import { GenericItem } from '../model/GenericItem';
 import { Especificacion, EspecificacionJSON } from '../model/Especificacion';
+import { CustomResponse } from 'src/util/customResponse';
+import { PanelAdmin } from '../model/Configuracion';
+import { TipoEventoJSON } from '../model/TipoEvento';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpresaService {
 
-  empresaId = 0
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient, private agendaService : AgendaService, private loginService : LoginService) {}
-
-  async getEmpresa(){
-    const item$ = this.httpClient.get<GenericItem>(REST_SERVER_URL + '/getEmpresa/' + await this.agendaService.getEmpresaId())
-    return await lastValueFrom(item$)
+  async getEmpresa(empresaId: number): Promise<GenericItem> {
+    const item$ = this.httpClient.get<CustomResponse<GenericItem>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getEmpresaAbm(){
-    const item$ = this.httpClient.get<EmpresaAbm>(REST_SERVER_URL + '/getEmpresa/' + this.empresaId)
-    return await lastValueFrom(item$)
+  async getEmpresaAbm(empresaId: number): Promise<EmpresaAbm> {
+    const item$ = this.httpClient.get<CustomResponse<EmpresaAbm>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getAllEmpresaByUsuarioId(){
-    const listaItem$ = this.httpClient.get<EmpresaAbmJSON[]>(REST_SERVER_URL + '/getAllEmpresaByUsuarioId/' + await this.loginService.getUsuarioId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((empresa) => EmpresaAbm.fromJson(empresa))
+  async getAllEmpresaByUsuarioId(usuarioId: number): Promise<EmpresaAbm[]> {
+    // TODO Según el controlador del paso anterior, este endpoint 
+    // le pertenece a UsuarioController, no a EmpresaController.
+    const listaItem$ = this.httpClient.get<CustomResponse<EmpresaAbmJSON[]>>(
+      REST_SERVER_URL + '/v1/usuarios/' + usuarioId + '/empresas'
+    );
+    const response = await lastValueFrom(listaItem$);
+    return response.data.map((empresa) => EmpresaAbm.fromJson(empresa));
   }
 
-  async save(empresa : Empresa){
-    const item$ = this.httpClient.post<GenericItem>(REST_SERVER_URL + '/saveEmpresa', empresa)
-    return await lastValueFrom(item$)
+  async save(empresa: Empresa): Promise<GenericItem> {
+    // Para POST y PUT, la convención REST es usar la ruta base de la entidad
+    const item$ = this.httpClient.post<CustomResponse<GenericItem>>(
+      REST_SERVER_URL + '/v1/empresas', 
+      empresa
+    );
+    const response = await lastValueFrom(item$);
+    return response.data;
   }
 
-  async getEspecificaciones(){
-    const listaItem$ = this.httpClient.get<EspecificacionJSON[]>(REST_SERVER_URL + '/getEspecificaciones/' + await this.agendaService.getEmpresaId())
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((especificacion) => Especificacion.fromJson(especificacion))
+  async getEspecificaciones(empresaId: number): Promise<Especificacion[]> {
+    const listaItem$ = this.httpClient.get<CustomResponse<EspecificacionJSON[]>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/especificaciones'
+    );
+    const response = await lastValueFrom(listaItem$);
+    return response.data.map((especificacion) => Especificacion.fromJson(especificacion));
   }
 
+  async getAllCantidadesForPanelAdminByEmpresaId(empresaId: number): Promise<PanelAdmin> {
+    const configuracion$ = this.httpClient.get<CustomResponse<PanelAdmin>>(
+      REST_SERVER_URL + '/v1/empresas/' + empresaId + '/panel-admin/cantidades'
+    );
+    const response = await lastValueFrom(configuracion$);
+    return response.data;
+  }
+
+  async getAllTipoEventoByEmpresaIdAndDuracion(empresaId: number, duracion: string) {
+    const url = `${REST_SERVER_URL}/v1/empresas/${empresaId}/tipos-evento?duracion=${duracion}`;
+    const listaItem$ = this.httpClient.get<CustomResponse<TipoEventoJSON[]>>(url);
+    const response = await lastValueFrom(listaItem$);
+        return response.data.map((tipoEvento) => GenericItem.fromJson(tipoEvento));
+  }
 }

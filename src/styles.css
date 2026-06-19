@@ -213,6 +213,12 @@ button:focus {
   height: 45vh;
 }
 
+.extra-container-edit{
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+}
+
 
 .pagos-container{
   display: flex;
@@ -276,6 +282,99 @@ input[type="number"] {
   appearance: textfield;
 }
 
+.card-agenda-select {
+  border-radius: 1.5rem;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08); 
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.card-agenda-select:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-5px);
+}
+
+.icon-wrapper {
+  background: var(--color-terciario);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 1rem 0;
+}
+
+.card-empresa-moderna {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 350px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card-empresa-moderna:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px -5px rgba(0,0,0,0.1);
+}
+
+.card-header-custom {
+  background: var(--color-terciario);
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title-text {
+  font-size: 1.2rem;
+  color: var(--color-primario);
+  margin: 0;
+  font-weight: 600;
+}
+
+.edit-btn {
+  background: white;
+  color: var(--color-cuaternario);
+  padding: 0.8rem;
+  border-radius: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-content-custom { padding: 1.5rem; }
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  color: var(--color-septenario);
+  font-size: 0.9rem;
+}
+
+.info-item i { width: 1.2rem; color: var(--color-primario); opacity: 0.7; }
+
+/* Grid para el contenedor de cards */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
 @media (max-width:871px) {
   .layout {
     grid-template-areas:
@@ -296,6 +395,10 @@ input[type="number"] {
   .dimensiones-tabla-iconos {
     max-width: 100%;
     min-width: 9em;
+  }
+
+  .extra-container{
+      height: 15vh;
   }
 
 }

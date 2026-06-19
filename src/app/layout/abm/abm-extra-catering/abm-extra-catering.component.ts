@@ -34,7 +34,6 @@ export class AbmExtraCateringComponent implements OnInit {
     this.paginaCero()
     
     if(this.buscar == ""){
-      console.log("AAAAAAAA")
       this.listaItems = await this.extraService.getAllExtraCateringByEmpresaId(this.paginaActual)
       this.cantidadRegistros = await this.extraService.cantExtraCatering()
     }else{
@@ -66,9 +65,7 @@ export class AbmExtraCateringComponent implements OnInit {
   }
 
   precio(id : number){
-    this.extraService.extraId = id
-    this.extraService.extraVolver = this.location.path()
-    this.router.navigateByUrl('/precioExtra')
+    this.router.navigate(['/precioExtra'], { queryParams: { extraId: id } })
   }
 
   updatePaginaActual(pagina : number){
@@ -81,8 +78,7 @@ export class AbmExtraCateringComponent implements OnInit {
   }
 
   editar(id : number){
-    this.extraService.extraId = id
-    this.router.navigateByUrl('/save' + this.location.path().substring(4, this.location.path().length + 1))
+    this.router.navigate(['/save' + this.location.path().substring(4, this.location.path().length + 1)], { queryParams: { extraId: id } })
   }
 
   async eliminar(id : number){

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmpresaAbm } from 'src/app/model/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { LoginService } from 'src/app/services/login.service'; // <-- 1. Importamos LoginService
 
 @Component({
   selector: 'app-abm-empresa',
-  templateUrl: './abm-empresa.component.html', 
-  styleUrls: ['./abm-empresa.component.css'],
+  templateUrl: './abm-empresa.component.html'
 })
 export class AbmEmpresaComponent implements OnInit {
 
@@ -19,19 +19,23 @@ export class AbmEmpresaComponent implements OnInit {
   cantidadEventos : number = 0
   primeraBusqueda : Boolean = true
 
-  constructor(private empresaService : EmpresaService, private router : Router) { }
+  constructor(
+    private empresaService : EmpresaService, 
+    private loginService : LoginService,
+    private router : Router
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.inicializarListaItems()
   }
   
   async inicializarListaItems(){
-    this.listaItems = await this.empresaService.getAllEmpresaByUsuarioId()
+    const usuarioId = await this.loginService.getUsuarioId();
+    this.listaItems = await this.empresaService.getAllEmpresaByUsuarioId(usuarioId);
   }
 
   editar(id : number){
-      this.empresaService.empresaId = id
-      this.router.navigateByUrl('/editEmpresa')
+      this.router.navigate(['/editEmpresa'], { queryParams: { empresaId: id } });
   }
 
 }

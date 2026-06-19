@@ -28,12 +28,12 @@ export class AbmUsuarioComponent implements OnInit {
     this.paginaCero()
 
     if(this.buscar == ""){
-      this.listaItems = await this.usuarioService.getAllUsuario(this.paginaActual)
-      this.cantidadRegistros = await this.usuarioService.getCantidadUsuario()
+      this.listaItems = await this.usuarioService.getAllEmpleados(this.paginaActual)
+      this.cantidadRegistros = await this.usuarioService.getCantidadEmpleados()
     }
     else {
-      this.listaItems = await this.usuarioService.getAllUsuarioFiltrados(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.usuarioService.getCantidadUsuarioFiltrados(this.buscar)
+      this.listaItems = await this.usuarioService.getEmpleadosFiltrados(this.paginaActual,this.buscar)
+      this.cantidadRegistros = await this.usuarioService.getCantidadEmpleadosFiltrados(this.buscar)
     }
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
@@ -65,8 +65,7 @@ export class AbmUsuarioComponent implements OnInit {
   }
 
   editar(id : number){
-    this.usuarioService.usuarioId = id
-    this.router.navigateByUrl('/editUsuario')
+    this.router.navigate(['/editUsuario'], { queryParams: { usuarioId: id } });
   }
 
   async eliminar(id: number) {
@@ -75,11 +74,6 @@ export class AbmUsuarioComponent implements OnInit {
         this.inicializarListaItems()
       }
     })
-  }
-
-  cambiarPassword(id : number){
-    this.usuarioService.usuarioId = id
-    this.router.navigateByUrl('/editUsuarioPassword')
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){

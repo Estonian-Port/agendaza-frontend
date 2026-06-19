@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
+import { ExtraVariable } from 'src/app/model/Extra';
 
 @Component({
   selector: 'app-extra-variable-checkbox',

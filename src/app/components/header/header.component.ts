@@ -37,7 +37,7 @@ export class HeaderComponent {
   outputDescargar = new EventEmitter()
 
   @Output()
-  outputEnviarMail = new EventEmitter()
+  outputEnviarEmail = new EventEmitter()
 
   @Output()
   outputCambiarContrasenia = new EventEmitter()
@@ -59,7 +59,7 @@ export class HeaderComponent {
   }
 
   enviarEmail(){
-    this.outputEnviarMail.emit()
+    this.outputEnviarEmail.emit()
   }
 
   cambiarContrasenia(){

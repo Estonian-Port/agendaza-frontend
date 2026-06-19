@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
-import { ExtraVariable } from 'src/app/model/ExtraVariable';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
 import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { ExtraVariable } from 'src/app/model/Extra';
 
 @Component({
   selector: 'app-edit-evento',
@@ -17,7 +19,7 @@ import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
-  0,[],[],"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
+  0,[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")
@@ -43,12 +45,21 @@ export class VerEventoComponent implements OnInit {
 
   encargadoNombreCompleto : string = ""
 
-  constructor(private eventoService : EventoService, private empresaService : EmpresaService, private router : Router) { }
+  constructor(
+    private eventoService : EventoService, 
+    private empresaService : EmpresaService,
+    private usuarioService : UsuarioService,
+    private router : Router, 
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
   async ngOnInit() {
-    this.evento = await this.eventoService.getEventoVer()
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.evento = await this.eventoService.getEventoVer(id)
 
-    this.evento.empresa = (await this.empresaService.getEmpresa()).nombre
+    const empresaId = await this.usuarioService.getEmpresaId();
+    this.evento.empresa = (await this.empresaService.getEmpresa(empresaId)).nombre;
 
     this.inicio.hour = this.evento.inicio.split(":")[0].split("T")[1]
     this.inicio.minute = this.evento.inicio.split(":")[1]
@@ -59,13 +70,17 @@ export class VerEventoComponent implements OnInit {
     this.extras = this.evento.listaExtra.length > 0
     this.extrasVariables = this.evento.listaExtraVariable.length > 0
     this.extraCatering = this.evento.listaExtraCateringVariable.length > 0
-    this.tipoCatering = this.evento.listaExtraTipoCatering.length > 0
+
+    const tieneCateringLista : boolean = this.evento.listaExtraTipoCatering && this.evento.listaExtraTipoCatering.length > 0
+    const tieneCateringOtro : boolean = this.evento.cateringOtro > 0 || (this.evento.cateringOtroDescripcion != null && this.evento.cateringOtroDescripcion.trim() !== '')
+
+    this.tipoCatering = tieneCateringLista || tieneCateringOtro
 
     this.encargadoNombreCompleto = this.evento.encargado.apellido + ", " + this.evento.encargado.nombre
   }
 
   verCliente(){
-    this.router.navigateByUrl("/verCliente")
+    this.router.navigate(['/verCliente'], { queryParams: { eventoId: this.evento.id } });
   }
 
   editEventoNombreModal(){
@@ -92,7 +107,7 @@ export class VerEventoComponent implements OnInit {
   async editCantAdultos(){
     this.evento.capacidad.capacidadAdultos = this.inputEditar
     await this.eventoService.editEventoCantAdultos(this.evento)
-    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
   }
 
   editCantNinosModal(){
@@ -106,8 +121,7 @@ export class VerEventoComponent implements OnInit {
   async editNinos(){
     this.evento.capacidad.capacidadNinos = this.inputEditar
     await this.eventoService.editEventoCantNinos(this.evento)
-    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento)
-
+    this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
   }
 
   editAnotacionesModal(){
@@ -144,13 +158,30 @@ export class VerEventoComponent implements OnInit {
     return lista.map((extraVariable: ExtraVariable) => new GenericItem(extraVariable.id, extraVariable.nombre))
   }
 
+  abrirModalTipoCatering() {
+    // Si tiene catering de la lista mostramos ese
+    if (this.evento.listaExtraTipoCatering && this.evento.listaExtraTipoCatering.length > 0) {
+      this.setListaModal(this.evento.listaExtraTipoCatering);
+    } 
+    // Si es catering otro, lo armamos
+    else {
+      const descripcion = this.evento.cateringOtroDescripcion ? this.evento.cateringOtroDescripcion : 'Catering Personalizado';
+      const precio = this.evento.cateringOtro > 0 ? ` ($${this.evento.cateringOtro})` : '';
+      
+      // Creamos un ítem ficticio para que el modal lo pueda renderizar en su lista
+      const itemCateringOtro = new GenericItem(0, descripcion + precio);
+      
+      this.setListaModal([itemCateringOtro]);
+    }
+  }
+
   volver(){
-    this.router.navigateByUrl("/abmEvento")
+    this.location.back();
   }
 
   async descargarComprobante(){
     try{
-      const blob = await this.eventoService.descargarEvento()
+      const blob = await this.eventoService.descargarEvento(this.evento.id)
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'comprobante_de_evento.pdf';
@@ -177,6 +208,4 @@ export class VerEventoComponent implements OnInit {
       }, 3000);
     }
   }
-
 }
-

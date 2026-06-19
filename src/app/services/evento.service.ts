@@ -1,180 +1,607 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { REST_SERVER_URL } from 'src/util/configuration';
-import { Evento, EventoBuscarFecha, EventoCatering, EventoExtra, EventoHora, EventoJSON, EventoPago, EventoVer } from '../model/Evento';
-import { FechaForm } from '../model/FechaForm';
-import { GenericItem } from '../model/GenericItem';
-import { Cliente, Usuario, UsuarioJSON } from '../model/Usuario';
-import { AgendaService } from './agenda.service';
-import { LoginService } from './login.service';
-import { Pago } from '../model/Pago';
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { lastValueFrom } from 'rxjs'
+import { REST_SERVER_URL } from 'src/util/configuration'
+import {
+  Evento,
+  EventoBuscarFecha,
+  EventoCatering,
+  EventoExtra,
+  EventoHora,
+  EventoJSON,
+  EventoVer
+} from '../model/Evento'
+import { GenericItem } from '../model/GenericItem'
+import { UsuarioService } from './usuario.service'
+import { LoginService } from './login.service'
+import { CustomResponse } from 'src/util/customResponse'
+
+const BASE = `${REST_SERVER_URL}/v1/eventos`;
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventoService {
-  eventoId : number = 0
-  eventoCodigo : string = ""
-  fechaFiltroForAbmEvento : string = ""
-  cantidadEventos : number = 0
-  paginaActual: number = 0
 
-  constructor(private httpClient : HttpClient, private agendaService : AgendaService, private loginService : LoginService) { }
+  constructor(
+    private httpClient: HttpClient,
+    private usuarioService: UsuarioService,
+    private loginService: LoginService
+  ) { }
 
-  async getAllEventoByEmpresaId(pageNumber : number){
-    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByEmpresaId/' + this.agendaService.getEmpresaId() + '/' + pageNumber)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((evento) => Evento.fromJson(evento))
+  // ==================== BÚSQUEDAS BÁSICAS ====================
+
+  /**
+   * Obtiene un evento por su ID con todos sus detalles
+   * GET /v1/eventos/{eventoId}
+   * 
+   * @param eventoId ID del evento a obtener
+   * @returns EventoVer con todos los detalles del evento
+   */
+  async getEventoVer(eventoId: number): Promise<EventoVer> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<EventoVer>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId
+      )
+    )
+    return response.data
   }
-  
-  async getAllEventosByFecha() {
-    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventosForAgendaByFecha',
-      { params: { 
-        fecha: this.fechaFiltroForAbmEvento,
-        empresaId : this.agendaService.getEmpresaId()
-      }})
-    const listaItem = await lastValueFrom(listaItem$)
-    this.fechaFiltroForAbmEvento = ""
-    return listaItem.map((evento) => Evento.fromJson(evento))
+
+  /**
+   * Obtiene el presupuesto de un evento
+   * GET /v1/eventos/{eventoId}/presupuesto
+   * 
+   * @param eventoId ID del evento
+   * @returns Presupuesto total en formato number
+   */
+  async getPresupuesto(eventoId: number): Promise<number> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/presupuesto'
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene información de extras de un evento
+   * GET /v1/eventos/{eventoId}/extra
+   * 
+   * @param eventoId ID del evento
+   * @returns EventoExtra con desglose de extras
+   */
+  async getEventoExtra(eventoId: number): Promise<EventoExtra> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<EventoExtra>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/extra'
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene información de catering de un evento
+   * GET /v1/eventos/{eventoId}/catering
+   * 
+   * @param eventoId ID del evento
+   * @returns EventoCatering con desglose de catering
+   */
+  async getEventoCatering(eventoId: number): Promise<EventoCatering> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<EventoCatering>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/catering'
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene información de horarios de un evento
+   * GET /v1/eventos/{eventoId}/hora
+   * 
+   * @param eventoId ID del evento
+   * @returns EventoHora con inicio y fin
+   */
+  async getEventoHora(eventoId: number): Promise<EventoHora> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<EventoHora>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/hora'
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene los estados disponibles para eventos
+   * GET /v1/eventos/estados
+   * 
+   * @returns Array de estados disponibles (COTIZADO, CONFIRMADO, etc)
+   */
+  async getAllEstado(): Promise<string[]> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<string[]>>(
+        REST_SERVER_URL + '/v1/eventos/estados'
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene los estados disponibles para crear nuevos eventos
+   * GET /v1/eventos/estados/nuevo
+   * 
+   * @returns Array de estados para nuevos eventos
+   */
+  async getAllEstadoForSaveEvento(): Promise<string[]> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<string[]>>(
+        REST_SERVER_URL + '/v1/eventos/estados/nuevo'
+      )
+    )
+    return response.data
+  }
+
+  // ==================== EVENTOS POR EMPRESA ====================
+
+  /**
+   * Obtiene eventos de una empresa paginados y filtrados
+   * GET /v1/eventos/empresa/{empresaId}/eventos?page=0&size=10&search=opcional
+   * 
+   * Consolidación de getAllEventoByEmpresaId + getAllEventoByFilterName
+   * 
+   * @param pageNumber Página a obtener (default 0)
+   * @param search Término de búsqueda opcional
+   * @returns Array de eventos mapeados a clase Evento
+   */
+  async getAllEventoByEmpresa(
+    pageNumber: number = 0,
+    search: string = ''
+  ): Promise<Evento[]> {
+    const empresaId = this.usuarioService.getEmpresaId()
     
+    const params: any = {
+      page: pageNumber,
+      size: 10
+    }
+
+    if (search && search.trim()) {
+      params.search = search
+    }
+
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<{
+        content: EventoJSON[],
+        totalElements: number,
+        totalPages: number,
+        currentPage: number,
+        pageSize: number
+      }>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/eventos',
+        { params }
+      )
+    )
+    return response.data.content.map((evento: EventoJSON) => Evento.fromJson(evento))
   }
 
-  async getAllEventoByFilterName(pageNumber : number, buscar : string){
-    const listaItem$ = this.httpClient.get<EventoJSON[]>(REST_SERVER_URL + '/getAllEventoByFilterName/' + this.agendaService.getEmpresaId() + '/' + pageNumber + '/' + buscar)
-    const listaItem = await lastValueFrom(listaItem$)
-    return listaItem.map((evento) => Evento.fromJson(evento))
-
-  }
-  
-  async cantEventos(){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventos/' + this.agendaService.getEmpresaId())
-    this.cantidadEventos = await lastValueFrom(cant$)
-    return this.cantidadEventos
+  /**
+   * Obtiene eventos de una empresa sin filtro (legacy)
+   * Usa internamente getAllEventoByEmpresa sin search
+   * 
+   * @deprecated Usa getAllEventoByEmpresa(pageNumber) en su lugar
+   */
+  async getAllEventoByEmpresaId(pageNumber: number): Promise<Evento[]> {
+    return this.getAllEventoByEmpresa(pageNumber, '')
   }
 
-  async cantEventosFiltrados(buscar : string){
-    const cant$ = this.httpClient.get<number>(REST_SERVER_URL + '/cantEventosFiltrados/' + this.agendaService.getEmpresaId() + '/' + buscar)
-    this.cantidadEventos = await lastValueFrom(cant$)
-    return this.cantidadEventos
+  /**
+   * Obtiene eventos de una empresa filtrados (legacy)
+   * Usa internamente getAllEventoByEmpresa con search
+   * 
+   * @deprecated Usa getAllEventoByEmpresa(pageNumber, buscar) en su lugar
+   */
+  async getAllEventoByFilterName(
+    pageNumber: number,
+    buscar: string
+  ): Promise<Evento[]> {
+    return this.getAllEventoByEmpresa(pageNumber, buscar)
   }
 
-  async buscarClientePorEmail(email : string){
-    const usuario$ = this.httpClient.put<Cliente>(REST_SERVER_URL + '/getUsuarioByEmail', email)
-    return await lastValueFrom(usuario$)
+  /**
+   * Obtiene la cantidad total de eventos de una empresa
+   * GET /v1/eventos/empresa/{empresaId}/cantidad
+   * 
+   * @returns Cantidad de eventos activos
+   */
+  async cantEventos(): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/cantidad'
+      )
+    )
+    return response.data
   }
 
-  async buscarClientePorCelular(celular : number){
-    const usuario$ = this.httpClient.put<Cliente>(REST_SERVER_URL + '/getUsuarioByCelular', celular)
-    return await lastValueFrom(usuario$)
+  /**
+   * Obtiene la cantidad de eventos filtrados por búsqueda
+   * GET /v1/eventos/empresa/{empresaId}/cantidad-filtrada?search=X
+   * 
+   * @param buscar Término de búsqueda
+   * @returns Cantidad de eventos que coinciden con la búsqueda
+   */
+  async cantEventosFiltrados(buscar: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/cantidad-filtrada',
+        { params: { search: buscar } }
+      )
+    )
+    return response.data
   }
 
-  async save(evento: Evento) {
-    evento.empresaId = this.agendaService.getEmpresaId()
+  /**
+   * Obtiene eventos de una empresa en una fecha específica
+   * GET /v1/eventos/empresa/{empresaId}/por-fecha?fecha=YYYY-MM-DD
+   * 
+   * @param fecha Fecha en formato YYYY-MM-DD o string de fecha
+   * @returns Array de eventos en esa fecha
+   */
+  async getAllEventosByFecha(fecha: string): Promise<Evento[]> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    
+    // Convertir fecha si es necesario
+    let fechaFormato = fecha
+    if (fecha.includes('/')) {
+      const partes = fecha.split('/')
+      fechaFormato = `${partes[2]}-${partes[1]}-${partes[0]}`
+    }
+
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<EventoJSON[]>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/por-fecha',
+        { params: { fecha: fechaFormato } }
+      )
+    )
+    return response.data.map((evento: EventoJSON) => Evento.fromJson(evento))
+  }
+
+  /**
+   * Obtiene eventos para la agenda/calendario de una empresa
+   * GET /v1/eventos/empresa/{empresaId}/agenda
+   * 
+   * @returns Array de eventos formateados para agenda
+   */
+  async getAllEventosForAgendaByEmpresaId(): Promise<any[]> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<any[]>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/agenda'
+      )
+    )
+    return response.data
+  }
+
+  // ==================== EVENTOS POR USUARIO ====================
+
+  /**
+   * Obtiene eventos contratados por un usuario/cliente en una empresa
+   * GET /v1/eventos/usuario/{usuarioId}/empresa/{empresaId}
+   * 
+   * ✅ NUEVO - Endpoint que faltaba
+   * 
+   * @param usuarioId ID del usuario
+   * @param empresaId ID de la empresa
+   * @returns Map con eventos y cantidad
+   */
+  async getEventosByUsuario(
+    usuarioId: number,
+    empresaId: number
+  ): Promise<{ eventos: any[], cantidad: number }> {
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<{
+        eventos: any[],
+        cantidad: number
+      }>>(
+        REST_SERVER_URL + '/v1/eventos/usuario/' + usuarioId + '/empresa/' + empresaId
+      )
+    )
+    return response.data
+  }
+
+  // ==================== VALIDACIONES ====================
+
+  async getListaEventoByDiaAndEmpresaId(fechaEvento: string): Promise<string[]> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: string[] }>(
+        `${BASE}/empresa/${empresaId}/ocupacion-del-dia`,
+        { params: new HttpParams().set('fechaEvento', fechaEvento) }
+      )
+    );
+
+    return res.data;
+  }
+
+  /**
+   * Valida si un horario específico está disponible
+   * POST /v1/eventos/disponibilidad/validar
+   * 
+   * @param evento Evento con inicio y fin para validar
+   * @returns true si está disponible, false si hay conflicto
+   */
+  async getHorarioDisponible(evento: Evento): Promise<boolean> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    
+    const params = new HttpParams()
+      .set('empresaId', empresaId.toString())
+      .set('desde', evento.inicio)
+      .set('hasta', evento.fin);
+
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<boolean>>(
+        `${REST_SERVER_URL}/v1/eventos/disponibilidad/validar`,
+        { params }
+      )
+    );
+    return response.data;
+  }
+
+  // ==================== CRUD ====================
+
+  /**
+   * Crea un nuevo evento
+   * POST /v1/eventos
+   * 
+   * @param evento Evento a crear (sin empresaId ni encargadoId, se agregan aquí)
+   * @returns ID del evento creado
+   */
+  async save(evento: Evento): Promise<number> {
+    evento.empresaId = this.usuarioService.getEmpresaId()
     evento.encargadoId = await this.loginService.getUsuarioId()
-    const item$ = this.httpClient.post<Evento>(REST_SERVER_URL + '/saveEvento', evento)
-    return await lastValueFrom(item$)
+
+    const response = await lastValueFrom(
+      this.httpClient.post<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos',
+        evento
+      )
+    )
+    return response.data
   }
 
-  delete(id: number) {
-    return this.httpClient.delete<GenericItem>(REST_SERVER_URL + '/deleteEvento/' + id)
+  /**
+   * Elimina un evento (soft delete)
+   * DELETE /v1/eventos/{eventoId}
+   * 
+   * @param id ID del evento a eliminar
+   */
+  async delete(id: number): Promise<GenericItem> {
+    return lastValueFrom(
+      this.httpClient.delete<GenericItem>(
+        REST_SERVER_URL + '/v1/eventos/' + id
+      )
+    )
   }
 
-  async getAllEstado() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEstado')
-    return await lastValueFrom(listaItem$)
-  }
-  
-  async getAllEstadoForSaveEvento() {
-    const listaItem$ = this.httpClient.get<string[]>(REST_SERVER_URL + '/getAllEstadoForSaveEvento')
-    return await lastValueFrom(listaItem$)
+  // ==================== ACTUALIZAR INFORMACIÓN ====================
+
+  /**
+   * Actualiza los horarios de un evento
+   * PUT /v1/eventos/{eventoId}/hora
+   * 
+   * @param evento EventoHora con id, inicio, fin
+   * @returns EventoHora actualizado
+   */
+  async editEventoHora(evento: EventoHora): Promise<EventoHora> {
+    const response = await lastValueFrom(
+      this.httpClient.put<CustomResponse<EventoHora>>(
+        REST_SERVER_URL + '/v1/eventos/' + evento.id + '/hora',
+        evento
+      )
+    )
+    return response.data
   }
 
-  async getEventoExtra() {
-    const evento$ = this.httpClient.get<EventoExtra>(REST_SERVER_URL + '/getEventoExtra/' + this.eventoId)
-    return await lastValueFrom(evento$)
+  /**
+   * Actualiza los extras de un evento
+   * PUT /v1/eventos/extra
+   * 
+   * @param evento EventoExtra con id y detalles
+   * @returns ID del evento actualizado
+   */
+  async editEventoExtra(evento: EventoExtra): Promise<number> {
+    const response = await lastValueFrom(
+      this.httpClient.put<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos/extra',
+        evento
+      )
+    )
+    return response.data
   }
 
-  async getEventoCatering() {
-    const evento$ = this.httpClient.get<EventoCatering>(REST_SERVER_URL + '/getEventoCatering/' + this.eventoId)
-    return await lastValueFrom(evento$)
+  /**
+   * Actualiza la información de catering de un evento
+   * PUT /v1/eventos/catering
+   * 
+   * @param evento EventoCatering con id y detalles
+   * @returns ID del evento actualizado
+   */
+  async editEventoCatering(evento: EventoCatering): Promise<number> {
+    const response = await lastValueFrom(
+      this.httpClient.put<CustomResponse<number>>(
+        REST_SERVER_URL + '/v1/eventos/catering',
+        evento
+      )
+    )
+    return response.data
   }
 
-  async getEventoHora() {
-    const evento$ = this.httpClient.get<EventoHora>(REST_SERVER_URL + '/getEventoHora/' + this.eventoId)
-    return await lastValueFrom(evento$)
+  /**
+   * Actualiza las anotaciones de un evento
+   * PATCH /v1/eventos/{eventoId}/anotaciones
+   * 
+   * @param anotacion Texto de la anotación
+   * @param id ID del evento
+   * @returns Anotación actualizada
+   */
+  async editEventoAnotaciones(anotacion: string, id: number): Promise<string> {
+    const response = await lastValueFrom(
+      this.httpClient.patch<CustomResponse<string>>(
+        REST_SERVER_URL + '/v1/eventos/' + id + '/anotaciones',
+        anotacion
+      )
+    )
+    return response.data
   }
 
-  async getEventoVer() {
-    const evento$ = this.httpClient.get<EventoVer>(REST_SERVER_URL + '/getEventoVer/' + this.eventoId)
-    return await lastValueFrom(evento$)
+  /**
+   * Actualiza la capacidad de un evento (adultos y niños)
+   * PATCH /v1/eventos/{eventoId}/capacidad
+   * 
+   * ✅ NUEVO - Consolidación de editEventoCantNinos + editEventoCantAdultos
+   * 
+   * @param eventoId ID del evento
+   * @param capacidadAdultos Número de adultos
+   * @param capacidadNinos Número de niños
+   * @returns Capacidad actualizada
+   */
+  async editEventoCapacidad(
+    eventoId: number,
+    capacidadAdultos: number,
+    capacidadNinos: number
+  ): Promise<{ capacidadAdultos: number, capacidadNinos: number }> {
+    const response = await lastValueFrom(
+      this.httpClient.patch<CustomResponse<{
+        capacidadAdultos: number,
+        capacidadNinos: number
+      }>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/capacidad',
+        { capacidadAdultos, capacidadNinos }
+      )
+    )
+    return response.data
   }
 
-  async getPresupuesto(evento: EventoVer) {
-    const presupuesto$ = this.httpClient.get<number>(REST_SERVER_URL + '/getPresupuesto/' + this.eventoId)
-    return await lastValueFrom(presupuesto$)
+  /**
+   * Actualiza solo la cantidad de niños (legacy)
+   * Usa internamente editEventoCapacidad
+   * 
+   * @deprecated Usa editEventoCapacidad() en su lugar
+   */
+  async editEventoCantNinos(eventoVer: EventoVer): Promise<number> {
+    const result = await this.editEventoCapacidad(
+      eventoVer.id,
+      eventoVer.capacidad.capacidadAdultos,
+      eventoVer.capacidad.capacidadNinos
+    )
+    return result.capacidadNinos
   }
 
-  async editEventoHora(evento : EventoHora) {
-    const item$ = this.httpClient.post<EventoHora>(REST_SERVER_URL + '/editEventoHora', evento)
-    return await lastValueFrom(item$)
+  /**
+   * Actualiza solo la cantidad de adultos (legacy)
+   * Usa internamente editEventoCapacidad
+   * 
+   * @deprecated Usa editEventoCapacidad() en su lugar
+   */
+  async editEventoCantAdultos(eventoVer: EventoVer): Promise<number> {
+    const result = await this.editEventoCapacidad(
+      eventoVer.id,
+      eventoVer.capacidad.capacidadAdultos,
+      eventoVer.capacidad.capacidadNinos
+    )
+    return result.capacidadAdultos
   }
 
-  async editEventoExtra(evento : EventoExtra) {
-    const item$ = this.httpClient.post<EventoExtra>(REST_SERVER_URL + '/editEventoExtra', evento)
-    return await lastValueFrom(item$)
+  /**
+   * Actualiza el nombre de un evento
+   * PATCH /v1/eventos/{eventoId}/nombre
+   * 
+   * @param nombre Nuevo nombre del evento
+   * @param id ID del evento
+   * @returns Nombre actualizado
+   */
+  async editEventoNombre(nombre: string, id: number): Promise<string> {
+    const response = await lastValueFrom(
+      this.httpClient.patch<CustomResponse<string>>(
+        REST_SERVER_URL + '/v1/eventos/' + id + '/nombre',
+        nombre
+      )
+    )
+    return response.data
   }
 
-  async editEventoCatering(evento : EventoCatering) {
-    const item$ = this.httpClient.post<EventoCatering>(REST_SERVER_URL + '/editEventoCatering', evento)
-    return await lastValueFrom(item$)
+  /**
+   * Procesa y retorna especificaciones calculadas de un evento
+   * POST /v1/eventos/empresa/{empresaId}/especificaciones
+   * 
+   * @param evento Evento con datos a procesar
+   * @returns Evento con especificaciones procesadas
+   */
+  async recorrerEspecificaciones(evento: Evento): Promise<any> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.post<CustomResponse<any>>(
+        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/especificaciones',
+        evento
+      )
+    )
+    return response.data
   }
 
-  async editEventoAnotaciones(anotacion : string, id : number) {
-    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoAnotaciones/' + id, anotacion)
-    return await lastValueFrom(item$)
+  // ==================== COMUNICACIÓN ====================
+
+  /**
+   * Reenvia el email confirmatorio de un evento al cliente
+   * POST /v1/eventos/{eventoId}/reenviar-mail?empresaId={empresaId}
+   * 
+   * @param eventoId ID del evento
+   * @returns true si se envió correctamente
+   */
+  async reenviarMail(eventoId: number): Promise<boolean> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.post<CustomResponse<string>>(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/reenviar-mail',
+        {},
+        { params: { empresaId: empresaId.toString() } }
+      )
+    )
+    return response.data === 'OK'
   }
 
-  async editEventoCantNinos(eventoVer : EventoVer) {
-    const item$ = this.httpClient.post<number>(REST_SERVER_URL + '/editEventoCantidadNinos', eventoVer)
-    return await lastValueFrom(item$)
+  // ==================== DESCARGAS ====================
+
+  /**
+   * Descarga el comprobante/presupuesto de un evento en PDF
+   * GET /v1/eventos/{eventoId}/comprobante/pdf
+   * 
+   * @param eventoId ID del evento
+   * @returns Blob con el contenido del PDF
+   */
+  async descargarEvento(eventoId: number): Promise<Blob> {
+    return lastValueFrom(
+      this.httpClient.get(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/comprobante/pdf',
+        { responseType: 'blob' }
+      )
+    )
   }
 
-  async editEventoCantAdultos(eventoVer : EventoVer) {
-    const item$ = this.httpClient.post<number>(REST_SERVER_URL + '/editEventoCantidadAdultos', eventoVer)
-    return await lastValueFrom(item$)
+  /**
+   * Descarga el estado de cuenta de un evento en PDF
+   * GET /v1/eventos/{eventoId}/estado-cuenta/pdf
+   * 
+   * @param eventoId ID del evento
+   * @returns Blob con el contenido del PDF
+   */
+  async generarEstadoDeCuentaPDF(eventoId: number): Promise<Blob> {
+    return lastValueFrom(
+      this.httpClient.get(
+        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/estado-cuenta/pdf',
+        { responseType: 'blob' }
+      )
+    )
   }
-
-  async editEventoNombre(nombre: string, id: number) {
-    const item$ = this.httpClient.post<string>(REST_SERVER_URL + '/editEventoNombre/' + id, nombre)
-    return await lastValueFrom(item$)
-  }
-
-  async getListaEventoByDiaAndEmpresaId(fecha : FechaForm) {
-    const eventoBuscarFecha = new EventoBuscarFecha(this.agendaService.getEmpresaId(), new Date(fecha.year, fecha.mes, fecha.dia), new Date())
-    const item$ = this.httpClient.put<Array<string>>(REST_SERVER_URL + '/getListaEventoByDiaAndEmpresaId', eventoBuscarFecha)
-    return await lastValueFrom(item$)
-  }
-
-  async getHorarioDisponible(evento : Evento){
-    const eventoBuscarFecha = new EventoBuscarFecha(this.agendaService.getEmpresaId(), new Date(evento.inicio), new Date(evento.fin))
-    const item$ = this.httpClient.put<boolean>(REST_SERVER_URL + '/horarioDisponible', eventoBuscarFecha)
-    return await lastValueFrom(item$)
-  }
-
-  async reenviarMail(eventoId: number) {
-    const item$ = this.httpClient.put<boolean>(REST_SERVER_URL + '/reenviarMail/' + eventoId, this.agendaService.getEmpresaId())
-    return await lastValueFrom(item$)
-  }
-
-  async recorrerEspecificaciones(evento: Evento) {
-    const item$ = this.httpClient.put<Evento>(REST_SERVER_URL + '/recorrerEspecificaciones/' + this.agendaService.getEmpresaId(), evento)
-    return await lastValueFrom(item$)
-  }
-
-  async descargarEvento() {
-    const item$ =  this.httpClient.get(REST_SERVER_URL + '/descargarEvento/' + this.eventoId, { responseType: 'blob' })
-    return lastValueFrom(item$);
-  }
-
 }

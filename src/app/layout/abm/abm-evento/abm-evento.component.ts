@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
@@ -8,100 +9,82 @@ import { EventoService } from 'src/app/services/evento.service';
 })
 export class AbmEventoComponent implements OnInit {
 
-  buscar = ''
-  listaItems : Array<any> = []
-  listaHeader : Array<any> =[]
-  cantidadRegistros : number = 0
-  realizoBusqueda: Boolean = false
-  cantidadPaginas : number[] = []
-  paginaActual : number = 0
-  cantidadEventos : number = 0
+  buscar = '';
+  fechaFiltro = '';
+  listaItems: Array<any> = [];
+  listaHeader: Array<any> = [];
+  cantidadRegistros: number = 0;
+  cantidadPaginas: number[] = [];
+  paginaActual: number = 0;
+  cantidadEventos: number = 0;
 
-  constructor(private eventoService : EventoService, private router : Router) { }
+  constructor(
+    private eventoService: EventoService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location   // <-- NUEVO: para actualizar URL sin re-render
+  ) { }
 
-  async ngOnInit(): Promise<void> {
-    if(this.eventoService.paginaActual !=0){
-      this.paginaActual = this.eventoService.paginaActual
+  ngOnInit(): void {
+    const params = this.route.snapshot.queryParams;
+    this.paginaActual = params['page'] ? Number(params['page']) : 0;
+    this.fechaFiltro  = params['fecha'] ?? '';
+    this.inicializarListaItems();
+  }
+
+  async inicializarListaItems(): Promise<void> {
+    if (this.fechaFiltro !== '') {
+      this.listaItems      = await this.eventoService.getAllEventosByFecha(this.fechaFiltro);
+      this.cantidadEventos = this.listaItems.length;
+
+    } else if (this.buscar === '') {
+      this.listaItems      = await this.eventoService.getAllEventoByEmpresaId(this.paginaActual);
+      this.cantidadEventos = await this.eventoService.cantEventos();
+
+    } else {
+      this.listaItems      = await this.eventoService.getAllEventoByFilterName(this.paginaActual, this.buscar);
+      this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar);
     }
-    this.inicializarListaItems()
+
+    this.cantidadRegistros = this.cantidadEventos;
+    this.cantidadPaginas   = new Array<number>(Math.ceil(this.cantidadRegistros / 10));
   }
 
-  async inicializarListaItems(){
+  updatePaginaActual(pagina: number): void {
+    this.paginaActual = pagina;
+    this.sincronizarURL();
+    this.inicializarListaItems();
+  }
 
-    this.paginaCero()
+  updatePalabraBuscar(palabraBuscar: string): void {
+    this.buscar       = palabraBuscar;
+    this.paginaActual = 0;
+    this.sincronizarURL();
+    this.inicializarListaItems();
+  }
 
-    if(this.eventoService.fechaFiltroForAbmEvento != ""){
-      this.listaItems = await this.eventoService.getAllEventosByFecha()
-      // TODO cantidad de registros de ese dia
-    }else if(this.buscar == ""){
-      this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.paginaActual)
-      this.cantidadEventos = await this.eventoService.cantEventos()
-    }else{
-      this.listaItems = await this.eventoService.getAllEventoByFilterName(this.paginaActual,this.buscar)
-      this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar)
+  // Actualiza la barra del navegador sin triggear el router (sin re-render)
+  private sincronizarURL(): void {
+    const url = this.router.createUrlTree([], {
+      relativeTo: this.route,
+      queryParams: { page: this.paginaActual, fecha: this.fechaFiltro || null },
+      queryParamsHandling: 'merge',
+    }).toString();
+    this.location.replaceState(url);
+  }
+
+  pagos(id: number): void    { this.router.navigate(['/editEventoPagos',   id]); }
+  extras(id: number): void   { this.router.navigate(['/editEventoExtras',   id]); }
+  catering(id: number): void { this.router.navigate(['/editEventoCatering', id]); }
+  hora(id: number): void     { this.router.navigate(['/editEventoHora',     id]); }
+  ver(id: number): void      { this.router.navigate(['/verEvento',          id]); }
+
+  async eliminar(id: number): Promise<void> {
+    try {
+      await this.eventoService.delete(id);
+      await this.inicializarListaItems();
+    } catch (error) {
+      console.error('Error al eliminar el evento:', error);
     }
-
-    this.cantidadRegistros = this.cantidadEventos
-    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
-    
-    this.updateCantidadPaginas(this.cantidadPaginas)
-  }
-
-  paginaCero(){
-    if(this.realizoBusqueda){
-      this.paginaActual = 0
-    }
-    this.realizoBusqueda = false
-  }
-
-  updatePaginaActual(pagina : number){
-    this.paginaActual = pagina
-    this.inicializarListaItems()
-  }
-
-  updatePalabraBuscar(palabraBuscar: string){
-    this.buscar = palabraBuscar
-    this.paginaCero()
-  }
-  
-  updateCantidadPaginas(cantidadPaginas: number[]){
-    this.cantidadPaginas = cantidadPaginas
-  }
-
-  pagos(){
-    this.guardarPaginaActual()
-    this.router.navigateByUrl('/editEventoPagos')
-  }
-
-  extras(){
-    this.guardarPaginaActual()
-    this.router.navigateByUrl('/editEventoExtras')
-  }
-
-  catering(){
-    this.guardarPaginaActual()
-    this.router.navigateByUrl('/editEventoCatering')
-  }
-
-  hora(){
-    this.guardarPaginaActual()
-    this.router.navigateByUrl('/editEventoHora')
-  }
-  
-  ver(){
-    this.guardarPaginaActual()
-    this.router.navigateByUrl('/verEvento')
-  }
-
-  async eliminar(id : number){
-    (await this.eventoService.delete(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
-  }
-
-  guardarPaginaActual(){
-    this.eventoService.paginaActual = this.paginaActual
   }
 }

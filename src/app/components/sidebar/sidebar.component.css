@@ -27,7 +27,7 @@
 .sidebar-collapsed {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   height: 100%;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .sidebar-list-item {
-  justify-content: start;
+  justify-content: flex-start;
   padding-left: 2rem;
 }
 

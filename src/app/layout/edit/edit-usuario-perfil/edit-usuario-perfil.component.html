@@ -38,7 +38,6 @@
 
 <app-modal-password
     [modal]="modal"
-    [usuarioEditPassword]="usuarioEditPassword"
-    (outputAceptar)="editPassword()"
+    (outputAceptar)="editPassword($event)"
     (outputChangeModal)="changeModal($event)">
 </app-modal-password>
