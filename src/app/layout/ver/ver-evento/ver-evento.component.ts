@@ -18,7 +18,7 @@ import { ExtraVariable } from 'src/app/model/Extra';
 })
 export class VerEventoComponent implements OnInit {
 
-  evento : EventoVer = new EventoVer(0,"", "","","", "",new Capacidad(0,0,0),0,
+  evento : EventoVer = new EventoVer(0,"", "","","", "",0,0,0,
   0,[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   inicio : Time = new Time("0","0")
@@ -98,28 +98,28 @@ export class VerEventoComponent implements OnInit {
 
   editCantAdultosModal(){
     this.tituloModalEditar ="Editar cantidad de adultos"
-    this.inputEditar = this.evento.capacidad.capacidadAdultos
+    this.inputEditar = this.evento.capacidadAdultos
     this.metodoAceptar = this.editCantAdultos.bind(this)
     this.formatoTextarea = false
     this.setModalEditar(!this.modalEditar)
   }
 
   async editCantAdultos(){
-    this.evento.capacidad.capacidadAdultos = this.inputEditar
+    this.evento.capacidadAdultos = this.inputEditar
     await this.eventoService.editEventoCantAdultos(this.evento)
     this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
   }
 
   editCantNinosModal(){
     this.tituloModalEditar="Editar cantidad de niños"
-    this.inputEditar = this.evento.capacidad.capacidadNinos
+    this.inputEditar = this.evento.capacidadNinos
     this.metodoAceptar = this.editNinos.bind(this)
     this.formatoTextarea = false
     this.setModalEditar(!this.modalEditar)
   }
 
   async editNinos(){
-    this.evento.capacidad.capacidadNinos = this.inputEditar
+    this.evento.capacidadNinos = this.inputEditar
     await this.eventoService.editEventoCantNinos(this.evento)
     this.evento.presupuesto = await this.eventoService.getPresupuesto(this.evento.id)
   }

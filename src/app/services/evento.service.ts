@@ -493,8 +493,8 @@ export class EventoService {
   async editEventoCantNinos(eventoVer: EventoVer): Promise<number> {
     const result = await this.editEventoCapacidad(
       eventoVer.id,
-      eventoVer.capacidad.capacidadAdultos,
-      eventoVer.capacidad.capacidadNinos
+      eventoVer.capacidadAdultos,
+      eventoVer.capacidadNinos
     )
     return result.capacidadNinos
   }
@@ -508,8 +508,8 @@ export class EventoService {
   async editEventoCantAdultos(eventoVer: EventoVer): Promise<number> {
     const result = await this.editEventoCapacidad(
       eventoVer.id,
-      eventoVer.capacidad.capacidadAdultos,
-      eventoVer.capacidad.capacidadNinos
+      eventoVer.capacidadAdultos,
+      eventoVer.capacidadNinos
     )
     return result.capacidadAdultos
   }

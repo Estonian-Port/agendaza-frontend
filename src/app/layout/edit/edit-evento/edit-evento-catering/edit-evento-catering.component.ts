@@ -14,7 +14,7 @@ import { ExtraService } from 'src/app/services/extra.service';
 })
 export class EditEventoCateringComponent implements OnInit {
 
-  evento : EventoCatering = new EventoCatering(0, "","",0,"",[],[],0,"", new Capacidad(0,0,0))
+  evento : EventoCatering = new EventoCatering(0, "","",0,"",[],[],0,"",0,0)
   listaExtraTipoCatering : Array<Extra> = []
   listaExtraCateringVariable : Array<ExtraVariable> = []
   extraTipoCateringPresupuesto : number = 0
@@ -56,7 +56,7 @@ export class EditEventoCateringComponent implements OnInit {
   }
 
   sumExtraTipoCatering(extraPrecio : number){
-    this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidad.capacidadAdultos
+    this.extraTipoCateringPresupuesto += extraPrecio * this.evento.capacidadAdultos
     this.sumCateringPresupuesto()
   }
 
@@ -88,7 +88,7 @@ export class EditEventoCateringComponent implements OnInit {
 
   sumCateringPresupuesto(){
     if(this.cateringOtro){
-      this.presupuestoCatering = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidad.capacidadAdultos
+      this.presupuestoCatering = this.extraCateringPresupuesto + this.evento.cateringOtro * this.evento.capacidadAdultos
     }else{
       this.presupuestoCatering = this.extraCateringPresupuesto + this.extraTipoCateringPresupuesto
     }

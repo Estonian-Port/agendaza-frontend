@@ -10,8 +10,8 @@ export class PrecioForm {
 
 export type PrecioJSON = {
   id: number;
-  desde: string; // <-- Cambiado de Date a string
-  hasta: string; // <-- Cambiado de Date a string
+  desde: string;
+  hasta: string;
   precio: number;
   empresaId: number;
   itemId: number;
@@ -20,8 +20,8 @@ export type PrecioJSON = {
 export class Precio {
   constructor(
     public id: number,
-    public desde: string, // <-- Cambiado de Date a string
-    public hasta: string, // <-- Cambiado de Date a string
+    public desde: string,
+    public hasta: string,
     public precio: number,
     public empresaId: number,
     public itemId: number

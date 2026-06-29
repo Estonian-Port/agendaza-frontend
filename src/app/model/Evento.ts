@@ -1,4 +1,3 @@
-import { Capacidad } from "./Capacidad"
 import { Extra, ExtraVariable } from "./Extra"
 import { TipoEventoExtra } from "./TipoEvento"
 import { Cliente, UsuarioAbm } from "./Usuario"
@@ -9,7 +8,8 @@ import { Cliente, UsuarioAbm } from "./Usuario"
 export type EventoJSON = {
     id: number
     nombre: string
-    capacidad: Capacidad
+    capacidadAdultos : number
+    capacidadNinos: number,
     codigo: string
     inicio: string
     fin: string
@@ -55,7 +55,8 @@ export class Evento {
         public inicio: string,
         public fin: string,
         public tipoEventoId: number,
-        public capacidad: Capacidad,
+        public capacidadAdultos : number,
+        public capacidadNinos: number,
         public empresaId: number,
         public extraOtro: number,
         public descuento: number,
@@ -82,7 +83,8 @@ export class Evento {
             eventoJSON.inicio,
             eventoJSON.fin,
             eventoJSON.tipoEventoId,
-            eventoJSON.capacidad,
+            eventoJSON.capacidadAdultos,
+            eventoJSON.capacidadNinos,
             eventoJSON.empresaId,
             eventoJSON.extraOtro,
             eventoJSON.descuento,
@@ -105,8 +107,7 @@ export class Evento {
     static getEventoVoid(): Evento {
         return new Evento(
             0, "", "", "", "", 0,
-            new Capacidad(0, 0, 0),
-            0,
+            0, 0, 0,
             0, 0, [], [],
             0, "", [], [],
             new Cliente(0, "", "", "CLIENTE", "", 0),
@@ -151,7 +152,7 @@ export class Evento {
      * Calcula capacidad total (adultos + niños)
      */
     getCapacidadTotal(): number {
-        return this.capacidad.capacidadAdultos + this.capacidad.capacidadNinos
+        return this.capacidadAdultos + this.capacidadNinos
     }
 }
 
@@ -201,7 +202,8 @@ export class EventoCatering {
         public listaExtraCateringVariable: Array<ExtraVariable>,
         public tipoEventoId: number,
         public fechaEvento: string,
-        public capacidad: Capacidad
+        public capacidadAdultos : number,
+        public capacidadNinos : number
     ) { }
 }
 
@@ -231,7 +233,8 @@ export class EventoVer {
         public inicio: string,
         public fin: string,
         public tipoEventoNombre: string,
-        public capacidad: Capacidad,
+        public capacidadAdultos: number,
+        public capacidadNinos : number,
         public extraOtro: number,
         public descuento: number,
         public listaExtra: Array<Extra>,
@@ -252,8 +255,11 @@ export class EventoVer {
      * Calcula el total de catering según capacidad
      */
     getPresupuestoCatering(): number {
-        if (!this.capacidad) return 0
-        return this.capacidad.capacidadAdultos * (this.listaExtraTipoCatering?.length || 0) + this.cateringOtroDescripcion.length * 10 // Aproximación
+        if(this.cateringOtro != 0){
+            return this.capacidadAdultos *  this.cateringOtro * 10
+
+        }
+        return this.capacidadAdultos * (this.listaExtraTipoCatering?.length || 0)
     }
 
     /**

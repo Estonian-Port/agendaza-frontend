@@ -58,7 +58,7 @@ export class SaveEventoComponent implements OnInit {
   // -- Reemplazar por TipoEventoForm
   precioTipoEvento : number = 0
   duracionTipoEvento : Time = new Time("00","00")
-  capacidadTipoEvento : Capacidad = new Capacidad(0,0,0)
+  capacidadTipoEvento : Capacidad = new Capacidad(0,0)
 
   // Cotizacion
   listaExtra : Array<Extra> = []
@@ -240,10 +240,6 @@ export class SaveEventoComponent implements OnInit {
     this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
     this.capacidadTipoEvento = await this.tipoEventoService.getCapacidadByTipoEventoId(this.evento.tipoEventoId)
     
-    // Cotizacion TODO REVISAR CON NUEVA LOGICA EXTRA CON FILTRO
-    //this.extraCamarera = await this.tipoEventoService.findExtraCamareraByTipoEventoId(this.evento.tipoEventoId)
-    //this.extraNino = await this.tipoEventoService.findExtraNinoByTipoEventoId(this.evento.tipoEventoId)
-
     this.changeTime()
     this.changeDate()
 
@@ -328,35 +324,29 @@ export class SaveEventoComponent implements OnInit {
 
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
-      this.evento.tipoEventoId, this.evento.capacidad, this.evento.empresaId,0,0,[],[],0,"",[],[], 
-      this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
+      this.evento.tipoEventoId, this.evento.capacidadAdultos, this.evento.capacidadNinos, 
+      this.evento.empresaId,0,0,[],[],0,"",[],[], this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
   }
 
   setEvento() {
-    this.evento.capacidad = Capacidad.fromFormControl(this.capacidadAdultos?.getRawValue(), this.capacidadNinos?.getRawValue())
 
     this.evento = new Evento(0,this.nombreEvento?.getRawValue(), "", this.evento.inicio, this.evento.fin, 
-      this.tipoEvento?.getRawValue(), this.evento.capacidad, this.evento.empresaId,this.extraOtro?.getRawValue(),
-      this.descuento?.getRawValue(),this.evento.listaExtra,this.evento.listaExtraVariable,this.cateringOtro?.getRawValue(),
+      this.tipoEvento?.getRawValue(), this.capacidadAdultos?.getRawValue(), this.capacidadNinos?.getRawValue(),
+      this.evento.empresaId,this.extraOtro?.getRawValue(), this.descuento?.getRawValue(),
+      this.evento.listaExtra,this.evento.listaExtraVariable,this.cateringOtro?.getRawValue(),
       this.cateringOtroDescripcion?.getRawValue(),this.evento.listaExtraTipoCatering,
       this.evento.listaExtraCateringVariable, this.evento.cliente, this.evento.encargadoId, this.estado?.getRawValue(), this.anotaciones?.getRawValue())
   }
 
   async changeCapacidadAdultos(){
     this.evento.encargadoId = await this.loginService.getUsuarioId()
-    this.evento.capacidad.capacidadAdultos = this.capacidadAdultos?.getRawValue()
-    
-    //this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
+    this.evento.capacidadAdultos = this.capacidadAdultos?.getRawValue()
     this.sumCateringPresupuesto()
-    
   }
 
   async changeCapacidadNinos(){
     this.evento.encargadoId = await this.loginService.getUsuarioId()
-    this.evento.capacidad.capacidadNinos = this.capacidadNinos?.getRawValue()
-    
-    //this.evento = await this.eventoService.recorrerEspecificaciones(this.evento)
-
+    this.evento.capacidadNinos = this.capacidadNinos?.getRawValue()
     this.extraOtro?.setValue(this.evento.extraOtro)
   }
 

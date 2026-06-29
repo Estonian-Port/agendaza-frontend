@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Capacidad } from 'src/app/model/Capacidad';
 import { TipoEvento } from 'src/app/model/TipoEvento';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
@@ -11,7 +10,7 @@ import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 })
 export class SaveTipoEventoComponent implements OnInit {
 
-  tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",new Capacidad(0,0,0), 0)
+  tipoEvento : TipoEvento = new TipoEvento(0,"","","CORTO",0,0, 0)
   listaDuracion : Array<string> = []
   tipoEventoId : number = 0
 
