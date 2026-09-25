@@ -1,0 +1,12 @@
+<div class="toast-container" *ngIf="toasts.length > 0">
+  <div
+    *ngFor="let toast of toasts; trackBy: trackByToast"
+    class="toast-item toast-item--{{ toast.type }}"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <span>{{ toast.message }}</span>
+    <button type="button" class="toast-close" aria-label="Cerrar" (click)="dismiss(toast.id)">×</button>
+  </div>
+</div>

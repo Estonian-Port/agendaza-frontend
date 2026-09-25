@@ -10,13 +10,15 @@ import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import { LoginService } from '../services/login.service'
+import { ToastService } from '../services/toast.service'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) { }
 
   /**
@@ -51,11 +53,52 @@ export class AuthInterceptor implements HttpInterceptor {
    * Maneja los errores de autenticación
    */
   private handleAuthError(error: HttpErrorResponse): void {
-    // Si el backend está caído (status 0 o 503) o hay error de token (403)
-    if (error.status === 0 || error.status === 403 || error.status === 503) {
+    const errorMessage = this.getErrorMessage(error)
+
+    if (error.status === 0 || error.status === 404 || error.status === 500) {
+      this.toastService.showError(errorMessage)
+    }
+
+    if (error.status === 403 || error.status === 503) {
       this.clearStorage()
       this.router.navigate(['/login'])
     }
+  }
+
+  private getErrorMessage(error: HttpErrorResponse): string {
+    const backendError = error.error
+
+    if (error.status === 0) {
+      return 'Error al conectar con el servidor.'
+    }
+
+    if (typeof backendError === 'string' && backendError.trim().length > 0) {
+      return backendError
+    }
+
+    if (backendError && typeof backendError === 'object') {
+      if (backendError.message) {
+        return backendError.message
+      }
+
+      if (backendError.error) {
+        return backendError.error
+      }
+
+      if (backendError.mensaje) {
+        return backendError.mensaje
+      }
+    }
+
+    if (error.status === 404) {
+      return 'No se encontró la información solicitada.'
+    }
+
+    if (error.status === 500 || error.status === 503) {
+      return 'Error del servidor. Inténtalo nuevamente más tarde.'
+    }
+
+    return 'Ocurrió un error inesperado.'
   }
 
   /**

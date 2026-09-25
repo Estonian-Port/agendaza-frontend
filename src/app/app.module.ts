@@ -79,6 +79,7 @@ import { HoraMinutosComponent } from './components/hora-minutos/hora-minutos.com
 import { ModalPasswordComponent } from './components/modal/modal-password/modal-password.component';
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.com
     HoraMinutosComponent,
     ModalPasswordComponent,
     SaveClausulaComponent,
-    AbmClausulaComponent
+    AbmClausulaComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
