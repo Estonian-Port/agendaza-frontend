@@ -42,3 +42,11 @@ export class CodigoEmpresaId{
 export class PagoEmpresaEncargado{
     constructor(public pago : Pago, public empresaId : number, public usuarioId : number){}
 }
+
+export interface ResumenPagosMes {
+  ingresos: number
+  egresos: number
+  balance: number
+  cantidadPagos: number
+  totalPagos: number
+}

@@ -146,7 +146,8 @@ button:focus {
 .card-extra,
 .card-servicios,
 .card-checkbox,
-.card-pagos{
+.card-pagos,
+.card-pagos-finanzas{
   border-radius: 0.5rem;
   background-color: var(--color-quinario);
   box-shadow: 0 0.3rem 0.4rem rgba(0, 0, 0, 0.1);
@@ -191,6 +192,13 @@ button:focus {
   min-width: 27em;
 }
 
+.card-pagos-finanzas{
+  margin-bottom: 0.3em;
+  padding: 0.5em;
+  min-width: auto;
+  max-width: 100%;
+}
+
 .card-extra:hover{
   background-color: var(--hover-bg-color-secondary);
   transition: background-color 0.4s;
@@ -224,6 +232,12 @@ button:focus {
   display: flex;
   flex-direction: column;
   height: 30vh;
+}
+
+.pagos-container-finanzas{
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
 }
 
 .extra-overflow{

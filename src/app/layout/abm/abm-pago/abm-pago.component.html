@@ -1,29 +1,111 @@
-<div class="abm">
+<div class="container">
 
-    <div class="abm-content">
+    <app-header
+        titulo="Pagos"
+        (outputVolver)="volver()"
+        [botonAgregar]="true"
+        (outputAgregar)="agregarPago()">
+    </app-header>
 
-        <app-abm-data-table-header
-            [realizoBusqueda] = "realizoBusqueda"
-            titulo = 'Pagos'
-            (outputBuscar)="updatePalabraBuscar($event)"
-            (outputPaginaActual)="updatePaginaActual($event)"
-            (outputBusqueda)="updatePrimeraBusqueda($event)">
-        </app-abm-data-table-header>
-
-        <app-abm-data-table-pago class="tabla-panel"
-            (outputEliminar)="eliminar($event)"
-            (outputDescargar)="descargar($event)"
-            [listaItems]="listaItems"
-            [buscar]="buscar">
-        </app-abm-data-table-pago>
-
+    <!-- Resumen -->
+    <div class="row mt-2 align-items-stretch">
+        <div class="col-md-4 p-0">
+            <div class="contenedor-default d-flex flex-column">
+                <div class="text-success mb-2">
+                    <i class="fas fa-arrow-up fa-lg"></i>
+                </div>
+                <h5 class="text-muted">Ingresos</h5>
+                <h3 class="text-success">${{resumen.ingresos | formatNumero}}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="contenedor-default d-flex flex-column">
+                <div class="text-danger mb-2">
+                    <i class="fas fa-arrow-down fa-lg"></i>
+                </div>
+                <h5 class="text-muted">Egresos</h5>
+                <h3 class="text-danger">${{resumen.egresos | formatNumero}}</h3>
+            </div>
+        </div>
+        <div class="col-md-4 p-0">
+            <div class="contenedor-default d-flex flex-column">
+                <div class="text-primary mb-2">
+                    <i class="fas fa-money-bill-wave fa-lg"></i>
+                </div>
+                <h5 class="text-muted">Balance</h5>
+                <h3 [class.text-success]="resumen.balance >= 0" [class.text-danger]="resumen.balance < 0">
+                    ${{resumen.balance | formatNumero}}
+                </h3>
+            </div>
+        </div>
     </div>
 
-    <app-abm-data-table-paginacion
-        (outputPaginaActual)="updatePaginaActual($event)"
-        [cantidadRegistros]="cantidadRegistros"
-        [paginaActual]="paginaActual"
-        [cantidadPaginas]="cantidadPaginas">
-    </app-abm-data-table-paginacion>
+    <!-- Navegador de mes + lista -->
+    <div class="row contenedor-default mt-2">
+        <div class="form-group">
 
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <button class="btn btn-outline-primary" (click)="mesAnterior()" [disabled]="cargando">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h4 class="mb-0">{{nombreMes}}</h4>
+                <button class="btn btn-outline-primary" (click)="mesSiguiente()" [disabled]="esMesActual || cargando">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="pagos-container-finanzas">
+                <div class="extra-overflow">
+                    <div *ngIf="!cargando && listaPago.length === 0" class="text-center text-muted p-3">
+                        No hay pagos en este mes
+                    </div>
+
+                    <div class="extra-box mb-2" *ngFor="let pago of listaPago">
+                        <div class="card-pagos-finanzas p-3 border rounded shadow-sm">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                                
+                                <!-- Información del pago -->
+                                <div class="d-flex align-items-center flex-wrap" style="gap: 15px;">
+                                    <span class="text-muted">
+                                        <i class="far fa-calendar-alt me-2"></i>{{pago.fecha | date: "dd/MM/yy"}}
+                                    </span>
+                                    <strong class="text-dark">{{pago.nombreEvento}}</strong>
+                                    <span class="badge badge-light border text-dark">{{pago.medioDePago | formatEnum}}</span>
+                                    <span class="text-success font-weight-bold">${{pago.monto | formatNumero }}</span>
+                                </div>
+
+                                <!-- Botones de acción -->
+                                <div class="mt-2 mt-md-0 d-flex align-items-center">
+                                    <button (click)="descargar(pago.id)" class="btn btn-link p-1 mx-1" title="Descargar">
+                                        <i class="fas fa-download text-primary fa-lg"></i>
+                                    </button>
+                                    <button (click)="editarPago(pago.id)" class="btn btn-link p-1 mx-1" title="Editar">
+                                        <i class="fas fa-edit text-warning fa-lg"></i>
+                                    </button>
+                                    <button (click)="modalParaEliminar(pago.id, pago.nombreEvento)" class="btn btn-link p-1 mx-1" title="Eliminar">
+                                        <i class="fas fa-trash text-danger fa-lg"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-2">
+                <b>Total de pagos ({{resumen.cantidadPagos}})</b>
+                <b>${{resumen.totalPagos | formatNumero}}</b>
+            </div>
+        </div>
+    </div>
 </div>
+
+<app-modal-basico
+    (outputAceptar)="eliminar()"
+    (outputChangeModal)="setModal($event)"
+    [modal]="modal"
+    [titulo]="tituloModal"
+    [cuerpo]="cuerpoModal"
+    [boton]="botonModal">
+</app-modal-basico>

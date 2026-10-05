@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { Pago, ResumenPagosMes } from 'src/app/model/Pago';
 import { PagoService } from 'src/app/services/pago.service';
 
 @Component({
@@ -7,73 +10,104 @@ import { PagoService } from 'src/app/services/pago.service';
 })
 export class AbmPagoComponent implements OnInit {
 
-  buscar = ''
-  listaItems : Array<any> = []
-  cantidadRegistros : number=0
-  cantidadPaginas : number[] = []
-  paginaActual : number = 0
-  realizoBusqueda : Boolean = true
+  private readonly MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+    'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
-  constructor(private pagoService : PagoService) { }
+  hoy = new Date()
+  mes = this.hoy.getMonth() + 1
+  anio = this.hoy.getFullYear()
 
-  async ngOnInit(): Promise<void> {
-    this.inicializarListaItems()
+  listaPago: Array<Pago> = []
+  resumen: ResumenPagosMes = { ingresos: 0, egresos: 0, balance: 0, cantidadPagos: 0, totalPagos: 0 }
+  cargando = false
+  private requestId = 0   // evita que una respuesta vieja pise a una nueva si se clickea rápido
+
+  modal = false
+  idEliminar = 0
+  cuerpoModal = ""
+  tituloModal = ""
+  botonModal = ""
+
+  constructor(
+    private pagoService: PagoService,
+    private router: Router,
+    private location: Location
+  ) { }
+
+  async ngOnInit() {
+    await this.cargarMes()
   }
 
-  async inicializarListaItems(){
+  get nombreMes(): string {
+    return `${this.MESES[this.mes - 1]} ${this.anio}`
+  }
 
-    this.updatePalabraBuscar(this.buscar)
-    this.paginaCero()
-    
-    if(this.buscar == ""){
-      this.listaItems = await this.pagoService.getAllPagoByEmpresaId(this.paginaActual)
-      this.cantidadRegistros = await this.pagoService.cantPagos()
-    }else{
-      this.listaItems = await this.pagoService.getAllPagoByFilter(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.pagoService.cantPagosFiltrados(this.buscar)
+  get esMesActual(): boolean {
+    return this.mes === this.hoy.getMonth() + 1 && this.anio === this.hoy.getFullYear()
+  }
+
+  async mesAnterior() {
+    if (this.mes === 1) { this.mes = 12; this.anio-- } else { this.mes-- }
+    await this.cargarMes()
+  }
+
+  async mesSiguiente() {
+    if (this.esMesActual) return
+    if (this.mes === 12) { this.mes = 1; this.anio++ } else { this.mes++ }
+    await this.cargarMes()
+  }
+
+  async cargarMes() {
+    const id = ++this.requestId
+    this.cargando = true
+    try {
+      const [resumen, pagos] = await Promise.all([
+        this.pagoService.getResumenPagosMes(this.mes, this.anio),
+        this.pagoService.getAllPagoByMes(this.mes, this.anio)
+      ])
+      if (id !== this.requestId) return
+      this.resumen = resumen
+      this.listaPago = pagos
+    } catch (error) {
+      console.error('Error al cargar los pagos del mes', error)
+    } finally {
+      if (id === this.requestId) this.cargando = false
     }
-
-    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
-    this.updateCantidadPaginas(this.cantidadPaginas)
   }
 
-  paginaCero(){
-    if(this.realizoBusqueda){
-      this.paginaActual = 0
+  agregarPago() { this.router.navigate(['/savePago']) }
+  editarPago(pagoId: number) { this.router.navigate(['/savePago'], { queryParams: { pagoId } }) }
+  volver() { this.location.back() }
+
+  modalParaEliminar(id: number, nombre: string) {
+    this.idEliminar = id
+    this.tituloModal = "Eliminar Pago"
+    this.cuerpoModal = "Quiere eliminar el pago del evento: " + nombre
+    this.botonModal = "Eliminar"
+    this.setModal(!this.modal)
+  }
+
+  setModal(modal: boolean) { this.modal = modal }
+
+  async eliminar() {
+    try {
+      await this.pagoService.delete(this.idEliminar)
+      await this.cargarMes()
+    } catch (error) {
+      console.error("Error al eliminar el pago", error)
     }
-    this.realizoBusqueda = false
-  }
-
-  updatePaginaActual(page : number){
-    this.paginaActual = page
-    this.inicializarListaItems()
-  }
-
-  updatePrimeraBusqueda(busqueda: Boolean){
-    this.realizoBusqueda = busqueda
-  }
-
-  updatePalabraBuscar(palabraBuscar: string){
-    this.buscar = palabraBuscar
-  }
-
-  updateCantidadPaginas(cantidadPaginas: number[]){
-    this.cantidadPaginas = cantidadPaginas
-  }
-
-  async eliminar(id : number){
-    await this.pagoService.delete(id)
-    this.inicializarListaItems()
   }
 
   async descargar(id: number) {
-    const blob = await this.pagoService.descargarPago(id)
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'comprobante_de_pago.pdf';
-    link.click();
-    link.remove();
-  } catch (error: any) {
-    console.error('Error al descargar el PDF:', error);
+    try {
+      const blob = await this.pagoService.descargarPago(id)
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'comprobante_de_pago.pdf'
+      link.click()
+      link.remove()
+    } catch (error: any) {
+      console.error('Error al descargar el PDF:', error)
+    }
   }
 }

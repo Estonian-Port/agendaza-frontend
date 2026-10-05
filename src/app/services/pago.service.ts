@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
-import { Pago, PagoJSON } from '../model/Pago';
+import { Pago, PagoJSON, ResumenPagosMes } from '../model/Pago';
 import { LoginService } from './login.service';
 import { EventoPago } from '../model/Evento';
 import { UsuarioService } from './usuario.service';
@@ -138,5 +138,25 @@ export class PagoService {
     );
     const res = await lastValueFrom(item$);
     return res.data;
+  }
+
+    async getResumenPagosMes(mes: number, anio: number): Promise<ResumenPagosMes> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const resumen$ = this.httpClient.get<{ data: ResumenPagosMes }>(
+      `${BASE}/empresa/${empresaId}/resumen`,
+      { params: { mes, anio } }
+    );
+    const res = await lastValueFrom(resumen$);
+    return res.data;
+  }
+
+  async getAllPagoByMes(mes: number, anio: number) {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const listaItem$ = this.httpClient.get<{ data: PagoJSON[] }>(
+      `${BASE}/empresa/${empresaId}/mes`,
+      { params: { mes, anio } }
+    );
+    const res = await lastValueFrom(listaItem$);
+    return res.data.map((pago) => Pago.fromJson(pago));
   }
 }
