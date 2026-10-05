@@ -52,10 +52,3 @@
     letter-spacing: 0.5px;
     pointer-events: none;
 }
-
-@media (max-width : 870px) {
-    
-    .logo{
-        display: none;
-    }
-}

@@ -24,6 +24,7 @@ import { ServicioService } from 'src/app/services/servicio.service';
 import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-save-evento',
@@ -80,7 +81,6 @@ export class SaveEventoComponent implements OnInit {
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
   usuarioCondicional : boolean = false
-  eventoSaveError : ErrorMensaje = new ErrorMensaje(false, 'Error al crear el Evento, revise los campos cargados')
 
   // Modal
   @ViewChild(ModalInformativoComponent) 
@@ -107,7 +107,7 @@ export class SaveEventoComponent implements OnInit {
   constructor(public tipoEventoService : TipoEventoService, public servicioSerice : ServicioService, 
     public empresaService : EmpresaService, public extraService : ExtraService, public usuarioService : UsuarioService,
     public eventoService : EventoService, public loginService : LoginService,
-    public router : Router, private formBuilder: FormBuilder) { 
+    public router : Router, private formBuilder: FormBuilder, public toastService : ToastService) { 
 
       this.formGroup = this.formBuilder.group({
         tipoEventoForm: this.formBuilder.group({
@@ -549,29 +549,30 @@ export class SaveEventoComponent implements OnInit {
   }
   
   async enviarFormulario() {
+  this.submited = true
+  this.actualizarValidStepBox()
 
-    this.submited = true
+  if (this.formGroup.valid) {
+    this.spinnerVisible = true
 
-    this.actualizarValidStepBox()
-
-    if(this.formGroup.valid){
-
-      this.spinnerVisible = true
-
-      try{
-        // Setea la fecha
-        this.setFechaInicioAndFin()
-        this.setCliente()
-        this.setEvento()
-        await this.eventoService.save(this.evento)
-        this.modal.mostrarModal()
-        
-      }catch(error){
-        this.eventoSaveError.condicional = true
-        this.spinnerVisible = false
-      }
+    try {
+      // Setea la fecha
+      this.setFechaInicioAndFin()
+      this.setCliente()
+      this.setEvento()
+      
+      await this.eventoService.save(this.evento)
+      this.modal.mostrarModal()
+      
+    } catch (error) {
+      this.toastService.showError('Error al guardar el evento.')
+    } finally {
+      this.spinnerVisible = false
     }
+  } else {
+    this.toastService.showError('Hay campos obligatorios sin completar o con errores. Por favor, revise los formularios.')
   }
+}
 
   actualizarValidStepBox(){
     if(this.submited){

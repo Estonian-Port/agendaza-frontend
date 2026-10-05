@@ -387,9 +387,6 @@
                                     <h2>Finalizar reserva</h2>
                                     <p>Complete con los datos del cliente</p>
                                 </div>
-                                <div *ngIf='error.condicional' class="col-4" [@fadeOut]>
-                                    <div class="alert alert-danger">{{error.mensaje}}</div>
-                                </div>
                                 <div *ngIf='usuarioCondicional' id="clienteEncontrado" class="col-4">
                                     <div class="alert alert-success" role="alert">Cliente encontrado </div>
                                 </div>
@@ -404,7 +401,7 @@
                                             </button>
                                         </label>
                                         <div *ngIf="celular?.invalid && celular?.touched || submited">
-                                            <span *ngIf="celular?.errors" class="invalid-validator">Ingrese celular</span>
+                                            <span *ngIf="celular?.errors" class="invalid-validator">Ingrese celular valido</span>
                                         </div>
                                     </div>
                                     <input type="number" class="form-control" 
@@ -414,12 +411,19 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="email" class="form-label">E-mail 
-                                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorEmail()">
-                                            <i class="fas fa-search fa-xs"></i>
-                                        </button>
-                                    </label>
-                                    <input type="email" class="form-control email" formControlName="email">
+                                    <div class="label-with-error">
+                                        <label for="email" class="form-label">E-mail
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="buscarClientePorEmail()">
+                                                <i class="fas fa-search fa-xs"></i>
+                                            </button>
+                                        </label>
+                                        <div *ngIf="(email?.invalid && email?.touched) || submited">
+                                            <span *ngIf="email?.errors" class="invalid-validator">Ingrese email valido</span>
+                                        </div>
+                                    </div>
+
+                                    <input type="email" class="form-control email" formControlName="email" 
+                                    [ngClass]="{'is-invalid': email?.errors && submited }">
                                     <small type="text" class="form-text text-muted">(Si no carga email no se enviará el comprobante)</small>
                                 </div>
                             </div>
@@ -467,11 +471,6 @@
                                     <label for="anotaciones" class="form-label">Anotaciones</label> 
                                     <input type="text" class="form-control" formControlName="anotaciones">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div *ngIf='eventoSaveError.condicional' class="row col-10">
-                                <div class="alert alert-danger">{{eventoSaveError.mensaje}}</div>
                             </div>
                         </div>
                     </div>

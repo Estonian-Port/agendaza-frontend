@@ -21,48 +21,31 @@ export class AuthInterceptor implements HttpInterceptor {
     private toastService: ToastService
   ) { }
 
-  /**
-   * Intercepta las peticiones HTTP para añadir el token de autenticación
-   */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.loginService.getToken()
 
-    // Si hay token, añadirlo al header Authorization
-    if (token) {
-      const cloned = request.clone({
-        headers: request.headers.set("Authorization", "Bearer " + token)
-      })
+    const authReq = token
+      ? request.clone({ headers: request.headers.set('Authorization', `Bearer ${token}`) })
+      : request
 
-      return next.handle(cloned).pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.handleAuthError(error)
-          return throwError(() => error)
-        })
-      )
-    }
-
-    return next.handle(request).pipe(
+    return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.handleAuthError(error)
+        this.handleAuthAndToast(error)
         return throwError(() => error)
       })
     )
   }
 
-  /**
-   * Maneja los errores de autenticación
-   */
-  private handleAuthError(error: HttpErrorResponse): void {
-    const errorMessage = this.getErrorMessage(error)
-
-    if (error.status === 0 || error.status === 404 || error.status === 500) {
-      this.toastService.showError(errorMessage)
-    }
-
-    if (error.status === 403 || error.status === 503) {
+  private handleAuthAndToast(error: HttpErrorResponse): void {
+    // 1. Redirección por sesión expirada
+    if (error.status === 401) {
       this.clearStorage()
       this.router.navigate(['/login'])
     }
+
+    // 2. Muestra SIEMPRE el Toast con el mensaje real que viene del backend
+    const errorMessage = this.getErrorMessage(error)
+    this.toastService.showError(errorMessage)
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
@@ -72,38 +55,23 @@ export class AuthInterceptor implements HttpInterceptor {
       return 'Error al conectar con el servidor.'
     }
 
+    // Captura string directo devuelto por el backend (ej: "Usuario no encontrado")
     if (typeof backendError === 'string' && backendError.trim().length > 0) {
       return backendError
     }
 
+    // Captura objeto JSON devuelto por Spring Boot (message, error, mensaje)
     if (backendError && typeof backendError === 'object') {
-      if (backendError.message) {
-        return backendError.message
-      }
-
-      if (backendError.error) {
-        return backendError.error
-      }
-
-      if (backendError.mensaje) {
-        return backendError.mensaje
-      }
+      return backendError.message || backendError.error || backendError.mensaje || 'Ocurrió un error en la solicitud.'
     }
 
-    if (error.status === 404) {
-      return 'No se encontró la información solicitada.'
-    }
-
-    if (error.status === 500 || error.status === 503) {
-      return 'Error del servidor. Inténtalo nuevamente más tarde.'
-    }
+    if (error.status === 401) return 'Sesión expirada o no autorizada.'
+    if (error.status === 404) return 'No se encontró el recurso solicitado.'
+    if (error.status === 500 || error.status === 503) return 'Error interno del servidor.'
 
     return 'Ocurrió un error inesperado.'
   }
 
-  /**
-   * Limpia el almacenamiento local
-   */
   private clearStorage(): void {
     localStorage.removeItem('token')
     localStorage.removeItem('session')
