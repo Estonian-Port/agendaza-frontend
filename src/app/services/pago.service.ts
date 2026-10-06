@@ -99,7 +99,7 @@ export class PagoService {
 
   async save(pago: Pago) {
     pago.empresaId = this.usuarioService.getEmpresaId();
-    pago.usuarioId = await this.loginService.getUsuarioId();
+    pago.usuarioId = this.loginService.getUsuarioId();
     const item$ = this.httpClient.post<{ data: Pago }>(`${BASE}`, pago);
     const res = await lastValueFrom(item$);
     return res.data;

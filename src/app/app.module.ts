@@ -80,6 +80,7 @@ import { ModalPasswordComponent } from './components/modal/modal-password/modal-
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { ToastComponent } from './components/toast/toast.component';
     SaveUsuarioComponent,
     SaveClienteComponent,
     SavePagoComponent,
+    SaveGastoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
     EditUsuarioComponent,

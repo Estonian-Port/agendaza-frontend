@@ -3,6 +3,9 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Pago, ResumenPagosMes } from 'src/app/model/Pago';
 import { PagoService } from 'src/app/services/pago.service';
+import { GastoService } from 'src/app/services/gasto.service';
+import { Gasto, Movimiento } from 'src/app/model/Gasto';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-abm-pago',
@@ -17,21 +20,25 @@ export class AbmPagoComponent implements OnInit {
   mes = this.hoy.getMonth() + 1
   anio = this.hoy.getFullYear()
 
-  listaPago: Array<Pago> = []
-  resumen: ResumenPagosMes = { ingresos: 0, egresos: 0, balance: 0, cantidadPagos: 0, totalPagos: 0 }
+  listaMovimiento: Array<Movimiento> = []
+  resumen: ResumenPagosMes = { ingresos: 0, egresos: 0, balance: 0, cantidadIngresos: 0, cantidadEgresos: 0 }
   cargando = false
   private requestId = 0   // evita que una respuesta vieja pise a una nueva si se clickea rápido
 
   modal = false
-  idEliminar = 0
+  movimientoEliminar: Movimiento | null = null
   cuerpoModal = ""
   tituloModal = ""
   botonModal = ""
+  descargasEnCurso = new Set<number>()
+  descargandoBalance = false
 
   constructor(
     private pagoService: PagoService,
+    private gastoService: GastoService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toastService: ToastService
   ) { }
 
   async ngOnInit() {
@@ -61,28 +68,51 @@ export class AbmPagoComponent implements OnInit {
     const id = ++this.requestId
     this.cargando = true
     try {
-      const [resumen, pagos] = await Promise.all([
+      const [resumen, pagos, gastos] = await Promise.all([
         this.pagoService.getResumenPagosMes(this.mes, this.anio),
-        this.pagoService.getAllPagoByMes(this.mes, this.anio)
+        this.pagoService.getAllPagoByMes(this.mes, this.anio),
+        this.gastoService.getAllGastoByMes(this.mes, this.anio)
       ])
       if (id !== this.requestId) return
       this.resumen = resumen
-      this.listaPago = pagos
+      this.listaMovimiento = this.unir(pagos, gastos)
     } catch (error) {
-      console.error('Error al cargar los pagos del mes', error)
+      console.error('Error al cargar los movimientos del mes', error)
     } finally {
       if (id === this.requestId) this.cargando = false
     }
   }
 
+  private unir(pagos: Pago[], gastos: Gasto[]): Movimiento[] {
+    const ingresos: Movimiento[] = pagos.map(p => ({
+      tipo: 'INGRESO', id: p.id, fecha: p.fecha, titulo: p.nombreEvento,
+      etiqueta: p.medioDePago, monto: p.monto
+    }))
+    const egresos: Movimiento[] = gastos.map(g => ({
+      tipo: 'EGRESO', id: g.id, fecha: g.fecha, titulo: g.descripcion,
+      etiqueta: g.tipoGasto, monto: g.monto
+    }))
+    return [...ingresos, ...egresos]
+      .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
+  }
+
   agregarPago() { this.router.navigate(['/savePago']) }
-  editarPago(pagoId: number) { this.router.navigate(['/savePago'], { queryParams: { pagoId } }) }
+  agregarGasto() { this.router.navigate(['/saveGasto']) }
+
+  editar(m: Movimiento) {
+    if (m.tipo === 'INGRESO') this.router.navigate(['/savePago'], { queryParams: { pagoId: m.id } })
+    else this.router.navigate(['/saveGasto'], { queryParams: { gastoId: m.id } })
+  }
+
   volver() { this.location.back() }
 
-  modalParaEliminar(id: number, nombre: string) {
-    this.idEliminar = id
-    this.tituloModal = "Eliminar Pago"
-    this.cuerpoModal = "Quiere eliminar el pago del evento: " + nombre
+  modalParaEliminar(m: Movimiento) {
+    this.movimientoEliminar = m
+    const esIngreso = m.tipo === 'INGRESO'
+    this.tituloModal = esIngreso ? "Eliminar Pago" : "Eliminar Gasto"
+    this.cuerpoModal = esIngreso
+      ? "Quiere eliminar el pago del evento: " + m.titulo
+      : "Quiere eliminar el gasto: " + m.titulo
     this.botonModal = "Eliminar"
     this.setModal(!this.modal)
   }
@@ -90,15 +120,20 @@ export class AbmPagoComponent implements OnInit {
   setModal(modal: boolean) { this.modal = modal }
 
   async eliminar() {
+    const m = this.movimientoEliminar
+    if (!m) return
     try {
-      await this.pagoService.delete(this.idEliminar)
+      if (m.tipo === 'INGRESO') await this.pagoService.delete(m.id)
+      else await this.gastoService.delete(m.id)
       await this.cargarMes()
     } catch (error) {
-      console.error("Error al eliminar el pago", error)
+      console.error("Error al eliminar el movimiento", error)
     }
   }
 
   async descargar(id: number) {
+    if (this.descargasEnCurso.has(id)) return;
+    this.descargasEnCurso.add(id);
     try {
       const blob = await this.pagoService.descargarPago(id)
       const link = document.createElement('a')
@@ -108,6 +143,18 @@ export class AbmPagoComponent implements OnInit {
       link.remove()
     } catch (error: any) {
       console.error('Error al descargar el PDF:', error)
+    } finally {
+      this.descargasEnCurso.delete(id)
+    }
+  }
+
+  async descargarBalance(): Promise<void> {
+    if (this.descargandoBalance) return
+    this.descargandoBalance = true
+    try {
+      this.toastService.showInfo('La descarga del balance en PDF todavía no está disponible')
+    } finally {
+      this.descargandoBalance = false
     }
   }
 }

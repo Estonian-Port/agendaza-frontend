@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { Time } from 'src/app/model/Time';
@@ -9,8 +8,9 @@ import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { EventoService } from 'src/app/services/evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
 import { ExtraVariable } from 'src/app/model/Extra';
+import { ToastService } from 'src/app/services/toast.service';
+
 
 @Component({
   selector: 'app-edit-evento',
@@ -29,10 +29,6 @@ export class VerEventoComponent implements OnInit {
   extraCatering : boolean = false
   tipoCatering : boolean = false
 
-  eventoReenviarMail : boolean = false
-  eventoErrorReenviarMail = new ErrorMensaje(false, '')
-  errors = []
-
   modalEditar = false
   tituloModalEditar=""
   inputEditar! : any
@@ -44,6 +40,8 @@ export class VerEventoComponent implements OnInit {
   formatoTextarea = false
 
   encargadoNombreCompleto : string = ""
+  descargandoComprobante = false
+  reenviandoMail = false
 
   constructor(
     private eventoService : EventoService, 
@@ -51,7 +49,8 @@ export class VerEventoComponent implements OnInit {
     private usuarioService : UsuarioService,
     private router : Router, 
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private toastService: ToastService
   ) { }
 
   async ngOnInit() {
@@ -179,33 +178,39 @@ export class VerEventoComponent implements OnInit {
     this.location.back();
   }
 
-  async descargarComprobante(){
-    try{
-      const blob = await this.eventoService.descargarEvento(this.evento.id)
+  async descargarComprobante(): Promise<void> {
+    if (this.descargandoComprobante) return;
+    this.descargandoComprobante = true;
+    try {
+      const blob = await this.eventoService.descargarEvento(this.evento.id);
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'comprobante_de_evento.pdf';
       link.click();
       link.remove();
-    } catch (error: any) {
-      console.error('Error al descargar el PDF:', error);
+      this.toastService.showSuccess('Comprobante descargado correctamente');
+    } catch (error: unknown) {
+      this.toastService.showError('Ocurrió un error al descargar el comprobante');
+    } finally {
+      this.descargandoComprobante = false;
     }
   }
 
-  async reenviarMail(){
-    try{
-      this.eventoReenviarMail = await this.eventoService.reenviarMail(this.evento.id)
-    }catch(error: any){
-      this.eventoErrorReenviarMail.condicional = true
-      this.eventoReenviarMail = false
-      
-      mostrarErrorConMensaje(this, error)
-  
-      this.errors.forEach(error => { this.eventoErrorReenviarMail.mensaje = error })
-  
-      setTimeout(() => {
-        this.eventoErrorReenviarMail.condicional = false;
-      }, 3000);
+  async reenviarMail(): Promise<void> {
+    if (this.reenviandoMail) return;
+    this.reenviandoMail = true;
+    try {
+      const enviado = await this.eventoService.reenviarMail(this.evento.id);
+
+      if (enviado) {
+        this.toastService.showSuccess('Mail reenviado correctamente al cliente');
+      } else {
+        this.toastService.showError('No se pudo reenviar el correo al cliente');
+      }
+    } catch (error: unknown) {
+      this.toastService.showError('Ocurrió un error al reenviar el correo');
+    } finally {
+      this.reenviandoMail = false;
     }
   }
 }

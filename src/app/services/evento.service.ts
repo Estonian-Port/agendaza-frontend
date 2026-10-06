@@ -18,7 +18,6 @@ import { CustomResponse } from 'src/util/customResponse'
 
 const BASE = `${REST_SERVER_URL}/v1/eventos`;
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -43,6 +42,20 @@ export class EventoService {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoVer>>(
         REST_SERVER_URL + '/v1/eventos/' + eventoId
+      )
+    )
+    return response.data
+  }
+
+  /**
+   * Obtiene el ID de un evento por su código dentro de la empresa activa
+   * GET /v1/eventos/codigo/{codigo}/empresa/{empresaId}
+   */
+  async getEventoIdByCodigo(codigo: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId()
+    const response = await lastValueFrom(
+      this.httpClient.get<CustomResponse<number>>(
+        `${BASE}/codigo/${encodeURIComponent(codigo)}/empresa/${empresaId}`
       )
     )
     return response.data

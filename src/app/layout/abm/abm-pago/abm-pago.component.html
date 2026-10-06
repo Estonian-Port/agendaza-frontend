@@ -4,7 +4,12 @@
         titulo="Pagos"
         (outputVolver)="volver()"
         [botonAgregar]="true"
-        (outputAgregar)="agregarPago()">
+        (outputAgregar)="agregarPago()"
+        [botonAgregarSecundario]="true"
+        (outputAgregarSecundario)="agregarGasto()"
+        [botonDescargar]="true"
+        [descargaEnCurso]="descargandoBalance"
+        (outputDescargar)="descargarBalance()">
     </app-header>
 
     <!-- Resumen -->
@@ -56,33 +61,40 @@
 
             <div class="pagos-container-finanzas">
                 <div class="extra-overflow">
-                    <div *ngIf="!cargando && listaPago.length === 0" class="text-center text-muted p-3">
-                        No hay pagos en este mes
+                    <div *ngIf="!cargando && listaMovimiento.length === 0" class="text-center text-muted p-3">
+                        No hay movimientos en este mes
                     </div>
 
-                    <div class="extra-box mb-2" *ngFor="let pago of listaPago">
+                    <div class="extra-box mb-2" *ngFor="let m of listaMovimiento">
                         <div class="card-pagos-finanzas p-3 border rounded shadow-sm">
                             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                                
-                                <!-- Información del pago -->
+
+                                <!-- Información del movimiento -->
                                 <div class="d-flex align-items-center flex-wrap" style="gap: 15px;">
+                                    <i class="fas" [ngClass]="m.tipo === 'INGRESO' ? 'fa-arrow-up text-success' : 'fa-arrow-down text-danger'"></i>
                                     <span class="text-muted">
-                                        <i class="far fa-calendar-alt me-2"></i>{{pago.fecha | date: "dd/MM/yy"}}
+                                        <i class="far fa-calendar-alt me-2"></i>{{m.fecha | date: "dd/MM/yy"}}
                                     </span>
-                                    <strong class="text-dark">{{pago.nombreEvento}}</strong>
-                                    <span class="badge badge-light border text-dark">{{pago.medioDePago | formatEnum}}</span>
-                                    <span class="text-success font-weight-bold">${{pago.monto | formatNumero }}</span>
+                                    <strong class="text-dark">{{m.titulo | truncarTexto}}</strong>
+                                    <span class="badge badge-light border text-dark">{{m.etiqueta | formatEnum}}</span>
+                                    <span class="font-weight-bold" [ngClass]="m.tipo === 'INGRESO' ? 'text-success' : 'text-danger'">
+                                        {{m.tipo === 'INGRESO' ? '+' : '-'}}${{m.monto | formatNumero}}
+                                    </span>
                                 </div>
 
                                 <!-- Botones de acción -->
                                 <div class="mt-2 mt-md-0 d-flex align-items-center">
-                                    <button (click)="descargar(pago.id)" class="btn btn-link p-1 mx-1" title="Descargar">
-                                        <i class="fas fa-download text-primary fa-lg"></i>
+                                    <button *ngIf="m.tipo === 'INGRESO'" type="button" (click)="descargar(m.id)"
+                                        class="btn btn-link p-1 mx-1" title="Descargar"
+                                        [disabled]="descargasEnCurso.has(m.id)"
+                                        [attr.aria-label]="descargasEnCurso.has(m.id) ? 'Descargando comprobante' : 'Descargar comprobante'">
+                                        <span *ngIf="descargasEnCurso.has(m.id)" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                                        <i *ngIf="!descargasEnCurso.has(m.id)" class="fas fa-download text-primary fa-lg" aria-hidden="true"></i>
                                     </button>
-                                    <button (click)="editarPago(pago.id)" class="btn btn-link p-1 mx-1" title="Editar">
+                                    <button (click)="editar(m)" class="btn btn-link p-1 mx-1" title="Editar">
                                         <i class="fas fa-edit text-warning fa-lg"></i>
                                     </button>
-                                    <button (click)="modalParaEliminar(pago.id, pago.nombreEvento)" class="btn btn-link p-1 mx-1" title="Eliminar">
+                                    <button (click)="modalParaEliminar(m)" class="btn btn-link p-1 mx-1" title="Eliminar">
                                         <i class="fas fa-trash text-danger fa-lg"></i>
                                     </button>
                                 </div>
@@ -94,8 +106,8 @@
             </div>
 
             <div class="d-flex justify-content-between mt-2">
-                <b>Total de pagos ({{resumen.cantidadPagos}})</b>
-                <b>${{resumen.totalPagos | formatNumero}}</b>
+                <b>Total de pagos ({{resumen.cantidadIngresos}})</b>
+                <b>Total de gastos ({{resumen.cantidadEgresos}})</b>
             </div>
         </div>
     </div>

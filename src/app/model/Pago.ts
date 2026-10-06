@@ -21,8 +21,8 @@ export class Pago{
     
     static fromJson(PagoJSON: PagoJSON): any {
         return new Pago(PagoJSON.id, PagoJSON.monto, PagoJSON.codigo, 
-            PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fecha,
-            PagoJSON.fechaEvento, PagoJSON.empresaId, PagoJSON.usuarioId,
+            PagoJSON.nombreEvento, PagoJSON.medioDePago, PagoJSON.fechaEvento,
+            PagoJSON.fecha, PagoJSON.empresaId, PagoJSON.usuarioId,
             PagoJSON.concepto, PagoJSON.numeroCuota)
        }
     
@@ -47,6 +47,6 @@ export interface ResumenPagosMes {
   ingresos: number
   egresos: number
   balance: number
-  cantidadPagos: number
-  totalPagos: number
+  cantidadIngresos: number
+  cantidadEgresos: number
 }

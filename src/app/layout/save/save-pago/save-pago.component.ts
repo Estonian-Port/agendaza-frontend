@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Pago } from 'src/app/model/Pago';
 import { PagoService } from 'src/app/services/pago.service';
-import { ErrorMensaje, mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { mostrarErrorConMensaje } from 'src/util/errorHandler';
+import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
   selector: 'app-save-pago',
@@ -17,15 +18,14 @@ export class SavePagoComponent implements OnInit {
   
   listaMedioDePago : Array<string> = []
   listaConcepto : Array<string> = []
-  
-  errors = []
-  error : ErrorMensaje = new ErrorMensaje(false, '')
+
   botonBuscarDisabled : boolean = false
 
   constructor(
     private pagoService : PagoService, 
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private eventoService: EventoService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -59,15 +59,10 @@ export class SavePagoComponent implements OnInit {
 
   async buscar(){
     try {
+      this.eventoId = await this.eventoService.getEventoIdByCodigo(this.codigo)
       this.pago = await this.pagoService.getEventoForSavePago(this.eventoId)
-      
-      this.pago.medioDePago = "TRANSFERENCIA"
-      this.pago.concepto = "SENIA"
-      this.error.condicional = false
     } catch (error) {
-      this.error.condicional = true
-      mostrarErrorConMensaje(this, error)
-      this.errors.forEach(error => { this.error.mensaje = error })
+      mostrarErrorConMensaje(this, error);
     }
   }
 

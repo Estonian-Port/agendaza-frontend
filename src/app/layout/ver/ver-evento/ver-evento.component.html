@@ -3,20 +3,13 @@
     <app-header
         titulo="Ver evento"
         [botonDescargar]="true"
+        [descargaEnCurso]="descargandoComprobante"
         [botonEmail]="true"
+        [emailEnCurso]="reenviandoMail"
         (outputDescargar)="descargarComprobante()"
-        (outputEnviarMail)="reenviarMail()"
+        (outputEnviarEmail)="reenviarMail()"
         (outputVolver)="volver()">
     </app-header>
-
-    <div class="d-flex justify-content-between">
-        <div *ngIf='eventoReenviarMail' class="col-4">
-            <div class="alert alert-success">Mail Enviado exitosamente</div>
-        </div>
-        <div *ngIf='eventoErrorReenviarMail.condicional' class="col-4">
-            <div class="alert alert-danger">{{eventoErrorReenviarMail.mensaje}}</div>
-        </div>
-    </div>
 
     <div class="row contenedor-default mt-2">
         <div class="col-md-3">

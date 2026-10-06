@@ -11,12 +11,21 @@ export class HeaderComponent {
 
   @Input()
   botonAgregar = false
+
+  @Input()
+  botonAgregarSecundario = false
   
   @Input()
   botonDescargar = false
   
   @Input()
   botonEmail = false
+
+  @Input()
+  descargaEnCurso = false
+
+  @Input()
+  emailEnCurso = false
 
   @Input()
   botonCambiarContrasenia = false
@@ -32,6 +41,9 @@ export class HeaderComponent {
 
   @Output()
   outputAgregar = new EventEmitter()
+
+  @Output()
+  outputAgregarSecundario = new EventEmitter()
 
   @Output()
   outputDescargar = new EventEmitter()
@@ -52,6 +64,10 @@ export class HeaderComponent {
     
   agregar() {
     this.outputAgregar.emit()
+  }
+
+  agregarSecundario() {
+    this.outputAgregarSecundario.emit()
   }
 
   descargar(){

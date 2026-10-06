@@ -13,13 +13,24 @@
               <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
           </div>
           <div *ngIf="botonDescargar">
-              <a class="btn btn-primary" (click)="descargar()"><i class="fas fa-download"></i></a>
+              <button type="button" class="btn btn-primary" (click)="descargar()" [disabled]="descargaEnCurso"
+                [attr.aria-label]="descargaEnCurso ? 'Descargando' : 'Descargar'">
+                <span *ngIf="descargaEnCurso" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <i *ngIf="!descargaEnCurso" class="fas fa-download" aria-hidden="true"></i>
+              </button>
           </div>
           <div *ngIf="botonEmail">
-              <a class="btn btn-primary" (click)="enviarEmail()"><i class="fas fa-envelope"></i></a>
+              <button type="button" class="btn btn-primary" (click)="enviarEmail()" [disabled]="emailEnCurso"
+                [attr.aria-label]="emailEnCurso ? 'Enviando correo' : 'Enviar correo'">
+                <span *ngIf="emailEnCurso" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <i *ngIf="!emailEnCurso" class="fas fa-envelope" aria-hidden="true"></i>
+              </button>
           </div>
           <div *ngIf="botonAgregar">
             <button type="submit" class="btn btn-success" (click)="agregar()"><i class="fas fa-plus-circle"></i></button>
+          </div>
+          <div *ngIf="botonAgregarSecundario">
+            <button type="submit" class="btn btn-danger" (click)="agregarSecundario()"><i class="fas fa-plus-circle"></i></button>
           </div>
       </div>
   </div>

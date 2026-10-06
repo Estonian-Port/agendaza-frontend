@@ -38,6 +38,7 @@ import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/ed
 import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
+import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
 
 
 const routes: Routes = [
@@ -71,6 +72,7 @@ const routes: Routes = [
       { path : 'saveExtraCatering', component: SaveExtraCateringComponent },
       { path : 'saveCliente', component: SaveClienteComponent },
       { path : 'savePago', component: SavePagoComponent },
+      { path : 'saveGasto', component: SaveGastoComponent },
       { path : 'saveClausula', component: SaveClausulaComponent },
       { path : 'precioExtra', component: PrecioExtraComponent },
       { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },

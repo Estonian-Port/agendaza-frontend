@@ -6,19 +6,12 @@
         [botonAgregar]="true"
         [botonEmail]="true"
         [botonDescargar]="true"
+        [emailEnCurso]="emailEstadoCuentaEnCurso"
+        [descargaEnCurso]="descargaEstadoCuentaEnCurso"
         (outputAgregar)="agregarPago()"
         (outputDescargar)="descargarEstadoCuenta()"
         (outputEnviarEmail)="enviarEmailEstadoCuenta()">
     </app-header>
-
-    <div class="d-flex justify-content-between">
-        <div *ngIf='envioEmail' class="col-4">
-            <div class="alert alert-success">Mail Enviado exitosamente</div>
-        </div>
-        <div *ngIf='errorEnvioEmail.condicional' class="col-4">
-            <div class="alert alert-danger">{{errorEnvioEmail.mensaje}}</div>
-        </div>
-    </div>
 
     <div class="row contenedor-default mt-2">
         <div class="form-group col-lg-4 col-md-12 mb-4">
@@ -44,11 +37,17 @@
                                     <div class="d-flex justify-content-between">
                                         {{pago.fecha | date: "dd/MM/yy"}} ${{pago.monto | formatNumero }} {{pago.medioDePago | formatEnum}}
                                         <div>
-                                            <button (click)="enviarEmailPago(pago.id)" class="mx-2">
-                                                <i class="fas fa-envelope text-primary"></i>
+                                            <button type="button" (click)="enviarEmailPago(pago.id)" class="mx-2"
+                                                [disabled]="emailsPagoEnCurso.has(pago.id)"
+                                                [attr.aria-label]="emailsPagoEnCurso.has(pago.id) ? 'Enviando correo' : 'Enviar correo'">
+                                                <span *ngIf="emailsPagoEnCurso.has(pago.id)" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                                                <i *ngIf="!emailsPagoEnCurso.has(pago.id)" class="fas fa-envelope text-primary" aria-hidden="true"></i>
                                             </button>
-                                            <button (click)="descargarPago(pago.id)" class="mx-2">
-                                                <i class="fas fa-download text-primary"></i>
+                                            <button type="button" (click)="descargarPago(pago.id)" class="mx-2"
+                                                [disabled]="descargasPagoEnCurso.has(pago.id)"
+                                                [attr.aria-label]="descargasPagoEnCurso.has(pago.id) ? 'Descargando comprobante' : 'Descargar comprobante'">
+                                                <span *ngIf="descargasPagoEnCurso.has(pago.id)" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                                                <i *ngIf="!descargasPagoEnCurso.has(pago.id)" class="fas fa-download text-primary" aria-hidden="true"></i>
                                             </button>
                                             <button (click)="editarPago(pago.id)" class="mx-2">
                                                 <i class="fas fa-edit text-warning"></i>
