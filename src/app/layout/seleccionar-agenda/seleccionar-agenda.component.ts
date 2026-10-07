@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core"
+import { HttpErrorResponse } from "@angular/common/http"
 import { Router } from "@angular/router"
 import { AgendaCard } from "src/app/model/Agenda"
 import { LoginService } from "src/app/services/login.service"
@@ -26,7 +27,9 @@ export class SeleccionarAgendaComponent implements OnInit {
       const usuarioId = this.loginService.getUsuarioId()
       this.listaAgenda = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
     } catch (error) {
-      this.toastService.showError(mostrarErrorConMensaje(this,error))
+      if (!(error instanceof HttpErrorResponse)) {
+        this.toastService.showError(mostrarErrorConMensaje(this, error))
+      }
       this.loginService.logout()
       this.router.navigateByUrl('/login')
     }

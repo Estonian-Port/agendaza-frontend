@@ -92,12 +92,7 @@
 
 
 @media (max-width: 870px) {
-  .sidebar-collapsed-icon {
+  .sidebar-collapsed {
     display: none;
   }
-
-  .sidebar-collapsed-toggle{
-    height: 100%;
-  }
-
 }

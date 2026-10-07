@@ -1,21 +1,24 @@
+<!-- navbar.component.html -->
 <nav *ngIf="!isLogin()" class="navbar-light bg-light p-2 navbar-top">
-  <div class="d-flex justify-content-between">
-    
-    <a class="app-logo" (click)="volverCalendario()">
-      <img  src="./assets/logoBBS.png" width="30" height="32" (click)="volverCalendario()" />
-    </a>
+  <div class="d-flex justify-content-between align-items-center">
+
+    <div class="navbar-brand-group d-flex align-items-center">
+      <button class="mobile-sidebar-toggle" type="button" aria-label="Abrir menú" (click)="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="app-logo" (click)="volverCalendario()">
+        <img src="./assets/logoBBS.png" width="30" height="32" />
+      </a>
+    </div>
 
     <div class="cursor-pointer dropdown">
-      
       <button class="dropdown-btn" (click)="toggleDropdown($event)"><i class="fas fa-user"></i></button>
-      
-      <div class="dropdown-menu"  [ngClass]="{ show: dropdownVisible }" #dropdownMenu>
+      <div class="dropdown-menu" [ngClass]="{ show: dropdownVisible }" #dropdownMenu>
         <a class="dropdown-item" (click)="perfil()"><i class="fas fa-user"></i> Perfil</a>
         <a class="dropdown-item" (click)="empresa()"><i class="bi bi-briefcase-fill"></i> Empresa</a>
-        <a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar sesion</a>
+        <a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
       </div>
-
     </div>
-    
+
   </div>
 </nav>

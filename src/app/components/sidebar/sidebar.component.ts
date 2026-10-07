@@ -68,6 +68,10 @@ export class SidebarComponent implements OnInit {
     this.isSidebarActive = !this.isSidebarActive;
   }
 
+  closeSidebar() {
+    this.isSidebarActive = false;
+  }
+
   isSelectedIcon(iconName: string): boolean {
     return this.selectedIcon == iconName;
   }
@@ -76,7 +80,9 @@ export class SidebarComponent implements OnInit {
   clickOutside(event: Event) {
     if (this.isSidebarActive) {
       const target = event.target as HTMLElement;
-      if (!target.closest('#sidebar') && !target.closest('.sidebar-collapsed-toggle')) {
+      if (!target.closest('#sidebar') &&
+        !target.closest('.sidebar-collapsed-toggle') &&
+        !target.closest('.mobile-sidebar-toggle')) {
         this.isSidebarActive = false;
       }
     }

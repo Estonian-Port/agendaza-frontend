@@ -159,4 +159,13 @@ export class PagoService {
     const res = await lastValueFrom(listaItem$);
     return res.data.map((pago) => Pago.fromJson(pago));
   }
+
+  async descargarBalance(desdeMes: number, desdeAnio: number, hastaMes: number, hastaAnio: number): Promise<Blob> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const item$ = this.httpClient.get(
+      `${REST_SERVER_URL}/v1/balance/empresa/${empresaId}/pdf`,
+      { params: { desdeMes, desdeAnio, hastaMes, hastaAnio }, responseType: 'blob' }
+    );
+    return lastValueFrom(item$);
+  }
 }

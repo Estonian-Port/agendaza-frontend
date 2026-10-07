@@ -77,6 +77,7 @@ import { FormatNumero } from './pipes/formatNumero.pipe';
 import { TipoEventoSeleccionadorComponent } from './components/tipo-evento-seleccionador/tipo-evento-seleccionador.component';
 import { HoraMinutosComponent } from './components/hora-minutos/hora-minutos.component';
 import { ModalPasswordComponent } from './components/modal/modal-password/modal-password.component';
+import { ModalRangoBalanceComponent } from './components/modal/modal-rango-balance/modal-rango-balance.component';
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 import { ToastComponent } from './components/toast/toast.component';
@@ -154,6 +155,7 @@ import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.componen
     TipoEventoSeleccionadorComponent,
     HoraMinutosComponent,
     ModalPasswordComponent,
+    ModalRangoBalanceComponent,
     SaveClausulaComponent,
     AbmClausulaComponent,
     ToastComponent

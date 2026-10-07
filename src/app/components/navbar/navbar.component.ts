@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { LoginService } from 'src/app/services/login.service';
@@ -14,6 +14,8 @@ export class NavbarComponent {
   constructor(private loginService: LoginService, private usuarioService : UsuarioService, private router: Router, private location: Location) { }
 
   dropdownVisible : boolean = false;
+
+  @Output() menuToggle = new EventEmitter<void>();
 
   @ViewChild('dropdownMenu') 
   dropdownMenu!: ElementRef;
@@ -45,6 +47,10 @@ export class NavbarComponent {
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();
     this.dropdownVisible = !this.dropdownVisible
+  }
+
+  toggleSidebar() {
+    this.menuToggle.emit();
   }
 
   @HostListener('document:click', ['$event'])
