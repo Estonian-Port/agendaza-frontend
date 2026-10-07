@@ -1,3 +1,16 @@
+.app-logo {
+  margin-left: 3rem;
+}
+
+.mobile-sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.25rem;
+}
+
 .dropdown-menu{
   visibility: hidden;
   display: flex;
@@ -35,4 +48,18 @@
 .dropdown-item:hover{
   background-color: var(--hover-bg-color-primary);
   transition: background-color 0.4s;
+}
+
+@media (max-width: 870px) {
+  .navbar-brand-group {
+    gap: 0.75rem;
+  }
+
+  .app-logo {
+    margin-left: 0;
+  }
+
+  .mobile-sidebar-toggle {
+    display: flex;
+  }
 }

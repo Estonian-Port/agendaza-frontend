@@ -33,6 +33,12 @@ export class AbmPagoComponent implements OnInit {
   descargasEnCurso = new Set<number>()
   descargandoBalance = false
 
+  mostrarRangoBalance = false
+  balanceDesde = ''   // 'YYYY-MM'
+  balanceHasta = ''
+  mesActualISO = this.aISO(new Date())
+
+
   constructor(
     private pagoService: PagoService,
     private gastoService: GastoService,
@@ -148,11 +154,38 @@ export class AbmPagoComponent implements OnInit {
     }
   }
 
-  async descargarBalance(): Promise<void> {
+  // El botón del header solo abre/cierra el selector de período
+  descargarBalance() {
+    this.mostrarRangoBalance = !this.mostrarRangoBalance
+    if (this.mostrarRangoBalance && !this.balanceHasta) {
+      this.balanceHasta = this.mesActualISO
+      this.balanceDesde = this.aISO(new Date(this.hoy.getFullYear(), this.hoy.getMonth() - 11, 1))
+    }
+  }
+
+  private aISO(d: Date): string {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+  }
+
+
+
+  async confirmarDescargaBalance(rango: { desde: string; hasta: string }) {
     if (this.descargandoBalance) return
+    this.balanceDesde = rango.desde
+    this.balanceHasta = rango.hasta
+    const [dA, dM] = this.balanceDesde.split('-').map(Number)
+    const [hA, hM] = this.balanceHasta.split('-').map(Number)
     this.descargandoBalance = true
     try {
-      this.toastService.showInfo('La descarga del balance en PDF todavía no está disponible')
+      const blob = await this.pagoService.descargarBalance(dM, dA, hM, hA)
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = `balance_${this.balanceDesde}_a_${this.balanceHasta}.pdf`
+      link.click()
+      link.remove()
+      this.mostrarRangoBalance = false
+    } catch (error) {
+      this.toastService.showInfo('No se pudo generar el balance')
     } finally {
       this.descargandoBalance = false
     }

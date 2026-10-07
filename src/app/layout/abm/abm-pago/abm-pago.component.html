@@ -121,3 +121,14 @@
     [cuerpo]="cuerpoModal"
     [boton]="botonModal">
 </app-modal-basico>
+
+<app-modal-rango-balance
+    [modal]="mostrarRangoBalance"
+    [balanceDesde]="balanceDesde"
+    [balanceHasta]="balanceHasta"
+    [mesActualISO]="mesActualISO"
+    [descargandoBalance]="descargandoBalance"
+    (outputChangeModal)="mostrarRangoBalance = $event"
+    (outputConfirmar)="confirmarDescargaBalance($event)">
+</app-modal-rango-balance>
+

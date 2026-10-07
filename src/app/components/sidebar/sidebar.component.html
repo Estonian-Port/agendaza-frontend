@@ -21,13 +21,13 @@
     </li>
     <li class="sidebar-collapsed-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isPanelAdmin()}">
       <a class="sidebar-collapsed-icon" (click)="irPanelAdmin()">
-        <i class="fa fa-cog fa-lg"  [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
+        <i class="fas fa-clipboard fa-lg"  [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
       </a>
     </li>
   </ul>
 </div>
 
-<div class="sidebar" [ngClass]="{ active: isSidebarActive }" *ngIf="!isLogin()">
+<div id="sidebar" class="sidebar" [ngClass]="{ active: isSidebarActive }" (click)="closeSidebar()" *ngIf="!isLogin()">
   <div class="sidebar-header d-flex justify-content-center align-items-center">
     <img src="./assets/logoBBS.png" width="30" height="32" />
   </div>
@@ -53,7 +53,7 @@
     </li>
     <li class="sidebar-list-item" *ngIf="isAgendaSeleccionada()" [ngClass]="{'selected-sidebar-collapsed-icon': isPanelAdmin()}">
       <a class="sidebar-icon" (click)="irPanelAdmin()">
-        <i class="icon fa fa-cog fa-lg" [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
+        <i class="icon fas fa-clipboard fa-lg" [ngClass]="{'selected-icon': isPanelAdmin()}"></i>
         <span>Dashboard</span>
       </a>
     </li>

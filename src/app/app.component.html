@@ -1,7 +1,7 @@
 <div class="layout">
-  <app-navbar class="navbar-layout"></app-navbar>
+  <app-navbar class="navbar-layout" (menuToggle)="sidebar.toggleSidebar()"></app-navbar>
 
-  <app-sidebar class="sidebar-layout"></app-sidebar>
+  <app-sidebar #sidebar class="sidebar-layout"></app-sidebar>
 
   <div class="content-layout" [@routeAnimation]="route.snapshot.data">
     <router-outlet></router-outlet>
