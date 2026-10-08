@@ -9,6 +9,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-panel-admin',
   templateUrl: './panel-admin.component.html',
+  styleUrls: ['./panel-admin.component.css'],
 })
 export class PanelAdminComponent implements OnInit {
 

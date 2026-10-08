@@ -99,6 +99,8 @@ button:focus {
   top: 0;
   width: 70%;
   height: 100%;
+  z-index: 1055;
+  min-width: 550px;
 }
 
 .contenedorVolver {
@@ -447,6 +449,13 @@ input[type="number"] {
 
   .extra-container{
       height: 15vh;
+  }
+
+  .modal-correcion-altura {
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    min-width: 350px;
   }
 
 }

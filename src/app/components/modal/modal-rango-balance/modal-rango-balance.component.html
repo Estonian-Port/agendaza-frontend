@@ -22,16 +22,19 @@
           <button type="button" class="btn btn-secondary" (click)="changeModal()" [disabled]="ocupado">
             Cerrar
           </button>
+
           <button type="button" class="btn btn-success" (click)="confirmarPlanilla()"
             [disabled]="ocupado || rangoInvalido">
-            <span *ngIf="descargandoPlanilla" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            <i *ngIf="!descargandoPlanilla" class="fas fa-file-excel me-2" aria-hidden="true"></i>
-            Descargar planilla
+            <span *ngIf="descargandoPlanilla" class="spinner-border spinner-border-sm me-0 me-md-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!descargandoPlanilla" class="fas fa-file-excel me-0 me-md-2" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">Descargar planilla</span>
           </button>
+
           <button type="button" class="btn btn-primary" (click)="confirmar()"
             [disabled]="ocupado || rangoInvalido">
-            <span *ngIf="descargandoBalance" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Descargar balance
+            <span *ngIf="descargandoBalance" class="spinner-border spinner-border-sm me-0 me-md-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!descargandoBalance" class="fas fa-download me-0 me-md-2" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">Descargar balance</span>
           </button>
         </div>
       </div>
