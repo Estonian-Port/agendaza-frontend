@@ -2,7 +2,7 @@
     <form> 
 
         <app-header
-            titulo="Agregar Servicio"
+            titulo="Agregar Clausula"
             (outputVolver)="volver()"
             [botonSave]="true"
             (outputSave)="save()">
@@ -10,9 +10,9 @@
 
         <div class="row contenedor-default mt-2">
             <div class="col-lg-4 col-md-12 form-group mb-4">
-                <label for="servicio">Servicio</label>
-                <select class="form-select" (change)="onServicioChange()" [(ngModel)]='genericItem.id' name="servicio">
-                    <option *ngFor="let servicio of listaClausula | orderAbmByNombre" [value]="servicio.id">{{servicio.nombre}}</option>
+                <label for="clausula">Clausula</label>
+                <select class="form-select" (change)="onClausulaChange()" [(ngModel)]='genericItem.id' name="clausula">
+                    <option *ngFor="let clausula of listaClausula | orderAbmByNombre" [value]="clausula.id">{{clausula.nombre}}</option>
                     <option value="0">Otro</option>
                 </select>
             </div>

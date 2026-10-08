@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GenericItem } from 'src/app/model/GenericItem';
 import { ClausulaService } from 'src/app/services/clausula.service';
 
@@ -33,7 +33,7 @@ export class SaveClausulaComponent {
         this.listaClausula = await this.clausulaService.getAllAgregar()
         if(this.listaClausula.length == 0){
           this.genericItem.id = 0
-          this.onServicioChange()
+          this.onClausulaChange()
         }else{
           const clausulaEdicio = [...this.listaClausula].sort((a, b) => a.nombre.localeCompare(b.nombre))[0];
 
@@ -53,7 +53,7 @@ export class SaveClausulaComponent {
     this.location.back()
   }
 
-  onServicioChange(): void {
+  onClausulaChange(): void {
     if (this.genericItem.id == 0) {
         this.genericItem = new GenericItem(0, "")
         this.otro = true;

@@ -1,117 +1,112 @@
-<section class="m-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-6 mb-4">
-                <h2>Administración {{empresa.nombre}}</h2>
-            </div>
-            <div class="col-6 text-end">
-                <a class="btn btn-primary" (click)="volverCalendario()"><span>Volver</span></a>
-            </div>
+<div class="container">
+    <app-header
+        [titulo]="'Administración ' + empresa.nombre"
+        (outputVolver)="volverCalendario()">
+    </app-header>
+    
+    <div class="row mt-3">
+        <div id="usuario" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()">
+                <div class="col-9 text-start">
+                    <h5>Empleados</h5>
+                    <span>{{configuracion.cantUsuarios}} usuarios</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-users-cog admin-icon"></i>
+                </div>
+            </a>
         </div>
-        <div class="row">
-            <div id="usuario" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmUsuario()">
-                    <div class="col-9 text-start">
-                        <h5>Empleados</h5>
-                        <span>{{configuracion.cantUsuarios}} usuarios</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-users-cog admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <div id="tipoEvento" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmTipoEvento()">
-                    <div class="col-9 text-start">
-                        <h5>Tipos de Evento</h5>
-                        <span>{{configuracion.cantTipoEvento}} tipos de evento</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-calendar-week admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <div id="extra" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmExtra()">
-                    <div class="col-9 text-start">
-                        <h5>Extras</h5>
-                        <span>{{configuracion.cantExtras}} extras y extras var.</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-asterisk admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <div id="servicio" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmServicio()">
-                    <div class="col-9 text-start">
-                        <h5>Servicios</h5>
-                        <span>{{configuracion.cantServicios}} servicios</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-calendar-check admin-icon"></i>
-                    </div>
-                </a>
-            </div>
+        <div id="tipoEvento" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmTipoEvento()">
+                <div class="col-9 text-start">
+                    <h5>Tipos de Evento</h5>
+                    <span>{{configuracion.cantTipoEvento}} tipos de evento</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-calendar-week admin-icon"></i>
+                </div>
+            </a>
         </div>
-
-        <div class="row">
-            <div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmPago()">
-                    <div class="col-9 text-start">
-                        <h5>Finanzas</h5>
-                        <span>{{configuracion.cantPagos}} Movimientos</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-hand-holding-usd admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmEvento()">
-                    <div class="col-9 text-start">
-                        <h5>Buscar Evento</h5>
-                        <span>{{configuracion.cantEventos}} eventos</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-search admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <!--div class="col-lg-3 col-md-12 mb-3">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmCliente()">
-                    <div class="col-9 text-start">
-                        <h5>Clientes</h5>
-                        <span>{{configuracion.cantCliente}} clientes</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-users fa-lg"></i>
-                    </div>
-                </a>
-            </div-->
-            <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmClausula()">
-                    <div class="col-9 text-start">
-                        <h5>Clausulas</h5>
-                        <span>{{configuracion.cantClausula}} Clausulas</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-layer-group admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
-                <a type="button" class="btn btn-primary d-flex" (click)="abmCatering()">
-                    <div class="col-9 text-start">
-                        <h5>Catering</h5>
-                        <span>{{configuracion.cantCatering}} tipos y extras</span>
-                    </div>
-                    <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-utensils admin-icon"></i>
-                    </div>
-                </a>
-            </div>
-
+        <div id="extra" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmExtra()">
+                <div class="col-9 text-start">
+                    <h5>Extras</h5>
+                    <span>{{configuracion.cantExtras}} extras y extras var.</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-asterisk admin-icon"></i>
+                </div>
+            </a>
+        </div>
+        <div id="servicio" class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmServicio()">
+                <div class="col-9 text-start">
+                    <h5>Servicios</h5>
+                    <span>{{configuracion.cantServicios}} servicios</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-calendar-check admin-icon"></i>
+                </div>
+            </a>
         </div>
     </div>
-</section>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-12 mb-3">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmPago()">
+                <div class="col-9 text-start">
+                    <h5>Finanzas</h5>
+                    <span>{{configuracion.cantPagos}} Movimientos</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-hand-holding-usd admin-icon"></i>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-12 mb-3">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmEvento()">
+                <div class="col-9 text-start">
+                    <h5>Buscar Evento</h5>
+                    <span>{{configuracion.cantEventos}} eventos</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-search admin-icon"></i>
+                </div>
+            </a>
+        </div>
+        <!--div class="col-lg-3 col-md-12 mb-3">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmCliente()">
+                <div class="col-9 text-start">
+                    <h5>Clientes</h5>
+                    <span>{{configuracion.cantCliente}} clientes</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-users fa-lg"></i>
+                </div>
+            </a>
+        </div-->
+        <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmClausula()">
+                <div class="col-9 text-start">
+                    <h5>Clausulas</h5>
+                    <span>{{configuracion.cantClausula}} Clausulas</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-layer-group admin-icon"></i>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-12 mb-3" *ngIf="loginService.isAdmin()">
+            <a type="button" class="btn btn-primary d-flex" (click)="abmCatering()">
+                <div class="col-9 text-start">
+                    <h5>Catering</h5>
+                    <span>{{configuracion.cantCatering}} tipos y extras</span>
+                </div>
+                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-utensils admin-icon"></i>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>

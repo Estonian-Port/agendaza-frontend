@@ -2,7 +2,7 @@
 
 Agendaza es un sistema integral para la gestión de eventos en salones. Facilita la administración de reservas, clientes, catering, servicios adicionales y mucho más.
 
-[![Version](https://img.shields.io/badge/version-0.6.2-blue.svg)](https://github.com/Estonian-Port/agendaza-backend/tags)
+[![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://github.com/Estonian-Port/agendaza-frontend/tags)
 
 <!-- Futuras acciones de CI/CD
 [![Build Status](https://github.com/Estonian-Port/agendaza-backend/actions/workflows/build.yml/badge.svg)](https://github.com/Estonian-Port/agendaza-backend/actions)
@@ -16,6 +16,13 @@ Agendaza es un sistema integral para la gestión de eventos en salones. Facilita
 
 ---
 
+## 👥 Desarrollado por
+
+Este proyecto fue desarrollado por **Estonian Port**.  
+Visitanos en 👉 [https://estonianport.com.ar/](https://estonianport.com.ar/)
+
+---
+
 ## ✨ Características
 
 - Calendario con los eventos registrados
@@ -26,30 +33,8 @@ Agendaza es un sistema integral para la gestión de eventos en salones. Facilita
 
 ---
 
-## 🗺️ Modelo de Entidad-Relación
-
-<img src="DER.png" alt="Modelo DER" width="600">
-
----
-
-## 🚀 Estado actual
-
-Versión **0.6.2** — En desarrollo activo.  
-
----
-
 ## 🛠️ Tecnologías utilizadas
 
-- Backend: Kotlin + Spring Boot
-- Frontend: Angular + Bootstrap
-- Base de datos: PostgreSQL
-- Orquestación: Docker + Docker Compose (Proximamente)
-
----
-
-## 👥 Desarrollado por
-
-Este proyecto fue desarrollado por **Estonian Port**.  
-Visitanos en 👉 [https://estonian-port.github.io/estonianport-landingpage/](https://estonian-port.github.io/estonianport-landingpage/)
+- Frontend: Angular v15.2 + Bootstrap v5.2
 
 ---
