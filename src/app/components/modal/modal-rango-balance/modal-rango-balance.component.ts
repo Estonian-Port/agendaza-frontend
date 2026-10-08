@@ -12,9 +12,19 @@ export class ModalRangoBalanceComponent {
   @Input() balanceHasta = '';
   @Input() mesActualISO = '';
   @Input() descargandoBalance = false;
+  @Input() descargandoPlanilla = false;
 
   @Output() outputChangeModal = new EventEmitter<boolean>();
   @Output() outputConfirmar = new EventEmitter<{ desde: string; hasta: string }>();
+  @Output() outputConfirmarPlanilla = new EventEmitter<{ desde: string; hasta: string }>();
+
+  get ocupado(): boolean {
+    return this.descargandoBalance || this.descargandoPlanilla;
+  }
+
+  get rangoInvalido(): boolean {
+    return !this.balanceDesde || !this.balanceHasta || this.balanceDesde > this.balanceHasta;
+  }
 
   changeModal() {
     this.modal = !this.modal;
@@ -23,6 +33,13 @@ export class ModalRangoBalanceComponent {
 
   confirmar() {
     this.outputConfirmar.emit({
+      desde: this.balanceDesde,
+      hasta: this.balanceHasta
+    });
+  }
+
+  confirmarPlanilla() {
+    this.outputConfirmarPlanilla.emit({
       desde: this.balanceDesde,
       hasta: this.balanceHasta
     });

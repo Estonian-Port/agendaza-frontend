@@ -8,7 +8,7 @@
         [botonAgregarSecundario]="true"
         (outputAgregarSecundario)="agregarGasto()"
         [botonDescargar]="true"
-        [descargaEnCurso]="descargandoBalance"
+        [descargaEnCurso]="descargandoBalance || descargandoPlanilla"
         (outputDescargar)="descargarBalance()">
     </app-header>
 
@@ -59,13 +59,28 @@
                 </button>
             </div>
 
+            <!-- Filtro de vista -->
+            <div class="d-flex justify-content-center mb-3">
+                <div class="filtro-movimientos btn-group btn-group-sm" role="group" aria-label="Filtro de movimientos">
+                    <button type="button" class="btn"
+                        [class.active]="filtroActual === 'TODO'" [attr.aria-pressed]="filtroActual === 'TODO'"
+                        (click)="setFiltro('TODO')">Todos</button>
+                    <button type="button" class="btn"
+                        [class.active]="filtroActual === 'INGRESO'" [attr.aria-pressed]="filtroActual === 'INGRESO'"
+                        (click)="setFiltro('INGRESO')">Ingresos</button>
+                    <button type="button" class="btn"
+                        [class.active]="filtroActual === 'EGRESO'" [attr.aria-pressed]="filtroActual === 'EGRESO'"
+                        (click)="setFiltro('EGRESO')">Egresos</button>
+                </div>
+            </div>
+
             <div class="pagos-container-finanzas">
                 <div class="extra-overflow">
-                    <div *ngIf="!cargando && listaMovimiento.length === 0" class="text-center text-muted p-3">
+                    <div *ngIf="!cargando && movimientosFiltrados.length === 0" class="text-center text-muted p-3">
                         No hay movimientos en este mes
                     </div>
 
-                    <div class="extra-box mb-2" *ngFor="let m of listaMovimiento">
+                    <div class="extra-box mb-2" *ngFor="let m of movimientosFiltrados; trackBy: trackMovimiento">
                         <div class="card-pagos-finanzas p-3 border rounded shadow-sm">
                             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
 
@@ -76,7 +91,8 @@
                                         <i class="far fa-calendar-alt me-2"></i>{{m.fecha | date: "dd/MM/yy"}}
                                     </span>
                                     <strong class="text-dark">{{m.titulo | truncarTexto}}</strong>
-                                    <span class="badge badge-light border text-dark">{{m.etiqueta | formatEnum}}</span>
+                                    <span *ngIf="!m.esGrupo" class="badge badge-light border text-dark">{{m.etiqueta | formatEnum}}</span>
+                                    <span *ngIf="m.esGrupo" class="badge badge-light border text-dark">{{m.items?.length}} gastos</span>
                                     <span class="font-weight-bold" [ngClass]="m.tipo === 'INGRESO' ? 'text-success' : 'text-danger'">
                                         {{m.tipo === 'INGRESO' ? '+' : '-'}}${{m.monto | formatNumero}}
                                     </span>
@@ -91,15 +107,49 @@
                                         <span *ngIf="descargasEnCurso.has(m.id)" class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
                                         <i *ngIf="!descargasEnCurso.has(m.id)" class="fas fa-download text-primary fa-lg" aria-hidden="true"></i>
                                     </button>
-                                    <button (click)="editar(m)" class="btn btn-link p-1 mx-1" title="Editar">
-                                        <i class="fas fa-edit text-warning fa-lg"></i>
+
+                                    <!-- Grupo: desplegar desglose (editar/eliminar se hace por gasto individual) -->
+                                    <button *ngIf="m.esGrupo" type="button" (click)="toggleGrupo(m)"
+                                        class="btn btn-link p-1 mx-1" title="Ver desglose"
+                                        [attr.aria-expanded]="estaExpandido(m)">
+                                        <i class="fas fa-lg text-primary" [ngClass]="estaExpandido(m) ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                                     </button>
-                                    <button (click)="modalParaEliminar(m)" class="btn btn-link p-1 mx-1" title="Eliminar">
-                                        <i class="fas fa-trash text-danger fa-lg"></i>
-                                    </button>
+
+                                    <ng-container *ngIf="!m.esGrupo">
+                                        <button (click)="editar(m)" class="btn btn-link p-1 mx-1" title="Editar">
+                                            <i class="fas fa-edit text-warning fa-lg"></i>
+                                        </button>
+                                        <button (click)="modalParaEliminar(m)" class="btn btn-link p-1 mx-1" title="Eliminar">
+                                            <i class="fas fa-trash text-danger fa-lg"></i>
+                                        </button>
+                                    </ng-container>
                                 </div>
 
                             </div>
+
+                            <!-- Desglose del grupo -->
+                            <div *ngIf="m.esGrupo && estaExpandido(m)" class="mt-3 pt-2 border-top">
+                                <div *ngFor="let i of m.items"
+                                    class="d-flex flex-column flex-md-row justify-content-between align-items-md-center py-1">
+                                    <div class="d-flex align-items-center flex-wrap" style="gap: 12px;">
+                                        <span class="text-muted">
+                                            <i class="far fa-calendar-alt me-2"></i>{{i.fecha | date: "dd/MM/yy"}}
+                                        </span>
+                                        <span class="badge badge-light border text-dark">{{i.etiqueta | formatEnum}}</span>
+                                        <span class="text-dark">{{i.titulo | truncarTexto}}</span>
+                                        <span class="font-weight-bold text-danger">-${{i.monto | formatNumero}}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <button (click)="editar(i)" class="btn btn-link p-1 mx-1" title="Editar">
+                                            <i class="fas fa-edit text-warning"></i>
+                                        </button>
+                                        <button (click)="modalParaEliminar(i)" class="btn btn-link p-1 mx-1" title="Eliminar">
+                                            <i class="fas fa-trash text-danger"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -128,7 +178,8 @@
     [balanceHasta]="balanceHasta"
     [mesActualISO]="mesActualISO"
     [descargandoBalance]="descargandoBalance"
+    [descargandoPlanilla]="descargandoPlanilla"
     (outputChangeModal)="mostrarRangoBalance = $event"
-    (outputConfirmar)="confirmarDescargaBalance($event)">
+    (outputConfirmar)="confirmarDescargaBalance($event)"
+    (outputConfirmarPlanilla)="confirmarDescargaPlanilla($event)">
 </app-modal-rango-balance>
-

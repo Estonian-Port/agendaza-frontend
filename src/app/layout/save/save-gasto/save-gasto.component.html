@@ -10,14 +10,38 @@
 
         <div class="row contenedor-default mt-2">
 
-            <div class="col-lg-3 col-md-12 mb-2">
+            <div class="col-lg-4 col-md-12 mb-4">
+                <label for="fecha">Fecha</label>
+                <input type="datetime-local" class="form-control" name="fecha" [(ngModel)]="gasto.fecha">
+            </div>
+
+            <div class="col-7"></div>
+
+            <div class="col-lg-4 col-md-12 mb-4">
                 <label for="tipoGasto">Tipo de gasto</label>
                 <select class="form-select" [(ngModel)]="gasto.tipoGasto" name="tipoGasto">
                     <option *ngFor="let tipo of listaTipoGasto" [value]="tipo">{{tipo | formatEnum}}</option>
                 </select>
             </div>
 
-            <div class="col-lg-3 col-md-12 mb-2">
+            <div class="col-lg-4 col-md-12 mb-4">
+                <label for="descripcion">Descripción</label>
+                <input type="text" maxlength="255" class="form-control" name="descripcion" [(ngModel)]="gasto.descripcion"/>
+            </div>
+
+            <div class="col-4"></div>
+
+            <div class="col-lg-4 col-md-12 mb-4">
+                <label for="codigoEvento">
+                    Código del evento <span class="text-muted" *ngIf="!requiereEvento">(opcional)</span>
+                </label>
+                <input type="text" class="form-control" name="codigoEvento" [(ngModel)]="gasto.codigoEvento"/>
+                <small *ngIf="gasto.nombreEvento" class="text-muted">{{gasto.nombreEvento}}</small>
+            </div>
+        
+            <div class="col-7"></div>
+
+            <div class="col-lg-4 col-md-12 mb-4">
                 <label for="monto">Monto</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -27,29 +51,11 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-12 mb-2">
+            <div class="col-lg-4 col-md-12 mb-4">
                 <label for="medioDePago">Medio de pago</label>
                 <select class="form-select" [(ngModel)]="gasto.medioDePago" name="medioDePago">
                     <option *ngFor="let medio of listaMedioDePago | orderAbmById" [value]="medio">{{medio | formatEnum}}</option>
                 </select>
-            </div>
-
-            <div class="col-lg-3 col-md-12 mb-2">
-                <label for="fecha">Fecha</label>
-                <input type="datetime-local" class="form-control" name="fecha" [(ngModel)]="gasto.fecha">
-            </div>
-
-            <div class="col-lg-6 col-md-12 mb-2">
-                <label for="descripcion">Descripción</label>
-                <input type="text" maxlength="255" class="form-control" name="descripcion" [(ngModel)]="gasto.descripcion"/>
-            </div>
-
-            <div class="col-lg-3 col-md-12 mb-2">
-                <label for="codigoEvento">
-                    Código del evento <span class="text-muted" *ngIf="!requiereEvento">(opcional)</span>
-                </label>
-                <input type="text" class="form-control" name="codigoEvento" [(ngModel)]="gasto.codigoEvento"/>
-                <small *ngIf="gasto.nombreEvento" class="text-muted">{{gasto.nombreEvento}}</small>
             </div>
 
         </div>

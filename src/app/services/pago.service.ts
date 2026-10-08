@@ -168,4 +168,13 @@ export class PagoService {
     );
     return lastValueFrom(item$);
   }
+
+  async descargarPlanillaMovimientos(desdeMes: number, desdeAnio: number, hastaMes: number, hastaAnio: number): Promise<Blob> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    const item$ = this.httpClient.get(
+      `${REST_SERVER_URL}/v1/balance/empresa/${empresaId}/excel`,
+      { params: { desdeMes, desdeAnio, hastaMes, hastaAnio }, responseType: 'blob' }
+    );
+    return lastValueFrom(item$);
+  }
 }

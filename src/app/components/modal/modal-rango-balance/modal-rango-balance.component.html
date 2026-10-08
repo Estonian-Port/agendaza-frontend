@@ -19,11 +19,17 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="changeModal()" [disabled]="descargandoBalance">
+          <button type="button" class="btn btn-secondary" (click)="changeModal()" [disabled]="ocupado">
             Cerrar
           </button>
+          <button type="button" class="btn btn-success" (click)="confirmarPlanilla()"
+            [disabled]="ocupado || rangoInvalido">
+            <span *ngIf="descargandoPlanilla" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!descargandoPlanilla" class="fas fa-file-excel me-2" aria-hidden="true"></i>
+            Descargar planilla
+          </button>
           <button type="button" class="btn btn-primary" (click)="confirmar()"
-            [disabled]="descargandoBalance || !balanceDesde || !balanceHasta || balanceDesde > balanceHasta">
+            [disabled]="ocupado || rangoInvalido">
             <span *ngIf="descargandoBalance" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
             Descargar balance
           </button>

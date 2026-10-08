@@ -7,6 +7,19 @@ import { GastoService } from 'src/app/services/gasto.service';
 import { Gasto, Movimiento } from 'src/app/model/Gasto';
 import { ToastService } from 'src/app/services/toast.service';
 
+export type FiltroMovimiento = 'TODO' | 'INGRESO' | 'EGRESO'
+
+/**
+ * Item de la lista: un movimiento normal o un grupo de gastos de un mismo evento.
+ * Requiere que Gasto (TS) exponga `eventoId?: number | null` y `nombreEvento?: string | null`.
+ */
+export interface MovimientoLista extends Movimiento {
+  eventoId?: number | null
+  nombreEvento?: string | null
+  esGrupo?: boolean
+  items?: MovimientoLista[]   // desglose cuando es grupo
+}
+
 @Component({
   selector: 'app-abm-pago',
   templateUrl: './abm-pago.component.html',
@@ -20,7 +33,10 @@ export class AbmPagoComponent implements OnInit {
   mes = this.hoy.getMonth() + 1
   anio = this.hoy.getFullYear()
 
-  listaMovimiento: Array<Movimiento> = []
+  listaMovimiento: Array<MovimientoLista> = []
+  filtroActual: FiltroMovimiento = 'TODO'
+  gruposExpandidos = new Set<number>()   // eventoId de los grupos abiertos
+
   resumen: ResumenPagosMes = { ingresos: 0, egresos: 0, balance: 0, cantidadIngresos: 0, cantidadEgresos: 0 }
   cargando = false
   private requestId = 0   // evita que una respuesta vieja pise a una nueva si se clickea rápido
@@ -32,6 +48,7 @@ export class AbmPagoComponent implements OnInit {
   botonModal = ""
   descargasEnCurso = new Set<number>()
   descargandoBalance = false
+  descargandoPlanilla = false
 
   mostrarRangoBalance = false
   balanceDesde = ''   // 'YYYY-MM'
@@ -59,6 +76,35 @@ export class AbmPagoComponent implements OnInit {
     return this.mes === this.hoy.getMonth() + 1 && this.anio === this.hoy.getFullYear()
   }
 
+  // ── Filtro de vista ──────────────────────────────────────────────────────
+
+  get movimientosFiltrados(): MovimientoLista[] {
+    if (this.filtroActual === 'TODO') return this.listaMovimiento
+    return this.listaMovimiento.filter(m => m.tipo === this.filtroActual)
+  }
+
+  setFiltro(filtro: FiltroMovimiento) {
+    this.filtroActual = filtro
+  }
+
+  // ── Grupos de gastos por evento ──────────────────────────────────────────
+
+  toggleGrupo(m: MovimientoLista) {
+    if (m.eventoId == null) return
+    if (this.gruposExpandidos.has(m.eventoId)) this.gruposExpandidos.delete(m.eventoId)
+    else this.gruposExpandidos.add(m.eventoId)
+  }
+
+  estaExpandido(m: MovimientoLista): boolean {
+    return m.eventoId != null && this.gruposExpandidos.has(m.eventoId)
+  }
+
+  trackMovimiento(_: number, m: MovimientoLista): string {
+    return m.esGrupo ? `g-${m.eventoId}` : `${m.tipo}-${m.id}`
+  }
+
+  // ── Navegación de mes ────────────────────────────────────────────────────
+
   async mesAnterior() {
     if (this.mes === 1) { this.mes = 12; this.anio-- } else { this.mes-- }
     await this.cargarMes()
@@ -81,6 +127,7 @@ export class AbmPagoComponent implements OnInit {
       ])
       if (id !== this.requestId) return
       this.resumen = resumen
+      this.gruposExpandidos.clear()
       this.listaMovimiento = this.unir(pagos, gastos)
     } catch (error) {
       console.error('Error al cargar los movimientos del mes', error)
@@ -89,18 +136,52 @@ export class AbmPagoComponent implements OnInit {
     }
   }
 
-  private unir(pagos: Pago[], gastos: Gasto[]): Movimiento[] {
-    const ingresos: Movimiento[] = pagos.map(p => ({
+  private unir(pagos: Pago[], gastos: Gasto[]): MovimientoLista[] {
+    const ingresos: MovimientoLista[] = pagos.map(p => ({
       tipo: 'INGRESO', id: p.id, fecha: p.fecha, titulo: p.nombreEvento,
       etiqueta: p.medioDePago, monto: p.monto
     }))
-    const egresos: Movimiento[] = gastos.map(g => ({
+    const egresos: MovimientoLista[] = gastos.map(g => ({
       tipo: 'EGRESO', id: g.id, fecha: g.fecha, titulo: g.descripcion,
-      etiqueta: g.tipoGasto, monto: g.monto
+      etiqueta: g.tipoGasto, monto: g.monto,
+      eventoId: g.eventoId ?? null, nombreEvento: g.nombreEvento ?? null
     }))
-    return [...ingresos, ...egresos]
+    return [...ingresos, ...this.agruparPorEvento(egresos)]
       .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
   }
+
+  /** Egresos del mismo evento (2 o más) -> un único ítem con el total y el desglose en `items`. */
+  private agruparPorEvento(egresos: MovimientoLista[]): MovimientoLista[] {
+    const sueltos: MovimientoLista[] = []
+    const porEvento = new Map<number, MovimientoLista[]>()
+
+    for (const e of egresos) {
+      if (e.eventoId == null) { sueltos.push(e); continue }
+      const lista = porEvento.get(e.eventoId) ?? []
+      lista.push(e)
+      porEvento.set(e.eventoId, lista)
+    }
+
+    porEvento.forEach((items, eventoId) => {
+      if (items.length === 1) { sueltos.push(items[0]); return }
+      const ordenados = [...items].sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
+      sueltos.push({
+        tipo: 'EGRESO',
+        id: eventoId,
+        fecha: ordenados[0].fecha,
+        titulo: `Gasto Evento: ${ordenados[0].nombreEvento ?? ''}`,
+        etiqueta: 'EVENTO',
+        monto: ordenados.reduce((acc, i) => acc + i.monto, 0),
+        eventoId,
+        nombreEvento: ordenados[0].nombreEvento,
+        esGrupo: true,
+        items: ordenados
+      })
+    })
+    return sueltos
+  }
+
+  // ── Acciones ─────────────────────────────────────────────────────────────
 
   agregarPago() { this.router.navigate(['/savePago']) }
   agregarGasto() { this.router.navigate(['/saveGasto']) }
@@ -142,11 +223,7 @@ export class AbmPagoComponent implements OnInit {
     this.descargasEnCurso.add(id);
     try {
       const blob = await this.pagoService.descargarPago(id)
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'comprobante_de_pago.pdf'
-      link.click()
-      link.remove()
+      this.guardarArchivo(blob, 'comprobante_de_pago.pdf')
     } catch (error: any) {
       console.error('Error al descargar el PDF:', error)
     } finally {
@@ -167,10 +244,22 @@ export class AbmPagoComponent implements OnInit {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
   }
 
+  private guardarArchivo(blob: Blob, nombre: string) {
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = nombre
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
+  }
 
+  private get hayDescargaEnCurso(): boolean {
+    return this.descargandoBalance || this.descargandoPlanilla
+  }
 
   async confirmarDescargaBalance(rango: { desde: string; hasta: string }) {
-    if (this.descargandoBalance) return
+    if (this.hayDescargaEnCurso) return
     this.balanceDesde = rango.desde
     this.balanceHasta = rango.hasta
     const [dA, dM] = this.balanceDesde.split('-').map(Number)
@@ -178,16 +267,30 @@ export class AbmPagoComponent implements OnInit {
     this.descargandoBalance = true
     try {
       const blob = await this.pagoService.descargarBalance(dM, dA, hM, hA)
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = `balance_${this.balanceDesde}_a_${this.balanceHasta}.pdf`
-      link.click()
-      link.remove()
+      this.guardarArchivo(blob, `balance_${this.balanceDesde}_a_${this.balanceHasta}.pdf`)
       this.mostrarRangoBalance = false
     } catch (error) {
       this.toastService.showInfo('No se pudo generar el balance')
     } finally {
       this.descargandoBalance = false
+    }
+  }
+
+  async confirmarDescargaPlanilla(rango: { desde: string; hasta: string }) {
+    if (this.hayDescargaEnCurso) return
+    this.balanceDesde = rango.desde
+    this.balanceHasta = rango.hasta
+    const [dA, dM] = this.balanceDesde.split('-').map(Number)
+    const [hA, hM] = this.balanceHasta.split('-').map(Number)
+    this.descargandoPlanilla = true
+    try {
+      const blob = await this.pagoService.descargarPlanillaMovimientos(dM, dA, hM, hA)
+      this.guardarArchivo(blob, `planilla_${this.balanceDesde}_a_${this.balanceHasta}.xlsx`)
+      this.mostrarRangoBalance = false
+    } catch (error) {
+      this.toastService.showInfo('No se pudo generar la planilla')
+    } finally {
+      this.descargandoPlanilla = false
     }
   }
 }
