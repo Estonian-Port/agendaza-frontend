@@ -43,4 +43,4 @@ testem.log
 Thumbs.db
 *.sh
 /.env
-
+/.env.production
