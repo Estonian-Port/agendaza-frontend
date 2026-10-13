@@ -368,10 +368,10 @@ export class EventoService {
    * Crea un nuevo evento
    * POST /v1/eventos
    * 
-   * @param evento Evento a crear (sin empresaId ni encargadoId, se agregan aquí)
-   * @returns ID del evento creado
+   * @param evento Evento a crear
+   * @returns Respuesta del backend con el ID y mensaje del evento creado
    */
-  async save(evento: Evento): Promise<number> {
+  async save(evento: Evento): Promise<CustomResponse<number>> {
     evento.empresaId = this.usuarioService.getEmpresaId()
     evento.encargadoId = await this.loginService.getUsuarioId()
 
@@ -381,7 +381,7 @@ export class EventoService {
         evento
       )
     )
-    return response.data
+    return response
   }
 
   /**

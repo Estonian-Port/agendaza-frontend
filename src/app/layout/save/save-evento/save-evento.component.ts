@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { fadeOut } from 'src/app/animations/fade-out';
 import { fadeInOut } from 'src/app/animations/fade-in-out';
 import { translate } from 'src/app/animations/translate';
-import { ModalInformativoComponent } from 'src/app/components/modal/modal-informativo/modal-informativo.component';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
@@ -81,10 +80,6 @@ export class SaveEventoComponent implements OnInit {
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
   usuarioCondicional : boolean = false
-
-  // Modal
-  @ViewChild(ModalInformativoComponent) 
-  modal!: ModalInformativoComponent;
 
   // Spinner
   spinnerVisible = false
@@ -549,6 +544,7 @@ export class SaveEventoComponent implements OnInit {
   }
   
   async enviarFormulario() {
+
   this.submited = true
   this.actualizarValidStepBox()
 
@@ -560,9 +556,11 @@ export class SaveEventoComponent implements OnInit {
       this.setFechaInicioAndFin()
       this.setCliente()
       this.setEvento()
+
+      const response = await this.eventoService.save(this.evento)
       
-      await this.eventoService.save(this.evento)
-      this.modal.mostrarModal()
+      this.toastService.showSuccess(response.message || 'Evento creado')
+      await this.router.navigateByUrl('/agenda')
       
     } catch (error) {
       this.toastService.showError('Error al guardar el evento.')

@@ -484,9 +484,7 @@
 
 
     <div class="botones-nuevo-evento">
-        <button (click)="atras()" [disabled]="botonAtrasDisabled" type="button" [ngClass]="botonAtrasDisabled ? 'btn btn-secondary' : 'btn btn-primary'" class="mx-2">Atras</button>
-        <button (click)="siguiente()" type="button" class="btn btn-primary boton-min-width">{{botonSiguienteFinalizado}}</button>
+        <button (click)="atras()" [disabled]="botonAtrasDisabled || spinnerVisible" type="button" [ngClass]="botonAtrasDisabled ? 'btn btn-secondary' : 'btn btn-primary'" class="mx-2">Atras</button>
+        <button (click)="siguiente()" type="button" class="btn btn-primary boton-min-width" [disabled]="spinnerVisible">{{botonSiguienteFinalizado}}</button>
     </div>
 </div>
-
-<app-modal-informativo></app-modal-informativo>
