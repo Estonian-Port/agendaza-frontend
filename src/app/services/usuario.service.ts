@@ -15,6 +15,7 @@ import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { AgendaCard, AgendaCardJSON } from '../model/Agenda'
 import { CustomResponse } from 'src/util/customResponse'
 import { EventosUsuarioResponse } from '../model/Evento'
+import { ToastService } from './toast.service'
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class UsuarioService {
 
   constructor(
     private httpClient: HttpClient,
+    private toastService: ToastService
   ) { }
 
   // ==================== GESTIÓN DE EMPRESA ====================
@@ -314,6 +316,7 @@ export class UsuarioService {
   async buscarClientePorCelular(celular : number){
     const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(REST_SERVER_URL + '/v1/usuarios/celular?celular='+ celular)
     const response = await lastValueFrom(usuario$)
+    this.toastService.showSuccess(response.message || 'Cliente encontrado')
     return response.data
   }
 

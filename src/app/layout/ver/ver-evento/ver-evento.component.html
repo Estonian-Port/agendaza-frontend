@@ -20,7 +20,7 @@
                         <button (click)="editEventoNombreModal()"><i class="fas fa-edit text-warning fa-lg"></i></button>
                     </div>
                     <div class="col-9">
-                        <input type="text" class="form-control" name="evento" [value]="evento.nombre" disabled>
+                        <input type="text" class="form-control" name="evento" [value]="evento.nombre | truncarTexto" disabled>
                     </div>
                 </div>
             </div>

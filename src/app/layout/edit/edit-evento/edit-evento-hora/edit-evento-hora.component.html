@@ -11,7 +11,7 @@
     <div class="row contenedor-default mt-2">
         <div class="form-group col-lg-4 col-md-12 mb-4">
             <h5>Evento</h5>
-            <input type="text" class="form-control" id="evento" [value]="evento.nombre" disabled>
+            <input type="text" class="form-control" id="evento" [value]="evento.nombre | truncarTexto" disabled>
         </div>
         <div class="form-group col-lg-4 col-md-12 mb-4">
             <h5>Codigo</h5>

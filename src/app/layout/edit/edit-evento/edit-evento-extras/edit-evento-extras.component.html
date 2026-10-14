@@ -10,7 +10,7 @@
     <div class="row contenedor-default mt-2">
         <div class="form-group col-lg-4 mb-2">
             <h5>Evento</h5>
-            <input type="text" class="form-control" id="evento" [value]="evento.nombre" disabled>
+            <input type="text" class="form-control" id="evento" [value]="evento.nombre | truncarTexto" disabled>
         </div>
         <div class="form-group col-lg-4 mb-2">
             <h5>Codigo</h5>
@@ -26,10 +26,14 @@
                     <h5>Extras fijos</h5> 
                     <div class="extra-container-edit">
                         <div class="extra-overflow">
+                            <div *ngIf="cargandoExtras" class="text-muted small py-2">Cargando extras...</div>
+                            <div *ngIf="!cargandoExtras && listaExtra.length === 0" class="text-muted small py-2">
+                                <i class="fas fa-info-circle me-1"></i>No hay extras fijos cargados.
+                            </div>
                             <div class="extra-box" id="listaExtra" *ngFor="let extra of listaExtra | orderAbmByNombre; let i=index">
                                 <app-extra-checkbox 
                                     (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
-                                    [listaExtra]="evento.listaExtra"
+                                    [listaExtra]="extrasSeleccionados"
                                     [i]="i"
                                     [extra]="extra">
                                 </app-extra-checkbox>
@@ -42,10 +46,14 @@
                     <h5>Extras variables</h5> 
                     <div class="extra-container-edit">
                         <div class="extra-overflow">
+                            <div *ngIf="cargandoExtras" class="text-muted small py-2">Cargando extras...</div>
+                            <div *ngIf="!cargandoExtras && listaExtraVariable.length === 0" class="text-muted small py-2">
+                                <i class="fas fa-info-circle me-1"></i>No hay extras variables cargados.
+                            </div>
                             <div class="extra-box" id="listaExtraVariable" *ngFor="let extraVariable of listaExtraVariable | orderAbmByNombre; let i=index">
                                 <app-extra-variable-checkbox
                                     (outputExtraPresupuesto)="sumExtraPresupuesto($event)"
-                                    [listaExtra]="evento.listaExtraVariable"
+                                    [listaExtra]="extrasVariablesSeleccionados"
                                     [i]="i"
                                     [extra]="extraVariable">
                                 </app-extra-variable-checkbox>
@@ -73,13 +81,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="descuento" class="form-label font-weight-bold">Descuento</label>
-                            <div class="input-group mb-2">
-                                <input type="number" class="form-control" id="descuento" [(ngModel)]="evento.descuento" (change)="sumPresupuesto()">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">%</div>
-                                </div>
-                            </div>
+                            <label for="extraOtroDescripcion" class="form-label font-weight-bold">Descripción de extra otro</label>
+                            <input type="text" class="form-control" id="extraOtroDescripcion" [(ngModel)]="evento.extraOtroDescripcion">
                         </div>
                     </div>  
                 </div>

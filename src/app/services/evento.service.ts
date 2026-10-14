@@ -9,6 +9,7 @@ import {
   EventoExtra,
   EventoHora,
   EventoJSON,
+  EventoReservaDTO,
   EventoVer
 } from '../model/Evento'
 import { GenericItem } from '../model/GenericItem'
@@ -375,10 +376,71 @@ export class EventoService {
     evento.empresaId = this.usuarioService.getEmpresaId()
     evento.encargadoId = await this.loginService.getUsuarioId()
 
+    const listaExtra = [
+      ...evento.listaExtra.map(extra => ({
+        id: extra.id,
+        nombre: extra.nombre,
+        tipoExtra: extra.tipoExtra,
+        empresaId: extra.empresaId,
+        precio: extra.precio,
+        cantidad: 1,
+        listaTipoEventoId: extra.listaTipoEventoId
+      })),
+      ...evento.listaExtraVariable.map(extra => ({
+        id: extra.id,
+        nombre: extra.nombre,
+        tipoExtra: 'VARIABLE_EVENTO',
+        empresaId: evento.empresaId,
+        precio: extra.precio,
+        cantidad: extra.cantidad,
+        listaTipoEventoId: []
+      })),
+      ...evento.listaExtraTipoCatering.map(extra => ({
+        id: extra.id,
+        nombre: extra.nombre,
+        tipoExtra: extra.tipoExtra,
+        empresaId: extra.empresaId,
+        precio: extra.precio,
+        cantidad: 1,
+        listaTipoEventoId: extra.listaTipoEventoId
+      })),
+      ...evento.listaExtraCateringVariable.map(extra => ({
+        id: extra.id,
+        nombre: extra.nombre,
+        tipoExtra: 'VARIABLE_CATERING',
+        empresaId: evento.empresaId,
+        precio: extra.precio,
+        cantidad: extra.cantidad,
+        listaTipoEventoId: []
+      }))
+    ]
+
+    const reserva: EventoReservaDTO = {
+      id: evento.id,
+      nombre: evento.nombre,
+      capacidadAdultos: evento.capacidadAdultos,
+      capacidadNinos: evento.capacidadNinos,
+      codigo: evento.codigo,
+      inicio: evento.inicio,
+      fin: evento.fin,
+      tipoEventoId: evento.tipoEventoId,
+      empresaId: evento.empresaId,
+      extraOtro: evento.extraOtro,
+      extraOtroDescripcion: evento.extraOtroDescripcion,
+      precioTipoEvento: evento.precioTipoEvento,
+      listaExtra,
+      cateringOtro: evento.cateringOtro,
+      cateringOtroDescripcion: evento.cateringOtroDescripcion,
+      cliente: evento.cliente,
+      encargadoId: evento.encargadoId,
+      estado: evento.estado,
+      anotaciones: evento.anotaciones
+    }
+
     const response = await lastValueFrom(
       this.httpClient.post<CustomResponse<number>>(
         REST_SERVER_URL + '/v1/eventos',
-        evento
+        reserva
       )
     )
     return response

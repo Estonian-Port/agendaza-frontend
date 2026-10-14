@@ -12,7 +12,7 @@
                     <textarea type="text" class="form-control" rows="4" name="input-editar" [(ngModel)]="inputEditar"></textarea>
                 </div>
                 <div class="modal-body" *ngIf="!formatoTextearea">
-                    <input type="text" class="form-control" name="input-editar" [(ngModel)]="inputEditar">
+                    <input [type]="tipoInput" min="0" step="any" class="form-control" name="input-editar" [(ngModel)]="inputEditar">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="changeModal()">Cerrar</button>

@@ -15,6 +15,7 @@ export class EditEventoPagosComponent implements OnInit {
 
   eventoPago : EventoPago = new EventoPago(0,"","",0)
   listaPago : Array<Pago> = []
+  cargandoPagos = true
   
   abonado : number = 0
   faltante : number = 0
@@ -42,6 +43,7 @@ export class EditEventoPagosComponent implements OnInit {
 
     this.eventoPago = await this.pagoService.getEventoForEditEventoPago(id)
     this.listaPago = await this.pagoService.getAllPagoFromEvento(id)
+    this.cargandoPagos = false
 
     this.abonado = _.sum(this.listaPago.map(it => it.monto))
     this.faltante = this.eventoPago.precioTotal - this.abonado

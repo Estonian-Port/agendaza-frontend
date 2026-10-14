@@ -1,5 +1,19 @@
 <div class="d-flex card-extra">
     <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{extra.id}} 
     (change)="onCheckboxChange($event)" [checked]="isChecked()" [name]="'extra' + extra.id" [id]="'extra' + extra.id">
-    <label class="form-check-label curso-pointer" [for]="'extra' + extra.id">{{extra.nombre}} ${{extra.precio}}</label>
+    <label class="form-check-label curso-pointer" [for]="'extra' + extra.id">
+        {{extra.nombre}} ${{extra.precio}}
+    </label>
+    <button type="button" class="btn btn-link text-warning p-0 ms-2" (click)="editarPrecio()" title="Editar precio" aria-label="Editar precio del extra">
+        <i class="fas fa-edit text-warning fa-lg"></i>
+    </button>
 </div>
+<app-modal-editar
+    (outputAceptar)="setInputPrecioEditar($event)"
+    (outputChangeModal)="setModalEditarPrecio($event)"
+    [inputEditar]="inputPrecioEditar"
+    [modal]="modalEditarPrecio"
+    [myCallback]="metodoAceptarPrecio"
+    [tipoInput]="'number'"
+    [titulo]="tituloModalPrecio">
+</app-modal-editar>

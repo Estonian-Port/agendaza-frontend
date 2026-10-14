@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { Extra } from 'src/app/model/Extra';
 
@@ -6,7 +6,7 @@ import { Extra } from 'src/app/model/Extra';
   selector: 'app-extra-checkbox',
   templateUrl: './extra-checkbox.component.html'
 })
-export class ExtraCheckboxComponent implements OnInit {
+export class ExtraCheckboxComponent {
 
   @Input()
   i! : number
@@ -23,15 +23,36 @@ export class ExtraCheckboxComponent implements OnInit {
   @Output()
   outputExtraOtro = new EventEmitter();
 
-  constructor() { }
+  modalEditarPrecio = false
+  tituloModalPrecio = ""
+  inputPrecioEditar: any = 0
+  metodoAceptarPrecio!: Function
 
-  ngOnInit(): void {
-    if(this.isChecked()){
-      this.outputExtraPresupuesto.emit(this.extra.precio)
+  editarPrecio() {
+    this.tituloModalPrecio = `Editar precio de ${this.extra.nombre}`
+    this.inputPrecioEditar = this.extra.precio
+    this.metodoAceptarPrecio = this.guardarPrecio.bind(this)
+    this.modalEditarPrecio = true
+  }
+
+  guardarPrecio() {
+    const precioAnterior = Number(this.extra.precio) || 0
+    this.extra.precio = Math.max(0, Number(this.inputPrecioEditar) || 0)
+    if (this.isChecked()) {
+      this.outputExtraPresupuesto.emit(this.extra.precio - precioAnterior)
     }
   }
 
+  setInputPrecioEditar(precio: number) {
+    this.inputPrecioEditar = precio
+  }
+
+  setModalEditarPrecio(modal: boolean) {
+    this.modalEditarPrecio = modal
+  }
+
   onCheckboxChange(event: any){
+    this.listaExtra ??= []
     if (event.target.checked) {
       this.listaExtra.push(this.extra)
       this.outputExtraPresupuesto.emit(this.extra.precio)
@@ -43,6 +64,6 @@ export class ExtraCheckboxComponent implements OnInit {
   }
 
   isChecked(){
-    return this.listaExtra.find(it => { return it.id === this.extra.id }) != undefined
+    return (this.listaExtra ?? []).some(it => it.id === this.extra.id)
   }
 }

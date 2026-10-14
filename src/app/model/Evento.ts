@@ -16,7 +16,7 @@ export type EventoJSON = {
     tipoEventoId: number
     empresaId: number
     extraOtro: number
-    descuento: number
+    extraOtroDescripcion: string
     listaExtra: Array<Extra>
     listaExtraVariable: Array<ExtraVariable>
     cateringOtro: number
@@ -25,6 +25,39 @@ export type EventoJSON = {
     listaExtraCateringVariable: Array<ExtraVariable>
     cliente: Cliente
     presupuesto?: number
+    precioTipoEvento?: number
+    encargadoId: number
+    estado: string
+    anotaciones: string
+}
+
+export type ExtraReservaDTO = {
+    id: number
+    nombre: string
+    tipoExtra: string
+    empresaId: number
+    precio: number
+    cantidad: number
+    listaTipoEventoId: number[]
+}
+
+export type EventoReservaDTO = {
+    id: number
+    nombre: string
+    capacidadAdultos: number
+    capacidadNinos: number
+    codigo: string
+    inicio: string
+    fin: string
+    tipoEventoId: number
+    empresaId: number
+    extraOtro: number
+    extraOtroDescripcion: string
+    precioTipoEvento: number
+    listaExtra: ExtraReservaDTO[]
+    cateringOtro: number
+    cateringOtroDescripcion: string
+    cliente: Cliente
     encargadoId: number
     estado: string
     anotaciones: string
@@ -59,7 +92,8 @@ export class Evento {
         public capacidadNinos: number,
         public empresaId: number,
         public extraOtro: number,
-        public descuento: number,
+        public extraOtroDescripcion: string,
+        public precioTipoEvento: number,
         public listaExtra: Array<Extra>,
         public listaExtraVariable: Array<ExtraVariable>,
         public cateringOtro: number,
@@ -76,7 +110,7 @@ export class Evento {
      * Crea una instancia de Evento a partir de JSON del servidor
      */
     static fromJson(eventoJSON: EventoJSON): Evento {
-        return new Evento(
+        const evento = new Evento(
             eventoJSON.id,
             eventoJSON.nombre,
             eventoJSON.codigo,
@@ -87,7 +121,8 @@ export class Evento {
             eventoJSON.capacidadNinos,
             eventoJSON.empresaId,
             eventoJSON.extraOtro,
-            eventoJSON.descuento,
+            eventoJSON.extraOtroDescripcion,
+            eventoJSON.precioTipoEvento ?? 0,
             eventoJSON.listaExtra,
             eventoJSON.listaExtraVariable,
             eventoJSON.cateringOtro,
@@ -99,6 +134,7 @@ export class Evento {
             eventoJSON.estado,
             eventoJSON.anotaciones
         )
+        return evento
     }
 
     /**
@@ -108,7 +144,7 @@ export class Evento {
         return new Evento(
             0, "", "", "", "", 0,
             0, 0, 0,
-            0, 0, [], [],
+            0, "", 0, [], [],
             0, "", [], [],
             new Cliente(0, "", "", "CLIENTE", "", 0),
             0,
@@ -179,9 +215,8 @@ export class EventoExtra {
         public nombre: string,
         public codigo: string,
         public extraOtro: number,
-        public descuento: number,
-        public listaExtra: Array<Extra>,
-        public listaExtraVariable: Array<ExtraVariable>,
+        public extraOtroDescripcion: string,
+        public listaEventoExtra: Array<ExtraReservaDTO>,
         public tipoEventoExtra: TipoEventoExtra,
         public fechaEvento: string
     ) { }
@@ -198,8 +233,7 @@ export class EventoCatering {
         public codigo: string,
         public cateringOtro: number,
         public cateringOtroDescripcion: string,
-        public listaExtraTipoCatering: Array<Extra>,
-        public listaExtraCateringVariable: Array<ExtraVariable>,
+        public listaExtra: Array<ExtraReservaDTO>,
         public tipoEventoId: number,
         public fechaEvento: string,
         public capacidadAdultos : number,
@@ -236,7 +270,7 @@ export class EventoVer {
         public capacidadAdultos: number,
         public capacidadNinos : number,
         public extraOtro: number,
-        public descuento: number,
+        public extraOtroDescripcion: string,
         public listaExtra: Array<Extra>,
         public listaExtraVariable: Array<ExtraVariable>,
         public cateringOtro: number,

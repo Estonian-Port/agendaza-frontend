@@ -16,7 +16,7 @@
     <div class="row contenedor-default mt-2">
         <div class="form-group col-lg-4 col-md-12 mb-4">
             <h5>Evento</h5>
-            <input type="text" class="form-control" id="evento" [value]="eventoPago.nombre" disabled>
+            <input type="text" class="form-control" id="evento" [value]="eventoPago.nombre | truncarTexto" disabled>
         </div>
         <div class="form-group col-lg-4 col-md-12 mb-4">
             <h5>Codigo</h5>
@@ -32,6 +32,10 @@
                     <h5>Lista de pagos</h5>
                     <div class="pagos-container">
                         <div class="extra-overflow">
+                            <div *ngIf="cargandoPagos" class="text-muted small py-2">Cargando pagos...</div>
+                            <div *ngIf="!cargandoPagos && listaPago.length === 0" class="text-muted small py-2">
+                                <i class="fas fa-info-circle me-1"></i>No hay pagos cargados para este evento.
+                            </div>
                             <div class="extra-box" *ngFor="let pago of listaPago">
                                 <div class="card-pagos">
                                     <div class="d-flex justify-content-between">

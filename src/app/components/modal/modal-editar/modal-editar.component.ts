@@ -21,6 +21,9 @@ export class ModalEditarComponent {
   @Input()
   formatoTextearea = false
 
+  @Input()
+  tipoInput = "text"
+
   @Output() 
   outputChangeModal = new EventEmitter<boolean>();
 

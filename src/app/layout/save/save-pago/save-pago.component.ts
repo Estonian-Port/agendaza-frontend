@@ -39,6 +39,7 @@ export class SavePagoComponent implements OnInit {
       if (params['pagoId']) {
         const pagoId = Number(params['pagoId']);
         this.pago = await this.pagoService.get(pagoId);
+        this.seleccionarOpcionesPorDefecto();
         this.codigo = this.pago.codigo;
         this.botonBuscarDisabled = true;
       }
@@ -61,8 +62,18 @@ export class SavePagoComponent implements OnInit {
     try {
       this.eventoId = await this.eventoService.getEventoIdByCodigo(this.codigo)
       this.pago = await this.pagoService.getEventoForSavePago(this.eventoId)
+      this.seleccionarOpcionesPorDefecto();
     } catch (error) {
       mostrarErrorConMensaje(this, error);
+    }
+  }
+
+  private seleccionarOpcionesPorDefecto(){
+    if (!this.pago.medioDePago && this.listaMedioDePago.length > 0) {
+      this.pago.medioDePago = this.listaMedioDePago[0];
+    }
+    if (!this.pago.concepto && this.listaConcepto.length > 0) {
+      this.pago.concepto = this.listaConcepto[0];
     }
   }
 

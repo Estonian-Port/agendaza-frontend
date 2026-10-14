@@ -2,7 +2,12 @@
     <div class="col-10 d-flex">
         <input type="checkbox" class="form-check-input me-2 flex-shrink-0" value={{extra.id}} 
         (change)="onCheckboxChange($event)" [checked]="isChecked()" [name]="'extraVariable' + extra.id" [id]="'extraVariable' + extra.id">
-        <label class="form-check-label " [for]="'extraVariable' + extra.id">{{extra.nombre}} ${{extra.precio}}</label>
+        <label class="form-check-label " [for]="'extraVariable' + extra.id">
+            {{extra.nombre}} ${{extra.precio}}
+        </label>
+        <button type="button" class="btn btn-link text-warning p-0 ms-2" (click)="editarPrecio()" title="Editar precio" aria-label="Editar precio del extra variable">
+            <i class="fas fa-edit text-warning fa-lg"></i>
+        </button>
     </div>
     <div class="col-2 d-flex">
         <input class="form-control flex-shrink-0" type="number" [name]="'extraVariable' + extra.id" 
@@ -10,3 +15,12 @@
             [(ngModel)]="extra.cantidad" [disabled]="!isChecked()">
     </div>
 </div>
+<app-modal-editar
+    (outputAceptar)="setInputPrecioEditar($event)"
+    (outputChangeModal)="setModalEditarPrecio($event)"
+    [inputEditar]="inputPrecioEditar"
+    [modal]="modalEditarPrecio"
+    [myCallback]="metodoAceptarPrecio"
+    [tipoInput]="'number'"
+    [titulo]="tituloModalPrecio">
+</app-modal-editar>

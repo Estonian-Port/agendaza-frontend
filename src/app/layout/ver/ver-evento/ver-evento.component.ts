@@ -19,7 +19,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class VerEventoComponent implements OnInit {
 
   evento : EventoVer = new EventoVer(0,"", "","","", "",0,0,0,
-  0,[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
+  "",[],[],0,"",[],[], new Cliente(0,"","","","",0),0, new UsuarioAbm(0,"",""),"","", "")
 
   inicio : Time = new Time("0","0")
   fin : Time = new Time("0","0")

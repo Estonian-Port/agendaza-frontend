@@ -63,6 +63,7 @@ export class SaveEventoComponent implements OnInit {
   // Cotizacion
   listaExtra : Array<Extra> = []
   listaExtraVariable : Array<ExtraVariable> = []
+  cargandoExtras = true
   extraPresupuesto : number = 0
   extraCamarera : ExtraVariable = new ExtraVariable(0,"",0,0)
   extraNino : ExtraVariable = new ExtraVariable(0,"",0,0)
@@ -79,7 +80,6 @@ export class SaveEventoComponent implements OnInit {
   // Errors
   errors = []
   error : ErrorMensaje = new ErrorMensaje(false, '')
-  usuarioCondicional : boolean = false
 
   // Spinner
   spinnerVisible = false
@@ -123,7 +123,7 @@ export class SaveEventoComponent implements OnInit {
         }),
         cotizacionForm: this.formBuilder.group({  
           extraOtro: new FormControl(0, [Validators.required, Validators.minLength(0)]),
-          descuento: new FormControl(0, [Validators.required, Validators.minLength(0)]),
+          extraOtroDescripcion: new FormControl(''),
           presupuesto: new FormControl({value: 0, disabled: true}),
         }),
         cateringForm: this.formBuilder.group({  
@@ -163,7 +163,7 @@ export class SaveEventoComponent implements OnInit {
   get finMinuto(){ return this.formGroup.get(this.datosEventoForm)?.get('finMinuto') }
 
   get extraOtro(){ return this.formGroup.get(this.cotizacionForm)?.get('extraOtro') }
-  get descuento() { return this.formGroup.get(this.cotizacionForm)?.get('descuento') }
+  get extraOtroDescripcion() { return this.formGroup.get(this.cotizacionForm)?.get('extraOtroDescripcion') }
   get presupuesto() { return this.formGroup.get(this.cotizacionForm)?.get('presupuesto') }
 
   get agregarCateringCheckbox() { return this.formGroup.get(this.cateringForm)?.get('agregarCateringCheckbox') }
@@ -240,8 +240,6 @@ export class SaveEventoComponent implements OnInit {
 
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
-
-    this.setListasExtra()
 
     this.changeCapacidadAdultos()
     //this.changeCapacidadNinos()
@@ -320,14 +318,15 @@ export class SaveEventoComponent implements OnInit {
   cleanEvento(){
     this.evento = new Evento(0,this.evento.nombre, "", this.evento.inicio, this.evento.fin, 
       this.evento.tipoEventoId, this.evento.capacidadAdultos, this.evento.capacidadNinos, 
-      this.evento.empresaId,0,0,[],[],0,"",[],[], this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
+      this.evento.empresaId,0,"",0,[],[],0,"",[],[], this.evento.cliente,this.evento.encargadoId, "COTIZADO", "")
   }
 
   setEvento() {
 
     this.evento = new Evento(0,this.nombreEvento?.getRawValue(), "", this.evento.inicio, this.evento.fin, 
       this.tipoEvento?.getRawValue(), this.capacidadAdultos?.getRawValue(), this.capacidadNinos?.getRawValue(),
-      this.evento.empresaId,this.extraOtro?.getRawValue(), this.descuento?.getRawValue(),
+      this.evento.empresaId,this.extraOtro?.getRawValue(), this.extraOtroDescripcion?.getRawValue(),
+      this.precioTipoEvento,
       this.evento.listaExtra,this.evento.listaExtraVariable,this.cateringOtro?.getRawValue(),
       this.cateringOtroDescripcion?.getRawValue(),this.evento.listaExtraTipoCatering,
       this.evento.listaExtraCateringVariable, this.evento.cliente, this.evento.encargadoId, this.estado?.getRawValue(), this.anotaciones?.getRawValue())
@@ -350,20 +349,19 @@ export class SaveEventoComponent implements OnInit {
   // --------------------------- Cotizacion ----------------------------------
 
   async setListasExtra() {
+    this.cargandoExtras = true
+    const [dtoExtras, dtoVariables, dtoCatering, dtoCateringVariable] = await Promise.all([
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "EVENTO"),
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_EVENTO"),
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "TIPO_CATERING"),
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_CATERING")
+    ])
 
-    // --- Cotización ---
-    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "EVENTO");
-    const dtoVariables = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_EVENTO");
-
-    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, this.empresa.id));
-    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto));
-
-    // --- Catering ---
-    const dtoCatering = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "TIPO_CATERING");
-    const dtoCateringVariable = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_CATERING");
-
-    this.listaExtraTipoCatering = dtoCatering.map(dto => Extra.fromDTO(dto, this.empresa.id));
-    this.listaExtraCateringVariable = dtoCateringVariable.map(dto => ExtraVariable.fromDTO(dto));
+    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, this.empresa.id))
+    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto))
+    this.listaExtraTipoCatering = dtoCatering.map(dto => Extra.fromDTO(dto, this.empresa.id))
+    this.listaExtraCateringVariable = dtoCateringVariable.map(dto => ExtraVariable.fromDTO(dto))
+    this.cargandoExtras = false
   }
 
   sumExtraPresupuesto(extraPrecio : number){
@@ -377,10 +375,6 @@ export class SaveEventoComponent implements OnInit {
     const extraOtro = Number(this.extraOtro?.getRawValue()) || 0;
 
     this.presupuesto?.setValue(precioTipoEvento + extraPresupuesto + extraOtro);
-
-    if(this.descuento?.getRawValue() != 0){
-      this.presupuesto?.setValue(this.presupuesto.getRawValue() - (this.presupuesto.getRawValue() * (this.descuento?.getRawValue() / 100)))
-    }
   }
 
   // ---------------------------------------------------------------------------
@@ -459,7 +453,6 @@ export class SaveEventoComponent implements OnInit {
   cleanCliente(error : any){
     this.nombre?.setValue("")
     this.apellido?.setValue("")
-    this.usuarioNoEncontrado(error)
     this.evento.cliente = new Cliente(0, "", "", "CLIENTE", this.email?.getRawValue(), this.celular?.getRawValue())
   }
 
@@ -473,20 +466,6 @@ export class SaveEventoComponent implements OnInit {
     this.email?.setValue(this.evento.cliente.email)
     this.nombre?.setValue(this.evento.cliente.nombre)
     this.apellido?.setValue(this.evento.cliente.apellido)
-    this.error.condicional = false
-    this.usuarioCondicional = true
-  }
-  
-  usuarioNoEncontrado(error : any){
-    this.error.condicional = true
-    this.usuarioCondicional = false
-    mostrarErrorConMensaje(this, error)
-
-    this.errors.forEach(error => { this.error.mensaje = error })
-
-    setTimeout(() => {
-      this.error.condicional = false;
-    }, 3000);
   }
 
   // --------------------------------------------------------------------------
