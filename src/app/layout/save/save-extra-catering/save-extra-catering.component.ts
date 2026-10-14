@@ -27,7 +27,7 @@ export class SaveExtraCateringComponent implements OnInit {
     private location : Location) { }
 
   async ngOnInit(): Promise<void> {
-    this.listaTipoExtra = await this.extraService.getAllEventoTipoExtra()
+    this.listaTipoExtra = await this.extraService.getAllCateringTipoExtra()
 
     await this.route.queryParams.subscribe(async params => {
       
@@ -37,7 +37,7 @@ export class SaveExtraCateringComponent implements OnInit {
         this.otro = true
         this.edicion = true
       }else{
-        this.listaExtra = await this.extraService.getAllExtraEventoAgregar()
+        this.listaExtra = await this.extraService.getAllExtraCateringAgregar()
         
         if(this.listaExtra.length == 0){
           this.extra.id = 0

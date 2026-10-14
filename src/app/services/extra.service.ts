@@ -153,12 +153,12 @@ export class ExtraService {
     return res.data.map(GenericItemEmpresaTipoEvento.fromJson);
   }
 
-  async getAllExtraCateringAgregar(): Promise<GenericItem[]> {
+  async getAllExtraCateringAgregar(): Promise<GenericItemEmpresaTipoEventoJSON[]> {
     const empresaId = this.usuarioService.getEmpresaId();
     const res = await lastValueFrom(
       this.httpClient.get<{ data: Extra[] }>(`${BASE}/empresa/${empresaId}/catering/agregar`)
     );
-    return res.data.map(GenericItem.fromJson);
+    return res.data.map(GenericItemEmpresaTipoEvento.fromJson);
   }
 
   // ==================== PRECIO ====================
