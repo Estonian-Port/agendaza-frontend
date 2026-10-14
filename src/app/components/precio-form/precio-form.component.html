@@ -1,4 +1,4 @@
-<div class="row col-8 mb-3">
+<div class="row precio-form-row align-items-end g-2 mb-3">
     
     <div class="form-group col-md-2 mb-1">
         <label class="form-label">Precio</label>
@@ -24,8 +24,8 @@
         </select>
     </div>
 
-    <div class="form-group col-md-2 text-center mt-4">
-        <button type="submit" (click)="quitarPrecio(precio.id)">
+    <div class="form-group col-md-2 text-center mb-1">
+        <button type="button" class="precio-quitar" (click)="quitarPrecio(precio.id)" aria-label="Quitar precio">
             <i class="fas fa-trash text-danger fa-lg"></i>
         </button>
     </div>

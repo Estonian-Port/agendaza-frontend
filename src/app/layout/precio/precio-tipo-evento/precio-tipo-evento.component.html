@@ -1,53 +1,42 @@
 <div class="container">
-    
-    <div class="row mt-3">
-        <h2 class="col-8">Precio</h2>
-    </div>
+    <app-header
+        titulo="Precio por tipo de evento"
+        (outputVolver)="volver()"
+        [botonSave]="true"
+        (outputSave)="save()">
+    </app-header>
 
-    <div class="row mt-3">
-        <h5 class="col-8">{{currentYear}}</h5>
-
-        <div class="col-4">
-            <button type="submit" class="btn btn-primary" (click)="agregarPrecioCurrent()">Agregar</button>
+    <section class="precio-periodo mt-4">
+        <div class="precio-periodo-header">
+            <h5>{{currentYear}}</h5>
+            <button type="button" class="btn btn-primary" (click)="agregarPrecioCurrent()">
+                <i class="fas fa-plus me-1" aria-hidden="true"></i>Agregar
+            </button>
         </div>
-    </div>
-    
-    <div class="border-top my-3"></div>
-
-    <div *ngFor="let precio of listaPrecioCurrent | orderByFechaDesdePrecio; let i=index">
-        <app-precio-form 
-            (outputQuitarPrecio)="quitarPrecio($event)"
-            [precio]="precio"
-            [i]="i">
-        </app-precio-form>
-    </div>
-
-    <div class="row mt-5">
-        <h5 class="col-8">{{currentYear + 1}}</h5>
-
-        <div class="col-4">
-            <button type="submit" class="btn btn-primary" (click)="agregarPrecioNext()">Agregar</button>
+        <div *ngIf="listaPrecioCurrent.length === 0" class="precio-vacio">Sin precios para este año</div>
+        <div *ngFor="let precio of listaPrecioCurrent | orderByFechaDesdePrecio; let i=index">
+            <app-precio-form
+                (outputQuitarPrecio)="quitarPrecio($event)"
+                [precio]="precio"
+                [i]="i">
+            </app-precio-form>
         </div>
-    </div>
-    
-    <div class="border-top my-3"></div>
+    </section>
 
-    <div *ngFor="let precio of listaPrecioNext | orderByFechaDesdePrecio; let i=index ">
-        <app-precio-form 
-            (outputQuitarPrecio)="quitarPrecio($event)"
-            [precio]="precio"
-            [i]="i">
-        </app-precio-form>
-    </div>
-
-    <div class="container m-3">
-        <div class="gap-2 d-flex justify-content-end">
-            <div>
-                <button type="submit" class="btn btn-primary" (click)="volver()">Volver</button>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
-            </div>
+    <section class="precio-periodo mt-4 mb-4">
+        <div class="precio-periodo-header">
+            <h5>{{currentYear + 1}}</h5>
+            <button type="button" class="btn btn-primary" (click)="agregarPrecioNext()">
+                <i class="fas fa-plus me-1" aria-hidden="true"></i>Agregar
+            </button>
         </div>
-    </div>
+        <div *ngIf="listaPrecioNext.length === 0" class="precio-vacio">Sin precios para este año</div>
+        <div *ngFor="let precio of listaPrecioNext | orderByFechaDesdePrecio; let i=index">
+            <app-precio-form
+                (outputQuitarPrecio)="quitarPrecio($event)"
+                [precio]="precio"
+                [i]="i">
+            </app-precio-form>
+        </div>
+    </section>
 </div>
