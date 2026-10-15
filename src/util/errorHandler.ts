@@ -15,6 +15,8 @@ export function mostrarErrorConMensaje(component: any, error: any): string {
   else if (error?.status !== undefined) {
     if (error.status === 0) {
       errorMessage = 'Error al conectar con el servidor. Sistema en mantenimiento.'
+    } else if (error.status === 429) {
+      errorMessage = 'Demasiados intentos. Probá de nuevo en unos minutos.'
     } else if (error.status === 403 && error.url?.endsWith('/login')) {
       errorMessage = 'Usuario o contraseña incorrecta.'
     } else if (error.status === 403) {
