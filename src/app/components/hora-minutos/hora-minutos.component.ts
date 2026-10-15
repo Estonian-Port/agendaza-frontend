@@ -18,13 +18,20 @@ export class HoraMinutosComponent {
   hastaElOtroDiaCheckbox : boolean = false
 
   @Output()
-  outputHastaElOtroDiaCheckbox = new EventEmitter<boolean>()
+  outputInicioChange = new EventEmitter<void>()
+
+  @Output()
+  outputFinChange = new EventEmitter<void>()
+
+  changeInicio() {
+    this.outputInicioChange.emit()
+  }
+
+  changeFin() {
+    this.outputFinChange.emit()
+  }
 
   listaHora : Array<string> = DateUtil.ListaHora
   listaMinuto : Array<string> = DateUtil.ListaMinuto
-
-  changeCheckbox() {
-    this.outputHastaElOtroDiaCheckbox.emit()
-  }
 
 }

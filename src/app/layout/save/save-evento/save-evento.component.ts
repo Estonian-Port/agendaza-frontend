@@ -57,6 +57,10 @@ export class SaveEventoComponent implements OnInit {
 
   // -- Reemplazar por TipoEventoForm
   precioTipoEvento : number = 0
+  modalEditarPrecioBase = false
+  tituloModalPrecioBase = ""
+  inputPrecioBaseEditar: any = 0
+  metodoAceptarPrecioBase!: Function
   duracionTipoEvento : Time = new Time("00","00")
   capacidadTipoEvento : Capacidad = new Capacidad(0,0)
 
@@ -122,6 +126,7 @@ export class SaveEventoComponent implements OnInit {
           finMinuto: new FormControl('00', [Validators.required]),
         }),
         cotizacionForm: this.formBuilder.group({  
+          precioTipoEvento: new FormControl({value: 0, disabled: true}, [Validators.required, Validators.min(0)]),
           extraOtro: new FormControl(0, [Validators.required, Validators.minLength(0)]),
           extraOtroDescripcion: new FormControl(''),
           presupuesto: new FormControl({value: 0, disabled: true}),
@@ -164,6 +169,7 @@ export class SaveEventoComponent implements OnInit {
 
   get extraOtro(){ return this.formGroup.get(this.cotizacionForm)?.get('extraOtro') }
   get extraOtroDescripcion() { return this.formGroup.get(this.cotizacionForm)?.get('extraOtroDescripcion') }
+  get precioTipoEventoControl() { return this.formGroup.get(this.cotizacionForm)?.get('precioTipoEvento') }
   get presupuesto() { return this.formGroup.get(this.cotizacionForm)?.get('presupuesto') }
 
   get agregarCateringCheckbox() { return this.formGroup.get(this.cateringForm)?.get('agregarCateringCheckbox') }
@@ -253,6 +259,7 @@ export class SaveEventoComponent implements OnInit {
   async changeDate(){
     this.setFechaInicioAndFin()
     this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio)
+    this.precioTipoEventoControl?.setValue(this.precioTipoEvento)
     this.setListasExtra()
     this.sumPresupuesto()
     this.buscarListaEventoByDiaAndEmpresaId()
@@ -266,7 +273,9 @@ export class SaveEventoComponent implements OnInit {
     this.finHora?.setValue(this.finalTime.hour)
     this.finMinuto?.setValue(this.finalTime.minute)
 
-    this.hastaElOtroDiaCheckbox = Number(this.finalTime.hour) < Number(this.inicioTime.hour)
+    const inicioEnMinutos = Number(this.inicioTime.hour) * 60 + Number(this.inicioTime.minute)
+    const finEnMinutos = Number(this.finalTime.hour) * 60 + Number(this.finalTime.minute)
+    this.hastaElOtroDiaCheckbox = finEnMinutos < inicioEnMinutos
     this.buscarListaEventoByDiaAndEmpresaId()
   }
 
@@ -323,6 +332,8 @@ export class SaveEventoComponent implements OnInit {
 
   setEvento() {
 
+    this.precioTipoEvento = Number(this.precioTipoEventoControl?.getRawValue()) || 0
+
     this.evento = new Evento(0,this.nombreEvento?.getRawValue(), "", this.evento.inicio, this.evento.fin, 
       this.tipoEvento?.getRawValue(), this.capacidadAdultos?.getRawValue(), this.capacidadNinos?.getRawValue(),
       this.evento.empresaId,this.extraOtro?.getRawValue(), this.extraOtroDescripcion?.getRawValue(),
@@ -370,11 +381,33 @@ export class SaveEventoComponent implements OnInit {
   }
 
   sumPresupuesto(){
-    const precioTipoEvento = Number(this.precioTipoEvento) || 0;
+    const precioTipoEvento = Number(this.precioTipoEventoControl?.getRawValue()) || 0;
     const extraPresupuesto = Number(this.extraPresupuesto) || 0;
     const extraOtro = Number(this.extraOtro?.getRawValue()) || 0;
 
+    this.precioTipoEvento = precioTipoEvento
     this.presupuesto?.setValue(precioTipoEvento + extraPresupuesto + extraOtro);
+  }
+
+  editarPrecioBase(){
+    this.tituloModalPrecioBase = "Editar precio base"
+    this.inputPrecioBaseEditar = this.precioTipoEventoControl?.getRawValue() ?? 0
+    this.metodoAceptarPrecioBase = this.guardarPrecioBase.bind(this)
+    this.modalEditarPrecioBase = true
+  }
+
+  guardarPrecioBase(){
+    this.precioTipoEvento = Math.max(0, Number(this.inputPrecioBaseEditar) || 0)
+    this.precioTipoEventoControl?.setValue(this.precioTipoEvento)
+    this.sumPresupuesto()
+  }
+
+  setInputPrecioBaseEditar(precio: number){
+    this.inputPrecioBaseEditar = precio
+  }
+
+  setModalEditarPrecioBase(modal: boolean){
+    this.modalEditarPrecioBase = modal
   }
 
   // ---------------------------------------------------------------------------

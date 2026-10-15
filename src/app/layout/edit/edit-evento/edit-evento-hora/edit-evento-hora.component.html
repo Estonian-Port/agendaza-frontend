@@ -31,7 +31,8 @@
             [inicio]="inicio"
             [fin]="fin"
             [hastaElOtroDiaCheckbox]="hastaElOtroDiaCheckbox"
-            (outputHastaElOtroDiaCheckbox)="changeHastaElOtroDiaCheckbox()">
+            (outputInicioChange)="changeInicio()"
+            (outputFinChange)="updateHastaElOtroDia()">
         </app-hora-minutos>
     </div>
 

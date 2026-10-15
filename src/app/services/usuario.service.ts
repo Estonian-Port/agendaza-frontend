@@ -187,6 +187,7 @@ export class UsuarioService {
       cliente
     )
     const response = await lastValueFrom(item$)
+    this.toastService.showSuccess(response.message || 'Cliente guardado correctamente')
     return response.data
   }
 

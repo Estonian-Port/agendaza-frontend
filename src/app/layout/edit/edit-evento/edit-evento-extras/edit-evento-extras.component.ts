@@ -21,6 +21,10 @@ export class EditEventoExtrasComponent implements OnInit {
   cargandoExtras = true
   extraPresupuesto : number = 0
   presupuesto = 0
+  modalEditarPrecioBase = false
+  tituloModalPrecioBase = ""
+  inputPrecioBaseEditar: any = 0
+  metodoAceptarPrecioBase!: Function
   
   constructor(
     private eventoService : EventoService, 
@@ -70,7 +74,7 @@ export class EditEventoExtrasComponent implements OnInit {
     this.location.back()
   }
 
-  save(){
+  async save(){
     this.evento.listaEventoExtra = [
       ...this.extrasSeleccionados.map(extra => ({
         id: extra.id,
@@ -91,7 +95,7 @@ export class EditEventoExtrasComponent implements OnInit {
         listaTipoEventoId: []
       }))
     ];
-    this.eventoService.editEventoExtra(this.evento)
+    await this.eventoService.editEventoExtra(this.evento)
     this.volver()
   }
 
@@ -102,5 +106,25 @@ export class EditEventoExtrasComponent implements OnInit {
 
   sumPresupuesto(){
     this.presupuesto = this.evento.tipoEventoExtra.precio + this.extraPresupuesto + this.evento.extraOtro
+  }
+
+  editarPrecioBase(){
+    this.tituloModalPrecioBase = "Editar precio base"
+    this.inputPrecioBaseEditar = this.evento.tipoEventoExtra.precio
+    this.metodoAceptarPrecioBase = this.guardarPrecioBase.bind(this)
+    this.modalEditarPrecioBase = true
+  }
+
+  guardarPrecioBase(){
+    this.evento.tipoEventoExtra.precio = Math.max(0, Number(this.inputPrecioBaseEditar) || 0)
+    this.sumPresupuesto()
+  }
+
+  setInputPrecioBaseEditar(precio: number){
+    this.inputPrecioBaseEditar = precio
+  }
+
+  setModalEditarPrecioBase(modal: boolean){
+    this.modalEditarPrecioBase = modal
   }
 }

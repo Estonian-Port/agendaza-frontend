@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EventoHora } from 'src/app/model/Evento';
 import { Time } from 'src/app/model/Time';
 import { EventoService } from 'src/app/services/evento.service';
+import { TipoEventoService } from 'src/app/services/tipo-evento.service';
 
 @Component({
   selector: 'app-edit-evento-hora',
@@ -15,12 +16,13 @@ export class EditEventoHoraComponent implements OnInit {
   inicio : Time = new Time("00","00")
   fin : Time = new Time("00","00")
   hastaElOtroDiaCheckbox : boolean = false
+  tipoEventoId?: number
 
   fechaInicio : string = ""
-  fechaFin : Date = new Date()
 
   constructor(
     private eventoService : EventoService,
+    private tipoEventoService : TipoEventoService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -36,17 +38,26 @@ export class EditEventoHoraComponent implements OnInit {
     this.fin.minute = this.evento.fin.split(":")[1]
     
     this.fechaInicio = this.evento.inicio.split("T")[0]
-    this.fechaFin = new Date(this.evento.fin)
-  
-    const [year, month, day] = this.fechaInicio.split('-').map(Number);
-    const fechaInicioDate = new Date(year, month - 1, day);
 
-    this.hastaElOtroDiaCheckbox = fechaInicioDate.getDate() < this.fechaFin.getDate()
+    const eventosDelDia = await this.eventoService.getAllEventosByFecha(this.fechaInicio)
+    this.tipoEventoId = eventosDelDia.find(evento => evento.id === id)?.tipoEventoId
+    this.updateHastaElOtroDia()
 
   }
 
-  changeHastaElOtroDiaCheckbox() {
-    this.hastaElOtroDiaCheckbox = !this.hastaElOtroDiaCheckbox
+  async changeInicio() {
+    if (this.tipoEventoId === undefined) {
+      return
+    }
+
+    this.fin = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.tipoEventoId, this.inicio)
+    this.updateHastaElOtroDia()
+  }
+
+  updateHastaElOtroDia() {
+    const inicioEnMinutos = Number(this.inicio.hour) * 60 + Number(this.inicio.minute)
+    const finEnMinutos = Number(this.fin.hour) * 60 + Number(this.fin.minute)
+    this.hastaElOtroDiaCheckbox = finEnMinutos < inicioEnMinutos
   }
 
   volver(){

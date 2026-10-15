@@ -96,20 +96,25 @@
                             <input type="text" class="form-control" id="nombreTipoEvento" [(ngModel)]="evento.tipoEventoExtra.nombre" disabled>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
+                    <div class="form-group col-md-6 col-sm-12">
+                        <div class="d-flex justify-content-between align-items-center">
                             <label for="precioTipoEvento" class="form-label font-weight-bold">Precio Base</label>
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">$</div>
-                                </div>
-                                <input type="number" class="form-control" id="precioTipoEvento" [(ngModel)]="evento.tipoEventoExtra.precio" disabled>
+                            <button type="button" class="btn btn-link text-warning p-0 ms-2"
+                                (click)="editarPrecioBase()" title="Editar precio base" aria-label="Editar precio base">
+                                <i class="fas fa-edit text-warning fa-lg"></i>
+                            </button>
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">$</div>
                             </div>
+                            <input type="number" class="form-control" id="precioTipoEvento"
+                                [(ngModel)]="evento.tipoEventoExtra.precio" disabled>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group col-8 mb-4 mt-4">
+                <div class="form-group col-md-6 col-sm-12 mb-4 mt-4">
                     <h5 for="presupuesto">Presupuesto</h5>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
@@ -118,10 +123,16 @@
                         <input type="number" class="form-control" id="presupuesto" [(ngModel)]="presupuesto" disabled/>
                     </div>
                 </div>
-                
-                <div class="col-12">
-                    <h5 id="titulo_precio_base_sub_tipo_evento"></h5>
-                </div>
+
+                <app-modal-editar
+                    (outputAceptar)="setInputPrecioBaseEditar($event)"
+                    (outputChangeModal)="setModalEditarPrecioBase($event)"
+                    [inputEditar]="inputPrecioBaseEditar"
+                    [modal]="modalEditarPrecioBase"
+                    [myCallback]="metodoAceptarPrecioBase"
+                    [tipoInput]="'number'"
+                    [titulo]="tituloModalPrecioBase">
+                </app-modal-editar>
             </div>
         </div>
     </div>

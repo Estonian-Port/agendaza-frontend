@@ -165,12 +165,9 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group mt-2" id="hastaElOtroDia">
-                                    <input class="form-check-input me-2" type="checkbox" id="hastaElOtroDiaCheckbox"
-                                        [(ngModel)]="hastaElOtroDiaCheckbox" 
-                                        [ngModelOptions]="{standalone: true}"
-                                        (change)="changeDate()">
-                                    <label class="form-check-label" for="hastaElOtroDiaCheckbox"> Dura hasta el otro dia </label>
+                                <div class="form-group mt-2" id="hastaElOtroDia" role="status">
+                                    <span *ngIf="hastaElOtroDiaCheckbox" class="badge text-bg-primary">Dura hasta el otro día</span>
+                                    <span *ngIf="!hastaElOtroDiaCheckbox" class="badge text-bg-secondary">Finaliza el mismo día</span>
                                 </div>
                             </div>				                
                         </div> 
@@ -264,6 +261,22 @@
 
                             <div class="row mt-2">
                                 <div class="form-group col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <label for="precioTipoEvento" class="form-label font-weight-bold">Precio Base</label>
+                                        <button type="button" class="btn btn-link text-warning p-0 ms-2"
+                                            (click)="editarPrecioBase()" title="Editar precio base" aria-label="Editar precio base">
+                                            <i class="fas fa-edit text-warning fa-lg"></i>
+                                        </button>
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">$</div>
+                                        </div>
+                                        <input type="number" class="form-control" id="precioTipoEvento" min="0"
+                                            formControlName="precioTipoEvento">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label class="form-label" for="presupuesto">Presupuesto</label> 
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
@@ -273,6 +286,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <app-modal-editar
+                                (outputAceptar)="setInputPrecioBaseEditar($event)"
+                                (outputChangeModal)="setModalEditarPrecioBase($event)"
+                                [inputEditar]="inputPrecioBaseEditar"
+                                [modal]="modalEditarPrecioBase"
+                                [myCallback]="metodoAceptarPrecioBase"
+                                [tipoInput]="'number'"
+                                [titulo]="tituloModalPrecioBase">
+                            </app-modal-editar>
                         </div>
                     </div>
                 </section>
