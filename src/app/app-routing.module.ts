@@ -15,7 +15,7 @@ import { PanelAdminComponent } from './layout/panel-admin/panel-admin.component'
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { LoginComponent } from './layout/login/login.component';
-import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { NotFoundComponent } from './helpers/not-found/not-found.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';

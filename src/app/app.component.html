@@ -9,3 +9,12 @@
 
   <app-toast-container></app-toast-container>
 </div>
+
+<app-modal-basico
+  [modal]="updateAvailable"
+  titulo="Actualización disponible"
+  cuerpo="Hay una nueva versión de la aplicación. Actualizá para continuar."
+  boton="Actualizar"
+  (outputAceptar)="applyUpdate()"
+  (outputChangeModal)="updateAvailable = $event">
+</app-modal-basico>

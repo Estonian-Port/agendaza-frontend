@@ -11,7 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 import { CardAgendaComponent } from './components/card-agenda/card-agenda.component';
 import { AuthInterceptor } from './helpers/auth.interceptor';
-import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { NotFoundComponent } from './helpers/not-found/not-found.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -81,6 +81,8 @@ import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -166,7 +168,11 @@ import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.componen
     FormsModule,
     NgbModule,
     FullCalendarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     {
