@@ -1,28 +1,44 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, CanActivateChildFn, Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
+import { OnboardingStateService } from '../services/onboarding-state.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
+export const authGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const loginService = inject(LoginService);
+  const onboardingState = inject(OnboardingStateService);
 
-  constructor(
-    private router : Router,
-    private loginService : LoginService
-  ){}
+  const token = loginService.getToken();
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    if(this.loginService.getToken()){
-      return true
-    }
-    
-    this.router.navigate(["/login"])
-    return false;
+  if (route.routeConfig?.path === 'login') {
+    return token && onboardingState.isRequired()
+      ? router.parseUrl('/completar-perfil')
+      : true;
   }
-  
-}
+
+  if (!token) {
+    return router.parseUrl('/login');
+  }
+
+  if (onboardingState.isRequired() && state.url !== '/completar-perfil') {
+    return router.parseUrl('/completar-perfil');
+  }
+
+  return true;
+};
+
+export const authChildGuard: CanActivateChildFn = (route, state) => {
+  const router = inject(Router);
+  const loginService = inject(LoginService);
+  const onboardingState = inject(OnboardingStateService);
+
+  if (!loginService.getToken()) {
+    return router.parseUrl('/login');
+  }
+
+  if (onboardingState.isRequired() && state.url !== '/completar-perfil') {
+    return router.parseUrl('/completar-perfil');
+  }
+
+  return true;
+};

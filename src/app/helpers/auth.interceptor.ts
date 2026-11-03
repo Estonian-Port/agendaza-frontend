@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, Injector } from '@angular/core'
 import {
   HttpRequest,
   HttpHandler,
@@ -11,15 +11,24 @@ import { catchError } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import { LoginService } from '../services/login.service'
 import { ToastService } from '../services/toast.service'
+import { OnboardingStateService } from '../services/onboarding-state.service'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
-    private loginService: LoginService,
+    private injector: Injector,
     private router: Router,
     private toastService: ToastService
   ) { }
+
+  private get loginService(): LoginService {
+    return this.injector.get(LoginService)
+  }
+
+  private get onboardingState(): OnboardingStateService {
+    return this.injector.get(OnboardingStateService)
+  }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.loginService.getToken()
@@ -30,6 +39,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (error.status === 403 && error.error?.code === 'ONBOARDING_REQUIRED') {
+          this.onboardingState.requireOnboarding()
+          if (this.router.url !== '/completar-perfil') {
+            this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
+          }
+          return throwError(() => error)
+        }
+
+        // Solo ejecuta toast/deslogeo si NO es un onboarding requerido
         this.handleAuthAndToast(error)
         return throwError(() => error)
       })

@@ -1,11 +1,13 @@
 import { HttpClient, HttpResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { lastValueFrom, map } from 'rxjs'
-import { Usuario, UsuarioJSON, UsuarioLoginJSON, UsuarioMe, UsuarioMeJSON } from '../model/Usuario'
+import { Usuario, UsuarioEditCargo, UsuarioJSON, UsuarioLoginJSON, UsuarioMe, UsuarioMeJSON } from '../model/Usuario'
 import { REST_SERVER_URL } from 'src/util/configuration'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { Cargo } from '../model/Cargo'
 import { CustomResponse } from 'src/util/customResponse'
+
+const BASE_CARGO = `${REST_SERVER_URL}/v1/cargos`
 
 @Injectable({
   providedIn: 'root'
@@ -122,16 +124,51 @@ export class LoginService {
   /**
    * Obtiene el cargo del usuario en una empresa específica
    */
-  async getCargoByEmpresaAndUsuario(usuarioId: number): Promise<Cargo> {
+  async getCargoByUsuarioAndEmpresa(usuarioId: number): Promise<Cargo> {
+    const empresaId = this.getEmpresaId()
+    const cargo$ = this.httpClient.get<CustomResponse<Cargo>>(
+      `${BASE_CARGO}/${usuarioId}/empresa/${empresaId}`
+    )
+    return (await lastValueFrom(cargo$)).data
+  }
+
+  async getAllCargo(): Promise<Cargo[]> {
+    const cargos$ = this.httpClient.get<CustomResponse<Cargo[]>>(`${BASE_CARGO}/tipos`)
+    return (await lastValueFrom(cargos$)).data
+  }
+
+  async saveCargo(usuario: Usuario): Promise<number> {
+    const usuarioEditCargo = new UsuarioEditCargo(
+      usuario.id,
+      this.getEmpresaId(),
+      usuario.cargo
+    )
+    const cargo$ = this.httpClient.put<CustomResponse<number>>(
+      `${BASE_CARGO}/${usuario.id}`,
+      usuarioEditCargo
+    )
+    return (await lastValueFrom(cargo$)).data
+  }
+
+  async updateCargo(usuario: Usuario): Promise<number> {
+    return this.saveCargo(usuario)
+  }
+
+  async deleteCargo(usuarioId: number): Promise<void> {
+    const empresaId = this.getEmpresaId()
+    await lastValueFrom(
+      this.httpClient.delete<CustomResponse<unknown>>(
+        `${BASE_CARGO}/${usuarioId}/empresa/${empresaId}`
+      )
+    )
+  }
+
+  private getEmpresaId(): number {
     const empresaIdEncriptada = localStorage.getItem('empresa')
     if (!empresaIdEncriptada) {
       throw new Error('Empresa no seleccionada')
     }
-    const empresaId = CryptoJsImpl.decryptData(empresaIdEncriptada)
-    const cargo$ = this.httpClient.get<CustomResponse<Cargo>>(
-      REST_SERVER_URL + `/v1/cargos/${usuarioId}/empresa/${empresaId}`
-    )
-    return (await lastValueFrom(cargo$)).data
+    return CryptoJsImpl.decryptData(empresaIdEncriptada)
   }
 
   /**
@@ -139,7 +176,7 @@ export class LoginService {
    */
   async setCargo(): Promise<void> {
     const usuarioId = this.getUsuarioId()
-    const cargo = await this.getCargoByEmpresaAndUsuario(usuarioId)
+    const cargo = await this.getCargoByUsuarioAndEmpresa(usuarioId)
     localStorage.setItem('cargo', CryptoJsImpl.encryptData(cargo))
   }
 

@@ -7,6 +7,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class HeaderComponent {
 
   @Input()
+  botonVolver = true
+
+  @Input()
   botonSave = false
 
   @Input()
@@ -22,13 +25,13 @@ export class HeaderComponent {
   botonEmail = false
 
   @Input()
+  botonCambiarContrasenia = false
+
+  @Input()
   descargaEnCurso = false
 
   @Input()
   emailEnCurso = false
-
-  @Input()
-  botonCambiarContrasenia = false
 
   @Input()
   titulo = ""

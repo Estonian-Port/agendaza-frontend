@@ -168,6 +168,7 @@ export type UsuarioMeJSON = {
   username: string
   email: string
   celular: number
+  fechaNacimiento?: string | null
 }
 
 export class UsuarioMe {
@@ -177,7 +178,8 @@ export class UsuarioMe {
     public apellido: string,
     public username: string,
     public email: string,
-    public celular: number
+    public celular: number,
+    public fechaNacimiento: string | null
   ) {}
 
   static fromJson(usuarioMeJson: UsuarioMeJSON): UsuarioMe {
@@ -188,7 +190,8 @@ export class UsuarioMe {
         usuarioMeJson.apellido,
         usuarioMeJson.username,
         usuarioMeJson.email,
-        usuarioMeJson.celular
+        usuarioMeJson.celular,
+        usuarioMeJson.fechaNacimiento ?? null
       )
     )
   }

@@ -5,17 +5,18 @@ import { REST_SERVER_URL } from 'src/util/configuration'
 import {
   Cliente,
   Usuario,
-  UsuarioEditCargo,
   UsuarioEditPassword,
   UsuarioJSON,
   UsuarioSave,
 } from '../model/Usuario'
-import { Cargo } from '../model/Cargo'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { AgendaCard, AgendaCardJSON } from '../model/Agenda'
 import { CustomResponse } from 'src/util/customResponse'
 import { EventosUsuarioResponse } from '../model/Evento'
 import { ToastService } from './toast.service'
+import { Observable } from 'rxjs'
+
+const BASE = `${REST_SERVER_URL}/v1/usuarios`
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,28 @@ export class UsuarioService {
     private httpClient: HttpClient,
     private toastService: ToastService
   ) { }
+
+  checkUsername(username: string): Observable<unknown> {
+    return this.httpClient.get<unknown>(
+      `${BASE}/check-username`,
+      { params: { username } }
+    )
+  }
+
+  completeOnboarding(payload: {
+    nombre: string
+    apellido: string
+    celular: string
+    fechaNacimiento: string
+    username: string
+    password: string
+    aceptoTerminos: boolean
+    versionTerminos: string
+  }): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.put<void>(`${BASE}/me`, payload)
+    )
+  }
 
   // ==================== GESTIÓN DE EMPRESA ====================
 
@@ -48,7 +71,7 @@ export class UsuarioService {
 
   async getAllEmpresaByUsuarioId(usuarioId: number): Promise<AgendaCard[]> {
     const response$ = this.httpClient.get<CustomResponse<AgendaCardJSON[]>>(
-      `${REST_SERVER_URL}/v1/usuarios/${usuarioId}/empresas`
+      `${BASE}/${usuarioId}/empresas`
     )
     const response = await lastValueFrom(response$)
     return response.data.map((agendaCard: AgendaCardJSON) => AgendaCard.fromJson(agendaCard))
@@ -62,7 +85,7 @@ export class UsuarioService {
   async getAllEmpleados(pageNumber: number): Promise<Usuario[]> {
     const empresaId = this.getEmpresaId()
     const listaItem$ = this.httpClient.get<CustomResponse<UsuarioJSON[]>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}?page=${pageNumber}`
+      `${BASE}/empresa/${empresaId}?page=${pageNumber}`
     )
     const response = await lastValueFrom(listaItem$)
     return response.data.map((usuario: UsuarioJSON) => Usuario.fromJson(usuario))
@@ -74,7 +97,7 @@ export class UsuarioService {
   async getCantidadEmpleados(): Promise<number> {
     const empresaId = this.getEmpresaId()
     const cant$ = this.httpClient.get<CustomResponse<number>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/cantidad`
+      `${BASE}/empresa/${empresaId}/cantidad`
     )
     const response = await lastValueFrom(cant$)
     return response.data
@@ -86,7 +109,7 @@ export class UsuarioService {
   async getEmpleadosFiltrados(pageNumber: number, buscar: string): Promise<Usuario[]> {
     const empresaId = this.getEmpresaId()
     const listaItem$ = this.httpClient.get<CustomResponse<UsuarioJSON[]>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/buscar/${buscar}?page=${pageNumber}`
+      `${BASE}/empresa/${empresaId}/buscar/${buscar}?page=${pageNumber}`
     )
     const response = await lastValueFrom(listaItem$)
     return response.data.map((usuario: UsuarioJSON) => Usuario.fromJson(usuario))
@@ -98,7 +121,7 @@ export class UsuarioService {
   async getCantidadEmpleadosFiltrados(buscar: string): Promise<number> {
     const empresaId = this.getEmpresaId()
     const cant$ = this.httpClient.get<CustomResponse<number>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/buscar/${buscar}/cantidad`
+      `${BASE}/empresa/${empresaId}/buscar/${buscar}/cantidad`
     )
     const response = await lastValueFrom(cant$)
     return response.data
@@ -112,7 +135,7 @@ export class UsuarioService {
   async getAllClientes(pageNumber: number): Promise<Usuario[]> {
     const empresaId = this.getEmpresaId()
     const listaItem$ = this.httpClient.get<CustomResponse<UsuarioJSON[]>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/clientes?page=${pageNumber}`
+      `${BASE}/empresa/${empresaId}/clientes?page=${pageNumber}`
     )
     const response = await lastValueFrom(listaItem$)
     return response.data.map((usuario: UsuarioJSON) => Usuario.fromJson(usuario))
@@ -124,7 +147,7 @@ export class UsuarioService {
   async getCantidadClientes(): Promise<number> {
     const empresaId = this.getEmpresaId()
     const cant$ = this.httpClient.get<CustomResponse<number>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/clientes/cantidad`
+      `${BASE}/empresa/${empresaId}/clientes/cantidad`
     )
     const response = await lastValueFrom(cant$)
     return response.data
@@ -136,7 +159,7 @@ export class UsuarioService {
   async getClientesFiltrados(pageNumber: number, buscar: string): Promise<Usuario[]> {
     const empresaId = this.getEmpresaId()
     const listaItem$ = this.httpClient.get<CustomResponse<UsuarioJSON[]>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/clientes/buscar/${buscar}?page=${pageNumber}`
+      `${BASE}/empresa/${empresaId}/clientes/buscar/${buscar}?page=${pageNumber}`
     )
     const response = await lastValueFrom(listaItem$)
     return response.data.map((usuario: UsuarioJSON) => Usuario.fromJson(usuario))
@@ -148,7 +171,7 @@ export class UsuarioService {
   async getCantidadClientesFiltrados(buscar: string): Promise<number> {
     const empresaId = this.getEmpresaId()
     const cant$ = this.httpClient.get<CustomResponse<number>>(
-      `${REST_SERVER_URL}/v1/usuarios/empresa/${empresaId}/clientes/buscar/${buscar}/cantidad`
+      `${BASE}/empresa/${empresaId}/clientes/buscar/${buscar}/cantidad`
     )
     const response = await lastValueFrom(cant$)
     return response.data
@@ -164,7 +187,7 @@ export class UsuarioService {
     const usuarioSave = new UsuarioSave(usuario, empresaId, usuario.cargo.toString())
     
     const item$ = this.httpClient.post<CustomResponse<UsuarioJSON>>(
-      REST_SERVER_URL + '/v1/usuarios',
+      BASE,
       usuarioSave
     )
     const response = await lastValueFrom(item$)
@@ -183,7 +206,7 @@ export class UsuarioService {
    */
   async saveCliente(cliente: Cliente): Promise<Cliente> {
     const item$ = this.httpClient.post<CustomResponse<Cliente>>(
-      REST_SERVER_URL + '/v1/usuarios/clientes',
+      `${BASE}/clientes`,
       cliente
     )
     const response = await lastValueFrom(item$)
@@ -194,29 +217,12 @@ export class UsuarioService {
   // ==================== ACTUALIZACIONES ====================
 
   /**
-   * Actualiza el cargo de un usuario en una empresa
-   */
-  async updateCargo(usuario: Usuario): Promise<number> {
-    const usuarioEditCargo = new UsuarioEditCargo(
-      usuario.id,
-      this.getEmpresaId(),
-      usuario.cargo
-    )
-    const item$ = this.httpClient.put<CustomResponse<number>>(
-      REST_SERVER_URL + `/v1/usuarios/${usuario.id}/cargo`,
-      usuarioEditCargo
-    )
-    const response = await lastValueFrom(item$)
-    return response.data
-  }
-
-  /**
    * Actualiza la contraseña de un usuario
    */
   async updatePassword(usuarioId: number, password: string): Promise<Usuario> {
     const usuarioEditPassword = new UsuarioEditPassword(usuarioId, password)
     const item$ = this.httpClient.put<CustomResponse<Usuario>>(
-      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/password`,
+      `${BASE}/${usuarioId}/password`,
       usuarioEditPassword
     )
     const response = await lastValueFrom(item$)
@@ -225,28 +231,7 @@ export class UsuarioService {
 
   // ==================== ELIMINACIÓN ====================
 
-  /**
-   * Elimina el cargo de un usuario en una empresa
-   */
-  async deleteCargo(usuarioId: number): Promise<any> {
-    const empresaId = this.getEmpresaId()
-    const response$ = this.httpClient.delete<CustomResponse<any>>(
-      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/cargo/${empresaId}`
-    )
-    const response = await lastValueFrom(response$)
-    return response.data
-  }
-
   // ==================== BÚSQUEDAS ====================
-
-  /**
-   * Obtiene todos los cargos disponibles
-   */
-  async getAllCargo(): Promise<Cargo[]> {
-    const listaItem$ = this.httpClient.get<CustomResponse<Cargo[]>>(REST_SERVER_URL + '/v1/cargos/tipos')
-    const response = await lastValueFrom(listaItem$)
-    return response.data
-  }
 
   /**
    * Obtiene los eventos y la cantidad de un usuario en una empresa
@@ -266,7 +251,7 @@ export class UsuarioService {
    */
   async getAllEmpresas(usuarioId: number): Promise<any[]> {
     const empresas$ = this.httpClient.get<CustomResponse<any[]>>(
-      REST_SERVER_URL + `/v1/usuarios/${usuarioId}/empresas`
+      `${BASE}/${usuarioId}/empresas`
     )
     const response = await lastValueFrom(empresas$)
     return response.data
@@ -284,48 +269,23 @@ export class UsuarioService {
    */
   async getUsuario(id: number): Promise<Usuario> {
     const usuario$ = this.httpClient.get<CustomResponse<UsuarioJSON>>(
-      `${REST_SERVER_URL}/v1/usuarios/` + id
+      `${BASE}/${id}`
     )
     const response = await lastValueFrom(usuario$)
     return Usuario.fromJson(response.data)
   }
 
-  /**
-   * Actualiza el cargo de un usuario en una empresa (Ex saveCargo / updateCargo unificados)
-   */
-  async saveCargo(usuario: Usuario): Promise<number> {
-    const usuarioEditCargo = new UsuarioEditCargo(
-      usuario.id,
-      this.getEmpresaId(),
-      usuario.cargo
-    )
-    
-    const item$ = this.httpClient.put<CustomResponse<number>>(
-      REST_SERVER_URL + `/v1/usuarios/${usuario.id}/cargo`,
-      usuarioEditCargo
-    )
-    const response = await lastValueFrom(item$)
-    return response.data // Retorna el ID del cargo guardado (Long)
-  }
-
   async buscarClientePorEmail(email : string){
-    const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(REST_SERVER_URL + '/v1/usuarios/email?email=' + email)
+    const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(`${BASE}/email?email=${email}`)
     const response = await lastValueFrom(usuario$)
     return response.data
   }
 
   async buscarClientePorCelular(celular : number){
-    const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(REST_SERVER_URL + '/v1/usuarios/celular?celular='+ celular)
+    const usuario$ = this.httpClient.get<CustomResponse<Cliente>>(`${BASE}/celular?celular=${celular}`)
     const response = await lastValueFrom(usuario$)
     this.toastService.showSuccess(response.message || 'Cliente encontrado')
     return response.data
   }
 
-  async getCargoByUsuarioAndEmpresa(usuarioId: number) {
-    const empresaId = this.getEmpresaId()
-    const cargo$ = this.httpClient.get<CustomResponse<Cargo>>(REST_SERVER_URL + `/v1/cargos/${usuarioId}/empresa/${empresaId}`)
-    const response = await lastValueFrom(cargo$)
-    return response.data
-  }
-  
 }

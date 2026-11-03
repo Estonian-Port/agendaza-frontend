@@ -18,6 +18,7 @@ export class EditUsuarioComponent implements OnInit {
 
   constructor(
     private usuarioService : UsuarioService,
+    private loginService : LoginService,
     private location : Location,
     private route: ActivatedRoute,
   ) { }
@@ -26,8 +27,8 @@ export class EditUsuarioComponent implements OnInit {
     const id = Number(this.route.snapshot.queryParamMap.get('usuarioId'));
 
     this.usuario = await this.usuarioService.getUsuario(id)
-    this.usuario.cargo = await this.usuarioService.getCargoByUsuarioAndEmpresa(this.usuario.id)
-    this.listaRol = await this.usuarioService.getAllCargo()
+    this.usuario.cargo = await this.loginService.getCargoByUsuarioAndEmpresa(this.usuario.id)
+    this.listaRol = await this.loginService.getAllCargo()
   }
 
   async save(){

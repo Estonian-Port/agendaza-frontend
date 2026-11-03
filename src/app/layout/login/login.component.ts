@@ -4,6 +4,7 @@ import { UsuarioLogin } from 'src/app/model/Usuario'
 import { LoginService } from 'src/app/services/login.service'
 import { ErrorMensaje } from 'src/util/errorHandler'
 import packageInfo from '../../../../package.json'
+import { OnboardingStateService } from 'src/app/services/onboarding-state.service'
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,11 @@ export class LoginComponent {
 
   @Output() valorLogin = new EventEmitter<boolean>()
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(
+    private loginService: LoginService, 
+    private router: Router, 
+    private onboardingState: OnboardingStateService
+  ) { }
 
   onSubmit(form: any): void {
     this.ingresar()
@@ -34,17 +39,21 @@ export class LoginComponent {
     this.isLoading = true
 
     try {
-      // Esperamos síncronamente a que el login (y la obtención del ID) termine
       await this.loginService.login(this.usuarioLogin)
-      
-      // Si llegó hasta acá es porque el login fue exitoso (el equivalente al 'complete')
       this.isLoading = false
-      this.router.navigateByUrl('/')
+      
+      // Verificar si durante la autenticación / inicio de sesión se marcó onboarding requerido
+      if (this.onboardingState.isRequired()) {
+        this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
+      } else {
+        this.router.navigateByUrl('/')
+      }
 
     } catch (error) {
       this.isLoading = false
     }
   }
+
   /**
    * Verifica si el usuario está autenticado
    */

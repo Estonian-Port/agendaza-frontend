@@ -69,11 +69,8 @@ export class AbmUsuarioComponent implements OnInit {
   }
 
   async eliminar(id: number) {
-    (await this.usuarioService.deleteCargo(id)).subscribe({
-      complete: () => {
-        this.inicializarListaItems()
-      }
-    })
+    await this.loginService.deleteCargo(id)
+    await this.inicializarListaItems()
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){

@@ -11,6 +11,7 @@ export class ModalPasswordComponent {
   showRepeatPassword= false
   repeatPassword: string = ''
   passwordsNoCoinciden: boolean = false
+  passwordRequisitosInvalidos = false
   usuarioEditPassword : string = ""
 
   @Input()
@@ -40,6 +41,12 @@ export class ModalPasswordComponent {
   }
 
   aceptar() {
+    if (!/[0-9]/.test(this.usuarioEditPassword) || !/[A-Z]/.test(this.usuarioEditPassword)) {
+      this.passwordRequisitosInvalidos = true
+      return
+    }
+
+    this.passwordRequisitosInvalidos = false
     if (this.usuarioEditPassword !== this.repeatPassword) {
       this.passwordsNoCoinciden = true
       return

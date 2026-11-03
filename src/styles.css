@@ -484,6 +484,10 @@ input[type="number"] {
   background-color: var(--hover-bg-color-secondary);
 }
 
+.terms-document {
+  max-height: 18rem;
+}
+
 @media (max-width: 575px) {
   .precio-periodo {
     padding: 0.85rem;

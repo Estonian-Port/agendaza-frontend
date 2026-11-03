@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './helpers/auth.guard';
+import { authGuard, authChildGuard } from './helpers/auth.guard';
 import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
 import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
@@ -15,7 +15,7 @@ import { PanelAdminComponent } from './layout/panel-admin/panel-admin.component'
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { LoginComponent } from './layout/login/login.component';
-import { NotFoundComponent } from './helpers/not-found/not-found.component';
+import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
 import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-extra-evento.component';
@@ -39,57 +39,60 @@ import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
-
+import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [authGuard]
   },
   {
     path: '',
-    canActivate:[AuthGuard],
+    canActivate: [authGuard],
+    canActivateChild: [authChildGuard],
     children: [
-      { path : '', component: SeleccionarAgendaComponent },
-      { path : 'agenda', component: AgendaComponent },
-      { path : 'panelAdmin', component: PanelAdminComponent },
-      { path : 'abmUsuario', component: AbmUsuarioComponent },
-      { path : 'abmEvento', component: AbmEventoComponent },
-      { path : 'abmTipoEvento', component: AbmTipoEventoComponent },
-      { path : 'abmServicio', component: AbmServicioComponent },
-      { path : 'abmExtraEvento', component: AbmExtraEventoComponent },
-      { path : 'abmExtraCatering', component: AbmExtraCateringComponent },
-      { path : 'abmCliente', component: AbmClienteComponent },
-      { path : 'abmPago', component: AbmPagoComponent },
-      { path : 'abmEmpresa', component: AbmEmpresaComponent },
-      { path : 'abmClausula', component: AbmClausulaComponent },
-      { path : 'abmEspecificacion', component: AbmEspecificacionComponent},
-      { path : 'saveEvento', component: SaveEventoComponent },
-      { path : 'saveUsuario', component: SaveUsuarioComponent },
-      { path : 'saveTipoEvento', component: SaveTipoEventoComponent },
-      { path : 'saveServicio', component: SaveServicioComponent },
-      { path : 'saveExtraEvento', component: SaveExtraEventoComponent },
-      { path : 'saveExtraCatering', component: SaveExtraCateringComponent },
-      { path : 'saveCliente', component: SaveClienteComponent },
-      { path : 'savePago', component: SavePagoComponent },
-      { path : 'saveGasto', component: SaveGastoComponent },
-      { path : 'saveClausula', component: SaveClausulaComponent },
-      { path : 'precioExtra', component: PrecioExtraComponent },
-      { path : 'precioTipoEvento', component: PrecioTipoEventoComponent },
-      { path : 'editUsuario', component: EditUsuarioComponent },
-      { path : 'editEmpresa', component: EditEmpresaComponent },
-      { path : 'editEventoPagos/:id', component: EditEventoPagosComponent },
-      { path : 'editEventoExtras/:id', component: EditEventoExtrasComponent },
-      { path : 'editEventoCatering/:id', component: EditEventoCateringComponent },
-      { path : 'editEventoHora/:id', component: EditEventoHoraComponent },
-      { path : 'verEvento/:id', component: VerEventoComponent },
-      { path : 'verCliente', component: VerClienteComponent },
-      { path : 'editCargoEmpleado', component: EditEmpleadoCargoComponent},
-      { path : 'editUsuarioPerfil', component: EditUsuarioPerfilComponent},
+      { path: '', component: SeleccionarAgendaComponent },
+      { path: 'completar-perfil', component: CompletarPerfilComponent },
+      { path: 'agenda', component: AgendaComponent },
+      { path: 'panelAdmin', component: PanelAdminComponent },
+      { path: 'abmUsuario', component: AbmUsuarioComponent },
+      { path: 'abmEvento', component: AbmEventoComponent },
+      { path: 'abmTipoEvento', component: AbmTipoEventoComponent },
+      { path: 'abmServicio', component: AbmServicioComponent },
+      { path: 'abmExtraEvento', component: AbmExtraEventoComponent },
+      { path: 'abmExtraCatering', component: AbmExtraCateringComponent },
+      { path: 'abmCliente', component: AbmClienteComponent },
+      { path: 'abmPago', component: AbmPagoComponent },
+      { path: 'abmEmpresa', component: AbmEmpresaComponent },
+      { path: 'abmClausula', component: AbmClausulaComponent },
+      { path: 'abmEspecificacion', component: AbmEspecificacionComponent },
+      { path: 'saveEvento', component: SaveEventoComponent },
+      { path: 'saveUsuario', component: SaveUsuarioComponent },
+      { path: 'saveTipoEvento', component: SaveTipoEventoComponent },
+      { path: 'saveServicio', component: SaveServicioComponent },
+      { path: 'saveExtraEvento', component: SaveExtraEventoComponent },
+      { path: 'saveExtraCatering', component: SaveExtraCateringComponent },
+      { path: 'saveCliente', component: SaveClienteComponent },
+      { path: 'savePago', component: SavePagoComponent },
+      { path: 'saveGasto', component: SaveGastoComponent },
+      { path: 'saveClausula', component: SaveClausulaComponent },
+      { path: 'precioExtra', component: PrecioExtraComponent },
+      { path: 'precioTipoEvento', component: PrecioTipoEventoComponent },
+      { path: 'editUsuario', component: EditUsuarioComponent },
+      { path: 'editEmpresa', component: EditEmpresaComponent },
+      { path: 'editEventoPagos/:id', component: EditEventoPagosComponent },
+      { path: 'editEventoExtras/:id', component: EditEventoExtrasComponent },
+      { path: 'editEventoCatering/:id', component: EditEventoCateringComponent },
+      { path: 'editEventoHora/:id', component: EditEventoHoraComponent },
+      { path: 'verEvento/:id', component: VerEventoComponent },
+      { path: 'verCliente', component: VerClienteComponent },
+      { path: 'editCargoEmpleado', component: EditEmpleadoCargoComponent },
+      { path: 'editUsuarioPerfil', component: EditUsuarioPerfilComponent },
       { path: '**', component: NotFoundComponent }
     ]
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

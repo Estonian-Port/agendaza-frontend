@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -9,7 +9,6 @@ import { mostrarErrorConMensaje } from 'src/util/errorHandler';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Router } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-agenda',

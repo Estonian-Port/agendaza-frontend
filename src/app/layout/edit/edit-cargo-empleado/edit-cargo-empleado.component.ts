@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Cargo } from 'src/app/model/Cargo';
 import { Usuario } from 'src/app/model/Usuario';
+import { LoginService } from 'src/app/services/login.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 
@@ -17,6 +18,7 @@ export class EditEmpleadoCargoComponent implements OnInit {
 
   constructor(
     private usuarioService : UsuarioService,
+    private loginService : LoginService,
     private location : Location,
     private route: ActivatedRoute,
   ) { }
@@ -25,7 +27,7 @@ export class EditEmpleadoCargoComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.usuario = await this.usuarioService.getUsuario(id)
-    this.listaCargo = await this.usuarioService.getAllCargo()
+    this.listaCargo = await this.loginService.getAllCargo()
   }
 
   usuarioAdmin(){
@@ -33,7 +35,7 @@ export class EditEmpleadoCargoComponent implements OnInit {
   }
 
   async save(){
-    const item = await this.usuarioService.saveCargo(this.usuario)
+    const item = await this.loginService.saveCargo(this.usuario)
     this.volver()
   }
 
