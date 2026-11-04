@@ -41,12 +41,13 @@ export class UsuarioService {
     celular: string
     fechaNacimiento: string
     username: string
+    email: string
     password: string
     aceptoTerminos: boolean
     versionTerminos: string
   }): Promise<void> {
     return lastValueFrom(
-      this.httpClient.put<void>(`${BASE}/me`, payload)
+      this.httpClient.put<void>(`${BASE}/me/completar-datos`, payload)
     )
   }
 

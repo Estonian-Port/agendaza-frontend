@@ -488,6 +488,10 @@ input[type="number"] {
   max-height: 18rem;
 }
 
+.position-relative .form-control.is-invalid {
+  background-position: right 2.25rem center;
+}
+
 @media (max-width: 575px) {
   .precio-periodo {
     padding: 0.85rem;

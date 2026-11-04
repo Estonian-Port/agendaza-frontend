@@ -53,6 +53,11 @@
     .botonera {
         margin-top: 0.5em;
     }
+
+    .boton-volver,
+    .agregar-texto {
+        display: none;
+    }
 }
 
 

@@ -9,107 +9,126 @@
     </app-header>
 
     <section class="row contenedor-default mt-2">
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="nombre" class="form-label">Nombre</label>
-          <span *ngIf="form.get('nombre')?.touched && form.get('nombre')?.invalid" class="text-danger small">Ingresa tu nombre.</span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="nombre" class="form-label">Nombre</label>
+            <span *ngIf="form.get('nombre')?.touched && form.get('nombre')?.invalid" class="text-danger small">Ingresa tu nombre.</span>
+            </div>
+            <input id="nombre" type="text" class="form-control" formControlName="nombre" autocomplete="given-name"
+            [ngClass]="{'is-invalid': form.get('nombre')?.touched && form.get('nombre')?.invalid}">
         </div>
-        <input id="nombre" type="text" class="form-control" formControlName="nombre" autocomplete="given-name"
-          [ngClass]="{'is-invalid': form.get('nombre')?.touched && form.get('nombre')?.invalid}">
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="apellido" class="form-label">Apellido</label>
-          <span *ngIf="form.get('apellido')?.touched && form.get('apellido')?.invalid" class="text-danger small">Ingresa tu apellido.</span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="apellido" class="form-label">Apellido</label>
+            <span *ngIf="form.get('apellido')?.touched && form.get('apellido')?.invalid" class="text-danger small">Ingresa tu apellido.</span>
+            </div>
+            <input id="apellido" type="text" class="form-control" formControlName="apellido" autocomplete="family-name"
+            [ngClass]="{'is-invalid': form.get('apellido')?.touched && form.get('apellido')?.invalid}">
         </div>
-        <input id="apellido" type="text" class="form-control" formControlName="apellido" autocomplete="family-name"
-          [ngClass]="{'is-invalid': form.get('apellido')?.touched && form.get('apellido')?.invalid}">
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="celular" class="form-label">Celular</label>
-          <span *ngIf="form.get('celular')?.touched && form.get('celular')?.invalid" class="text-danger small">Ingresa tu celular.</span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="celular" class="form-label">Celular</label>
+            <span *ngIf="form.get('celular')?.touched && form.get('celular')?.invalid" class="text-danger small">Ingresa tu celular.</span>
+            </div>
+            <input id="celular" type="number" class="form-control" formControlName="celular" autocomplete="tel"
+            [ngClass]="{'is-invalid': form.get('celular')?.touched && form.get('celular')?.invalid}">
         </div>
-        <input id="celular" type="number" class="form-control" formControlName="celular" autocomplete="tel"
-          [ngClass]="{'is-invalid': form.get('celular')?.touched && form.get('celular')?.invalid}">
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-          <span *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid" class="text-danger small">Ingresa tu fecha de nacimiento.</span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+            <span *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid" class="text-danger small">Ingresa tu fecha de nacimiento.</span>
+            </div>
+            <div class="input-group">
+                <input id="fechaNacimiento" type="text" class="form-control" formControlName="fechaNacimiento" autocomplete="bday"
+                    placeholder="AAAA-MM-DD" ngbDatepicker #fechaNacimientoPicker="ngbDatepicker"
+                    [minDate]="fechaMinima" [maxDate]="fechaMaxima" navigation="select"
+                    [ngClass]="{'is-invalid': form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid}"
+                    aria-label="Fecha de nacimiento, formato año-mes-día">
+                <button class="btn btn-outline-secondary" type="button" (click)="fechaNacimientoPicker.toggle()"
+                    aria-label="Abrir calendario de fecha de nacimiento">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
-        <input id="fechaNacimiento" type="date" class="form-control" formControlName="fechaNacimiento" autocomplete="bday"
-          [ngClass]="{'is-invalid': form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid}">
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="username" class="form-label">Nombre de usuario</label>
-          <span *ngIf="form.get('username')?.touched && form.get('username')?.invalid" class="text-danger small">
-            <ng-container *ngIf="form.get('username')?.hasError('usernameUnavailable')">Ese nombre de usuario no está disponible.</ng-container>
-            <ng-container *ngIf="form.get('username')?.hasError('usernameCheckFailed')">No se pudo verificar el nombre de usuario.</ng-container>
-            <ng-container *ngIf="form.get('username')?.hasError('minlength')">Usa al menos 3 caracteres.</ng-container>
-            <ng-container *ngIf="form.get('username')?.hasError('required')">Ingresa tu nombre de usuario.</ng-container>
-          </span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="username" class="form-label">Nombre de usuario</label>
+            <span *ngIf="form.get('username')?.touched && form.get('username')?.invalid" class="text-danger small">
+                <ng-container *ngIf="form.get('username')?.hasError('usernameUnavailable')">Ese nombre de usuario no está disponible.</ng-container>
+                <ng-container *ngIf="form.get('username')?.hasError('usernameCheckFailed')">No se pudo verificar el nombre de usuario.</ng-container>
+                <ng-container *ngIf="form.get('username')?.hasError('minlength')">Usa al menos 3 caracteres.</ng-container>
+                <ng-container *ngIf="form.get('username')?.hasError('required')">Ingresa tu nombre de usuario.</ng-container>
+            </span>
+            </div>
+            <div class="position-relative">
+            <input id="username" type="text" class="form-control pe-5" formControlName="username" autocomplete="username"
+                [ngClass]="{'is-invalid': form.get('username')?.touched && form.get('username')?.invalid}">
+            <span *ngIf="form.get('username')?.pending" class="spinner-border spinner-border-sm text-primary position-absolute top-50 end-0 translate-middle-y me-3" role="status" aria-label="Verificando nombre de usuario"></span>
+            <span *ngIf="form.get('username')?.touched && form.get('username')?.valid && form.get('username')?.value" class="text-success position-absolute top-50 end-0 translate-middle-y me-3" aria-label="Nombre de usuario disponible">&#10003;</span>
+            </div>
         </div>
-        <div class="position-relative">
-          <input id="username" type="text" class="form-control pe-5" formControlName="username" autocomplete="username"
-            [ngClass]="{'is-invalid': form.get('username')?.touched && form.get('username')?.invalid}">
-          <span *ngIf="form.get('username')?.pending" class="spinner-border spinner-border-sm text-primary position-absolute top-50 end-0 translate-middle-y me-3" role="status" aria-label="Verificando nombre de usuario"></span>
-          <span *ngIf="form.get('username')?.touched && form.get('username')?.valid && form.get('username')?.value" class="text-success position-absolute top-50 end-0 translate-middle-y me-3" aria-label="Nombre de usuario disponible">&#10003;</span>
-        </div>
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="email" class="form-label">Correo electrónico</label>
-          <span *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-danger small">
-            <ng-container *ngIf="form.get('email')?.hasError('required')">Ingresa tu email.</ng-container>
-            <ng-container *ngIf="form.get('email')?.hasError('email')">Ingresa un email válido.</ng-container>
-          </span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <span *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-danger small">
+                <ng-container *ngIf="form.get('email')?.hasError('required')">Ingresa tu email.</ng-container>
+                <ng-container *ngIf="form.get('email')?.hasError('email')">Ingresa un email válido.</ng-container>
+            </span>
+            </div>
+            <input id="email" type="email" class="form-control" formControlName="email" autocomplete="email"
+            [ngClass]="{'is-invalid': form.get('email')?.touched && form.get('email')?.invalid}">
         </div>
-        <input id="email" type="email" class="form-control" formControlName="email" autocomplete="email"
-          [ngClass]="{'is-invalid': form.get('email')?.touched && form.get('email')?.invalid}">
-      </div>
 
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="password" class="form-label">Contraseña</label>
-          <span *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-danger small">
-            <ng-container *ngIf="form.get('password')?.hasError('minlength')">Al menos 8 caracteres.</ng-container>
-            <ng-container *ngIf="form.get('password')?.hasError('required')">Ingresa una contraseña.</ng-container>
-            <ng-container *ngIf="form.get('password')?.hasError('pattern')">Incluye un número y una mayúscula.</ng-container>
-          </span>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="password" class="form-label">Contraseña</label>
+            <span *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-danger small">
+                <ng-container *ngIf="form.get('password')?.hasError('required')">La contraseña es requerida.</ng-container>
+            </span>
+            </div>
+            <div class="position-relative">
+            <input id="password" [type]="mostrarPassword ? 'text' : 'password'" class="form-control pe-5" formControlName="password" autocomplete="new-password"
+                [ngClass]="{'is-invalid': form.get('password')?.touched && form.get('password')?.invalid}">
+            <button type="button" class="text-decoration-none position-absolute end-0 top-50 translate-middle-y me-2 p-0 border-0"
+                (click)="mostrarPassword = !mostrarPassword" [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <i class="fas" [ngClass]="{'fa-eye': !mostrarPassword, 'fa-eye-slash': mostrarPassword}" aria-hidden="true"></i>
+            </button>
+            </div>
         </div>
-        <input id="password" type="password" class="form-control" formControlName="password" autocomplete="new-password"
-          [ngClass]="{'is-invalid': form.get('password')?.touched && form.get('password')?.invalid}">
-      </div>
-      
-      <div class="form-group col-sm-12 col-md-5 mb-4">
-        <div class="d-flex justify-content-between">
-          <label for="confirmarPassword" class="form-label">Confirmar contraseña</label>
-          <span *ngIf="form.get('confirmarPassword')?.touched && (form.get('confirmarPassword')?.invalid || form.hasError('passwordsMismatch'))" class="text-danger small">
-            <ng-container *ngIf="form.hasError('passwordsMismatch')">Las contraseñas no coinciden.</ng-container>
-            <ng-container *ngIf="form.get('confirmarPassword')?.hasError('required')">Confirma tu contraseña.</ng-container>
-          </span>
-        </div>
-        <input id="confirmarPassword" type="password" class="form-control" formControlName="confirmarPassword" autocomplete="new-password"
-          [ngClass]="{'is-invalid': form.get('confirmarPassword')?.touched && (form.get('confirmarPassword')?.invalid || form.hasError('passwordsMismatch'))}">
-      </div>
 
-      <div class="form-group col-12 mb-2">
-        <input class="form-check-input me-2" type="checkbox" id="aceptoTerminos" formControlName="aceptoTerminos"
-          [disabled]="!terminos || cargandoTerminos"
-          [class.is-invalid]="form.get('aceptoTerminos')?.touched && form.get('aceptoTerminos')?.invalid">
-        <label class="form-check-label" for="aceptoTerminos">
-          He leído y acepto los
-        </label>
-        <button type="button" class="btn btn-link p-0 ms-1 align-baseline" (click)="mostrarTerminos = true"
-          aria-haspopup="dialog">Términos y Condiciones <span *ngIf="terminos">(versión {{ terminos.version }})</span></button>
-      </div>
+        <div class="form-group col-sm-12 col-md-5 mb-4">
+            <div class="d-flex justify-content-between">
+            <label for="confirmarPassword" class="form-label">Confirmar contraseña</label>
+            <span *ngIf="form.get('confirmarPassword')?.touched && (form.get('confirmarPassword')?.invalid || form.hasError('passwordsMismatch'))" class="text-danger small">
+                <ng-container *ngIf="form.hasError('passwordsMismatch')">Las contraseñas no coinciden.</ng-container>
+                <ng-container *ngIf="form.get('confirmarPassword')?.hasError('required')">Confirma tu contraseña.</ng-container>
+            </span>
+            </div>
+            <div class="position-relative">
+            <input id="confirmarPassword" [type]="mostrarConfirmarPassword ? 'text' : 'password'" class="form-control pe-5" formControlName="confirmarPassword" autocomplete="new-password"
+                [ngClass]="{'is-invalid': form.get('confirmarPassword')?.touched && (form.get('confirmarPassword')?.invalid || form.hasError('passwordsMismatch'))}">
+            <button type="button" class="text-decoration-none position-absolute end-0 top-50 translate-middle-y me-2 p-0 border-0"
+                (click)="mostrarConfirmarPassword = !mostrarConfirmarPassword" [attr.aria-label]="mostrarConfirmarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <i class="fas" [ngClass]="{'fa-eye': !mostrarConfirmarPassword, 'fa-eye-slash': mostrarConfirmarPassword}" aria-hidden="true"></i>
+            </button>
+            </div>
+        </div>
+
+        <div class="form-group col-12 mb-2">
+            <input class="form-check-input me-2" type="checkbox" id="aceptoTerminos" formControlName="aceptoTerminos"
+                [disabled]="!terminos || cargandoTerminos"
+                [class.is-invalid]="form.get('aceptoTerminos')?.touched && form.get('aceptoTerminos')?.invalid">
+            <label class="form-check-label" for="aceptoTerminos">
+                He leído y acepto los
+            </label>
+            <button type="button" class="btn btn-link p-0 ms-1 align-baseline" (click)="mostrarTerminos = true"
+                aria-haspopup="dialog">Términos y Condiciones</button>
+        </div>
 
     </section>
   </form>
@@ -123,7 +142,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title fs-5" id="terminosModalTitulo">
-            Términos y Condiciones <span *ngIf="terminos">(versión {{ terminos.version }})</span>
+            Términos y Condiciones
           </h2>
           <button type="button" class="btn-close" aria-label="Cerrar" (click)="mostrarTerminos = false"></button>
         </div>

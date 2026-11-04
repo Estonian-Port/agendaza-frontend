@@ -9,11 +9,11 @@
     </div>
 
     <div class="botonera">
-        <a class="btn btn-primary mx-2 icono" data-toggle="modal" (click)="volver()">
+        <a class="btn btn-primary mx-2 icono boton-volver" data-toggle="modal" (click)="volver()">
             Volver</a>
-        <a class="btn btn-success agregar-icon icono" data-toggle="modal" [routerLink]="getRoute()">
+        <a class="btn btn-success agregar-icon icono" data-toggle="modal" [routerLink]="getRoute()" aria-label="Agregar">
             <i class="fas fa-plus-circle mx-1"></i>
-            Agregar
+            <span class="agregar-texto">Agregar</span>
         </a>
     </div>
 </div>

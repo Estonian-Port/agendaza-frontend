@@ -9,6 +9,7 @@ import { TerminosDTO, TerminosService } from '../../services/terminos.service'
 import { LoginService } from 'src/app/services/login.service'
 import { UsuarioService } from 'src/app/services/usuario.service'
 import { catchError, map, Observable, of } from 'rxjs'
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-completar-perfil',
@@ -21,8 +22,12 @@ export class CompletarPerfilComponent implements OnInit {
   cargandoTerminos = true
   errorTerminos = ''
   mostrarTerminos = false
+  mostrarPassword = false
+  mostrarConfirmarPassword = false
   enviando = false
   errorSubmit = ''
+  readonly fechaMinima: NgbDateStruct = { year: 1900, month: 1, day: 1 }
+  readonly fechaMaxima: NgbDateStruct = this.getToday()
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,7 +43,7 @@ export class CompletarPerfilComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       email: [''],
       celular: ['', [Validators.required, Validators.min(999999999)]],
-      fechaNacimiento: ['', Validators.required],
+      fechaNacimiento: [null, Validators.required],
       username: ['', {
         validators: [Validators.required, Validators.minLength(3)],
         asyncValidators: [this.usernameDisponible()],
@@ -59,11 +64,13 @@ export class CompletarPerfilComponent implements OnInit {
     try {
       const me = await this.loginService.getUsuarioDtoByUsername()
       if (me) {
+        const rawCelular = me.celular ? String(me.celular) : ''
+
         this.form.patchValue({
           nombre: me.nombre || '',
           apellido: me.apellido || '',
-          celular: me.celular || '',
-          fechaNacimiento: me.fechaNacimiento || '',
+          celular: rawCelular.startsWith('999') ? '' : rawCelular,
+          fechaNacimiento: this.toDateStruct(me.fechaNacimiento),
         })
 
         // Lógica de username
@@ -123,9 +130,10 @@ export class CompletarPerfilComponent implements OnInit {
         nombre: values.nombre,
         apellido: values.apellido,
         celular: values.celular,
-        fechaNacimiento: values.fechaNacimiento,
+        fechaNacimiento: this.toIsoDate(values.fechaNacimiento),
         username: values.username,
         password: values.password,
+        email: values.email,
         aceptoTerminos: true,
         versionTerminos: this.terminos.version
       })
@@ -161,5 +169,20 @@ export class CompletarPerfilComponent implements OnInit {
     const password = group.get('password')?.value
     const confirmation = group.get('confirmarPassword')?.value
     return password && confirmation && password !== confirmation ? { passwordsMismatch: true } : null
+  }
+
+  private toDateStruct(value: string | null | undefined): NgbDateStruct | null {
+    if (!value) return null
+    const [year, month, day] = value.slice(0, 10).split('-').map(Number)
+    return year && month && day ? { year, month, day } : null
+  }
+
+  private toIsoDate(value: NgbDateStruct): string {
+    return `${value.year}-${String(value.month).padStart(2, '0')}-${String(value.day).padStart(2, '0')}`
+  }
+
+  private getToday(): NgbDateStruct {
+    const today = new Date()
+    return { year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() }
   }
 }

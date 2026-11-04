@@ -2,17 +2,17 @@
   <h2 class="col-6">{{titulo}}</h2>
   
   <div class="col-6">
-      <div class="gap-2 d-flex justify-content-end">
-          <div>
+      <div class="header-acciones gap-2 d-flex justify-content-end">
+          <div class="header-volver">
               <div *ngIf="botonVolver">
                 <a class="btn btn-primary" (click)="volver()">Volver</a>
               </div>
           </div>
           <div *ngIf="botonCambiarContrasenia">
-            <button type="submit" class="btn btn-warning" (click)="cambiarContrasenia()"><i class="fas fa-key"></i> Cambiar contraseña</button>
+            <button type="submit" class="btn btn-warning" (click)="cambiarContrasenia()" aria-label="Cambiar contraseña"><i class="fas fa-key" aria-hidden="true"></i><span class="header-boton-texto"> Cambiar contraseña</span></button>
           </div>
           <div *ngIf="botonSave">
-              <button type="submit" class="btn btn-success" (click)="save()">Guardar</button>
+              <button type="submit" class="btn btn-success" (click)="save()" aria-label="Guardar"><i class="fas fa-save" aria-hidden="true"></i><span class="header-boton-texto"> Guardar</span></button>
           </div>
           <div *ngIf="botonDescargar">
               <button type="button" class="btn btn-primary" (click)="descargar()" [disabled]="descargaEnCurso"
@@ -29,10 +29,10 @@
               </button>
           </div>
           <div *ngIf="botonAgregar">
-            <button type="submit" class="btn btn-success" (click)="agregar()"><i class="fas fa-plus-circle"></i></button>
+            <button type="submit" class="btn btn-success" (click)="agregar()" aria-label="Agregar"><i class="fas fa-plus-circle" aria-hidden="true"></i></button>
           </div>
           <div *ngIf="botonAgregarSecundario">
-            <button type="submit" class="btn btn-danger" (click)="agregarSecundario()"><i class="fas fa-plus-circle"></i></button>
+            <button type="submit" class="btn btn-danger" (click)="agregarSecundario()" aria-label="Agregar"><i class="fas fa-plus-circle" aria-hidden="true"></i></button>
           </div>
       </div>
   </div>

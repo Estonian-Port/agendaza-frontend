@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,13 +10,23 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private router: Router, private usuarioService: UsuarioService, private location: Location) {}
+  constructor(private router: Router, private usuarioService: UsuarioService, private location: Location, private loginService: LoginService) {}
 
   isSidebarActive: boolean = false
+  mostrarBotonAgendas = true
   selectedIcon : String = ""
   
 
-  ngOnInit(): void{}
+  async ngOnInit(): Promise<void> {
+    if (this.isLogin()) return
+
+    try {
+      const agendas = await this.usuarioService.getAllEmpresaByUsuarioId(this.loginService.getUsuarioId())
+      this.mostrarBotonAgendas = agendas.length > 1
+    } catch (error) {
+      console.error('Error al verificar las agendas del usuario', error)
+    }
+  }
 
 
   isLogin(): boolean {

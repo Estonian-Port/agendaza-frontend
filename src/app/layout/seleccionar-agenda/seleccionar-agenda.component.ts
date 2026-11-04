@@ -26,6 +26,12 @@ export class SeleccionarAgendaComponent implements OnInit {
     try {
       const usuarioId = this.loginService.getUsuarioId()
       this.listaAgenda = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
+
+      if (this.listaAgenda.length === 1) {
+        this.usuarioService.setEmpresaId(this.listaAgenda[0].id)
+        await this.loginService.setCargo()
+        this.router.navigateByUrl('/agenda')
+      }
     } catch (error) {
       if (error instanceof HttpErrorResponse && error.error?.code === 'ONBOARDING_REQUIRED') {
         return

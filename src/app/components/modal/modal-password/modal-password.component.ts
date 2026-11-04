@@ -41,7 +41,7 @@ export class ModalPasswordComponent {
   }
 
   aceptar() {
-    if (!/[0-9]/.test(this.usuarioEditPassword) || !/[A-Z]/.test(this.usuarioEditPassword)) {
+    if (this.usuarioEditPassword.length < 8 || !/[0-9]/.test(this.usuarioEditPassword) || !/[A-Z]/.test(this.usuarioEditPassword)) {
       this.passwordRequisitosInvalidos = true
       return
     }
