@@ -47,7 +47,7 @@ export class TipoEventoService {
       { params: { page: pageNumber } }
     );
     const res = await lastValueFrom(listaItem$);
-    return res.data.map((te) => GenericItem.fromJson(te));
+    return res.data.map((te) => TipoEvento.fromTipoEventoJson(te));
   }
 
   async getCantidadTipoEvento(): Promise<number> {
@@ -64,7 +64,7 @@ export class TipoEventoService {
       { params: { buscar, page: pageNumber } }
     );
     const res = await lastValueFrom(listaItem$);
-    return res.data.map((te) => GenericItem.fromJson(te));
+    return res.data.map((te) => TipoEvento.fromTipoEventoJson(te));
   }
 
   async cantTipoEventoFiltrados(buscar: string): Promise<number> {

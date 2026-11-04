@@ -21,6 +21,12 @@ export class AbmDataTableComponent implements OnInit {
   @Input()
   mostrarEditar : boolean = true
 
+  @Input()
+  mostrarTipoExtra : boolean = false
+
+  @Input()
+  mostrarDuracion : boolean = false
+
   @Output() 
   outputPrecio = new EventEmitter<number>();
 
