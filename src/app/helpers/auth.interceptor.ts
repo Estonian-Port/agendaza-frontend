@@ -6,12 +6,13 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http'
-import { Observable, throwError } from 'rxjs'
-import { catchError } from 'rxjs/operators'
+import { from, Observable, throwError } from 'rxjs'
+import { catchError, switchMap } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import { LoginService } from '../services/login.service'
 import { ToastService } from '../services/toast.service'
 import { OnboardingStateService } from '../services/onboarding-state.service'
+import { REST_SERVER_URL } from 'src/util/configuration'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -31,14 +32,52 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    const isLoginRequest = request.url === `${REST_SERVER_URL}/login`
+    const isRefreshRequest = request.url === `${REST_SERVER_URL}/v1/auth/refresh`
+    const isLogoutRequest = request.url === `${REST_SERVER_URL}/v1/auth/logout`
+    if (isLoginRequest || isRefreshRequest) {
+      return next.handle(request).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.toastService.showError(this.getErrorMessage(error))
+          return throwError(() => error)
+        })
+      )
+    }
+
     const token = this.loginService.getToken()
 
-    const authReq = token
-      ? request.clone({ headers: request.headers.set('Authorization', `Bearer ${token}`) })
-      : request
+    if (!token && this.loginService.getRefreshToken() && !isLogoutRequest) {
+      return from(this.loginService.refreshAccessToken()).pipe(
+        switchMap(accessToken => next.handle(this.withBearer(request, accessToken))),
+        catchError((error: HttpErrorResponse) => {
+          this.handleAuthAndToast(error)
+          return throwError(() => error)
+        })
+      )
+    }
 
-    return next.handle(authReq).pipe(
+    return next.handle(token ? this.withBearer(request, token) : request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.error?.code === 'TOKEN_EXPIRED') {
+          const currentToken = this.loginService.getToken()
+          if (currentToken && currentToken !== token) {
+            return next.handle(this.withBearer(request, currentToken)).pipe(
+              catchError((retryError: HttpErrorResponse) => {
+                this.handleAuthAndToast(retryError)
+                return throwError(() => retryError)
+              })
+            )
+          }
+
+          return from(this.loginService.refreshAccessToken()).pipe(
+            switchMap(accessToken => next.handle(this.withBearer(request, accessToken))),
+            catchError((refreshError: HttpErrorResponse) => {
+              this.handleAuthAndToast(refreshError)
+              return throwError(() => refreshError)
+            })
+          )
+        }
+
         if (error.status === 403 && error.error?.code === 'ONBOARDING_REQUIRED') {
           this.onboardingState.requireOnboarding()
           if (this.router.url !== '/completar-perfil') {
@@ -54,10 +93,13 @@ export class AuthInterceptor implements HttpInterceptor {
     )
   }
 
+  private withBearer(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
+    return request.clone({ headers: request.headers.set('Authorization', `Bearer ${token}`) })
+  }
+
   private handleAuthAndToast(error: HttpErrorResponse): void {
-    // 1. Redirección por sesión expirada
-    if (error.status === 401) {
-      this.clearStorage()
+    if (error.status === 401 && error.error?.code === 'UNAUTHENTICATED') {
+      this.loginService.clearAuthData()
       this.router.navigate(['/login'])
     }
 
@@ -90,11 +132,4 @@ export class AuthInterceptor implements HttpInterceptor {
     return 'Ocurrió un error inesperado.'
   }
 
-  private clearStorage(): void {
-    localStorage.removeItem('token')
-    localStorage.removeItem('session')
-    localStorage.removeItem('usuarioId')
-    localStorage.removeItem('empresa')
-    localStorage.removeItem('cargo')
-  }
 }

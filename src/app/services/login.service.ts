@@ -1,6 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { lastValueFrom, map } from 'rxjs'
+import { Router } from '@angular/router'
+import { lastValueFrom } from 'rxjs'
 import { Usuario, UsuarioEditCargo, UsuarioJSON, UsuarioLoginJSON, UsuarioMe, UsuarioMeJSON } from '../model/Usuario'
 import { REST_SERVER_URL } from 'src/util/configuration'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
@@ -14,7 +15,10 @@ const BASE_CARGO = `${REST_SERVER_URL}/v1/cargos`
 })
 export class LoginService {
 
-  constructor(private httpClient: HttpClient) {}
+  private static accessToken: string | null = null
+  private refreshPromise: Promise<string> | null = null
+
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   /**
    * Realiza el login secuencialmente esperando todas las respuestas
@@ -26,14 +30,17 @@ export class LoginService {
     )
 
     const headers = response.headers
+    const bearerToken = headers.get('Authorization')
+    const refreshToken = headers.get('X-Refresh-Token')
+    if (!bearerToken?.startsWith('Bearer ') || !refreshToken) {
+      throw new Error('El backend no retornó los tokens de sesión.')
+    }
 
-    // 2. Guardamos sesión y token de forma inmediata
+    // Keep the refresh token persistent; the short-lived access token stays in memory.
     const usernameEncrypt = CryptoJsImpl.encryptData(usuarioLoginJson.username)
     localStorage.setItem('session', usernameEncrypt)
-
-    const bearerToken = headers.get("Authorization")!
-    const token = bearerToken.replace('Bearer ', '')
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', refreshToken)
+    LoginService.accessToken = bearerToken.slice('Bearer '.length)
 
     // 3. AHORA SÍ: Esperamos a que el DTO del usuario realmente llegue antes de avanzar
     const usuario = await this.getUsuarioDtoByUsername()
@@ -63,22 +70,99 @@ export class LoginService {
   /**
    * Limpia el almacenamiento local
    */
-  logout(): void {
-    localStorage.clear()
+  async logout(): Promise<void> {
+    let refreshToken = this.getRefreshToken()
+
+    try {
+      if (refreshToken) {
+        if (!this.getToken()) {
+          try {
+            await this.refreshAccessToken()
+            refreshToken = this.getRefreshToken()
+          } catch {
+            // Still attempt server logout with the current refresh token.
+          }
+        }
+
+        if (refreshToken) {
+          let headers = new HttpHeaders()
+          if (this.getToken()) {
+            headers = headers.set('Authorization', `Bearer ${this.getToken()}`)
+          }
+          await lastValueFrom(this.httpClient.post<void>(
+            `${REST_SERVER_URL}/v1/auth/logout`,
+            { refreshToken },
+            { headers }
+          ))
+        }
+      }
+    } catch {
+      // Local logout must complete even when the server cannot revoke the token.
+    } finally {
+      this.clearAuthData()
+    }
   }
 
   /**
-   * Obtiene el token JWT del almacenamiento
+   * Obtiene el access token en memoria
    */
   getToken(): string | null {
-    return localStorage.getItem('token')
+    return LoginService.accessToken
   }
 
   /**
-   * Obtiene el token JWT estáticamente (para uso en interceptores)
+   * Obtiene el access token en memoria (para uso estático)
    */
   static getToken(): string | null {
+    return LoginService.accessToken
+  }
+
+  getRefreshToken(): string | null {
     return localStorage.getItem('token')
+  }
+
+  hasSession(): boolean {
+    return !!this.getRefreshToken()
+  }
+
+  refreshAccessToken(): Promise<string> {
+    if (this.refreshPromise) return this.refreshPromise
+
+    const refreshToken = this.getRefreshToken()
+    if (!refreshToken) return Promise.reject(new Error('No hay una sesión activa.'))
+
+    this.refreshPromise = lastValueFrom(this.httpClient.post<CustomResponse<{
+      accessToken: string
+      refreshToken: string
+    }>>(`${REST_SERVER_URL}/v1/auth/refresh`, { refreshToken })).then(response => {
+      const { accessToken, refreshToken: rotatedRefreshToken } = response.data
+      if (!accessToken || !rotatedRefreshToken) {
+        throw new Error('El backend no retornó los tokens renovados.')
+      }
+
+      LoginService.accessToken = accessToken
+      localStorage.setItem('token', rotatedRefreshToken)
+      return accessToken
+    }).catch(error => {
+      if (error?.status === 401) {
+        this.clearAuthData()
+        this.router.navigate(['/login'])
+      }
+      throw error
+    }).finally(() => {
+      this.refreshPromise = null
+    })
+
+    return this.refreshPromise
+  }
+
+  clearAuthData(): void {
+    LoginService.accessToken = null
+    localStorage.removeItem('token')
+    localStorage.removeItem('session')
+    localStorage.removeItem('usuarioId')
+    localStorage.removeItem('empresa')
+    localStorage.removeItem('cargo')
   }
 
   /**
@@ -217,6 +301,6 @@ export class LoginService {
    * Verifica si el usuario está autenticado
    */
   isLogueado(): boolean {
-    return this.getToken() != null && this.getToken() != ""
+    return this.hasSession()
   }
 }

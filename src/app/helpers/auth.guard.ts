@@ -8,15 +8,15 @@ export const authGuard: CanActivateFn = (route, state) => {
   const loginService = inject(LoginService);
   const onboardingState = inject(OnboardingStateService);
 
-  const token = loginService.getToken();
+  const hasSession = loginService.hasSession();
 
   if (route.routeConfig?.path === 'login') {
-    return token && onboardingState.isRequired()
+    return hasSession && onboardingState.isRequired()
       ? router.parseUrl('/completar-perfil')
       : true;
   }
 
-  if (!token) {
+  if (!hasSession) {
     return router.parseUrl('/login');
   }
 
@@ -32,7 +32,7 @@ export const authChildGuard: CanActivateChildFn = (route, state) => {
   const loginService = inject(LoginService);
   const onboardingState = inject(OnboardingStateService);
 
-  if (!loginService.getToken()) {
+  if (!loginService.hasSession()) {
     return router.parseUrl('/login');
   }
 
