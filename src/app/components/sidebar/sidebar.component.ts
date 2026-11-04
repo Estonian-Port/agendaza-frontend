@@ -1,36 +1,61 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { LoginService } from 'src/app/services/login.service';
+import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private usuarioService: UsuarioService, private location: Location, private loginService: LoginService) {}
 
   isSidebarActive: boolean = false
-  mostrarBotonAgendas = true
+  mostrarBotonAgendas = false
   selectedIcon : String = ""
-  
+  private usuarioIdAgendas: number | null = null
+  private cargandoAgendas = false
+  private routerSubscription = new Subscription()
 
-  async ngOnInit(): Promise<void> {
-    if (this.isLogin()) return
+  ngOnInit(): void {
+    this.actualizarBotonAgendas()
+    this.routerSubscription = this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe(() => this.actualizarBotonAgendas())
+  }
 
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe()
+  }
+
+  private async actualizarBotonAgendas(): Promise<void> {
+    if (this.isLogin() || this.isOnboardingFlow() || this.cargandoAgendas) return
+
+    const usuarioId = this.loginService.getUsuarioId()
+    if (usuarioId === this.usuarioIdAgendas) return
+
+    this.cargandoAgendas = true
     try {
-      const agendas = await this.usuarioService.getAllEmpresaByUsuarioId(this.loginService.getUsuarioId())
+      const agendas = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
       this.mostrarBotonAgendas = agendas.length > 1
+      this.usuarioIdAgendas = usuarioId
     } catch (error) {
       console.error('Error al verificar las agendas del usuario', error)
+    } finally {
+      this.cargandoAgendas = false
     }
   }
 
 
   isLogin(): boolean {
     return '/login' == this.location.path();
+  }
+
+  isOnboardingFlow(): boolean {
+    return ['/completar-perfil', '/cambiar-password'].includes(this.location.path().split('?')[0]);
   }
 
   isAgendaSeleccionada(): boolean {

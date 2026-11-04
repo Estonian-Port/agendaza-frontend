@@ -28,6 +28,36 @@ export class UsuarioService {
     private toastService: ToastService
   ) { }
 
+  getEstado(): Promise<{ onboardingRequired: boolean; passwordChangeRequired: boolean }> {
+    return lastValueFrom(
+      this.httpClient.get<CustomResponse<{ onboardingRequired: boolean; passwordChangeRequired: boolean }>>(
+        `${BASE}/me/estado`
+      )
+    ).then(response => response.data)
+  }
+
+  updateMyPassword(password: string): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.put<void>(`${BASE}/me/password`, { password })
+    )
+  }
+
+  resetPassword(usuarioId: number): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.post<void>(`${BASE}/${usuarioId}/restablecer-password`, null)
+    )
+  }
+
+  altaUsuario(email: string, rol: string): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.post<void>(`${BASE}/alta`, {
+        email,
+        empresaId: this.getEmpresaId(),
+        rol
+      })
+    )
+  }
+
   checkUsername(username: string): Observable<unknown> {
     return this.httpClient.get<unknown>(
       `${BASE}/check-username`,

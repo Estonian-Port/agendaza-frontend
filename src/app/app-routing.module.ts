@@ -13,7 +13,6 @@ import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.compon
 import { AgendaComponent } from './layout/agenda/agenda.component';
 import { PanelAdminComponent } from './layout/panel-admin/panel-admin.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
-import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
@@ -22,7 +21,6 @@ import { SaveExtraEventoComponent } from './layout/save/save-extra-evento/save-e
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
-import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SeleccionarAgendaComponent } from './layout/seleccionar-agenda/seleccionar-agenda.component';
 import { SaveExtraCateringComponent } from './layout/save/save-extra-catering/save-extra-catering.component';
 import { PrecioExtraComponent } from './layout/precio/precio-extra/precio-extra.component';
@@ -33,13 +31,13 @@ import { EditEventoCateringComponent } from './layout/edit/edit-evento/edit-even
 import { EditEventoHoraComponent } from './layout/edit/edit-evento/edit-evento-hora/edit-evento-hora.component';
 import { VerEventoComponent } from './layout/ver/ver-evento/ver-evento.component';
 import { VerClienteComponent } from './layout/ver/ver-cliente/ver-cliente.component';
-import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/edit-cargo-empleado.component';
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
 import { AbmEspecificacionComponent } from './layout/abm/abm-especificacion/abm-especificacion.component';
 import { SaveClausulaComponent } from './layout/save/save-clausula/save-clausula.component';
 import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.component';
 import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
 import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
+import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-password.component';
 
 const routes: Routes = [
   {
@@ -54,6 +52,7 @@ const routes: Routes = [
     children: [
       { path: '', component: SeleccionarAgendaComponent },
       { path: 'completar-perfil', component: CompletarPerfilComponent },
+      { path: 'cambiar-password', component: CambiarPasswordComponent },
       { path: 'agenda', component: AgendaComponent },
       { path: 'panelAdmin', component: PanelAdminComponent },
       { path: 'abmUsuario', component: AbmUsuarioComponent },
@@ -68,7 +67,6 @@ const routes: Routes = [
       { path: 'abmClausula', component: AbmClausulaComponent },
       { path: 'abmEspecificacion', component: AbmEspecificacionComponent },
       { path: 'saveEvento', component: SaveEventoComponent },
-      { path: 'saveUsuario', component: SaveUsuarioComponent },
       { path: 'saveTipoEvento', component: SaveTipoEventoComponent },
       { path: 'saveServicio', component: SaveServicioComponent },
       { path: 'saveExtraEvento', component: SaveExtraEventoComponent },
@@ -79,7 +77,6 @@ const routes: Routes = [
       { path: 'saveClausula', component: SaveClausulaComponent },
       { path: 'precioExtra', component: PrecioExtraComponent },
       { path: 'precioTipoEvento', component: PrecioTipoEventoComponent },
-      { path: 'editUsuario', component: EditUsuarioComponent },
       { path: 'editEmpresa', component: EditEmpresaComponent },
       { path: 'editEventoPagos/:id', component: EditEventoPagosComponent },
       { path: 'editEventoExtras/:id', component: EditEventoExtrasComponent },
@@ -87,7 +84,6 @@ const routes: Routes = [
       { path: 'editEventoHora/:id', component: EditEventoHoraComponent },
       { path: 'verEvento/:id', component: VerEventoComponent },
       { path: 'verCliente', component: VerClienteComponent },
-      { path: 'editCargoEmpleado', component: EditEmpleadoCargoComponent },
       { path: 'editUsuarioPerfil', component: EditUsuarioPerfilComponent },
       { path: '**', component: NotFoundComponent }
     ]

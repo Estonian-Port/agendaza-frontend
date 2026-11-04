@@ -15,6 +15,8 @@ export class AbmDataTableUsuarioComponent implements OnInit {
 
   @Output() outputEditar = new EventEmitter<number>();
   @Output() outputEliminar = new EventEmitter<number>();
+  @Output() outputCambiarRol = new EventEmitter<number>();
+  @Output() outputResetearPassword = new EventEmitter<number>();
 
   modal = false
   idEliminar = 0
@@ -57,5 +59,13 @@ export class AbmDataTableUsuarioComponent implements OnInit {
 
   eliminar(id: number){
     this.outputEliminar.emit(id);
+  }
+
+  cambiarRol(id: number): void {
+    this.outputCambiarRol.emit(id)
+  }
+
+  resetearPassword(id: number): void {
+    this.outputResetearPassword.emit(id)
   }
 }

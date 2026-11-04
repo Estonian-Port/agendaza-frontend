@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/login.service'
 import { ErrorMensaje } from 'src/util/errorHandler'
 import packageInfo from '../../../../package.json'
 import { OnboardingStateService } from 'src/app/services/onboarding-state.service'
+import { UsuarioService } from 'src/app/services/usuario.service'
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
   constructor(
     private loginService: LoginService, 
     private router: Router, 
-    private onboardingState: OnboardingStateService
+    private onboardingState: OnboardingStateService,
+    private usuarioService: UsuarioService
   ) { }
 
   onSubmit(form: any): void {
@@ -40,11 +42,14 @@ export class LoginComponent {
 
     try {
       await this.loginService.login(this.usuarioLogin)
+      this.onboardingState.setStatus(await this.usuarioService.getEstado())
       this.isLoading = false
       
       // Verificar si durante la autenticación / inicio de sesión se marcó onboarding requerido
       if (this.onboardingState.isRequired()) {
         this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
+      } else if (this.onboardingState.isPasswordChangeRequired()) {
+        this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
       } else {
         this.router.navigateByUrl('/')
       }

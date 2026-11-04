@@ -24,14 +24,18 @@ export class NavbarComponent {
     return "/login" == this.location.path()
   }
 
+  isOnboardingFlow(): boolean {
+    return ['/completar-perfil', '/cambiar-password'].includes(this.location.path().split('?')[0])
+  }
+
   volverCalendario() {
     this.router.navigateByUrl('/agenda')
   }
 
-  logout() {
-    this.loginService.logout()
+  async logout(): Promise<void> {
+    await this.loginService.logout()
     this.dropdownVisible = false
-    this.router.navigateByUrl('/login')
+    await this.router.navigateByUrl('/login', { replaceUrl: true })
   }
 
   perfil() {

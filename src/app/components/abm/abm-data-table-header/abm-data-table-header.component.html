@@ -11,7 +11,11 @@
     <div class="botonera">
         <a class="btn btn-primary mx-2 icono boton-volver" data-toggle="modal" (click)="volver()">
             Volver</a>
-        <a class="btn btn-success agregar-icon icono" data-toggle="modal" [routerLink]="getRoute()" aria-label="Agregar">
+        <button *ngIf="titulo === 'Empleados'" type="button" class="btn btn-success agregar-icon icono" (click)="agregar()" aria-label="Agregar usuario">
+            <i class="fas fa-plus-circle mx-1"></i>
+            <span class="agregar-texto">Agregar Usuario</span>
+        </button>
+        <a *ngIf="titulo !== 'Empleados'" class="btn btn-success agregar-icon icono" data-toggle="modal" [routerLink]="getRoute()" aria-label="Agregar">
             <i class="fas fa-plus-circle mx-1"></i>
             <span class="agregar-texto">Agregar</span>
         </a>

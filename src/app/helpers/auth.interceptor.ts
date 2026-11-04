@@ -86,6 +86,17 @@ export class AuthInterceptor implements HttpInterceptor {
           return throwError(() => error)
         }
 
+        if (error.status === 403 && error.error?.code === 'PASSWORD_CHANGE_REQUIRED') {
+          this.onboardingState.setStatus({
+            onboardingRequired: this.onboardingState.isRequired(),
+            passwordChangeRequired: true
+          })
+          if (this.router.url !== '/cambiar-password') {
+            this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
+          }
+          return throwError(() => error)
+        }
+
         // Solo ejecuta toast/deslogeo si NO es un onboarding requerido
         this.handleAuthAndToast(error)
         return throwError(() => error)
@@ -98,6 +109,25 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleAuthAndToast(error: HttpErrorResponse): void {
+    if (error.status === 403 && error.error?.code === 'PASSWORD_CHANGE_REQUIRED') {
+      this.onboardingState.setStatus({
+        onboardingRequired: this.onboardingState.isRequired(),
+        passwordChangeRequired: true
+      })
+      if (this.router.url !== '/cambiar-password') {
+        this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
+      }
+      return
+    }
+
+    if (error.status === 403 && error.error?.code === 'ONBOARDING_REQUIRED') {
+      this.onboardingState.requireOnboarding()
+      if (this.router.url !== '/completar-perfil') {
+        this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
+      }
+      return
+    }
+
     if (error.status === 401 && error.error?.code === 'UNAUTHENTICATED') {
       this.loginService.clearAuthData()
       this.router.navigate(['/login'])

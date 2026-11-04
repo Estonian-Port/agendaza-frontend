@@ -1,4 +1,5 @@
 <div class="sidebar-collapsed bg-light" *ngIf="!isLogin()">
+  <ng-container *ngIf="!isOnboardingFlow()">
   <a class="sidebar-collapsed-toggle" (click)="toggleSidebar()">
     <i class="fas fa-bars"></i>
   </a>
@@ -25,9 +26,10 @@
       </a>
     </li>
   </ul>
+  </ng-container>
 </div>
 
-<div id="sidebar" class="sidebar" [ngClass]="{ active: isSidebarActive }" (click)="closeSidebar()" *ngIf="!isLogin()">
+<div id="sidebar" class="sidebar" [ngClass]="{ active: isSidebarActive }" (click)="closeSidebar()" *ngIf="!isLogin() && !isOnboardingFlow()">
   <div class="sidebar-header d-flex justify-content-center align-items-center">
     <img src="./assets/logoBBS.png" width="30" height="32" />
   </div>

@@ -7,12 +7,14 @@
             titulo = 'Empleados'
             (outputBuscar)="updatePalabraBuscar($event)"
             (outputPaginaActual)="updatePaginaActual($event)"
+               (outputAgregar)="abrirAlta()"
             (outputBusqueda)="updatePrimeraBusqueda($event)">
         </app-abm-data-table-header>
 
         <app-abm-data-table-usuario
-            (outputEditar)="editar($event)"
             (outputEliminar)="eliminar($event)"
+               (outputCambiarRol)="abrirCambioRol($event)"
+               (outputResetearPassword)="abrirReset($event)"
             [listaItems]="listaItems"
             [buscar]="buscar">
         </app-abm-data-table-usuario>
@@ -25,5 +27,59 @@
         [cantidadRegistros]="cantidadRegistros"
         [cantidadPaginas]="cantidadPaginas">
     </app-abm-data-table-paginacion>
+
+        <app-modal-basico
+            (outputAceptar)="resetearPassword()"
+            (outputChangeModal)="modalReset = $event"
+            [modal]="modalReset"
+            titulo="Restablecer contraseña"
+            [cuerpo]="'¿Seguro que quiere restablecerle la contraseña al usuario: ' + (usuarioSeleccionado?.nombre || '') + ' ' + (usuarioSeleccionado?.apellido || '') + '?'"
+            boton="Restablecer">
+        </app-modal-basico>
+
+        <div *ngIf="modalRol" class="modal-backgroud"></div>
+        <div *ngIf="modalRol" class="modal fade modal-display show d-block" role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-correcion-altura" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title">Cambiar Rol</h5></div>
+                    <div class="modal-body">
+                        <label for="rolUsuario" class="form-label">Rol</label>
+                        <select id="rolUsuario" class="form-select" [(ngModel)]="rolSeleccionado">
+                            <option *ngFor="let rol of roles" [ngValue]="rol">{{rol}}</option>
+                        </select>
+                        <div *ngIf="errorModal" class="alert alert-danger mt-3 mb-0" role="alert">{{errorModal}}</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="modalRol = false">Cancelar</button>
+                        <button type="button" class="btn btn-primary" (click)="guardarRol()" [disabled]="enviando">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="modalAlta" class="modal-backgroud"></div>
+        <div *ngIf="modalAlta" class="modal fade modal-display show d-block" role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-correcion-altura" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title">Ingrese el mail y el cargo del usuario al que quiere dar de alta</h5></div>
+                    <form [formGroup]="formularioAlta" (ngSubmit)="crearUsuario()">
+                        <div class="modal-body">
+                            <label for="emailUsuario" class="form-label">Email</label>
+                            <input id="emailUsuario" class="form-control" type="email" formControlName="email" autocomplete="email">
+                            <div *ngIf="formularioAlta.controls.email.touched && formularioAlta.controls.email.invalid" class="text-danger small mt-1">Ingresa un email válido.</div>
+                            <label for="rolNuevoUsuario" class="form-label mt-3">Cargo</label>
+                            <select id="rolNuevoUsuario" class="form-select" formControlName="rol">
+                                <option *ngFor="let rol of roles" [ngValue]="rol">{{rol}}</option>
+                            </select>
+                            <div *ngIf="errorModal" class="alert alert-danger mt-3 mb-0" role="alert">{{errorModal}}</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modalAlta = false">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="enviando">Dar de alta</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 </div>

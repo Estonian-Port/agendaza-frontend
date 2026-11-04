@@ -127,19 +127,23 @@ export class CompletarPerfilComponent implements OnInit {
     const values = this.form.getRawValue()
     try {
       await this.usuarioService.completeOnboarding({
-        nombre: values.nombre,
-        apellido: values.apellido,
+        nombre: values.nombre.trim(),
+        apellido: values.apellido.trim(),
         celular: values.celular,
         fechaNacimiento: this.toIsoDate(values.fechaNacimiento),
-        username: values.username,
-        password: values.password,
-        email: values.email,
+        username: values.username.trim(),
+        password: values.password.trim(),
+        email: values.email.trim(),
         aceptoTerminos: true,
         versionTerminos: this.terminos.version
       })
       localStorage.setItem('session', CryptoJsImpl.encryptData(values.username))
       this.onboardingState.completeOnboarding()
-      await this.router.navigateByUrl('/')
+      this.onboardingState.setStatus(await this.usuarioService.getEstado())
+      await this.router.navigateByUrl(
+        this.onboardingState.isPasswordChangeRequired() ? '/cambiar-password' : '/',
+        { replaceUrl: true }
+      )
     } catch {
       this.errorSubmit = 'No se pudieron guardar tus datos. Intenta nuevamente.'
     } finally {

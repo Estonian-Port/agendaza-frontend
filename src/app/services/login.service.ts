@@ -15,7 +15,6 @@ const BASE_CARGO = `${REST_SERVER_URL}/v1/cargos`
 })
 export class LoginService {
 
-  private static accessToken: string | null = null
   private refreshPromise: Promise<string> | null = null
 
   constructor(private httpClient: HttpClient, private router: Router) {}
@@ -36,11 +35,11 @@ export class LoginService {
       throw new Error('El backend no retornó los tokens de sesión.')
     }
 
-    // Keep the refresh token persistent; the short-lived access token stays in memory.
     const usernameEncrypt = CryptoJsImpl.encryptData(usuarioLoginJson.username)
     localStorage.setItem('session', usernameEncrypt)
-    localStorage.setItem('token', refreshToken)
-    LoginService.accessToken = bearerToken.slice('Bearer '.length)
+    localStorage.setItem('refreshToken', refreshToken)
+    localStorage.setItem('accessToken', bearerToken.slice('Bearer '.length))
+    localStorage.removeItem('token')
 
     // 3. AHORA SÍ: Esperamos a que el DTO del usuario realmente llegue antes de avanzar
     const usuario = await this.getUsuarioDtoByUsername()
@@ -107,18 +106,26 @@ export class LoginService {
    * Obtiene el access token en memoria
    */
   getToken(): string | null {
-    return LoginService.accessToken
+    return LoginService.getToken()
   }
 
   /**
    * Obtiene el access token en memoria (para uso estático)
    */
   static getToken(): string | null {
-    return LoginService.accessToken
+    return localStorage.getItem('accessToken')
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem('token')
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (refreshToken) return refreshToken
+
+    const legacyRefreshToken = localStorage.getItem('token')
+    if (legacyRefreshToken) {
+      localStorage.setItem('refreshToken', legacyRefreshToken)
+      localStorage.removeItem('token')
+    }
+    return legacyRefreshToken
   }
 
   hasSession(): boolean {
@@ -140,8 +147,8 @@ export class LoginService {
         throw new Error('El backend no retornó los tokens renovados.')
       }
 
-      LoginService.accessToken = accessToken
-      localStorage.setItem('token', rotatedRefreshToken)
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', rotatedRefreshToken)
       return accessToken
     }).catch(error => {
       if (error?.status === 401) {
@@ -157,7 +164,8 @@ export class LoginService {
   }
 
   clearAuthData(): void {
-    LoginService.accessToken = null
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
     localStorage.removeItem('token')
     localStorage.removeItem('session')
     localStorage.removeItem('usuarioId')

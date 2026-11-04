@@ -28,6 +28,9 @@ export class AbmDataTableHeaderComponent implements OnInit {
   @Output() 
   outputPaginaActual = new EventEmitter<number>();
 
+  @Output()
+  outputAgregar = new EventEmitter<void>()
+
   constructor(private location : Location) { }
 
   ngOnInit(): void {}
@@ -51,7 +54,6 @@ export class AbmDataTableHeaderComponent implements OnInit {
     'Eventos': '/saveEvento',
     'Extras': '/saveExtraEvento',
     'Pagos': '/savePago',
-    'Empleados': '/saveUsuario',
     'Tipo Eventos': '/saveTipoEvento',
     'Servicios': '/saveServicio',
     'Catering': '/saveExtraCatering',
@@ -61,6 +63,10 @@ export class AbmDataTableHeaderComponent implements OnInit {
 
   getRoute(): string {
     return this.routeMap[this.titulo] || '';
+  }
+
+  agregar(): void {
+    this.outputAgregar.emit()
   }
 
   volver() {

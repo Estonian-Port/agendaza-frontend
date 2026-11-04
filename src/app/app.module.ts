@@ -38,13 +38,11 @@ import { AbmDataTableComponent } from './components/abm/abm-data-table/abm-data-
 import { AbmDataTablePaginacionComponent } from './components/abm/abm-data-table-paginacion/abm-data-table-paginacion.component';
 import { AbmDataTableEventoComponent } from './components/abm/abm-data-table-evento/abm-data-table-evento.component';
 import { AbmDataTableUsuarioComponent } from './components/abm/abm-data-table-usuario/abm-data-table-usuario.component';
-import { SaveUsuarioComponent } from './layout/save/save-usuario/save-usuario.component';
 import { SaveClienteComponent } from './layout/save/save-cliente/save-cliente.component';
 import { SavePagoComponent } from './layout/save/save-pago/save-pago.component';
 import { SaveServicioComponent } from './layout/save/save-servicio/save-servicio.component';
 import { SaveTipoEventoComponent } from './layout/save/save-tipo-evento/save-tipo-evento.component';
 import { SaveEventoComponent } from './layout/save/save-evento/save-evento.component';
-import { EditUsuarioComponent } from './layout/edit/edit-usuario/edit-usuario.component';
 import { ModalBasicoComponent } from './components/modal/modal-basico/modal-basico.component';
 import { EditEmpresaComponent } from './layout/edit/edit-empresa/edit-empresa.component';
 import { AbmExtraCateringComponent } from './layout/abm/abm-extra-catering/abm-extra-catering.component';
@@ -65,7 +63,6 @@ import { ModalEditarComponent } from './components/modal/modal-editar/modal-edit
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { VerClienteComponent } from './layout/ver/ver-cliente/ver-cliente.component';
 import { AbmDataTableHeaderComponent } from './components/abm/abm-data-table-header/abm-data-table-header.component';
-import { EditEmpleadoCargoComponent } from './layout/edit/edit-cargo-empleado/edit-cargo-empleado.component';
 import { EditUsuarioPerfilComponent } from './layout/edit/edit-usuario-perfil/edit-usuario-perfil.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TruncarTextoPipe } from './pipes/truncarTexto.pipe';
@@ -84,6 +81,7 @@ import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.componen
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
+import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-password.component';
 
 @NgModule({
   declarations: [
@@ -117,13 +115,11 @@ import { CompletarPerfilComponent } from './layout/completar-perfil/completar-pe
     AbmServicioComponent,
     AbmEmpresaComponent,
     AbmExtraEventoComponent,
-    SaveUsuarioComponent,
     SaveClienteComponent,
     SavePagoComponent,
     SaveGastoComponent,
     SaveServicioComponent,
     SaveTipoEventoComponent,
-    EditUsuarioComponent,
     ModalBasicoComponent,
     EditEmpresaComponent,
     AbmExtraCateringComponent,
@@ -144,7 +140,6 @@ import { CompletarPerfilComponent } from './layout/completar-perfil/completar-pe
     SidebarComponent,
     VerClienteComponent,
     AbmDataTableHeaderComponent,
-    EditEmpleadoCargoComponent,
     EditUsuarioPerfilComponent,
     SpinnerComponent,
     TruncarTextoPipe,
@@ -161,6 +156,7 @@ import { CompletarPerfilComponent } from './layout/completar-perfil/completar-pe
     AbmClausulaComponent,
     ToastComponent,
     CompletarPerfilComponent,
+    CambiarPasswordComponent,
   ],
   imports: [
     BrowserModule,

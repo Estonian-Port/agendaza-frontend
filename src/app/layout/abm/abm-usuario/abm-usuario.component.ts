@@ -1,8 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Location } from '@angular/common';
 import { LoginService } from 'src/app/services/login.service';
+import { Usuario } from 'src/app/model/Usuario';
+import { Cargo } from 'src/app/model/Cargo';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-abm-usuario',
@@ -16,8 +18,25 @@ export class AbmUsuarioComponent implements OnInit {
   paginaActual : number = 0
   cantidadPaginas : number[] = []
   realizoBusqueda : Boolean = true
+  readonly roles = [Cargo.ADMIN, Cargo.ENCARGADO, Cargo.EMPLEADO]
+  usuarioSeleccionado: Usuario | null = null
+  rolSeleccionado: Cargo = Cargo.EMPLEADO
+  modalReset = false
+  modalRol = false
+  modalAlta = false
+  enviando = false
+  errorModal = ''
+  formularioAlta = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    rol: [Cargo.EMPLEADO, Validators.required]
+  })
 
-  constructor(private usuarioService : UsuarioService, private loginService : LoginService, private router : Router, private location : Location) { }
+  constructor(
+    private usuarioService: UsuarioService,
+    private loginService: LoginService,
+    private formBuilder: FormBuilder,
+    private toastService: ToastService
+  ) { }
   
   async ngOnInit(): Promise<void> {
     this.inicializarListaItems()
@@ -64,8 +83,73 @@ export class AbmUsuarioComponent implements OnInit {
     this.cantidadPaginas = cantidadPaginas
   }
 
-  editar(id : number){
-    this.router.navigate(['/editUsuario'], { queryParams: { usuarioId: id } });
+  async abrirCambioRol(id: number): Promise<void> {
+    this.usuarioSeleccionado = this.listaItems.find(item => item.id === id) || null
+    if (!this.usuarioSeleccionado) return
+    this.rolSeleccionado = await this.loginService.getCargoByUsuarioAndEmpresa(id)
+    this.errorModal = ''
+    this.modalRol = true
+  }
+
+  abrirReset(id: number): void {
+    this.usuarioSeleccionado = this.listaItems.find(item => item.id === id) || null
+    this.modalReset = !!this.usuarioSeleccionado
+  }
+
+  async resetearPassword(): Promise<void> {
+    if (!this.usuarioSeleccionado) return
+    try {
+      await this.usuarioService.resetPassword(this.usuarioSeleccionado.id)
+      this.toastService.showSuccess('La contraseña temporal fue generada y enviada por email al usuario.')
+    } catch (error: any) {
+      const backendError = error?.error
+      this.toastService.showError(typeof backendError === 'string'
+        ? backendError
+        : backendError?.message || backendError?.mensaje || 'No se pudo restablecer la contraseña.')
+    } finally {
+      this.modalReset = false
+      this.usuarioSeleccionado = null
+    }
+  }
+
+  async guardarRol(): Promise<void> {
+    if (!this.usuarioSeleccionado || this.enviando) return
+    this.enviando = true
+    this.errorModal = ''
+    try {
+      this.usuarioSeleccionado.cargo = this.rolSeleccionado
+      await this.loginService.updateCargo(this.usuarioSeleccionado)
+      this.modalRol = false
+      await this.inicializarListaItems()
+    } catch (error: any) {
+      this.errorModal = error?.error?.message || error?.error?.mensaje || 'No se pudo actualizar el rol.'
+    } finally {
+      this.enviando = false
+    }
+  }
+
+  abrirAlta(): void {
+    this.formularioAlta.reset({ email: '', rol: Cargo.EMPLEADO })
+    this.errorModal = ''
+    this.modalAlta = true
+  }
+
+  async crearUsuario(): Promise<void> {
+    this.formularioAlta.markAllAsTouched()
+    if (this.formularioAlta.invalid || this.enviando) return
+    this.enviando = true
+    this.errorModal = ''
+    const values = this.formularioAlta.getRawValue()
+    try {
+      await this.usuarioService.altaUsuario(values.email || '', values.rol || Cargo.EMPLEADO)
+      this.modalAlta = false
+      this.toastService.showSuccess('Usuario dado de alta correctamente.')
+      await this.inicializarListaItems()
+    } catch (error: any) {
+      this.errorModal = error?.error?.message || error?.error?.mensaje || 'No se pudo dar de alta al usuario.'
+    } finally {
+      this.enviando = false
+    }
   }
 
   async eliminar(id: number) {

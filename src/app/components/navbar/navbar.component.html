@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-between align-items-center">
 
     <div class="navbar-brand-group d-flex align-items-center">
-      <button class="mobile-sidebar-toggle" type="button" aria-label="Abrir menú" (click)="toggleSidebar()">
+      <button *ngIf="!isOnboardingFlow()" class="mobile-sidebar-toggle" type="button" aria-label="Abrir menú" (click)="toggleSidebar()">
         <i class="fas fa-bars"></i>
       </button>
       <a class="app-logo" (click)="volverCalendario()">
