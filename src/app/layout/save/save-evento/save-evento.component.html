@@ -429,14 +429,14 @@
                                                 <i class="fas fa-search fa-xs"></i>
                                             </button>
                                         </label>
-                                        <div *ngIf="celular?.invalid && celular?.touched || submited">
-                                            <span *ngIf="celular?.errors" class="invalid-validator">Ingrese celular valido</span>
+                                        <div *ngIf="celular.invalid && celular.touched || submited">
+                                            <span *ngIf="celular.errors" class="invalid-validator">Ingrese celular valido</span>
                                         </div>
                                     </div>
                                     <input type="number" class="form-control" 
                                         (change)="actualizarValidStepBox()"
                                         formControlName="celular"
-                                        [ngClass]="{'is-invalid': celular?.errors && submited }">
+                                        [ngClass]="{'is-invalid': celular.errors && submited }">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -446,13 +446,13 @@
                                                 <i class="fas fa-search fa-xs"></i>
                                             </button>
                                         </label>
-                                        <div *ngIf="(email?.invalid && email?.touched) || submited">
-                                            <span *ngIf="email?.errors" class="invalid-validator">Ingrese email valido</span>
+                                        <div *ngIf="(email.invalid && email.touched) || submited">
+                                            <span *ngIf="email.errors" class="invalid-validator">Ingrese email valido</span>
                                         </div>
                                     </div>
 
                                     <input type="email" class="form-control email" formControlName="email" 
-                                    [ngClass]="{'is-invalid': email?.errors && submited }">
+                                    [ngClass]="{'is-invalid': email.errors && submited }">
                                     <small type="text" class="form-text text-muted">(Si no carga email no se enviará el comprobante)</small>
                                 </div>
                             </div>
@@ -461,26 +461,26 @@
                                 <div class="col-md-6">
                                     <div class="label-with-error">
                                         <label for="nombre" class="form-label">Nombre</label>
-                                        <div *ngIf="nombre?.invalid && nombre?.touched || submited">
-                                            <span *ngIf="nombre?.errors" class="invalid-validator">Ingrese nombre</span>
+                                        <div *ngIf="nombre.invalid && nombre.touched || submited">
+                                            <span *ngIf="nombre.errors" class="invalid-validator">Ingrese nombre</span>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control"
                                     (change)="actualizarValidStepBox()"
                                     formControlName="nombre"
-                                    [ngClass]="{'is-invalid': nombre?.errors && submited }">
+                                    [ngClass]="{'is-invalid': nombre.errors && submited }">
                                 </div>
                                 <div class="col-md-6">
                                     <div class="label-with-error">
                                         <label  for="apellido" class="form-label">Apellido</label>
-                                        <div *ngIf="(apellido?.invalid && apellido?.touched) || submited">
-                                            <span *ngIf="apellido?.errors" class="invalid-validator">Ingrese apellido</span>
+                                        <div *ngIf="(apellido.invalid && apellido.touched) || submited">
+                                            <span *ngIf="apellido.errors" class="invalid-validator">Ingrese apellido</span>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control"
                                         (change)="actualizarValidStepBox()"
                                         formControlName="apellido" 
-                                        [ngClass]="{'is-invalid': apellido?.errors && submited }">
+                                        [ngClass]="{'is-invalid': apellido.errors && submited }">
                                 </div>
                             </div>
 

@@ -178,10 +178,10 @@ export class SaveEventoComponent implements OnInit {
   get cateringOtro() { return this.formGroup.get(this.cateringForm)?.get('cateringOtro') }
   get cateringOtroDescripcion () { return this.formGroup.get(this.cateringForm)?.get('cateringOtroDescripcion') }
 
-  get nombre(){ return this.formGroup.get(this.clienteForm)?.get("nombre") }
-  get apellido(){ return this.formGroup.get(this.clienteForm)?.get("apellido") }
-  get email(){ return this.formGroup.get(this.clienteForm)?.get("email") }
-  get celular(){ return this.formGroup.get(this.clienteForm)?.get("celular") }
+  get nombre(){ return this.formGroup.get(this.clienteForm)!.get("nombre")! }
+  get apellido(){ return this.formGroup.get(this.clienteForm)!.get("apellido")! }
+  get email(){ return this.formGroup.get(this.clienteForm)!.get("email")! }
+  get celular(){ return this.formGroup.get(this.clienteForm)!.get("celular")! }
   get estado(){ return this.formGroup.get(this.clienteForm)?.get("estado") }
   get anotaciones(){ return this.formGroup.get(this.clienteForm)?.get("anotaciones") }
 

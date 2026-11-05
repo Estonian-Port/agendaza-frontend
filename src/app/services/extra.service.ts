@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { REST_SERVER_URL } from 'src/util/configuration';
 import { Extra, ExtraJSON, ExtraPrecioDTO } from '../model/Extra';
-import { FechaForm } from '../model/FechaForm';
-import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON } from '../model/GenericItem';
+import { GenericItemEmpresaTipoEvento } from '../model/GenericItem';
 import { Precio, PrecioForm, PrecioJSON } from '../model/Precio';
 import { UsuarioService } from './usuario.service';
 
@@ -152,14 +151,15 @@ export class ExtraService {
     );
   }
 
-async getAllExtraEventoByTipoEventoIdAndFecha(
+  async getAllExtraEventoByTipoEventoIdAndFecha(
     tipoEventoId: number,
     fechaEvento: string,
     tiposExtra: string[]
   ): Promise<ExtraPrecioDTO[]> {
     const empresaId = this.usuarioService.getEmpresaId();
-    let params = new HttpParams().set('fechaEvento', fechaEvento);
-    tiposExtra.forEach(tipoExtra => params = params.append('tiposExtra', tipoExtra));
+    let params = new HttpParams()
+      .set('fechaEvento', fechaEvento)
+      .set('tiposExtra', tiposExtra.join(','));
 
     const res = await lastValueFrom(
       this.httpClient.get<{ data: ExtraPrecioDTO[] }>(
