@@ -97,7 +97,7 @@ export class PagoService {
 
   // ── Mutations ────────────────────────────────────────────────────────────
 
-  async save(pago: Pago) {
+  async save(pago: Omit<Pago, 'contiene' | 'fecha'> & { fecha: string }) {
     pago.empresaId = this.usuarioService.getEmpresaId();
     pago.usuarioId = this.loginService.getUsuarioId();
     const item$ = this.httpClient.post<{ data: Pago }>(`${BASE}`, pago);

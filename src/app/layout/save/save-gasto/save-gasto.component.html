@@ -33,10 +33,34 @@
 
             <div class="col-lg-4 col-md-12 mb-4">
                 <label for="codigoEvento">
-                    Código del evento <span class="text-muted" *ngIf="!requiereEvento">(opcional)</span>
+                    Evento <span class="text-muted" *ngIf="!requiereEvento">(opcional)</span>
                 </label>
-                <input type="text" class="form-control" name="codigoEvento" [(ngModel)]="gasto.codigoEvento"/>
-                <small *ngIf="gasto.nombreEvento" class="text-muted">{{gasto.nombreEvento}}</small>
+                <app-evento-seleccionado
+                    *ngIf="gasto.codigoEvento && !cambiandoEvento"
+                    [nombre]="gasto.nombreEvento || 'Evento vinculado'"
+                    [codigo]="gasto.codigoEvento"
+                    [fechaInicio]="eventoSeleccionado?.inicio || ''"
+                    (outputCambiar)="quitarEvento()">
+                </app-evento-seleccionado>
+                <div *ngIf="!gasto.codigoEvento || cambiandoEvento">
+                    <div class="event-search">
+                    <div class="d-flex gap-2 align-items-start">
+                        <select class="form-select flex-shrink-0" style="width: 140px" [(ngModel)]="modoBusqueda" name="modoBusquedaEvento">
+                            <option value="fecha">Por fecha</option>
+                            <option value="codigo">Por código</option>
+                        </select>
+                        <input *ngIf="modoBusqueda === 'fecha'" type="date" class="form-control" name="fechaBusquedaEvento" [(ngModel)]="fechaBusqueda"/>
+                        <input *ngIf="modoBusqueda === 'codigo'" type="text" class="form-control" name="codigoBusquedaEvento" placeholder="Código del evento" [(ngModel)]="codigoBusqueda"/>
+                        <button type="button" class="btn btn-primary" (click)="buscarEvento()" [disabled]="buscandoEvento">{{buscandoEvento ? 'Buscando...' : 'Buscar'}}</button>
+                    </div>
+                    <div class="list-group event-search-results" *ngIf="eventos.length">
+                        <button type="button" class="list-group-item list-group-item-action" *ngFor="let evento of eventos" (click)="seleccionarEvento(evento)">
+                            <strong>{{evento.nombre}}</strong> <span class="text-muted">({{evento.codigo}})</span>
+                            <div class="small text-muted">{{evento.inicio | date: 'dd/MM/yy HH:mm'}} · {{evento.estado}}</div>
+                        </button>
+                    </div>
+                    </div>
+                </div>
             </div>
         
             <div class="col-7"></div>

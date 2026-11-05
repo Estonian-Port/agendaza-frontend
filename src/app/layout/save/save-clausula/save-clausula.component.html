@@ -10,14 +10,6 @@
 
         <div class="row contenedor-default mt-2">
             <div class="col-lg-4 col-md-12 form-group mb-4">
-                <label for="clausula">Clausula</label>
-                <select class="form-select" (change)="onClausulaChange()" [(ngModel)]='genericItem.id' name="clausula">
-                    <option *ngFor="let clausula of listaClausula | orderAbmByNombre" [value]="clausula.id">{{clausula.nombre}}</option>
-                    <option value="0">Otro</option>
-                </select>
-            </div>
-
-            <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>
                 <label for="nombre">Nombre</label> 
                 <input type="text" [(ngModel)]='genericItem.nombre' class="form-control" id="nombre" name="nombre">
             </div>

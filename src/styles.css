@@ -206,6 +206,66 @@ button:focus {
   transition: background-color 0.4s;
 }
 
+.evento-seleccionado {
+  max-width: 100%;
+  background-color: var(--color-quinario);
+}
+
+.event-search {
+  position: relative;
+}
+
+.event-search-controls {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 2fr) auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.event-search-controls .form-control {
+  min-width: 0;
+}
+
+@media (min-width: 992px) {
+  .event-search-controls {
+    display: flex;
+  }
+
+  .event-search-controls .form-select {
+    flex: 0 0 140px;
+  }
+
+  .event-search-controls .form-control {
+    flex: 0 1 33.333%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .event-search-controls {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .event-search-controls .form-select {
+    grid-column: 1 / -1;
+  }
+}
+
+.event-search-results {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  max-height: 18rem;
+  overflow-y: auto;
+  background-color: var(--color-quinario);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.18);
+}
+
+.event-search-results .list-group-item {
+  min-height: 4.5rem;
+}
+
 .card-content {
   padding: 1.5rem;
   font-size: 1rem;

@@ -31,13 +31,8 @@ export class AbmClausulaComponent {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
 
-    if(this.buscar == ""){
-      this.listaItems = await this.clasulaService.getAll(this.paginaActual)
-      this.cantidadRegistros = await this.clasulaService.getAllCantidad()
-    }else{
-      this.listaItems = await this.clasulaService.getAllFiltro(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.clasulaService.getAllFiltroCantidad(this.buscar)
-    }
+    this.listaItems = await this.clasulaService.getAll(this.paginaActual, this.buscar || undefined)
+    this.cantidadRegistros = await this.clasulaService.getAllCantidad(this.buscar || undefined)
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     

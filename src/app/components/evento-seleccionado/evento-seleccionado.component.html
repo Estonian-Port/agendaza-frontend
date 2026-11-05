@@ -1,0 +1,6 @@
+<div class="card-extra evento-seleccionado p-3">
+    <strong>Evento: {{nombre}}</strong>
+    <div><strong>Código:</strong> {{codigo}}</div>
+    <div *ngIf="fechaInicio"><strong>Fecha inicio:</strong> {{fechaInicio | date: 'dd/MM/yy HH:mm'}}</div>
+    <button *ngIf="permitirCambiar" type="button" class="btn btn-primary btn-sm mt-2" (click)="outputCambiar.emit()">Cambiar evento</button>
+</div>

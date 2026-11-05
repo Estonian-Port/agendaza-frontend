@@ -57,6 +57,11 @@ export class VerEventoComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.evento = await this.eventoService.getEventoVer(id)
 
+    this.evento.listaExtra = this.evento.listaExtra || []
+    this.evento.listaExtraVariable = this.evento.listaExtraVariable || []
+    this.evento.listaExtraTipoCatering = this.evento.listaExtraTipoCatering || []
+    this.evento.listaExtraCateringVariable = this.evento.listaExtraCateringVariable || []
+
     const empresaId = await this.usuarioService.getEmpresaId();
     this.evento.empresa = (await this.empresaService.getEmpresa(empresaId)).nombre;
 
@@ -75,7 +80,9 @@ export class VerEventoComponent implements OnInit {
 
     this.tipoCatering = tieneCateringLista || tieneCateringOtro
 
-    this.encargadoNombreCompleto = this.evento.encargado.apellido + ", " + this.evento.encargado.nombre
+    this.encargadoNombreCompleto = this.evento.encargado
+      ? `${this.evento.encargado.apellido}, ${this.evento.encargado.nombre}`
+      : ""
   }
 
   verCliente(){
@@ -155,6 +162,15 @@ export class VerEventoComponent implements OnInit {
 
   listaExtraVariableToModal(lista : Array<ExtraVariable>){
     return lista.map((extraVariable: ExtraVariable) => new GenericItem(extraVariable.id, extraVariable.nombre))
+  }
+
+  abrirModalExtras() {
+    const extras = this.evento.listaExtra as Array<{ id: number; nombre: string; cantidad?: number }>
+    const lista = extras.map(extra => new GenericItem(
+      extra.id,
+      `${extra.nombre}${extra.cantidad && extra.cantidad > 1 ? ` x${extra.cantidad}` : ''}`
+    ))
+    this.setListaModal(lista)
   }
 
   abrirModalTipoCatering() {

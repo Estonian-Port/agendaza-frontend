@@ -82,6 +82,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
 import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-password.component';
+import { EventoSeleccionadoComponent } from './components/evento-seleccionado/evento-seleccionado.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-pass
     ToastComponent,
     CompletarPerfilComponent,
     CambiarPasswordComponent,
+    EventoSeleccionadoComponent
   ],
   imports: [
     BrowserModule,
