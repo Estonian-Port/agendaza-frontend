@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import { fadeOut } from 'src/app/animations/fade-out';
 import { fadeInOut } from 'src/app/animations/fade-in-out';
 import { translate } from 'src/app/animations/translate';
-import { Capacidad } from 'src/app/model/Capacidad';
 import { DateUtil, Mes } from 'src/app/model/DateUtil';
 import { Evento } from 'src/app/model/Evento';
 import { Extra, ExtraVariable } from 'src/app/model/Extra';
@@ -61,8 +60,11 @@ export class SaveEventoComponent implements OnInit {
   tituloModalPrecioBase = ""
   inputPrecioBaseEditar: any = 0
   metodoAceptarPrecioBase!: Function
-  duracionTipoEvento : Time = new Time("00","00")
-  capacidadTipoEvento : Capacidad = new Capacidad(0,0)
+  private disponibilidadKey: string | null = null
+  private horaFinKey: string | null = null
+  private cotizacionKey: string | null = null
+  private cateringKey: string | null = null
+  private estadosCargados = false
 
   // Cotizacion
   listaExtra : Array<Extra> = []
@@ -198,11 +200,8 @@ export class SaveEventoComponent implements OnInit {
     // Datos del evento
     this.listaDia = DateUtil.getAllDaysOfMonth(this.currentYear, 0)
 
-    // Datos del contacto
-    this.listaEstadoEvento = await this.eventoService.getAllEstadoForSaveEvento()
-    
     // Trae lista tipo evento by duracion
-    this.filterTipoEventoByDuracion()
+    await this.filterTipoEventoByDuracion()
   }
 
   // ----------------------------------------------------------------------------------------
@@ -228,27 +227,28 @@ export class SaveEventoComponent implements OnInit {
     this.listaExtraTipoCatering = []
     this.listaExtraCateringVariable = []
 
-    this.cleanEvento()
-    this.inicializarByTipoEventoId()
+    await this.inicializarByTipoEventoId()
   }
 
   async inicializarByTipoEventoId(){
 
     this.evento.tipoEventoId = this.tipoEvento?.getRawValue()
-
-    // Datos del evento
+    this.disponibilidadKey = null
+    this.horaFinKey = null
+    this.cotizacionKey = null
+    this.cateringKey = null
     this.cleanEvento()
-    this.duracionTipoEvento = await this.tipoEventoService.getDuracionByTipoEventoId(this.evento.tipoEventoId)
-    this.capacidadTipoEvento = await this.tipoEventoService.getCapacidadByTipoEventoId(this.evento.tipoEventoId)
-    
-    this.changeTime()
-    this.changeDate()
+    this.resetDatosCotizacion()
+
+    if (!this.evento.tipoEventoId) {
+      this.listaServicio = []
+      return
+    }
 
     // Tipo de evento
     this.listaServicio = await this.servicioSerice.getAllServicioByTipoEventoId(this.evento.tipoEventoId)
 
     this.changeCapacidadAdultos()
-    //this.changeCapacidadNinos()
 
   }
 
@@ -257,18 +257,23 @@ export class SaveEventoComponent implements OnInit {
   }
 
   async changeDate(){
-    this.setFechaInicioAndFin()
-    this.precioTipoEvento = await this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio)
-    this.precioTipoEventoControl?.setValue(this.precioTipoEvento)
-    this.setListasExtra()
-    this.sumPresupuesto()
-    this.buscarListaEventoByDiaAndEmpresaId()
+    this.listaDia = DateUtil.getAllDaysOfMonth(
+      Number(this.fechaEventoAnio?.getRawValue()),
+      Number(this.fechaEventoMes?.getRawValue())
+    )
+    const dia = Number(this.fechaEventoDia?.getRawValue())
+    if (dia > this.listaDia.length) this.fechaEventoDia?.setValue(this.listaDia.length)
+    await this.buscarListaEventoByDiaAndEmpresaId()
   }
 
   async changeTime(){
     this.inicioTime = Time.fromFormControl(this.inicioHora?.getRawValue(), this.inicioMinuto?.getRawValue())
-    
-    this.finalTime = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.evento.tipoEventoId, this.inicioTime)
+    const key = `${this.evento.tipoEventoId}|${this.inicioTime.hour}:${this.inicioTime.minute}`
+
+    if (key !== this.horaFinKey) {
+      this.finalTime = await this.tipoEventoService.getTimeEndByTipoEventoIdAndTimeStart(this.evento.tipoEventoId, this.inicioTime)
+      this.horaFinKey = key
+    }
 
     this.finHora?.setValue(this.finalTime.hour)
     this.finMinuto?.setValue(this.finalTime.minute)
@@ -276,17 +281,31 @@ export class SaveEventoComponent implements OnInit {
     const inicioEnMinutos = Number(this.inicioTime.hour) * 60 + Number(this.inicioTime.minute)
     const finEnMinutos = Number(this.finalTime.hour) * 60 + Number(this.finalTime.minute)
     this.hastaElOtroDiaCheckbox = finEnMinutos < inicioEnMinutos
-    this.buscarListaEventoByDiaAndEmpresaId()
+    await this.buscarListaEventoByDiaAndEmpresaId()
   }
 
   async changeDay(){
-    this.buscarListaEventoByDiaAndEmpresaId()
+    await this.buscarListaEventoByDiaAndEmpresaId()
   }
 
   async buscarListaEventoByDiaAndEmpresaId(){
     this.setFechaInicioAndFin()
-    this.horarioDisponible = await this.eventoService.getHorarioDisponible(this.evento)
-    this.listaEvento = await this.eventoService.getListaEventoByDiaAndEmpresaId(this.evento.inicio)
+    const key = `${this.evento.tipoEventoId}|${this.evento.inicio}|${this.evento.fin}`
+    if (key === this.disponibilidadKey) return
+
+    this.disponibilidadKey = key
+    try {
+      const [horarioDisponible, listaEvento] = await Promise.all([
+        this.eventoService.getHorarioDisponible(this.evento),
+        this.eventoService.getListaEventoByDiaAndEmpresaId(this.evento.inicio)
+      ])
+      if (key !== `${this.evento.tipoEventoId}|${this.evento.inicio}|${this.evento.fin}`) return
+      this.horarioDisponible = horarioDisponible
+      this.listaEvento = listaEvento
+    } catch (error) {
+      if (this.disponibilidadKey === key) this.disponibilidadKey = null
+      throw error
+    }
   }
 
   setFechaInicioAndFin() {
@@ -359,18 +378,78 @@ export class SaveEventoComponent implements OnInit {
   
   // --------------------------- Cotizacion ----------------------------------
 
-  async setListasExtra() {
-    this.cargandoExtras = true
-    const [dtoEvento, dtoCatering] = await Promise.all([
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, ["EVENTO", "VARIABLE_EVENTO"]),
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, ["TIPO_CATERING", "VARIABLE_CATERING"])
-    ])
+  async cargarDatosCotizacion() {
+    this.setFechaInicioAndFin()
+    const key = `${this.evento.tipoEventoId}|${this.evento.inicio.slice(0, 10)}`
+    if (key === this.cotizacionKey) return
 
-    this.listaExtra = dtoEvento.filter(dto => dto.tipoExtra === "EVENTO").map(dto => Extra.fromDTO(dto, this.empresa.id))
-    this.listaExtraVariable = dtoEvento.filter(dto => dto.tipoExtra === "VARIABLE_EVENTO").map(dto => ExtraVariable.fromDTO(dto))
-    this.listaExtraTipoCatering = dtoCatering.filter(dto => dto.tipoExtra === "TIPO_CATERING").map(dto => Extra.fromDTO(dto, this.empresa.id))
-    this.listaExtraCateringVariable = dtoCatering.filter(dto => dto.tipoExtra === "VARIABLE_CATERING").map(dto => ExtraVariable.fromDTO(dto))
-    this.cargandoExtras = false
+    this.cotizacionKey = key
+    this.cargandoExtras = true
+    this.evento.listaExtra = []
+    this.evento.listaExtraVariable = []
+    this.extraPresupuesto = 0
+
+    try {
+      const [precio, dtoEvento] = await Promise.all([
+        this.tipoEventoService.getPrecioByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio),
+        this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, ["EVENTO", "VARIABLE_EVENTO"])
+      ])
+      this.precioTipoEvento = precio
+      this.precioTipoEventoControl?.setValue(precio)
+      this.listaExtra = dtoEvento.filter(dto => dto.tipoExtra === "EVENTO").map(dto => Extra.fromDTO(dto, this.empresa.id))
+      this.listaExtraVariable = dtoEvento.filter(dto => dto.tipoExtra === "VARIABLE_EVENTO").map(dto => ExtraVariable.fromDTO(dto))
+      this.sumPresupuesto()
+    } catch (error) {
+      this.cotizacionKey = null
+      throw error
+    } finally {
+      this.cargandoExtras = false
+    }
+  }
+
+  async cargarDatosCatering() {
+    this.setFechaInicioAndFin()
+    const key = `${this.evento.tipoEventoId}|${this.evento.inicio.slice(0, 10)}`
+    if (key === this.cateringKey) return
+
+    this.cateringKey = key
+    this.cargandoExtras = true
+    this.evento.listaExtraTipoCatering = []
+    this.evento.listaExtraCateringVariable = []
+    this.extraTipoCateringPresupuesto = 0
+    this.extraCateringPresupuesto = 0
+
+    try {
+      const dtoCatering = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(
+        this.evento.tipoEventoId,
+        this.evento.inicio,
+        ["TIPO_CATERING", "VARIABLE_CATERING"]
+      )
+      this.listaExtraTipoCatering = dtoCatering.filter(dto => dto.tipoExtra === "TIPO_CATERING").map(dto => Extra.fromDTO(dto, this.empresa.id))
+      this.listaExtraCateringVariable = dtoCatering.filter(dto => dto.tipoExtra === "VARIABLE_CATERING").map(dto => ExtraVariable.fromDTO(dto))
+    } catch (error) {
+      this.cateringKey = null
+      throw error
+    } finally {
+      this.cargandoExtras = false
+    }
+  }
+
+  resetDatosCotizacion() {
+    this.listaExtra = []
+    this.listaExtraVariable = []
+    this.listaExtraTipoCatering = []
+    this.listaExtraCateringVariable = []
+    this.evento.listaExtra = []
+    this.evento.listaExtraVariable = []
+    this.evento.listaExtraTipoCatering = []
+    this.evento.listaExtraCateringVariable = []
+    this.extraPresupuesto = 0
+    this.extraTipoCateringPresupuesto = 0
+    this.extraCateringPresupuesto = 0
+    this.precioTipoEvento = 0
+    this.precioTipoEventoControl?.setValue(0)
+    this.sumPresupuesto()
   }
 
   sumExtraPresupuesto(extraPrecio : number){
@@ -523,6 +602,7 @@ export class SaveEventoComponent implements OnInit {
 
     if(this.step >= 1 && this.step < this.listaStepBox.length){
       this.step += 1
+      await this.cargarDatosPaso(this.step)
     }else{
       this.enviarFormulario()
     }
@@ -545,12 +625,27 @@ export class SaveEventoComponent implements OnInit {
 
   }
 
-  stepBoxSelected(step : number){
+  async stepBoxSelected(step : number){
     this.step = step
+    await this.cargarDatosPaso(step)
     
     this.botonAtrasDisabledChange()
 
     this.botonSiguienteChangeName()
+  }
+
+  private async cargarDatosPaso(step: number) {
+    if (step === 2) {
+      this.inicioTime = Time.fromFormControl(this.inicioHora?.getRawValue(), this.inicioMinuto?.getRawValue())
+      await this.changeTime()
+    } else if (step === 3) {
+      await this.cargarDatosCotizacion()
+    } else if (step === 4) {
+      await this.cargarDatosCatering()
+    } else if (step === 5 && !this.estadosCargados) {
+      this.listaEstadoEvento = await this.eventoService.getAllEstadoForSaveEvento()
+      this.estadosCargados = true
+    }
   }
   
   async enviarFormulario() {
