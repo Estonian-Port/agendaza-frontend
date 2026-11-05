@@ -38,11 +38,10 @@ export class EditEventoExtrasComponent implements OnInit {
     this.evento = await this.eventoService.getEventoExtra(id)
     this.evento.listaEventoExtra ??= []
 
-    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, this.evento.fechaEvento, "EVENTO");
-    const dtoVariables = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, this.evento.fechaEvento, "VARIABLE_EVENTO");
+    const dtoExtras = await this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoExtra.id, this.evento.fechaEvento, ["EVENTO", "VARIABLE_EVENTO"]);
 
-    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, 0));
-    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto));
+    this.listaExtra = dtoExtras.filter(dto => dto.tipoExtra === "EVENTO").map(dto => Extra.fromDTO(dto, 0));
+    this.listaExtraVariable = dtoExtras.filter(dto => dto.tipoExtra === "VARIABLE_EVENTO").map(dto => ExtraVariable.fromDTO(dto));
 
     this.extrasSeleccionados = this.evento.listaEventoExtra
       .filter(extraDTO => extraDTO.tipoExtra !== "VARIABLE_EVENTO")

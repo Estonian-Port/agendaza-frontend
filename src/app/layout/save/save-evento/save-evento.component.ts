@@ -361,17 +361,15 @@ export class SaveEventoComponent implements OnInit {
 
   async setListasExtra() {
     this.cargandoExtras = true
-    const [dtoExtras, dtoVariables, dtoCatering, dtoCateringVariable] = await Promise.all([
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "EVENTO"),
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_EVENTO"),
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "TIPO_CATERING"),
-      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, "VARIABLE_CATERING")
+    const [dtoEvento, dtoCatering] = await Promise.all([
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, ["EVENTO", "VARIABLE_EVENTO"]),
+      this.extraService.getAllExtraEventoByTipoEventoIdAndFecha(this.evento.tipoEventoId, this.evento.inicio, ["TIPO_CATERING", "VARIABLE_CATERING"])
     ])
 
-    this.listaExtra = dtoExtras.map(dto => Extra.fromDTO(dto, this.empresa.id))
-    this.listaExtraVariable = dtoVariables.map(dto => ExtraVariable.fromDTO(dto))
-    this.listaExtraTipoCatering = dtoCatering.map(dto => Extra.fromDTO(dto, this.empresa.id))
-    this.listaExtraCateringVariable = dtoCateringVariable.map(dto => ExtraVariable.fromDTO(dto))
+    this.listaExtra = dtoEvento.filter(dto => dto.tipoExtra === "EVENTO").map(dto => Extra.fromDTO(dto, this.empresa.id))
+    this.listaExtraVariable = dtoEvento.filter(dto => dto.tipoExtra === "VARIABLE_EVENTO").map(dto => ExtraVariable.fromDTO(dto))
+    this.listaExtraTipoCatering = dtoCatering.filter(dto => dto.tipoExtra === "TIPO_CATERING").map(dto => Extra.fromDTO(dto, this.empresa.id))
+    this.listaExtraCateringVariable = dtoCatering.filter(dto => dto.tipoExtra === "VARIABLE_CATERING").map(dto => ExtraVariable.fromDTO(dto))
     this.cargandoExtras = false
   }
 

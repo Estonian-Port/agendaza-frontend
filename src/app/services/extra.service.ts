@@ -38,7 +38,7 @@ export class ExtraService {
 
   async getExtra(id: number): Promise<Extra> {
     const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON }>(`${BASE}/${id}`)
+      this.httpClient.get<{ data: ExtraJSON }>(`${BASE}/${id}/empresa/${this.usuarioService.getEmpresaId()}`)
     );
     return Extra.fromJson(res.data);
   }
@@ -46,119 +46,65 @@ export class ExtraService {
   // ==================== EVENTO PAGINADO ====================
 
   async getAllExtraByEmpresaId(pageNumber: number): Promise<Extra[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(
-        `${BASE}/empresa/${empresaId}/evento`,
-        { params: new HttpParams().set('page', pageNumber) }
-      )
-    );
-    return res.data.map(Extra.fromJson);
+    return this.getPageByTipoExtra(['EVENTO', 'VARIABLE_EVENTO'], pageNumber);
   }
 
   async getAllExtraByFilterName(pageNumber: number, buscar: string): Promise<Extra[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(
-        `${BASE}/empresa/${empresaId}/evento/buscar`,
-        { params: new HttpParams().set('page', pageNumber).set('buscar', buscar) }
-      )
-    );
-    return res.data.map(Extra.fromJson);
+    return this.getPageByTipoExtra(['EVENTO', 'VARIABLE_EVENTO'], pageNumber, buscar);
   }
 
   async cantExtras(): Promise<number> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/evento/count`)
-    );
-    return res.data;
+    return this.getCountByTipoExtra(['EVENTO', 'VARIABLE_EVENTO']);
   }
 
   async cantExtrasFiltrados(buscar: string): Promise<number> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: number }>(
-        `${BASE}/empresa/${empresaId}/evento/count/buscar`,
-        { params: new HttpParams().set('buscar', buscar) }
-      )
-    );
-    return res.data;
+    return this.getCountByTipoExtra(['EVENTO', 'VARIABLE_EVENTO'], buscar);
   }
 
   // ==================== CATERING PAGINADO ====================
 
   async getAllExtraCateringByEmpresaId(pageNumber: number): Promise<Extra[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(
-        `${BASE}/empresa/${empresaId}/catering`,
-        { params: new HttpParams().set('page', pageNumber) }
-      )
-    );
-    return res.data.map(Extra.fromJson);
+    return this.getPageByTipoExtra(['TIPO_CATERING', 'VARIABLE_CATERING'], pageNumber);
   }
 
   async getAllExtraCateringFilter(pageNumber: number, buscar: string): Promise<Extra[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(
-        `${BASE}/empresa/${empresaId}/catering/buscar`,
-        { params: new HttpParams().set('page', pageNumber).set('buscar', buscar) }
-      )
-    );
-    return res.data.map(Extra.fromJson);
+    return this.getPageByTipoExtra(['TIPO_CATERING', 'VARIABLE_CATERING'], pageNumber, buscar);
   }
 
   async cantExtraCatering(): Promise<number> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/catering/count`)
-    );
-    return res.data;
+    return this.getCountByTipoExtra(['TIPO_CATERING', 'VARIABLE_CATERING']);
   }
 
   async cantExtraCateringFilter(buscar: string): Promise<number> {
+    return this.getCountByTipoExtra(['TIPO_CATERING', 'VARIABLE_CATERING'], buscar);
+  }
+
+  private async getPageByTipoExtra(tiposExtra: string[], pageNumber: number, buscar?: string): Promise<Extra[]> {
     const empresaId = this.usuarioService.getEmpresaId();
+    let params = new HttpParams().set('page', pageNumber);
+    tiposExtra.forEach(tipoExtra => params = params.append('tiposExtra', tipoExtra));
+    if (buscar) {
+      params = params.set('buscar', buscar);
+    }
+
     const res = await lastValueFrom(
-      this.httpClient.get<{ data: number }>(
-        `${BASE}/empresa/${empresaId}/catering/count/buscar`,
-        { params: new HttpParams().set('buscar', buscar) }
-      )
+      this.httpClient.get<{ data: ExtraJSON[] }>(`${BASE}/empresa/${empresaId}`, { params })
+    );
+    return res.data.map(Extra.fromJson);
+  }
+
+  private async getCountByTipoExtra(tiposExtra: string[], buscar?: string): Promise<number> {
+    const empresaId = this.usuarioService.getEmpresaId();
+    let params = new HttpParams();
+    tiposExtra.forEach(tipoExtra => params = params.append('tiposExtra', tipoExtra));
+    if (buscar) {
+      params = params.set('buscar', buscar);
+    }
+
+    const res = await lastValueFrom(
+      this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/count`, { params })
     );
     return res.data;
-  }
-
-  // ==================== LISTAS GLOBALES ====================
-
-  async getAllExtraEvento(): Promise<Extra[]> {
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(`${BASE}/evento`)
-    );
-    return res.data.map(Extra.fromJson);
-  }
-
-  async getAllExtraCatering(): Promise<Extra[]> {
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: ExtraJSON[] }>(`${BASE}/catering`)
-    );
-    return res.data.map(Extra.fromJson);
-  }
-
-  async getAllExtraEventoAgregar(): Promise<GenericItemEmpresaTipoEventoJSON[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: Extra[] }>(`${BASE}/empresa/${empresaId}/evento/agregar`)
-    );
-    return res.data.map(GenericItemEmpresaTipoEvento.fromJson);
-  }
-
-  async getAllExtraCateringAgregar(): Promise<GenericItemEmpresaTipoEventoJSON[]> {
-    const empresaId = this.usuarioService.getEmpresaId();
-    const res = await lastValueFrom(
-      this.httpClient.get<{ data: Extra[] }>(`${BASE}/empresa/${empresaId}/catering/agregar`)
-    );
-    return res.data.map(GenericItemEmpresaTipoEvento.fromJson);
   }
 
   // ==================== PRECIO ====================
@@ -185,14 +131,16 @@ export class ExtraService {
 async getAllExtraEventoByTipoEventoIdAndFecha(
     tipoEventoId: number,
     fechaEvento: string,
-    tipoExtra: string
+    tiposExtra: string[]
   ): Promise<ExtraPrecioDTO[]> {
     const empresaId = this.usuarioService.getEmpresaId();
-    
+    let params = new HttpParams().set('fechaEvento', fechaEvento);
+    tiposExtra.forEach(tipoExtra => params = params.append('tiposExtra', tipoExtra));
+
     const res = await lastValueFrom(
       this.httpClient.get<{ data: ExtraPrecioDTO[] }>(
         `${BASE}/empresa/${empresaId}/tipo-evento/${tipoEventoId}/precio`,
-        { params: new HttpParams().set('fechaEvento', fechaEvento).set('tipoExtra', tipoExtra) }
+        { params }
       )
     );
 
