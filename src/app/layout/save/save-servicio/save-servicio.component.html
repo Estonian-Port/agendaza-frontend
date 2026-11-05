@@ -9,12 +9,19 @@
         </app-header>
 
         <div class="row contenedor-default mt-2">
-            <div *ngIf="!edicion" class="col-lg-4 col-md-12 form-group mb-4">
-                <label for="servicio">Servicio</label>
-                <select class="form-select" (change)="onServicioChange()" [(ngModel)]='genericItem.id' name="servicio">
-                    <option *ngFor="let servicio of listaServicio | orderAbmByNombre" [value]="servicio.id">{{servicio.nombre}}</option>
-                    <option value="0">Otro</option>
-                </select>
+            <div *ngIf="!edicion && !otro" class="col-lg-4 col-md-12 form-group mb-4 position-relative">
+                <label for="servicio">Buscar servicio</label>
+                <input type="text" class="form-control" id="servicio" name="servicio"
+                    [(ngModel)]="busquedaServicio" (ngModelChange)="onBusquedaChange($event)" autocomplete="off">
+
+                <div class="list-group mt-1 position-absolute w-100 z-3 shadow" *ngIf="listaServicio.length">
+                    <button type="button" class="list-group-item list-group-item-action"
+                        *ngFor="let servicio of listaServicio | orderAbmByNombre" (click)="seleccionarServicio(servicio)">
+                        {{servicio.nombre}}
+                    </button>
+                </div>
+
+                <div class="text-danger mt-1" *ngIf="errorBusqueda">No se pudo buscar el servicio.</div>
             </div>
 
             <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>

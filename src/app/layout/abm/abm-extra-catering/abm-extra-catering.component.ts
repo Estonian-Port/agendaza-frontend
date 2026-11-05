@@ -28,21 +28,27 @@ export class AbmExtraCateringComponent implements OnInit {
     this.inicializarListaItems()
   }
 
-  async inicializarListaItems(){
+  async inicializarListaItems(actualizarCantidad = true){
 
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
     
     if(this.buscar == ""){
       this.listaItems = await this.extraService.getAllExtraCateringByEmpresaId(this.paginaActual)
-      this.cantidadRegistros = await this.extraService.cantExtraCatering()
+      if(actualizarCantidad){
+        this.cantidadRegistros = await this.extraService.cantExtraCatering()
+      }
     }else{
       this.listaItems = await this.extraService.getAllExtraCateringFilter(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.extraService.cantExtraCateringFilter(this.buscar)
+      if(actualizarCantidad){
+        this.cantidadRegistros = await this.extraService.cantExtraCateringFilter(this.buscar)
+      }
     }
-    
-    this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
-    this.updateCantidadPaginas(this.cantidadPaginas)
+
+    if(actualizarCantidad){
+      this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
+      this.updateCantidadPaginas(this.cantidadPaginas)
+    }
 
     this.tituloModal = "Eliminar Catering"
     this.nombreItemModal = "extra"
@@ -69,8 +75,9 @@ export class AbmExtraCateringComponent implements OnInit {
   }
 
   updatePaginaActual(pagina : number){
+    const actualizarCantidad = this.realizoBusqueda === true
     this.paginaActual = pagina
-    this.inicializarListaItems()
+    this.inicializarListaItems(actualizarCantidad)
   }
 
   updatePrimeraBusqueda(busqueda: Boolean){

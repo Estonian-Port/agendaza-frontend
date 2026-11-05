@@ -21,7 +21,8 @@ export class ServicioService {
   // ── Queries ──────────────────────────────────────────────────────────────
 
   async getServicio(id: number) {
-    const item$ = this.httpClient.get<CustomResponse<GenericItemEmpresaTipoEventoJSON>>(`${BASE}/${id}`);
+    const empresaId = this.usuarioService.getEmpresaId();
+    const item$ = this.httpClient.get<CustomResponse<GenericItemEmpresaTipoEventoJSON>>(`${BASE}/${id}/empresa/${empresaId}`);
     const item = (await lastValueFrom(item$)).data;
     return GenericItemEmpresaTipoEvento.fromJson(item);
   }
@@ -38,7 +39,7 @@ export class ServicioService {
 
   async getCantidadServicio(): Promise<number> {
     const empresaId = this.usuarioService.getEmpresaId();
-    const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/cantidad`);
+    const cant$ = this.httpClient.get<{ data: number }>(`${BASE}/empresa/${empresaId}/count`);
     const res = await lastValueFrom(cant$);
     return res.data;
   }
@@ -46,7 +47,7 @@ export class ServicioService {
   async getAllServicioFiltrados(pageNumber: number, buscar: string) {
     const empresaId = this.usuarioService.getEmpresaId();
     const listaItem$ = this.httpClient.get<{ data: GenericItemJSON[] }>(
-      `${BASE}/empresa/${empresaId}/filtrar`,
+      `${BASE}/empresa/${empresaId}`,
       { params: { buscar, page: pageNumber } }
     );
     const listaItem = await lastValueFrom(listaItem$);
@@ -56,7 +57,7 @@ export class ServicioService {
   async cantServicioFiltrados(buscar: string): Promise<number> {
     const empresaId = this.usuarioService.getEmpresaId();
     const cant$ = this.httpClient.get<{ data: number }>(
-      `${BASE}/empresa/${empresaId}/filtrar/cantidad`,
+      `${BASE}/empresa/${empresaId}/count`,
       { params: { buscar } }
     );
     const res = await lastValueFrom(cant$);
@@ -69,9 +70,12 @@ export class ServicioService {
     return listaItem.data.map((servicio) => GenericItem.fromJson(servicio));
   }
 
-  async getAllServicioAgregar() {
+  async buscarServicio(q: string): Promise<GenericItem[]> {
     const empresaId = this.usuarioService.getEmpresaId();
-    const listaItem$ = this.httpClient.get<{ data: GenericItemJSON[] }>(`${BASE}/empresa/${empresaId}/agregar`);
+    const listaItem$ = this.httpClient.get<{ data: GenericItemJSON[] }>(
+      `${BASE}/empresa/${empresaId}/buscar`,
+      { params: { q } }
+    );
     const listaItem = await lastValueFrom(listaItem$);
     return listaItem.data.map((servicio) => GenericItem.fromJson(servicio));
   }

@@ -2,19 +2,26 @@
     <form>
 
         <app-header
-            titulo="Agregar Extra"
+            titulo="Agregar Extra Evento"
             (outputVolver)="volver()"
             [botonSave]="true"
             (outputSave)="save()">
         </app-header>
 
         <div class="row contenedor-default mt-2">
-            <div *ngIf="!edicion" class="col-lg-4 col-md-12 form-group mb-4">
-                <label for="servicio">Servicio</label>
-                <select class="form-select" (change)="onServicioChange()" [(ngModel)]='extra.id' name="servicio">
-                    <option *ngFor="let extra of listaExtra | orderAbmByNombre" [value]="extra.id">{{extra.nombre}}</option>
-                    <option value="0">Otro</option>
-                </select>
+            <div *ngIf="!edicion && !otro" class="col-lg-4 col-md-12 form-group mb-4 position-relative">
+                <label for="servicio">Buscar extra</label>
+                <input type="text" class="form-control" id="servicio" name="servicio"
+                    [(ngModel)]="busquedaExtra" (ngModelChange)="onBusquedaChange($event)" autocomplete="off">
+                
+                <div class="list-group mt-1 position-absolute w-100 z-3 shadow" *ngIf="listaExtra.length">
+                    <button type="button" class="list-group-item list-group-item-action"
+                        *ngFor="let item of listaExtra | orderAbmByNombre" (click)="seleccionarExtra(item)">
+                        {{item.nombre}}
+                    </button>
+                </div>
+                
+                <div class="text-danger mt-1" *ngIf="errorBusqueda">No se pudo buscar el servicio.</div>
             </div>
 
             <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro" [@fadeOut]>
@@ -22,9 +29,9 @@
                 <input type="text" [(ngModel)]='extra.nombre' class="form-control" id="nombre" name="nombre" [disabled]="edicion">
             </div>
 
-            <div class="col-lg-4 col-md-12 form-group mb-4">
+            <div class="col-lg-4 col-md-12 form-group mb-4" *ngIf="otro || edicion || extra.id > 0">
                 <label for="tipoExtra">Tipo Extra</label> 
-                <select class="form-select" [(ngModel)]="extra.tipoExtra" name="tipoExtra" [disabled]="edicion">
+                <select class="form-select" [(ngModel)]="extra.tipoExtra" name="tipoExtra" [disabled]="edicion || extra.id > 0">
                     <option *ngFor="let tipoExtra of listaTipoExtra" [value]="tipoExtra">{{tipoExtra | formatEnum}}</option>
                 </select>            
             </div>

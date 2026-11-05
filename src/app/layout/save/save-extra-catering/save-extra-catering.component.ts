@@ -17,6 +17,11 @@ export class SaveExtraCateringComponent implements OnInit {
   extra = new Extra(0, "", "TIPO_CATERING", 0,[],0)
   listaExtra : Array<GenericItemEmpresaTipoEvento> = []
   listaTipoExtra : Array<string> = []
+  busquedaExtra = ''
+  errorBusqueda = false
+
+  private timeoutBusqueda?: ReturnType<typeof setTimeout>
+  private busquedaId = 0
 
   otro = false
   edicion = false
@@ -36,20 +41,54 @@ export class SaveExtraCateringComponent implements OnInit {
         this.extra = await this.extraService.getExtra(extraId)
         this.otro = true
         this.edicion = true
-      }else{
-        this.listaExtra = await this.extraService.getAllExtraCateringAgregar()
-        
-        if(this.listaExtra.length == 0){
-          this.extra.id = 0
-          this.onServicioChange()
-        }else{
-          const extraEdicion = [...this.listaExtra].sort((a, b) => a.nombre.localeCompare(b.nombre))[0]
-
-          this.extra.id = extraEdicion.id
-          this.extra.nombre = extraEdicion.nombre
-        }
       }
     })
+  }
+
+  onBusquedaChange(q: string): void {
+    this.busquedaExtra = q
+    this.extra = new Extra(0, "", "TIPO_CATERING", 0, [], 0)
+    this.otro = false
+    this.listaExtra = []
+    this.errorBusqueda = false
+
+    if (this.timeoutBusqueda) clearTimeout(this.timeoutBusqueda)
+    const busquedaId = ++this.busquedaId
+    const query = q.trim()
+    if (!query) return
+
+    this.timeoutBusqueda = setTimeout(async () => {
+      try {
+        const resultados = await this.extraService.buscarExtraCatering(query)
+        if (busquedaId === this.busquedaId) {
+          this.listaExtra = resultados
+          if (resultados.length === 0) {
+            this.extra.nombre = query
+            this.otro = true
+          }
+        }
+      } catch {
+        if (busquedaId === this.busquedaId) this.errorBusqueda = true
+      }
+    }, 250)
+  }
+
+  async seleccionarExtra(extra: GenericItemEmpresaTipoEvento): Promise<void> {
+    this.cancelarBusquedaPendiente()
+    const seleccionId = this.busquedaId
+
+    try {
+      const extraCompleto = await this.extraService.getExtra(extra.id)
+      if (seleccionId !== this.busquedaId) return
+
+      this.extra = extraCompleto
+      this.busquedaExtra = extraCompleto.nombre
+      this.listaExtra = []
+      this.otro = false
+      this.errorBusqueda = false
+    } catch {
+      if (seleccionId === this.busquedaId) this.errorBusqueda = true
+    }
   }
 
   async save(){
@@ -61,13 +100,9 @@ export class SaveExtraCateringComponent implements OnInit {
     this.location.back()
   }
 
-  onServicioChange(): void {
-    if (this.extra.id == 0) {
-        this.extra = new Extra(0, "", "TIPO_CATERING", 0,[],0)
-        this.otro = true;
-    } else {
-        this.otro = false;
-    }
+  private cancelarBusquedaPendiente(): void {
+    if (this.timeoutBusqueda) clearTimeout(this.timeoutBusqueda)
+    this.busquedaId++
   }
 
 }
