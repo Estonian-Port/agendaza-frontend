@@ -27,7 +27,7 @@ import { OrderAbmByNombre } from './pipes/orderAbmByNombre.pipe';
 import { siNo } from './pipes/siNo.pipe';
 import { FormatEnum } from './pipes/formatEnum.pipe'
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
-import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
+import { AbmFinanzasComponent } from './layout/abm/abm-finanzas/abm-finanzas.component';
 import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.component';
 import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
 import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
@@ -110,7 +110,7 @@ import { EventoSeleccionadoComponent } from './components/evento-seleccionado/ev
     AbmDataTableEventoComponent,
     AbmDataTableUsuarioComponent,
     AbmDataTablePagoComponent,
-    AbmPagoComponent,
+    AbmFinanzasComponent,
     AbmClienteComponent,
     AbmTipoEventoComponent,
     AbmServicioComponent,

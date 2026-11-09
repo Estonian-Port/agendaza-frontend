@@ -21,10 +21,10 @@ export interface MovimientoLista extends Movimiento {
 }
 
 @Component({
-  selector: 'app-abm-pago',
-  templateUrl: './abm-pago.component.html',
+  selector: 'app-abm-finanzas',
+  templateUrl: './abm-finanzas.component.html',
 })
-export class AbmPagoComponent implements OnInit {
+export class AbmFinanzasComponent implements OnInit {
 
   private readonly MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
     'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']

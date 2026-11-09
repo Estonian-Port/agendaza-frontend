@@ -53,8 +53,8 @@ export class PanelAdminComponent implements OnInit {
     this.router.navigateByUrl('/abmTipoEvento')
   }
 
-  abmPago() {
-    this.router.navigateByUrl('/abmPago')
+  abmFinanzas() {
+    this.router.navigateByUrl('/abmFinanzas')
   }
 
   abmCliente() {

@@ -52,8 +52,13 @@ export class SaveGastoComponent implements OnInit {
           this.eventoSeleccionado = evento
         }
       }
+      if (params['eventoId']) {
+        const evento = await this.eventoService.getEventoVer(Number(params['eventoId']))
+        this.gasto.tipoGasto = 'EVENTO'
+        this.seleccionarEvento(evento)
+      }
       // Gasto desde un evento: ?eventoCodigo=Z (opcional, por si después lo enlazás desde edit-evento)
-      if (params['eventoCodigo']) {
+      if (params['eventoCodigo'] && !params['eventoId']) {
         this.gasto.codigoEvento = params['eventoCodigo']
         this.gasto.tipoGasto = 'EVENTO'
         this.codigoBusqueda = params['eventoCodigo']

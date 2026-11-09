@@ -34,6 +34,11 @@ export class GastoService {
     return r.data
   }
 
+  async getAllGastoFromEvento(eventoId: number): Promise<Gasto[]> {
+    const r: any = await lastValueFrom(this.http.get(`${BASE}/evento/${eventoId}`))
+    return r.data
+  }
+
   async save(gasto: Gasto): Promise<Gasto> {
     gasto.empresaId = this.usuarioService.getEmpresaId();
     gasto.usuarioId = this.loginService.getUsuarioId();

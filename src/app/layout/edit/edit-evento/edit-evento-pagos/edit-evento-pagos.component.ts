@@ -4,7 +4,9 @@ import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { EventoPago } from 'src/app/model/Evento';
 import { Pago } from 'src/app/model/Pago';
+import { Gasto } from 'src/app/model/Gasto';
 import { PagoService } from 'src/app/services/pago.service';
+import { GastoService } from 'src/app/services/gasto.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -15,13 +17,16 @@ export class EditEventoPagosComponent implements OnInit {
 
   eventoPago : EventoPago = new EventoPago(0,"","",0)
   listaPago : Array<Pago> = []
+  listaGasto : Array<Gasto> = []
   cargandoPagos = true
+  cargandoGastos = true
   
   abonado : number = 0
   faltante : number = 0
 
   modal = false
   idEliminar = 0
+  tipoEliminar: 'pago' | 'gasto' = 'pago'
   cuerpoModal = ""
   tituloModal = ""
   botonModal = ""
@@ -33,6 +38,7 @@ export class EditEventoPagosComponent implements OnInit {
   constructor(
     private router : Router,
     private pagoService : PagoService,
+    private gastoService: GastoService,
     private route: ActivatedRoute,
     private location: Location,
     private toastService: ToastService
@@ -41,20 +47,38 @@ export class EditEventoPagosComponent implements OnInit {
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.eventoPago = await this.pagoService.getEventoForEditEventoPago(id)
-    this.listaPago = await this.pagoService.getAllPagoFromEvento(id)
+    this.eventoPago = await this.pagoService.getEventoForEditEventoPago(id);
+    const [pagos, gastos] = await Promise.all([
+      this.pagoService.getAllPagoFromEvento(id),
+      this.gastoService.getAllGastoFromEvento(id)
+    ]);
+    this.listaPago = pagos;
+    this.listaGasto = gastos;
     this.cargandoPagos = false
+    this.cargandoGastos = false
 
     this.abonado = _.sum(this.listaPago.map(it => it.monto))
     this.faltante = this.eventoPago.precioTotal - this.abonado
+  }
+
+  get totalGastos(): number {
+    return _.sum(this.listaGasto.map(gasto => gasto.monto))
   }
 
   agregarPago(){
     this.router.navigate(['/savePago'], { queryParams: { eventoCodigo: this.eventoPago.codigo, eventoId: this.eventoPago.id } });
   }
 
+  agregarGasto() {
+    this.router.navigate(['/saveGasto'], { queryParams: { eventoCodigo: this.eventoPago.codigo, eventoId: this.eventoPago.id } });
+  }
+
   editarPago(pagoId: number) {
     this.router.navigate(['/savePago'], { queryParams: { pagoId: pagoId } });
+  }
+
+  editarGasto(gastoId: number) {
+    this.router.navigate(['/saveGasto'], { queryParams: { gastoId } });
   }
 
   volver(){
@@ -63,17 +87,24 @@ export class EditEventoPagosComponent implements OnInit {
 
   async eliminar(){
     try {
-      await this.pagoService.delete(this.idEliminar);
-      this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id);
+      if (this.tipoEliminar === 'gasto') {
+        await this.gastoService.delete(this.idEliminar);
+        this.listaGasto = await this.gastoService.getAllGastoFromEvento(this.eventoPago.id);
+      } else {
+        await this.pagoService.delete(this.idEliminar);
+        this.listaPago = await this.pagoService.getAllPagoFromEvento(this.eventoPago.id);
+      }
     } catch (error) {
-      console.error("Error al eliminar el pago", error);
+      console.error(`Error al eliminar el ${this.tipoEliminar}`, error);
     }
   }
 
-  modalParaEliminar(id : number, nombre : string){
+  modalParaEliminar(id: number, nombre: string, tipo: 'pago' | 'gasto' = 'pago') {
     this.idEliminar = id
-    this.tituloModal = "Eliminar Pago"
-    this.cuerpoModal = "Quiere eliminar el pago del evento: " + nombre
+    this.tipoEliminar = tipo
+    const etiqueta = tipo === 'pago' ? 'pago' : 'gasto'
+    this.tituloModal = `Eliminar ${etiqueta.charAt(0).toUpperCase()}${etiqueta.slice(1)}`
+    this.cuerpoModal = `Quiere eliminar el ${etiqueta} del evento: ${nombre}`
     this.botonModal = "Eliminar"
     this.setModal(!this.modal)
   }

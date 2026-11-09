@@ -299,7 +299,7 @@ button:focus {
 .pagos-container-finanzas{
   display: flex;
   flex-direction: column;
-  height: 36vh;
+  height: 40vh;
 }
 
 .extra-overflow{

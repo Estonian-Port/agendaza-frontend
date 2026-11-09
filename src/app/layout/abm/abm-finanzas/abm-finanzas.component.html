@@ -16,31 +16,31 @@
     <div class="row mt-2 align-items-stretch">
         <div class="col-md-4 p-0">
             <div class="contenedor-default d-flex flex-column">
-                <div class="text-success mb-2">
-                    <i class="fas fa-arrow-up fa-lg"></i>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="text-success fas fa-arrow-up fa-lg"></i>
+                    <h5 class="text-muted mb-0">Ingresos</h5>
                 </div>
-                <h5 class="text-muted">Ingresos</h5>
-                <h3 class="text-success">${{resumen.ingresos | formatNumero}}</h3>
+                <h4 class="text-success">${{resumen.ingresos | formatNumero}}</h4>
             </div>
         </div>
         <div class="col-md-4">
             <div class="contenedor-default d-flex flex-column">
-                <div class="text-danger mb-2">
-                    <i class="fas fa-arrow-down fa-lg"></i>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="text-danger fas fa-arrow-down fa-lg"></i>
+                    <h5 class="text-muted mb-0">Egresos</h5>
                 </div>
-                <h5 class="text-muted">Egresos</h5>
-                <h3 class="text-danger">${{resumen.egresos | formatNumero}}</h3>
+                <h4 class="text-danger">${{resumen.egresos | formatNumero}}</h4>
             </div>
         </div>
         <div class="col-md-4 p-0">
             <div class="contenedor-default d-flex flex-column">
-                <div class="text-primary mb-2">
-                    <i class="fas fa-money-bill-wave fa-lg"></i>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="text-primary fas fa-money-bill-wave fa-lg"></i>
+                    <h5 class="text-muted mb-0">Balance</h5>
                 </div>
-                <h5 class="text-muted">Balance</h5>
-                <h3 [class.text-success]="resumen.balance >= 0" [class.text-danger]="resumen.balance < 0">
+                <h4 [class.text-success]="resumen.balance >= 0" [class.text-danger]="resumen.balance < 0">
                     ${{resumen.balance | formatNumero}}
-                </h3>
+                </h4>
             </div>
         </div>
     </div>

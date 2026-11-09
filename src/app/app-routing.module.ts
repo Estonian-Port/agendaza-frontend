@@ -6,7 +6,7 @@ import { AbmClienteComponent } from './layout/abm/abm-cliente/abm-cliente.compon
 import { AbmEmpresaComponent } from './layout/abm/abm-empresa/abm-empresa.component';
 import { AbmEventoComponent } from './layout/abm/abm-evento/abm-evento.component';
 import { AbmExtraEventoComponent } from './layout/abm/abm-extra-evento/abm-extra-evento.component';
-import { AbmPagoComponent } from './layout/abm/abm-pago/abm-pago.component';
+import { AbmFinanzasComponent } from './layout/abm/abm-finanzas/abm-finanzas.component';
 import { AbmServicioComponent } from './layout/abm/abm-servicio/abm-servicio.component';
 import { AbmTipoEventoComponent } from './layout/abm/abm-tipo-evento/abm-tipo-evento.component';
 import { AbmUsuarioComponent } from './layout/abm/abm-usuario/abm-usuario.component';
@@ -62,7 +62,8 @@ const routes: Routes = [
       { path: 'abmExtraEvento', component: AbmExtraEventoComponent },
       { path: 'abmExtraCatering', component: AbmExtraCateringComponent },
       { path: 'abmCliente', component: AbmClienteComponent },
-      { path: 'abmPago', component: AbmPagoComponent },
+      { path: 'abmFinanzas', component: AbmFinanzasComponent },
+      { path: 'abmPago', redirectTo: 'abmFinanzas', pathMatch: 'full' },
       { path: 'abmEmpresa', component: AbmEmpresaComponent },
       { path: 'abmClausula', component: AbmClausulaComponent },
       { path: 'abmEspecificacion', component: AbmEspecificacionComponent },
