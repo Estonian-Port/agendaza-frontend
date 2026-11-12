@@ -6,6 +6,7 @@ import { ErrorMensaje } from 'src/util/errorHandler'
 import packageInfo from '../../../../package.json'
 import { OnboardingStateService } from 'src/app/services/onboarding-state.service'
 import { UsuarioService } from 'src/app/services/usuario.service'
+import { AgendaCard } from 'src/app/model/Agenda'
 
 @Component({
   selector: 'app-login',
@@ -43,16 +44,30 @@ export class LoginComponent {
     try {
       await this.loginService.login(this.usuarioLogin)
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
-      this.isLoading = false
-      
+
+      let destination = '/'
+      let navigationState: { agendas: AgendaCard[] } | undefined
+
       // Verificar si durante la autenticación / inicio de sesión se marcó onboarding requerido
       if (this.onboardingState.isRequired()) {
-        this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
+        destination = '/completar-perfil'
       } else if (this.onboardingState.isPasswordChangeRequired()) {
-        this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
+        destination = '/cambiar-password'
       } else {
-        this.router.navigateByUrl('/')
+        const usuarioId = this.loginService.getUsuarioId()
+        const agendas = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
+
+        if (agendas.length === 1) {
+          this.usuarioService.setEmpresaId(agendas[0].id)
+          await this.loginService.setCargo()
+          destination = '/agenda'
+        } else {
+          navigationState = { agendas }
+        }
       }
+
+      await this.router.navigateByUrl(destination, { replaceUrl: true, state: navigationState })
+      this.isLoading = false
 
     } catch (error) {
       this.isLoading = false

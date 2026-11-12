@@ -25,7 +25,8 @@ export class SeleccionarAgendaComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       const usuarioId = this.loginService.getUsuarioId()
-      this.listaAgenda = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
+      const agendasPrecargadas = this.router.getCurrentNavigation()?.extras.state?.['agendas'] as Array<AgendaCard> | undefined
+      this.listaAgenda = agendasPrecargadas ?? await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
 
       if (this.listaAgenda.length === 1) {
         this.usuarioService.setEmpresaId(this.listaAgenda[0].id)
