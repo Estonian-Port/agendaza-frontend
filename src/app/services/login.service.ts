@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { lastValueFrom } from 'rxjs'
 import { Usuario, UsuarioEditCargo, UsuarioJSON, UsuarioLoginJSON, UsuarioMe, UsuarioMeJSON } from '../model/Usuario'
-import { REST_SERVER_URL } from 'src/util/configuration'
+import { API_URL } from 'src/util/configuration'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { Cargo } from '../model/Cargo'
 import { CustomResponse } from 'src/util/customResponse'
 
-const BASE_CARGO = `${REST_SERVER_URL}/v1/cargos`
+const BASE_CARGO = `${API_URL}/v1/cargos`
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class LoginService {
   async login(usuarioLoginJson: UsuarioLoginJSON): Promise<void> {
     // 1. Esperamos la respuesta del login básico
     const response = await lastValueFrom(
-      this.httpClient.post(REST_SERVER_URL + '/login', usuarioLoginJson, { observe: 'response' })
+      this.httpClient.post(API_URL + '/login', usuarioLoginJson, { observe: 'response' })
     )
 
     const headers = response.headers
@@ -57,7 +57,7 @@ export class LoginService {
    * Obtiene los datos del usuario logueado manejando la propiedad 'data' del backend
    */
   async getUsuarioDtoByUsername(): Promise<UsuarioMe> {
-    const usuarioJson$ = this.httpClient.get<any>(`${REST_SERVER_URL}/v1/usuarios/me`)
+    const usuarioJson$ = this.httpClient.get<any>(`${API_URL}/v1/usuarios/me`)
     const res = await lastValueFrom(usuarioJson$)
     
     // Como tu backend devuelve { message: '...', data: { id: 141, ... } }
@@ -89,7 +89,7 @@ export class LoginService {
             headers = headers.set('Authorization', `Bearer ${this.getToken()}`)
           }
           await lastValueFrom(this.httpClient.post<void>(
-            `${REST_SERVER_URL}/v1/auth/logout`,
+            `${API_URL}/v1/auth/logout`,
             { refreshToken },
             { headers }
           ))
@@ -141,7 +141,7 @@ export class LoginService {
     this.refreshPromise = lastValueFrom(this.httpClient.post<CustomResponse<{
       accessToken: string
       refreshToken: string
-    }>>(`${REST_SERVER_URL}/v1/auth/refresh`, { refreshToken })).then(response => {
+    }>>(`${API_URL}/v1/auth/refresh`, { refreshToken })).then(response => {
       const { accessToken, refreshToken: rotatedRefreshToken } = response.data
       if (!accessToken || !rotatedRefreshToken) {
         throw new Error('El backend no retornó los tokens renovados.')
@@ -200,7 +200,7 @@ export class LoginService {
    */
   async getUsuarioPerfil() {
     const usuarioId = this.getUsuarioId()
-    const item$ = this.httpClient.get<CustomResponse<Usuario>>(REST_SERVER_URL + `/v1/usuarios/${usuarioId}/perfil`)
+    const item$ = this.httpClient.get<CustomResponse<Usuario>>(API_URL + `/v1/usuarios/${usuarioId}/perfil`)
     return (await lastValueFrom(item$)).data
   }
 
@@ -209,7 +209,7 @@ export class LoginService {
    */
   async getUsuarioLogueado(): Promise<Usuario> {
     const usuarioId = this.getUsuarioId()
-    const usuario$ = this.httpClient.get<UsuarioJSON>(REST_SERVER_URL + `/v1/usuarios/${usuarioId}`)
+    const usuario$ = this.httpClient.get<UsuarioJSON>(API_URL + `/v1/usuarios/${usuarioId}`)
     return Usuario.fromJson(await lastValueFrom(usuario$))
   }
 

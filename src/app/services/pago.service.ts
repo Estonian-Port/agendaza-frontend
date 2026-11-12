@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { REST_SERVER_URL } from 'src/util/configuration';
+import { API_URL } from 'src/util/configuration';
 import { Pago, PagoJSON, ResumenPagosMes } from '../model/Pago';
 import { LoginService } from './login.service';
 import { EventoPago } from '../model/Evento';
 import { UsuarioService } from './usuario.service';
 
-const BASE = `${REST_SERVER_URL}/v1/pagos`;
+const BASE = `${API_URL}/v1/pagos`;
 
 @Injectable({
   providedIn: 'root'
@@ -163,7 +163,7 @@ export class PagoService {
   async descargarBalance(desdeMes: number, desdeAnio: number, hastaMes: number, hastaAnio: number): Promise<Blob> {
     const empresaId = this.usuarioService.getEmpresaId();
     const item$ = this.httpClient.get(
-      `${REST_SERVER_URL}/v1/balance/empresa/${empresaId}/pdf`,
+      `${API_URL}/v1/balance/empresa/${empresaId}/pdf`,
       { params: { desdeMes, desdeAnio, hastaMes, hastaAnio }, responseType: 'blob' }
     );
     return lastValueFrom(item$);
@@ -172,7 +172,7 @@ export class PagoService {
   async descargarPlanillaMovimientos(desdeMes: number, desdeAnio: number, hastaMes: number, hastaAnio: number): Promise<Blob> {
     const empresaId = this.usuarioService.getEmpresaId();
     const item$ = this.httpClient.get(
-      `${REST_SERVER_URL}/v1/balance/empresa/${empresaId}/excel`,
+      `${API_URL}/v1/balance/empresa/${empresaId}/excel`,
       { params: { desdeMes, desdeAnio, hastaMes, hastaAnio }, responseType: 'blob' }
     );
     return lastValueFrom(item$);

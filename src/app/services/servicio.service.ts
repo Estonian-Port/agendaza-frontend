@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { REST_SERVER_URL } from 'src/util/configuration';
+import { API_URL } from 'src/util/configuration';
 import { GenericItem, GenericItemEmpresaTipoEvento, GenericItemEmpresaTipoEventoJSON, GenericItemJSON } from '../model/GenericItem';
 import { UsuarioService } from './usuario.service';
 import { CustomResponse } from 'src/util/customResponse';
 
-const BASE = `${REST_SERVER_URL}/v1/servicios`;
+const BASE = `${API_URL}/v1/servicios`;
 
 @Injectable({
   providedIn: 'root'

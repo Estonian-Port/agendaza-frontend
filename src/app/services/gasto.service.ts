@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { Gasto } from '../model/Gasto';
-import { REST_SERVER_URL } from 'src/util/configuration';
+import { API_URL } from 'src/util/configuration';
 import { UsuarioService } from './usuario.service';
 import { LoginService } from './login.service';
 
-const BASE = `${REST_SERVER_URL}/v1/gastos`;
+const BASE = `${API_URL}/v1/gastos`;
 
 @Injectable({ providedIn: 'root' })
 export class GastoService {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { lastValueFrom } from 'rxjs'
-import { REST_SERVER_URL } from 'src/util/configuration'
+import { API_URL } from 'src/util/configuration'
 import {
   Cliente,
   Usuario,
@@ -16,7 +16,7 @@ import { EventosUsuarioResponse } from '../model/Evento'
 import { ToastService } from './toast.service'
 import { Observable } from 'rxjs'
 
-const BASE = `${REST_SERVER_URL}/v1/usuarios`
+const BASE = `${API_URL}/v1/usuarios`
 
 @Injectable({
   providedIn: 'root'
@@ -269,7 +269,7 @@ export class UsuarioService {
    */
   async getEventosByUsuarioAndEmpresa(usuarioId: number, empresaId: number): Promise<EventosUsuarioResponse> {
     // Cambiamos a GET y eliminamos el body (new UsuarioEmpresa)
-    const url = REST_SERVER_URL + `/v1/eventos/usuario/${usuarioId}/empresa/${empresaId}`
+    const url = API_URL + `/v1/eventos/usuario/${usuarioId}/empresa/${empresaId}`
     const peticion$ = this.httpClient.get<CustomResponse<EventosUsuarioResponse>>(url)
     const response = await lastValueFrom(peticion$);
     

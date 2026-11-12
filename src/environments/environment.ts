@@ -1,9 +1,11 @@
 declare const process: {
   env: {
-    NG_APP_REST_SERVER_URL: string;
+    PRODUCTION: string;
+    API_URL: string;
   };
 };
 
 export const environment = {
-  REST_SERVER_URL: process.env.NG_APP_REST_SERVER_URL
+  production: process.env.PRODUCTION === 'true',
+  API_URL: process.env.API_URL
 };

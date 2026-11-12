@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { lastValueFrom } from 'rxjs'
-import { REST_SERVER_URL } from 'src/util/configuration'
+import { API_URL } from 'src/util/configuration'
 import {
   Evento,
   EventoBuscarFecha,
@@ -17,7 +17,7 @@ import { UsuarioService } from './usuario.service'
 import { LoginService } from './login.service'
 import { CustomResponse } from 'src/util/customResponse'
 
-const BASE = `${REST_SERVER_URL}/v1/eventos`;
+const BASE = `${API_URL}/v1/eventos`;
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class EventoService {
   async getEventoVer(eventoId: number): Promise<EventoVer> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoVer>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId
+        `${BASE}/${eventoId}`
       )
     )
     return response.data
@@ -72,7 +72,7 @@ export class EventoService {
   async getPresupuesto(eventoId: number): Promise<number> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/presupuesto'
+        `${BASE}/${eventoId}/presupuesto`
       )
     )
     return response.data
@@ -88,7 +88,7 @@ export class EventoService {
   async getEventoExtra(eventoId: number): Promise<EventoExtra> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoExtra>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/extra'
+        `${BASE}/${eventoId}/extra`
       )
     )
     return response.data
@@ -104,7 +104,7 @@ export class EventoService {
   async getEventoCatering(eventoId: number): Promise<EventoCatering> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoCatering>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/catering'
+        `${BASE}/${eventoId}/catering`
       )
     )
     return response.data
@@ -120,7 +120,7 @@ export class EventoService {
   async getEventoHora(eventoId: number): Promise<EventoHora> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoHora>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/hora'
+        `${BASE}/${eventoId}/hora`
       )
     )
     return response.data
@@ -135,7 +135,7 @@ export class EventoService {
   async getAllEstado(): Promise<string[]> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<string[]>>(
-        REST_SERVER_URL + '/v1/eventos/estados'
+        `${BASE}/estados`
       )
     )
     return response.data
@@ -150,7 +150,7 @@ export class EventoService {
   async getAllEstadoForSaveEvento(): Promise<string[]> {
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<string[]>>(
-        REST_SERVER_URL + '/v1/eventos/estados/nuevo'
+        `${BASE}/estados/nuevo`
       )
     )
     return response.data
@@ -191,7 +191,7 @@ export class EventoService {
         currentPage: number,
         pageSize: number
       }>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/eventos',
+        `${BASE}/empresa/${empresaId}/eventos`,
         { params }
       )
     )
@@ -231,7 +231,7 @@ export class EventoService {
     const empresaId = this.usuarioService.getEmpresaId()
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/cantidad'
+        `${BASE}/empresa/${empresaId}/cantidad`
       )
     )
     return response.data
@@ -248,7 +248,7 @@ export class EventoService {
     const empresaId = this.usuarioService.getEmpresaId()
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/cantidad-filtrada',
+        `${BASE}/empresa/${empresaId}/cantidad-filtrada`,
         { params: { search: buscar } }
       )
     )
@@ -274,7 +274,7 @@ export class EventoService {
 
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<EventoJSON[]>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/por-fecha',
+        `${BASE}/empresa/${empresaId}/por-fecha`,
         { params: { fecha: fechaFormato } }
       )
     )
@@ -291,7 +291,7 @@ export class EventoService {
     const empresaId = this.usuarioService.getEmpresaId()
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<any[]>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/agenda'
+        `${BASE}/empresa/${empresaId}/agenda`
       )
     )
     return response.data
@@ -318,7 +318,7 @@ export class EventoService {
         eventos: any[],
         cantidad: number
       }>>(
-        REST_SERVER_URL + '/v1/eventos/usuario/' + usuarioId + '/empresa/' + empresaId
+        `${BASE}/usuario/${usuarioId}/empresa/${empresaId}`
       )
     )
     return response.data
@@ -356,7 +356,7 @@ export class EventoService {
 
     const response = await lastValueFrom(
       this.httpClient.get<CustomResponse<boolean>>(
-        `${REST_SERVER_URL}/v1/eventos/disponibilidad/validar`,
+        `${BASE}/disponibilidad/validar`,
         { params }
       )
     );
@@ -439,7 +439,7 @@ export class EventoService {
 
     const response = await lastValueFrom(
       this.httpClient.post<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos',
+        BASE,
         reserva
       )
     )
@@ -455,7 +455,7 @@ export class EventoService {
   async delete(id: number): Promise<GenericItem> {
     return lastValueFrom(
       this.httpClient.delete<GenericItem>(
-        REST_SERVER_URL + '/v1/eventos/' + id
+        `${BASE}/${id}`
       )
     )
   }
@@ -472,7 +472,7 @@ export class EventoService {
   async editEventoHora(evento: EventoHora): Promise<EventoHora> {
     const response = await lastValueFrom(
       this.httpClient.put<CustomResponse<EventoHora>>(
-        REST_SERVER_URL + '/v1/eventos/' + evento.id + '/hora',
+        `${BASE}/${evento.id}/hora`,
         evento
       )
     )
@@ -489,7 +489,7 @@ export class EventoService {
   async editEventoExtra(evento: EventoExtra): Promise<number> {
     const response = await lastValueFrom(
       this.httpClient.put<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/extra',
+        `${BASE}/extra`,
         evento
       )
     )
@@ -506,7 +506,7 @@ export class EventoService {
   async editEventoCatering(evento: EventoCatering): Promise<number> {
     const response = await lastValueFrom(
       this.httpClient.put<CustomResponse<number>>(
-        REST_SERVER_URL + '/v1/eventos/catering',
+        `${BASE}/catering`,
         evento
       )
     )
@@ -524,7 +524,7 @@ export class EventoService {
   async editEventoAnotaciones(anotacion: string, id: number): Promise<string> {
     const response = await lastValueFrom(
       this.httpClient.patch<CustomResponse<string>>(
-        REST_SERVER_URL + '/v1/eventos/' + id + '/anotaciones',
+        `${BASE}/${id}/anotaciones`,
         anotacion
       )
     )
@@ -552,7 +552,7 @@ export class EventoService {
         capacidadAdultos: number,
         capacidadNinos: number
       }>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/capacidad',
+        `${BASE}/${eventoId}/capacidad`,
         { capacidadAdultos, capacidadNinos }
       )
     )
@@ -600,7 +600,7 @@ export class EventoService {
   async editEventoNombre(nombre: string, id: number): Promise<string> {
     const response = await lastValueFrom(
       this.httpClient.patch<CustomResponse<string>>(
-        REST_SERVER_URL + '/v1/eventos/' + id + '/nombre',
+        `${BASE}/${id}/nombre`,
         nombre
       )
     )
@@ -618,7 +618,7 @@ export class EventoService {
     const empresaId = this.usuarioService.getEmpresaId()
     const response = await lastValueFrom(
       this.httpClient.post<CustomResponse<any>>(
-        REST_SERVER_URL + '/v1/eventos/empresa/' + empresaId + '/especificaciones',
+        `${BASE}/empresa/${empresaId}/especificaciones`,
         evento
       )
     )
@@ -638,7 +638,7 @@ export class EventoService {
     const empresaId = this.usuarioService.getEmpresaId()
     const response = await lastValueFrom(
       this.httpClient.post<CustomResponse<string>>(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/reenviar-mail',
+        `${BASE}/${eventoId}/reenviar-mail`,
         {},
         { params: { empresaId: empresaId.toString() } }
       )
@@ -658,7 +658,7 @@ export class EventoService {
   async descargarEvento(eventoId: number): Promise<Blob> {
     return lastValueFrom(
       this.httpClient.get(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/comprobante/pdf',
+        `${BASE}/${eventoId}/comprobante/pdf`,
         { responseType: 'blob' }
       )
     )
@@ -674,7 +674,7 @@ export class EventoService {
   async generarEstadoDeCuentaPDF(eventoId: number): Promise<Blob> {
     return lastValueFrom(
       this.httpClient.get(
-        REST_SERVER_URL + '/v1/eventos/' + eventoId + '/estado-cuenta/pdf',
+        `${BASE}/${eventoId}/estado-cuenta/pdf`,
         { responseType: 'blob' }
       )
     )

@@ -12,7 +12,7 @@ import { Router } from '@angular/router'
 import { LoginService } from '../services/login.service'
 import { ToastService } from '../services/toast.service'
 import { OnboardingStateService } from '../services/onboarding-state.service'
-import { REST_SERVER_URL } from 'src/util/configuration'
+import { API_URL } from 'src/util/configuration'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -32,9 +32,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const isLoginRequest = request.url === `${REST_SERVER_URL}/login`
-    const isRefreshRequest = request.url === `${REST_SERVER_URL}/v1/auth/refresh`
-    const isLogoutRequest = request.url === `${REST_SERVER_URL}/v1/auth/logout`
+    const isLoginRequest = request.url === `${API_URL}/login`
+    const isRefreshRequest = request.url === `${API_URL}/v1/auth/refresh`
+    const isLogoutRequest = request.url === `${API_URL}/v1/auth/logout`
     if (isLoginRequest || isRefreshRequest) {
       return next.handle(request).pipe(
         catchError((error: HttpErrorResponse) => {

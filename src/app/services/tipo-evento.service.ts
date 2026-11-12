@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { REST_SERVER_URL } from 'src/util/configuration';
+import { API_URL } from 'src/util/configuration';
 import { Capacidad } from '../model/Capacidad';
 import { FechaForm } from '../model/FechaForm';
 import { GenericItem } from '../model/GenericItem';
@@ -11,7 +11,7 @@ import { TipoEvento, TipoEventoEditJSON, TipoEventoJSON } from '../model/TipoEve
 import { UsuarioService } from './usuario.service';
 import { ExtraVariable } from '../model/Extra';
 
-const BASE = `${REST_SERVER_URL}/v1/tipos-evento`;
+const BASE = `${API_URL}/v1/tipos-evento`;
 
 @Injectable({
   providedIn: 'root'
