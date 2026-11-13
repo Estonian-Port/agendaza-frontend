@@ -26,16 +26,9 @@ const checkRoute = async (url: string, isLoginRoute: boolean): Promise<boolean |
     }
   }
 
-  if (onboardingState.isRequired() && url !== '/completar-perfil') {
-    return router.parseUrl('/completar-perfil');
-  }
-
-  if (!onboardingState.isRequired() && onboardingState.isPasswordChangeRequired() && url !== '/cambiar-password') {
-    return router.parseUrl('/cambiar-password')
-  }
-
-  if (isLoginRoute && onboardingState.isPasswordChangeRequired()) {
-    return router.parseUrl('/cambiar-password')
+  const requiredRoute = onboardingState.getRequiredRoute()
+  if (requiredRoute && url !== requiredRoute) {
+    return router.parseUrl(requiredRoute)
   }
 
   return true;

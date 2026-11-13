@@ -79,21 +79,32 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         if (error.status === 403 && error.error?.code === 'ONBOARDING_REQUIRED') {
-          this.onboardingState.requireOnboarding()
-          if (this.router.url !== '/completar-perfil') {
-            this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
-          }
+          this.onboardingState.setStatus({
+            onboardingRequired: true,
+            emailVerificationRequired: this.onboardingState.isEmailVerificationRequired(),
+            passwordChangeRequired: this.onboardingState.isPasswordChangeRequired()
+          })
+          this.navigateForRequiredStatus()
+          return throwError(() => error)
+        }
+
+        if (error.status === 403 && error.error?.code === 'EMAIL_VERIFICATION_REQUIRED') {
+          this.onboardingState.setStatus({
+            onboardingRequired: this.onboardingState.isRequired(),
+            emailVerificationRequired: true,
+            passwordChangeRequired: this.onboardingState.isPasswordChangeRequired()
+          })
+          this.navigateForRequiredStatus()
           return throwError(() => error)
         }
 
         if (error.status === 403 && error.error?.code === 'PASSWORD_CHANGE_REQUIRED') {
           this.onboardingState.setStatus({
             onboardingRequired: this.onboardingState.isRequired(),
+            emailVerificationRequired: this.onboardingState.isEmailVerificationRequired(),
             passwordChangeRequired: true
           })
-          if (this.router.url !== '/cambiar-password') {
-            this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
-          }
+          this.navigateForRequiredStatus()
           return throwError(() => error)
         }
 
@@ -109,22 +120,31 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleAuthAndToast(error: HttpErrorResponse): void {
-    if (error.status === 403 && error.error?.code === 'PASSWORD_CHANGE_REQUIRED') {
-      this.onboardingState.setStatus({
-        onboardingRequired: this.onboardingState.isRequired(),
-        passwordChangeRequired: true
-      })
-      if (this.router.url !== '/cambiar-password') {
-        this.router.navigateByUrl('/cambiar-password', { replaceUrl: true })
+    if (error.status === 403 && [
+      'ONBOARDING_REQUIRED',
+      'EMAIL_VERIFICATION_REQUIRED',
+      'PASSWORD_CHANGE_REQUIRED'
+    ].includes(error.error?.code)) {
+      if (error.error.code === 'ONBOARDING_REQUIRED') {
+        this.onboardingState.setStatus({
+          onboardingRequired: true,
+          emailVerificationRequired: this.onboardingState.isEmailVerificationRequired(),
+          passwordChangeRequired: this.onboardingState.isPasswordChangeRequired()
+        })
+      } else if (error.error.code === 'EMAIL_VERIFICATION_REQUIRED') {
+        this.onboardingState.setStatus({
+          onboardingRequired: this.onboardingState.isRequired(),
+          emailVerificationRequired: true,
+          passwordChangeRequired: this.onboardingState.isPasswordChangeRequired()
+        })
+      } else {
+        this.onboardingState.setStatus({
+          onboardingRequired: this.onboardingState.isRequired(),
+          emailVerificationRequired: this.onboardingState.isEmailVerificationRequired(),
+          passwordChangeRequired: true
+        })
       }
-      return
-    }
-
-    if (error.status === 403 && error.error?.code === 'ONBOARDING_REQUIRED') {
-      this.onboardingState.requireOnboarding()
-      if (this.router.url !== '/completar-perfil') {
-        this.router.navigateByUrl('/completar-perfil', { replaceUrl: true })
-      }
+      this.navigateForRequiredStatus()
       return
     }
 
@@ -136,6 +156,13 @@ export class AuthInterceptor implements HttpInterceptor {
     // 2. Muestra SIEMPRE el Toast con el mensaje real que viene del backend
     const errorMessage = this.getErrorMessage(error)
     this.toastService.showError(errorMessage)
+  }
+
+  private navigateForRequiredStatus(): void {
+    const requiredRoute = this.onboardingState.getRequiredRoute()
+    if (requiredRoute && this.router.url !== requiredRoute) {
+      this.router.navigateByUrl(requiredRoute, { replaceUrl: true })
+    }
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {

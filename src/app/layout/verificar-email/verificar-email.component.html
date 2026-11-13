@@ -1,0 +1,35 @@
+<main class="container">
+  <form [formGroup]="form" (ngSubmit)="confirmar()" novalidate>
+    <app-header
+        [titulo]="'Verifica tu correo electrónico'"
+        [botonVolver]="false"
+        [botonSave]="false">
+    </app-header>
+
+    <section class="row contenedor-default mt-2">
+
+      <div class="form-group col-sm-12 col-md-5 mb-4">
+        <label for="codigo" class="form-label">Ingresa el código recibido</label>
+        <input id="codigo" type="text" class="form-control" formControlName="codigo" autocomplete="one-time-code"
+          [class.is-invalid]="form.controls.codigo.touched && form.controls.codigo.invalid">
+        <div id="emailHelp" class="form-text text-muted">
+          Revisa tu casilla recibidos y de spam en caso de no encontrarlo.
+        </div>
+        <div *ngIf="form.controls.codigo.touched && form.controls.codigo.invalid" class="invalid-feedback">
+          Ingresa el código recibido.
+        </div>
+      </div>
+
+      <div class="col-12 d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="enviando || reenviando || solicitandoInicial">
+          <span *ngIf="enviando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Confirmar correo
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="reenviarCodigo()" [disabled]="enviando || reenviando || solicitandoInicial || segundosParaReenviar > 0">
+          <span *ngIf="reenviando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Reenviar código<span *ngIf="segundosParaReenviar > 0"> ({{ segundosParaReenviar }}s)</span>
+        </button>
+      </div>
+    </section>
+  </form>
+</main>

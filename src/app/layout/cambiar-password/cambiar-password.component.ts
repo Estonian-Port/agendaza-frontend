@@ -34,7 +34,7 @@ export class CambiarPasswordComponent {
       await this.usuarioService.updateMyPassword(this.form.controls.password.value || '')
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
       if (!this.onboardingState.isPasswordChangeRequired()) {
-        await this.router.navigateByUrl('/', { replaceUrl: true })
+        await this.router.navigateByUrl(this.onboardingState.getRequiredRoute() || '/', { replaceUrl: true })
       } else {
         this.errorSubmit = 'El backend todavía requiere cambiar la contraseña. Intenta nuevamente.'
       }

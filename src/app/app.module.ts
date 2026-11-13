@@ -83,6 +83,7 @@ import { environment } from 'src/environments/environment';
 import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
 import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-password.component';
 import { EventoSeleccionadoComponent } from './components/evento-seleccionado/evento-seleccionado.component';
+import { VerificarEmailComponent } from './layout/verificar-email/verificar-email.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { EventoSeleccionadoComponent } from './components/evento-seleccionado/ev
     ToastComponent,
     CompletarPerfilComponent,
     CambiarPasswordComponent,
-    EventoSeleccionadoComponent
+    EventoSeleccionadoComponent,
+    VerificarEmailComponent
   ],
   imports: [
     BrowserModule,

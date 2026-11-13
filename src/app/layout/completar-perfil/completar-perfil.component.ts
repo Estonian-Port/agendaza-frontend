@@ -140,10 +140,7 @@ export class CompletarPerfilComponent implements OnInit {
       localStorage.setItem('session', CryptoJsImpl.encryptData(values.username))
       this.onboardingState.completeOnboarding()
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
-      await this.router.navigateByUrl(
-        this.onboardingState.isPasswordChangeRequired() ? '/cambiar-password' : '/',
-        { replaceUrl: true }
-      )
+      await this.router.navigateByUrl(this.onboardingState.getRequiredRoute() || '/', { replaceUrl: true })
     } catch {
       this.errorSubmit = 'No se pudieron guardar tus datos. Intenta nuevamente.'
     } finally {

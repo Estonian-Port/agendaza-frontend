@@ -15,6 +15,7 @@ import { CustomResponse } from 'src/util/customResponse'
 import { EventosUsuarioResponse } from '../model/Evento'
 import { ToastService } from './toast.service'
 import { Observable } from 'rxjs'
+import { UsuarioEstado } from './onboarding-state.service'
 
 const BASE = `${API_URL}/v1/usuarios`
 
@@ -28,12 +29,24 @@ export class UsuarioService {
     private toastService: ToastService
   ) { }
 
-  getEstado(): Promise<{ onboardingRequired: boolean; passwordChangeRequired: boolean }> {
+  getEstado(): Promise<UsuarioEstado> {
     return lastValueFrom(
-      this.httpClient.get<CustomResponse<{ onboardingRequired: boolean; passwordChangeRequired: boolean }>>(
+      this.httpClient.get<CustomResponse<UsuarioEstado>>(
         `${BASE}/me/estado`
       )
     ).then(response => response.data)
+  }
+
+  requestEmailVerification(): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.post<void>(`${BASE}/verificacion-email`, null)
+    )
+  }
+
+  confirmEmailVerification(codigo: string): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.post<void>(`${BASE}/verificacion-email/confirmar`, { codigo })
+    )
   }
 
   updateMyPassword(password: string): Promise<void> {

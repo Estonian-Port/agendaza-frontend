@@ -45,15 +45,10 @@ export class LoginComponent {
       await this.loginService.login(this.usuarioLogin)
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
 
-      let destination = '/'
+      let destination = this.onboardingState.getRequiredRoute() || '/'
       let navigationState: { agendas: AgendaCard[] } | undefined
 
-      // Verificar si durante la autenticación / inicio de sesión se marcó onboarding requerido
-      if (this.onboardingState.isRequired()) {
-        destination = '/completar-perfil'
-      } else if (this.onboardingState.isPasswordChangeRequired()) {
-        destination = '/cambiar-password'
-      } else {
+      if (!this.onboardingState.getRequiredRoute()) {
         const usuarioId = this.loginService.getUsuarioId()
         const agendas = await this.usuarioService.getAllEmpresaByUsuarioId(usuarioId)
 

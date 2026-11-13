@@ -38,6 +38,7 @@ import { AbmClausulaComponent } from './layout/abm/abm-clausula/abm-clausula.com
 import { SaveGastoComponent } from './layout/save/save-gasto/save-gasto.component';
 import { CompletarPerfilComponent } from './layout/completar-perfil/completar-perfil.component';
 import { CambiarPasswordComponent } from './layout/cambiar-password/cambiar-password.component';
+import { VerificarEmailComponent } from './layout/verificar-email/verificar-email.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
       { path: '', component: SeleccionarAgendaComponent },
       { path: 'completar-perfil', component: CompletarPerfilComponent },
       { path: 'cambiar-password', component: CambiarPasswordComponent },
+      { path: 'verificar-email', component: VerificarEmailComponent },
       { path: 'agenda', component: AgendaComponent },
       { path: 'panelAdmin', component: PanelAdminComponent },
       { path: 'abmUsuario', component: AbmUsuarioComponent },
