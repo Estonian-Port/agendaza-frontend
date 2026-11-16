@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Usuario } from 'src/app/model/Usuario';
@@ -46,14 +47,22 @@ export class AbmUsuarioComponent implements OnInit {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
 
-    if(this.buscar == ""){
-      this.listaItems = await this.usuarioService.getAllEmpleados(this.paginaActual)
-      this.cantidadRegistros = await this.usuarioService.getCantidadEmpleados()
+    try {
+      this.listaItems = this.buscar === ''
+        ? await this.usuarioService.getAllEmpleados(this.paginaActual)
+        : await this.usuarioService.getEmpleadosFiltrados(this.paginaActual, this.buscar);
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
+      }
+      this.listaItems = [];
     }
-    else {
-      this.listaItems = await this.usuarioService.getEmpleadosFiltrados(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.usuarioService.getCantidadEmpleadosFiltrados(this.buscar)
-    }
+
+    this.cantidadRegistros = this.listaItems.length === 0
+      ? 0
+      : this.buscar === ''
+        ? await this.usuarioService.getCantidadEmpleados()
+        : await this.usuarioService.getCantidadEmpleadosFiltrados(this.buscar);
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     this.updateCantidadPaginas(this.cantidadPaginas)

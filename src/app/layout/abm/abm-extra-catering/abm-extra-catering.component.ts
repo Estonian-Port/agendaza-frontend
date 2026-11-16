@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ExtraService } from 'src/app/services/extra.service';
@@ -33,16 +34,23 @@ export class AbmExtraCateringComponent implements OnInit {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
     
-    if(this.buscar == ""){
-      this.listaItems = await this.extraService.getAllExtraCateringByEmpresaId(this.paginaActual)
-      if(actualizarCantidad){
-        this.cantidadRegistros = await this.extraService.cantExtraCatering()
+    try {
+      this.listaItems = this.buscar === ''
+        ? await this.extraService.getAllExtraCateringByEmpresaId(this.paginaActual)
+        : await this.extraService.getAllExtraCateringFilter(this.paginaActual, this.buscar);
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
       }
-    }else{
-      this.listaItems = await this.extraService.getAllExtraCateringFilter(this.paginaActual,this.buscar)
-      if(actualizarCantidad){
-        this.cantidadRegistros = await this.extraService.cantExtraCateringFilter(this.buscar)
-      }
+      this.listaItems = [];
+    }
+
+    if (actualizarCantidad) {
+      this.cantidadRegistros = this.listaItems.length === 0
+        ? 0
+        : this.buscar === ''
+          ? await this.extraService.cantExtraCatering()
+          : await this.extraService.cantExtraCateringFilter(this.buscar);
     }
 
     if(actualizarCantidad){

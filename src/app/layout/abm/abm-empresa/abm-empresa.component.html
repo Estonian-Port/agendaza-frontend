@@ -5,6 +5,9 @@
   </div>
 
   <div class="card-container">
+    <div *ngIf="listaItems.length === 0" class="text-center text-muted p-3">
+        No se encontraron empresas.
+    </div>
     <div *ngFor="let item of listaItems | orderAbmByNombre" class="card-empresa-moderna">
         <div class="card-header-custom">
             <h3 class="card-title-text">{{item.nombre}}</h3>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Location } from '@angular/common';
@@ -32,16 +33,23 @@ export class AbmExtraEventoComponent implements OnInit {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
     
-    if(this.buscar == ""){
-      this.listaItems = await this.extraService.getAllExtraByEmpresaId(this.paginaActual)
-      if(actualizarCantidad){
-        this.cantidadRegistros = await this.extraService.cantExtras()
+    try {
+      this.listaItems = this.buscar === ''
+        ? await this.extraService.getAllExtraByEmpresaId(this.paginaActual)
+        : await this.extraService.getAllExtraByFilterName(this.paginaActual, this.buscar);
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
       }
-    }else{
-      this.listaItems = await this.extraService.getAllExtraByFilterName(this.paginaActual,this.buscar)
-      if(actualizarCantidad){
-        this.cantidadRegistros = await this.extraService.cantExtrasFiltrados(this.buscar)
-      }
+      this.listaItems = [];
+    }
+
+    if (actualizarCantidad) {
+      this.cantidadRegistros = this.listaItems.length === 0
+        ? 0
+        : this.buscar === ''
+          ? await this.extraService.cantExtras()
+          : await this.extraService.cantExtrasFiltrados(this.buscar);
     }
 
     if(actualizarCantidad){

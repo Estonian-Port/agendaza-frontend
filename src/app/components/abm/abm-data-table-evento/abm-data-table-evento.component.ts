@@ -11,6 +11,9 @@ export class AbmDataTableEventoComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
+  nombreItems = 'eventos'
+
+  @Input()
   listaHeader : Array<String> = []
 
   @Input()

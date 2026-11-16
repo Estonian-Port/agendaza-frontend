@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -25,14 +26,22 @@ export class AbmClienteComponent implements OnInit {
   async inicializarListaItems(){
     this.updatePalabraBuscar(this.buscar)
 
-    if(this.buscar == ""){
-      this.listaItems = await this.usuarioService.getAllClientes(this.paginaActual)
-      this.cantidadRegistros = await this.usuarioService.getCantidadClientes()
+    try {
+      this.listaItems = this.buscar === ''
+        ? await this.usuarioService.getAllClientes(this.paginaActual)
+        : await this.usuarioService.getClientesFiltrados(this.paginaActual, this.buscar);
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
+      }
+      this.listaItems = [];
     }
-    else {
-      this.listaItems = await this.usuarioService.getClientesFiltrados(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.usuarioService.getCantidadClientesFiltrados(this.buscar)
-    }
+
+    this.cantidadRegistros = this.listaItems.length === 0
+      ? 0
+      : this.buscar === ''
+        ? await this.usuarioService.getCantidadClientes()
+        : await this.usuarioService.getCantidadClientesFiltrados(this.buscar);
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
 

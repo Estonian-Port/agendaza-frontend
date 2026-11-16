@@ -9,6 +9,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 export class AbmDataTableUsuarioComponent implements OnInit {
 
   @Input() listaItems : Array<any> = []
+  @Input() nombreItems = 'usuarios'
   @Input() listaHeader : Array<String> = []
   @Input() buscar = ''
   @Input() esCliente: Boolean = false

@@ -9,6 +9,11 @@
             </tr>
         </thead>
         <tbody>
+            <tr *ngIf="listaItems.length === 0">
+                <td [attr.colspan]="2 + (mostrarTipoExtra ? 1 : 0) + (mostrarDuracion ? 1 : 0)" class="text-center text-muted p-3">
+                    No se encontraron {{nombreItems}}.
+                </td>
+            </tr>
             <tr *ngFor="let item of listaItems | orderAbmByNombre">
                 <td class="dimensiones-tabla-texto">{{item.nombre | truncarTexto}}</td>
                 <td *ngIf="mostrarTipoExtra">{{item.tipoExtra | formatEnum}}</td>

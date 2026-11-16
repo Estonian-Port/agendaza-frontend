@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ServicioService } from 'src/app/services/servicio.service';
 import { Location } from '@angular/common';
@@ -32,13 +33,22 @@ export class AbmServicioComponent implements OnInit {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
 
-    if(this.buscar == ""){
-      this.listaItems = await this.servicioService.getAllServicioByEmpresaId(this.paginaActual)
-      this.cantidadRegistros = await this.servicioService.getCantidadServicio()
-    }else{
-      this.listaItems = await this.servicioService.getAllServicioFiltrados(this.paginaActual,this.buscar)
-      this.cantidadRegistros = await this.servicioService.cantServicioFiltrados(this.buscar)
+    try {
+      this.listaItems = this.buscar === ''
+        ? await this.servicioService.getAllServicioByEmpresaId(this.paginaActual)
+        : await this.servicioService.getAllServicioFiltrados(this.paginaActual, this.buscar);
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
+      }
+      this.listaItems = [];
     }
+
+    this.cantidadRegistros = this.listaItems.length === 0
+      ? 0
+      : this.buscar === ''
+        ? await this.servicioService.getCantidadServicio()
+        : await this.servicioService.cantServicioFiltrados(this.buscar);
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     

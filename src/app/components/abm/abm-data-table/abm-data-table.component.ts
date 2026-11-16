@@ -10,6 +10,9 @@ export class AbmDataTableComponent implements OnInit {
   listaItems : Array<any> = []
 
   @Input()
+  nombreItems = 'elementos'
+
+  @Input()
   buscar = ''
 
   @Input()

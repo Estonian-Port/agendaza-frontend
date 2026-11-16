@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { EventoService } from 'src/app/services/evento.service';
 
 @Component({
@@ -33,17 +34,29 @@ export class AbmEventoComponent implements OnInit {
   }
 
   async inicializarListaItems(): Promise<void> {
-    if (this.fechaFiltro !== '') {
-      this.listaItems      = await this.eventoService.getAllEventosByFecha(this.fechaFiltro);
-      this.cantidadEventos = this.listaItems.length;
+    try {
+      if (this.fechaFiltro !== '') {
+        this.listaItems = await this.eventoService.getAllEventosByFecha(this.fechaFiltro);
+        this.cantidadEventos = this.listaItems.length;
+      } else if (this.buscar === '') {
+        this.listaItems = await this.eventoService.getAllEventoByEmpresaId(this.paginaActual);
+      } else {
+        this.listaItems = await this.eventoService.getAllEventoByFilterName(this.paginaActual, this.buscar);
+      }
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error;
+      }
+      this.listaItems = [];
+      this.cantidadEventos = 0;
+    }
 
-    } else if (this.buscar === '') {
-      this.listaItems      = await this.eventoService.getAllEventoByEmpresaId(this.paginaActual);
-      this.cantidadEventos = await this.eventoService.cantEventos();
-
-    } else {
-      this.listaItems      = await this.eventoService.getAllEventoByFilterName(this.paginaActual, this.buscar);
-      this.cantidadEventos = await this.eventoService.cantEventosFiltrados(this.buscar);
+    if (this.fechaFiltro === '' && this.listaItems.length > 0) {
+      this.cantidadEventos = this.buscar === ''
+        ? await this.eventoService.cantEventos()
+        : await this.eventoService.cantEventosFiltrados(this.buscar);
+    } else if (this.fechaFiltro === '') {
+      this.cantidadEventos = 0;
     }
 
     this.cantidadRegistros = this.cantidadEventos;
@@ -60,7 +73,6 @@ export class AbmEventoComponent implements OnInit {
     this.buscar       = palabraBuscar;
     this.paginaActual = 0;
     this.sincronizarURL();
-    this.inicializarListaItems();
   }
 
   // Actualiza la barra del navegador sin triggear el router (sin re-render)

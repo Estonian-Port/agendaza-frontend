@@ -9,6 +9,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr *ngIf="listaItems.length === 0">
+                <td colspan="3" class="text-center text-muted p-3">No se encontraron {{nombreItems}}.</td>
+            </tr>
             <tr *ngFor="let item of listaItems | orderAbmByNombre">
                 <td class="dimensiones-tabla-monto">{{item.nombre}}</td>
                 <td class="dimensiones-tabla-texto">{{item.apellido | truncarTexto}}</td>

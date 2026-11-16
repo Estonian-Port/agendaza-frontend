@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { HttpErrorResponse } from '@angular/common/http'
 import { Router } from '@angular/router'
 import { ClausulaService } from 'src/app/services/clausula.service'
 import { Location } from '@angular/common'
@@ -31,8 +32,18 @@ export class AbmClausulaComponent {
     this.updatePalabraBuscar(this.buscar)
     this.paginaCero()
 
-    this.listaItems = await this.clasulaService.getAll(this.paginaActual, this.buscar || undefined)
-    this.cantidadRegistros = await this.clasulaService.getAllCantidad(this.buscar || undefined)
+    try {
+      this.listaItems = await this.clasulaService.getAll(this.paginaActual, this.buscar || undefined)
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+        throw error
+      }
+      this.listaItems = []
+    }
+
+    this.cantidadRegistros = this.listaItems.length === 0
+      ? 0
+      : await this.clasulaService.getAllCantidad(this.buscar || undefined)
 
     this.cantidadPaginas = new Array<number>(Math.ceil(this.cantidadRegistros / 10))
     
