@@ -8,6 +8,43 @@
 
     <section class="row contenedor-default mt-2">
 
+      <div class="col-12 mb-4">
+        <p class="mb-2">
+          Enviaremos el código a
+          <strong>{{ email ? emailEnmascarado : 'tu correo electrónico' }}</strong>.
+        </p>
+        <ng-container *ngIf="!editandoEmail; else editarEmailForm">
+          <button type="button" class="btn btn-link p-0" (click)="editandoEmail = true" [disabled]="guardandoEmail || cargandoEmail">
+            Editar email
+          </button>
+        </ng-container>
+        <ng-template #editarEmailForm>
+          <div [formGroup]="emailForm" class="row g-2 align-items-start">
+            <div class="col-sm-12 col-md-5">
+              <label for="nuevoEmail" class="form-label">Nuevo correo electrónico</label>
+              <input id="nuevoEmail" type="email" class="form-control" formControlName="email"
+                autocomplete="email"
+                [class.is-invalid]="emailForm.controls.email.touched && emailForm.controls.email.invalid">
+              <div *ngIf="emailForm.controls.email.touched && emailForm.controls.email.hasError('required')" class="invalid-feedback">
+                Ingresa un correo electrónico.
+              </div>
+              <div *ngIf="emailForm.controls.email.touched && emailForm.controls.email.hasError('email')" class="invalid-feedback">
+                Ingresa un correo válido.
+              </div>
+            </div>
+            <div class="col-12 d-flex flex-wrap gap-2 mt-2">
+              <button type="button" class="btn btn-primary" (click)="guardarEmail()" [disabled]="guardandoEmail">
+                <span *ngIf="guardandoEmail" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Guardar email
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelarEdicionEmail()" [disabled]="guardandoEmail">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
       <div class="form-group col-sm-12 col-md-5 mb-4">
         <label for="codigo" class="form-label">Ingresa el código recibido</label>
         <input id="codigo" type="text" class="form-control" formControlName="codigo" autocomplete="one-time-code"
@@ -21,11 +58,11 @@
       </div>
 
       <div class="col-12 d-flex flex-wrap gap-2">
-        <button type="submit" class="btn btn-primary" [disabled]="enviando || reenviando || solicitandoInicial">
+        <button type="submit" class="btn btn-primary" [disabled]="enviando || reenviando || solicitandoInicial || guardandoEmail">
           <span *ngIf="enviando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Confirmar correo
         </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="reenviarCodigo()" [disabled]="enviando || reenviando || solicitandoInicial || segundosParaReenviar > 0">
+        <button type="button" class="btn btn-outline-secondary" (click)="reenviarCodigo()" [disabled]="enviando || reenviando || solicitandoInicial || guardandoEmail || segundosParaReenviar > 0">
           <span *ngIf="reenviando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Reenviar código<span *ngIf="segundosParaReenviar > 0"> ({{ segundosParaReenviar }}s)</span>
         </button>

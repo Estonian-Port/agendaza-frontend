@@ -18,11 +18,15 @@ import { Observable } from 'rxjs'
 import { UsuarioEstado } from './onboarding-state.service'
 
 const BASE = `${API_URL}/v1/usuarios`
+const EMAIL_VERIFICATION_RESEND_DELAY_MS = 60_000
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+  private emailVerificationRequest: Promise<void> | null = null
+  private emailVerificationRequestedAt = 0
+  private emailVerificationSession: string | null = null
 
   constructor(
     private httpClient: HttpClient,
@@ -37,15 +41,50 @@ export class UsuarioService {
     ).then(response => response.data)
   }
 
-  requestEmailVerification(): Promise<void> {
-    return lastValueFrom(
+  requestEmailVerification(force = false): Promise<void> {
+    const session = localStorage.getItem('session')
+    if (session !== this.emailVerificationSession) {
+      this.emailVerificationSession = session
+      this.emailVerificationRequestedAt = 0
+      this.emailVerificationRequest = null
+    }
+
+    if (this.emailVerificationRequest) {
+      if (!force) return this.emailVerificationRequest
+      return this.emailVerificationRequest
+        .catch(() => undefined)
+        .then(() => this.requestEmailVerification(true))
+    }
+
+    if (!force && Date.now() - this.emailVerificationRequestedAt < EMAIL_VERIFICATION_RESEND_DELAY_MS) {
+      return Promise.resolve()
+    }
+
+    const request = lastValueFrom(
       this.httpClient.post<void>(`${BASE}/verificacion-email`, null)
-    )
+    ).then(() => {
+      if (this.emailVerificationSession === session) {
+        this.emailVerificationRequestedAt = Date.now()
+      }
+    }).finally(() => {
+      if (this.emailVerificationRequest === request) {
+        this.emailVerificationRequest = null
+      }
+    })
+
+    this.emailVerificationRequest = request
+    return request
   }
 
   confirmEmailVerification(codigo: string): Promise<void> {
     return lastValueFrom(
       this.httpClient.post<void>(`${BASE}/verificacion-email/confirmar`, { codigo })
+    )
+  }
+
+  updateMyEmail(email: string): Promise<void> {
+    return lastValueFrom(
+      this.httpClient.put<void>(`${BASE}/me/email`, { email })
     )
   }
 
