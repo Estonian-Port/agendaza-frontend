@@ -124,7 +124,7 @@ export class UsuarioService {
     fechaNacimiento: string
     username: string
     email: string
-    password: string
+    password?: string
     aceptoTerminos: boolean
     versionTerminos: string
   }): Promise<void> {

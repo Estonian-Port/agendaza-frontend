@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { OnboardingStateService } from 'src/app/services/onboarding-state.service'
+import { ToastService } from 'src/app/services/toast.service'
 import { UsuarioService } from 'src/app/services/usuario.service'
 
 @Component({
@@ -21,6 +22,7 @@ export class CambiarPasswordComponent {
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private onboardingState: OnboardingStateService,
+    private toastService: ToastService,
     private router: Router
   ) { }
 
@@ -35,6 +37,7 @@ export class CambiarPasswordComponent {
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
       if (!this.onboardingState.isPasswordChangeRequired()) {
         await this.router.navigateByUrl(this.onboardingState.getRequiredRoute() || '/', { replaceUrl: true })
+        this.toastService.showSuccess('Actualizaste tu contraseña correctamente')
       } else {
         this.errorSubmit = 'El backend todavía requiere cambiar la contraseña. Intenta nuevamente.'
       }

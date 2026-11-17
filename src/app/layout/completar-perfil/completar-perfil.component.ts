@@ -7,6 +7,7 @@ import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { OnboardingStateService } from '../../services/onboarding-state.service'
 import { TerminosDTO, TerminosService } from '../../services/terminos.service'
 import { LoginService } from 'src/app/services/login.service'
+import { ToastService } from 'src/app/services/toast.service'
 import { UsuarioService } from 'src/app/services/usuario.service'
 import { catchError, map, Observable, of } from 'rxjs'
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap'
@@ -24,6 +25,7 @@ export class CompletarPerfilComponent implements OnInit {
   mostrarTerminos = false
   mostrarPassword = false
   mostrarConfirmarPassword = false
+  mostrarCamposPassword = true
   enviando = false
   errorSubmit = ''
   readonly fechaMinima: NgbDateStruct = { year: 1900, month: 1, day: 1 }
@@ -34,6 +36,7 @@ export class CompletarPerfilComponent implements OnInit {
     private loginService: LoginService,
     private onboardingState: OnboardingStateService,
     private router: Router,
+    private toastService: ToastService,
     private usuarioService: UsuarioService,
     private terminosService: TerminosService,
     private sanitizer: DomSanitizer
@@ -76,6 +79,8 @@ export class CompletarPerfilComponent implements OnInit {
         // Lógica de username
         const rawUsername = me.username || ''
         const isUsernameEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawUsername)
+        this.mostrarCamposPassword = !rawUsername.trim()
+          || rawUsername.trim().toLowerCase() === (me.email || '').trim().toLowerCase()
         const usernameControl = this.form.get('username')
 
         if (isUsernameEmail) {
@@ -96,6 +101,13 @@ export class CompletarPerfilComponent implements OnInit {
         } else {
           emailControl?.setValue(rawEmail)
           emailControl?.disable()
+        }
+
+        if (!this.mostrarCamposPassword) {
+          this.form.get('password')?.clearValidators()
+          this.form.get('password')?.updateValueAndValidity()
+          this.form.get('confirmarPassword')?.clearValidators()
+          this.form.get('confirmarPassword')?.updateValueAndValidity()
         }
       }
     } catch (error) {
@@ -132,7 +144,7 @@ export class CompletarPerfilComponent implements OnInit {
         celular: values.celular,
         fechaNacimiento: this.toIsoDate(values.fechaNacimiento),
         username: values.username.trim(),
-        password: values.password.trim(),
+        ...(this.mostrarCamposPassword ? { password: values.password.trim() } : {}),
         email: values.email.trim(),
         aceptoTerminos: true,
         versionTerminos: this.terminos.version
@@ -141,6 +153,7 @@ export class CompletarPerfilComponent implements OnInit {
       this.onboardingState.completeOnboarding()
       this.onboardingState.setStatus(await this.usuarioService.getEstado())
       await this.router.navigateByUrl(this.onboardingState.getRequiredRoute() || '/', { replaceUrl: true })
+      this.toastService.showSuccess('Actualizaste tu información correctamente')
     } catch {
       this.errorSubmit = 'No se pudieron guardar tus datos. Intenta nuevamente.'
     } finally {

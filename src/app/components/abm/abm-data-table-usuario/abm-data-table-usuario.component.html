@@ -3,18 +3,29 @@
     <table class="table table-striped table-hover table-condensed example-animate-container">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
+                <th [class.d-none]="!esCliente" [class.d-md-table-cell]="!esCliente">Nombre</th>
+                <th [class.d-none]="!esCliente" [class.d-md-table-cell]="!esCliente">Apellido</th>
+                <th *ngIf="!esCliente">Email</th>
+                <th *ngIf="!esCliente">Estado</th>
                 <th class="d-flex justify-content-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngIf="listaItems.length === 0">
-                <td colspan="3" class="text-center text-muted p-3">No se encontraron {{nombreItems}}.</td>
+                <td [attr.colspan]="esCliente ? 3 : 5" class="text-center text-muted p-3">No se encontraron {{nombreItems}}.</td>
             </tr>
             <tr *ngFor="let item of listaItems | orderAbmByNombre">
-                <td class="dimensiones-tabla-monto">{{item.nombre}}</td>
-                <td class="dimensiones-tabla-texto">{{item.apellido | truncarTexto}}</td>
+                <td class="dimensiones-tabla-monto" [class.d-none]="!esCliente" [class.d-md-table-cell]="!esCliente">
+                    <ng-container *ngIf="esCliente || esUsuarioActivo(item)">{{item.nombre}}</ng-container>
+                </td>
+                <td class="dimensiones-tabla-texto" [class.d-none]="!esCliente" [class.d-md-table-cell]="!esCliente">
+                    <ng-container *ngIf="esCliente || esUsuarioActivo(item)">{{item.apellido | truncarTexto}}</ng-container>
+                </td>
+                <td *ngIf="!esCliente">{{item.email}}</td>
+                <td *ngIf="!esCliente">
+                    <span class="badge rounded-pill text-bg-success" *ngIf="esUsuarioActivo(item)">Activo</span>
+                    <span class="badge rounded-pill text-bg-secondary" *ngIf="!esUsuarioActivo(item)">Pendiente</span>
+                </td>
 
                 <td class="center-items-abm">
                     <button *ngIf="!esCliente" (click)="cambiarRol(item.id)" class="text-warning mx-2">

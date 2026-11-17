@@ -69,4 +69,8 @@ export class AbmDataTableUsuarioComponent implements OnInit {
   resetearPassword(id: number): void {
     this.outputResetearPassword.emit(id)
   }
+
+  esUsuarioActivo(item: any): boolean {
+    return Boolean(item.nombre?.trim() && item.apellido?.trim())
+  }
 }

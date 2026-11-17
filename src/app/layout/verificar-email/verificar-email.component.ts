@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoginService } from 'src/app/services/login.service'
 import { OnboardingStateService } from 'src/app/services/onboarding-state.service'
+import { ToastService } from 'src/app/services/toast.service'
 import { UsuarioService } from 'src/app/services/usuario.service'
 
 @Component({
@@ -34,6 +35,7 @@ export class VerificarEmailComponent implements OnDestroy, OnInit {
     private usuarioService: UsuarioService,
     private loginService: LoginService,
     private onboardingState: OnboardingStateService,
+    private toastService: ToastService,
     private router: Router
   ) { }
 
@@ -64,6 +66,8 @@ export class VerificarEmailComponent implements OnDestroy, OnInit {
   }
 
   async confirmar(): Promise<void> {
+    if (this.editandoEmail) return
+
     this.form.markAllAsTouched()
     if (this.form.invalid || this.enviando || this.solicitandoInicial) return
 
@@ -78,6 +82,7 @@ export class VerificarEmailComponent implements OnDestroy, OnInit {
         this.error = 'El correo todavía requiere verificación. Comprueba el código e intenta nuevamente.'
       } else {
         await this.router.navigateByUrl(requiredRoute || '/', { replaceUrl: true })
+        this.toastService.showSuccess('Actualizaste tu email correctamente')
       }
     } catch (error: any) {
       const backendError = error?.error
@@ -123,6 +128,7 @@ export class VerificarEmailComponent implements OnDestroy, OnInit {
       this.email = nuevoEmail
       this.editandoEmail = false
       this.emailForm.reset()
+      this.toastService.showSuccess('Email actualizado correctamente')
     } catch (error: any) {
       this.error = this.getErrorMessage(error, 'No se pudo actualizar el correo.')
       this.guardandoEmail = false
@@ -146,6 +152,11 @@ export class VerificarEmailComponent implements OnDestroy, OnInit {
   cancelarEdicionEmail(): void {
     this.editandoEmail = false
     this.emailForm.reset()
+  }
+
+  iniciarEdicionEmail(): void {
+    this.emailForm.reset()
+    this.editandoEmail = true
   }
 
   private async cargarEmail(): Promise<void> {
