@@ -139,6 +139,8 @@ export class UsuarioEmpresa {
 // ==================== CLIENTE ====================
 
 export class Cliente {
+  username?: string | null
+
   constructor(
     public id: number,
     public nombre: string,
@@ -147,6 +149,14 @@ export class Cliente {
     public email: string,
     public celular: number
   ) {}
+}
+
+export interface ClienteUpdateDTO {
+  id: number
+  nombre: string
+  apellido: string
+  email: string
+  celular: number | null
 }
 
 // ==================== USUARIO ABM ====================

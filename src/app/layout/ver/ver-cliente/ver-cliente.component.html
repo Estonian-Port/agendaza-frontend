@@ -10,7 +10,7 @@
 			<div class="form-group col-6 mb-4">
 				<div class="d-flex justify-content-between ">
 					<h5>Cliente</h5>
-					<button (click)="editModal()" class="mx-2"><i class="fas fa-edit text-warning fa-lg" data-bs-toggle="tooltip" title="Editar"></i></button>
+					<button *ngIf="puedeEditarCliente" (click)="editModal()" class="mx-2"><i class="fas fa-edit text-warning fa-lg" data-bs-toggle="tooltip" title="Editar"></i></button>
 				</div>
 				<input type="text" class="form-control" [value]="cliente" disabled>
 			</div>
@@ -40,6 +40,7 @@
 </div>
 
 <app-modal-edit-cliente
+    *ngIf="puedeEditarCliente"
     (outputChangeModal)="setModalEditar($event)"
 	(outputSave)="editCliente($event)"
 	[modal]="modal"

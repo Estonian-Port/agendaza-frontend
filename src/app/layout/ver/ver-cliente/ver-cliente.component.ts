@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Capacidad } from 'src/app/model/Capacidad';
 import { EventoVer } from 'src/app/model/Evento';
-import { Cliente, UsuarioAbm} from 'src/app/model/Usuario';
+import { Cliente, ClienteUpdateDTO, UsuarioAbm} from 'src/app/model/Usuario';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventoService } from 'src/app/services/evento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-ver-cliente',
@@ -27,6 +29,7 @@ export class VerClienteComponent implements OnInit {
     private usuarioService: UsuarioService, 
     private location : Location,
     private route: ActivatedRoute,
+    private toastService: ToastService,
   ) { }
 
 async ngOnInit() {
@@ -59,16 +62,62 @@ async ngOnInit() {
   }
 
   editModal(){
+    if (!this.puedeEditarCliente) {
+      return
+    }
     this.tituloModal = "Editar cliente"
-    this.setModalEditar(!this.modal)
+    this.setModalEditar(true)
   }
 
   setModalEditar(modal : boolean){
-    this.modal = modal
+    this.modal = modal && this.puedeEditarCliente
   }
 
-  async editCliente(cliente : Cliente){
-    const clienteEdit : Cliente = await this.usuarioService.saveCliente(cliente)
-    this.cliente = clienteEdit.nombre + " " + clienteEdit.apellido
+  get puedeEditarCliente(): boolean {
+    return this.evento.id > 0
+      && this.evento.cliente.id > 0
+      && !this.evento.cliente.username?.trim()
+  }
+
+  async editCliente(cliente: ClienteUpdateDTO){
+    if (!this.puedeEditarCliente) {
+      this.setModalEditar(false)
+      return
+    }
+
+    if (!cliente.id || cliente.id !== this.evento.cliente.id) {
+      this.toastService.showError('No se pudo editar el cliente porque no se encontró un ID válido.')
+      return
+    }
+
+    if (!cliente.nombre?.trim() || !cliente.apellido?.trim()) {
+      this.toastService.showError('El nombre y el apellido son obligatorios.')
+      return
+    }
+
+    if (cliente.celular !== null && !/^\d+$/.test(String(cliente.celular))) {
+      this.toastService.showError('El teléfono debe contener sólo dígitos.')
+      return
+    }
+
+    try {
+      const clienteEdit = await this.usuarioService.saveCliente({
+        id: cliente.id,
+        nombre: cliente.nombre,
+        apellido: cliente.apellido,
+        email: cliente.email,
+        celular: cliente.celular,
+      })
+      this.evento.cliente = clienteEdit
+      this.cliente = clienteEdit.nombre + " " + clienteEdit.apellido
+    } catch (error) {
+      if (error instanceof HttpErrorResponse && error.status === 403) {
+        this.toastService.showError('Este cliente tiene una cuenta registrada y no puede ser editado.')
+        return
+      }
+
+      this.toastService.showError('No se pudo editar el cliente.')
+      console.error('Error al editar el cliente', error)
+    }
   }
 }

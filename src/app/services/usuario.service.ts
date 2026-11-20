@@ -8,6 +8,7 @@ import {
   UsuarioEditPassword,
   UsuarioJSON,
   UsuarioSave,
+  ClienteUpdateDTO,
 } from '../model/Usuario'
 import { CryptoJsImpl } from 'src/util/cryptoJsImpl'
 import { AgendaCard, AgendaCardJSON } from '../model/Agenda'
@@ -287,10 +288,17 @@ export class UsuarioService {
   /**
    * Guarda un cliente
    */
-  async saveCliente(cliente: Cliente): Promise<Cliente> {
+  async saveCliente(cliente: ClienteUpdateDTO): Promise<Cliente> {
+    const payload: ClienteUpdateDTO = {
+      id: cliente.id,
+      nombre: cliente.nombre,
+      apellido: cliente.apellido,
+      email: cliente.email,
+      celular: cliente.celular,
+    }
     const item$ = this.httpClient.post<CustomResponse<Cliente>>(
       `${BASE}/clientes`,
-      cliente
+      payload
     )
     const response = await lastValueFrom(item$)
     this.toastService.showSuccess(response.message || 'Cliente guardado correctamente')

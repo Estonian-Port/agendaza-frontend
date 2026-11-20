@@ -8,26 +8,28 @@
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">{{titulo}}</h5>
               </div>
-              <div class="modal-body">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" name="nombre" [(ngModel)]="cliente.nombre">
-              </div>
-              <div class="modal-body">
-                <label for="nombre">Apellido</label>
-                <input type="text" class="form-control" name="apellido" [(ngModel)]="cliente.apellido">
-              </div>
-              <div class="modal-body">
-                <label for="nombre">Telefono</label>
-                <input type="number" class="form-control" name="telefono" [(ngModel)]="cliente.celular">
-              </div>
-              <div class="modal-body">
-                <label for="nombre">Email</label>
-                <input type="text" class="form-control" name="email" [(ngModel)]="cliente.email">
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="changeModal()">Cerrar</button>
-                  <button type="button" class="btn btn-success" (click)="save()">Guardar</button>
-              </div>
+              <form (ngSubmit)="save()">
+                <div class="modal-body">
+                    <label for="cliente-nombre">Nombre</label>
+                    <input id="cliente-nombre" type="text" class="form-control" name="nombre" [(ngModel)]="clienteEditado.nombre" required>
+                </div>
+                <div class="modal-body">
+                  <label for="cliente-apellido">Apellido</label>
+                  <input id="cliente-apellido" type="text" class="form-control" name="apellido" [(ngModel)]="clienteEditado.apellido" required>
+                </div>
+                <div class="modal-body">
+                  <label for="cliente-telefono">Teléfono</label>
+                  <input id="cliente-telefono" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" name="telefono" [(ngModel)]="clienteEditado.celular">
+                </div>
+                <div class="modal-body">
+                  <label for="cliente-email">Email</label>
+                  <input id="cliente-email" type="text" class="form-control" name="email" [(ngModel)]="clienteEditado.email">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="changeModal()">Cerrar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+              </form>
           </div>
       </div>
   </div>
